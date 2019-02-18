@@ -1,0 +1,54 @@
+version: '2'
+
+environment:
+  DOCKER_TLD: localhost
+  DOCKER_RUBY_VERSION: 2.6.1
+  POSTGRES_IMAGE_TAG: 11.2
+  POSTGRES_DB: my
+  POSTGRES_HOST: db
+  RAILS_ENV: development
+
+compose:
+  files:
+    - docker/docker-compose.yml
+    - docker/docker-compose.${RAILS_ENV}.yml
+  project_name: mycms${RAILS_ENV}
+
+interaction:
+  sh:
+    service: app
+
+  irb:
+    service: app
+    command: irb
+
+  bundle:
+    service: app
+    command: bundle
+
+  rake:
+    service: app
+    command: bundle exec rake
+
+  rails:
+    service: app
+    command: bundle exec rails
+    subcommands:
+      s:
+        service: web
+        compose_method: up
+
+  rspec:
+    service: app
+    environment:
+      RAILS_ENV: test
+    command: bundle exec rspec
+
+  psql:
+    service: db
+    command: psql -h ${POSTGRES_HOST} -U postgres ${POSTGRES_DB}
+
+provision:
+  - docker volume create --name bundler_data
+  - dip bundle install
+  - dip rails db:migrate

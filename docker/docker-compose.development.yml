@@ -1,0 +1,53 @@
+version: '2'
+
+services:
+  app:
+    volumes:
+      - ..:/app
+      - ../../gems:/localgems
+      - ssh-data:/ssh:ro
+      - bundler-data:/bundle
+    networks:
+      - default
+      - frontend
+
+  web:
+    stdin_open: true
+    tty: true
+    volumes:
+      - ..:/app
+      - ../../gems:/localgems
+      - ssh-data:/ssh:ro
+      - bundler-data:/bundle
+    networks:
+      - default
+      - frontend
+    dns: $DIP_DNS
+    depends_on:
+      - db
+    environment:
+      - VIRTUAL_HOST=*.mycms.$DOCKER_TLD
+      - VIRTUAL_PATH=/
+
+  db:
+    volumes:
+      - pg-data:/var/lib/postgresql/data
+      - ./configs/dumps/$RAILS_ENV/pg:/docker-entrypoint-initdb.d:ro
+
+
+volumes:
+  bundler-data:
+    external:
+      name: bundler_data
+
+  ssh-data:
+    external:
+      name: ssh_data
+
+  pg-data:
+    driver: local
+
+networks:
+  frontend:
+    external:
+      name: frontend

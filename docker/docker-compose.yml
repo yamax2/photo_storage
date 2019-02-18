@@ -1,0 +1,29 @@
+version: '2'
+
+services:
+  app:
+    build:
+      context: ../
+      dockerfile: ./docker/Dockerfile.${DOCKER_RUBY_VERSION}
+    environment:
+      - BUNDLE_PATH=/bundle/${DOCKER_RUBY_VERSION}
+      - SSH_AUTH_SOCK=/ssh/auth/sock
+      - TEST_DB_HOST=${POSTGRES_HOST}
+      - TEST_DB_NAME=${POSTGRES_DB}
+      - TEST_DB_USERNAME=postgres
+    command: bash
+
+  web:
+    extends:
+      service: app
+    command: 'bash -c "rm -f /var/run/rails.pid && bundle exec rails s -p 80 -b 0.0.0.0 --pid /var/run/rails.pid"'
+    depends_on: 
+      - db
+    expose:
+      - "80"
+      - "443"
+
+  db:
+    image: postgres:${POSTGRES_IMAGE_TAG}
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB}
