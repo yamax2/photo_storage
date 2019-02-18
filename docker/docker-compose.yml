@@ -11,6 +11,7 @@ services:
       - TEST_DB_HOST=${POSTGRES_HOST}
       - TEST_DB_NAME=${POSTGRES_DB}
       - TEST_DB_USERNAME=postgres
+      - RAILS_ENV=$RAILS_ENV
     command: bash
 
   web:

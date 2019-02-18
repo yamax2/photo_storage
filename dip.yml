@@ -11,7 +11,7 @@ environment:
 compose:
   files:
     - docker/docker-compose.yml
-    - docker/docker-compose.${RAILS_ENV}.yml
+    - docker/docker-compose.development.yml
   project_name: mycms${RAILS_ENV}
 
 interaction:

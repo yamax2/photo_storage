@@ -34,7 +34,6 @@ services:
       - pg-data:/var/lib/postgresql/data
       - ./configs/dumps/$RAILS_ENV/pg:/docker-entrypoint-initdb.d:ro
 
-
 volumes:
   bundler-data:
     external:
