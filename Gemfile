@@ -34,6 +34,8 @@ group :development, :test do
   gem 'byebug'
 end
 
+gem 'slim-rails', '>= 3.2'
+
 group :test do
   gem 'factory_bot_rails'
   gem 'mock_redis'
