@@ -1,2 +1,489 @@
-h1
-  | Admin area
+aside#left-panel.left-panel
+  nav.navbar.navbar-expand-sm.navbar-default
+    .navbar-header
+      button.navbar-toggler aria-controls="main-menu" aria-expanded="false" aria-label=("Toggle navigation") data-target="#main-menu" data-toggle="collapse" type="button" 
+        i.fa.fa-bars
+      a.navbar-brand href="./" 
+        img alt="Logo" src="https://colorlib.com/polygon/sufee/images/logo.png" /
+      a.navbar-brand.hidden href="./" 
+        img alt="Logo" src="https://colorlib.com/polygon/sufee/images/logo2.png" /
+    #main-menu.main-menu.collapse.navbar-collapse
+      ul.nav.navbar-nav
+        li.active
+          a href="index.html" 
+            i.menu-icon.fa.fa-dashboard
+            | Dashboard
+        h3.menu-title UI elements
+        /! /.menu-title
+        li.menu-item-has-children.dropdown
+          a.dropdown-toggle aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" href="#" 
+            i.menu-icon.fa.fa-laptop
+            | Components
+          ul.sub-menu.children.dropdown-menu
+            li
+              i.fa.fa-puzzle-piece
+              a href="ui-buttons.html"  Buttons
+            li
+              i.fa.fa-id-badge
+              a href="ui-badges.html"  Badges
+            li
+              i.fa.fa-bars
+              a href="ui-tabs.html"  Tabs
+            li
+              i.fa.fa-share-square-o
+              a href="ui-social-buttons.html"  Social Buttons
+            li
+              i.fa.fa-id-card-o
+              a href="ui-cards.html"  Cards
+            li
+              i.fa.fa-exclamation-triangle
+              a href="ui-alerts.html"  Alerts
+            li
+              i.fa.fa-spinner
+              a href="ui-progressbar.html"  Progress Bars
+            li
+              i.fa.fa-fire
+              a href="ui-modals.html"  Modals
+            li
+              i.fa.fa-book
+              a href="ui-switches.html"  Switches
+            li
+              i.fa.fa-th
+              a href="ui-grids.html"  Grids
+            li
+              i.fa.fa-file-word-o
+              a href="ui-typgraphy.html"  Typography
+        li.menu-item-has-children.dropdown
+          a.dropdown-toggle aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" href="#" 
+            i.menu-icon.fa.fa-table
+            | Tables
+          ul.sub-menu.children.dropdown-menu
+            li
+              i.fa.fa-table
+              a href="tables-basic.html"  Basic Table
+            li
+              i.fa.fa-table
+              a href="tables-data.html"  Data Table
+        li.menu-item-has-children.dropdown
+          a.dropdown-toggle aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" href="#" 
+            i.menu-icon.fa.fa-th
+            | Forms
+          ul.sub-menu.children.dropdown-menu
+            li
+              i.menu-icon.fa.fa-th
+              a href="forms-basic.html"  Basic Form
+            li
+              i.menu-icon.fa.fa-th
+              a href="forms-advanced.html"  Advanced Form
+        h3.menu-title Icons
+        /! /.menu-title
+        li.menu-item-has-children.dropdown
+          a.dropdown-toggle aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" href="#" 
+            i.menu-icon.fa.fa-tasks
+            | Icons
+          ul.sub-menu.children.dropdown-menu
+            li
+              i.menu-icon.fa.fa-fort-awesome
+              a href="font-fontawesome.html"  Font Awesome
+            li
+              i.menu-icon.ti-themify-logo
+              a href="font-themify.html"  Themefy Icons
+        li
+          a href="widgets.html" 
+            i.menu-icon.ti-email
+            | Widgets
+        li.menu-item-has-children.dropdown
+          a.dropdown-toggle aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" href="#" 
+            i.menu-icon.fa.fa-bar-chart
+            | Charts
+          ul.sub-menu.children.dropdown-menu
+            li
+              i.menu-icon.fa.fa-line-chart
+              a href="charts-chartjs.html"  Chart JS
+            li
+              i.menu-icon.fa.fa-area-chart
+              a href="charts-flot.html"  Flot Chart
+            li
+              i.menu-icon.fa.fa-pie-chart
+              a href="charts-peity.html"  Peity Chart
+        li.menu-item-has-children.dropdown
+          a.dropdown-toggle aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" href="#" 
+            i.menu-icon.fa.fa-area-chart
+            | Maps
+          ul.sub-menu.children.dropdown-menu
+            li
+              i.menu-icon.fa.fa-map-o
+              a href="maps-gmap.html"  Google Maps
+            li
+              i.menu-icon.fa.fa-street-view
+              a href="maps-vector.html"  Vector Maps
+        h3.menu-title Extras
+        /! /.menu-title
+        li.menu-item-has-children.dropdown
+          a.dropdown-toggle aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" href="#" 
+            i.menu-icon.fa.fa-glass
+            | Pages
+          ul.sub-menu.children.dropdown-menu
+            li
+              i.menu-icon.fa.fa-sign-in
+              a href="page-login.html"  Login
+            li
+              i.menu-icon.fa.fa-sign-in
+              a href="page-register.html"  Register
+            li
+              i.menu-icon.fa.fa-paper-plane
+              a href="pages-forget.html"  Forget Pass
+
+
+#right-panel.right-panel
+  /! Header
+  header#header.header
+    .header-menu
+      .col-sm-7
+        a#menuToggle.menutoggle.pull-left
+          i.fa.fa.fa-tasks
+        .header-left
+          button.search-trigger
+            i.fa.fa-search
+          .form-inline
+            form.search-form
+              input.form-control.mr-sm-2 aria-label="Search" placeholder=("Search ...") type="text" /
+              button.search-close type="submit"
+                i.fa.fa-close
+          .dropdown.for-notification
+            button#notification.btn.btn-secondary.dropdown-toggle aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" type="button"
+              i.fa.fa-bell
+              span.count.bg-danger 5
+            .dropdown-menu aria-labelledby="notification"
+              p.red You have 3 Notification
+              a.dropdown-item.media.bg-flat-color-1 href="#"
+                i.fa.fa-check
+                p Server #1 overloaded.
+              a.dropdown-item.media.bg-flat-color-4 href="#"
+                i.fa.fa-info
+                p Server #2 overloaded.
+              a.dropdown-item.media.bg-flat-color-5 href="#"
+                i.fa.fa-warning
+                p Server #3 overloaded.
+          .dropdown.for-message
+            button#message.btn.btn-secondary.dropdown-toggle aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" type="button"
+              i.ti-email
+              span.count.bg-primary 9
+            .dropdown-menu aria-labelledby="message"
+              p.red You have 4 Mails
+              a.dropdown-item.media.bg-flat-color-1 href="#"
+                span.photo.media-left
+                  img alt="avatar" src="images/avatar/1.jpg" /
+                span.message.media-body
+                  span.name.float-left Jonathan Smith
+                  span.time.float-right Just now
+                  p Hello, this is an example msg
+              a.dropdown-item.media.bg-flat-color-4 href="#"
+                span.photo.media-left
+                  img alt="avatar" src="images/avatar/2.jpg" /
+                span.message.media-body
+                  span.name.float-left Jack Sanders
+                  span.time.float-right 5 minutes ago
+                  p Lorem ipsum dolor sit amet, consectetur
+              a.dropdown-item.media.bg-flat-color-5 href="#"
+                span.photo.media-left
+                  img alt="avatar" src="images/avatar/3.jpg" /
+                span.message.media-body
+                  span.name.float-left Cheryl Wheeler
+                  span.time.float-right 10 minutes ago
+                  p Hello, this is an example msg
+              a.dropdown-item.media.bg-flat-color-3 href="#"
+                span.photo.media-left
+                  img alt="avatar" src="images/avatar/4.jpg" /
+                span.message.media-body
+                  span.name.float-left Rachel Santos
+                  span.time.float-right 15 minutes ago
+                  p Lorem ipsum dolor sit amet, consectetur
+      .col-sm-5
+        .user-area.dropdown.float-right
+          a.dropdown-toggle aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" href="#"
+            img.user-avatar.rounded-circle alt=("User Avatar") src="images/admin.jpg" /
+          .user-menu.dropdown-menu
+            a.nav-link href="#"
+              i.fa.fa-user
+              | My Profile
+            a.nav-link href="#"
+              i.fa.fa-user
+              | Notifications
+              span.count 13
+            a.nav-link href="#"
+              i.fa.fa-cog
+              | Settings
+            a.nav-link href="#"
+              i.fa.fa-power-off
+              | Logout
+        #language-select.language-select.dropdown
+          a#language.dropdown-toggle aria-expanded="true" aria-haspopup="true" data-toggle="dropdown" href="#"
+            i.flag-icon.flag-icon-us
+          .dropdown-menu aria-labelledby="language"
+            .dropdown-item
+              span.flag-icon.flag-icon-fr
+            .dropdown-item
+              i.flag-icon.flag-icon-es
+            .dropdown-item
+              i.flag-icon.flag-icon-us
+            .dropdown-item
+              i.flag-icon.flag-icon-it
+  /! /header
+  /! Header
+  .breadcrumbs
+    .col-sm-4
+      .page-header.float-left
+        .page-title
+          h1 Dashboard
+    .col-sm-8
+      .page-header.float-right
+        .page-title
+          ol.breadcrumb.text-right
+            li.active Dashboard
+  .content.mt-3
+    .col-sm-12
+      .alert.alert-success.alert-dismissible.fade.show role="alert"
+        span.badge.badge-pill.badge-success Success
+        | You successfully read this important alert message.
+        button.close aria-label="Close" data-dismiss="alert" type="button"
+          span aria-hidden="true"  ×
+    .col-sm-6.col-lg-3
+      .card.text-white.bg-flat-color-1
+        .card-body.pb-0
+          .dropdown.float-right
+            button#dropdownMenuButton1.btn.bg-transparent.dropdown-toggle.theme-toggle.text-light data-toggle="dropdown" type="button"
+              i.fa.fa-cog
+            .dropdown-menu aria-labelledby="dropdownMenuButton1"
+              .dropdown-menu-content
+                a.dropdown-item href="#"  Action
+                a.dropdown-item href="#"  Another action
+                a.dropdown-item href="#"  Something else here
+          h4.mb-0
+            span.count 10468
+          p.text-light Members online
+          .chart-wrapper.px-0 height="70" style="height:70px;"
+            canvas#widgetChart1
+    /! /.col
+    .col-sm-6.col-lg-3
+      .card.text-white.bg-flat-color-2
+        .card-body.pb-0
+          .dropdown.float-right
+            button#dropdownMenuButton2.btn.bg-transparent.dropdown-toggle.theme-toggle.text-light data-toggle="dropdown" type="button"
+              i.fa.fa-cog
+            .dropdown-menu aria-labelledby="dropdownMenuButton2"
+              .dropdown-menu-content
+                a.dropdown-item href="#"  Action
+                a.dropdown-item href="#"  Another action
+                a.dropdown-item href="#"  Something else here
+          h4.mb-0
+            span.count 10468
+          p.text-light Members online
+          .chart-wrapper.px-0 height="70" style="height:70px;"
+            canvas#widgetChart2
+    /! /.col
+    .col-sm-6.col-lg-3
+      .card.text-white.bg-flat-color-3
+        .card-body.pb-0
+          .dropdown.float-right
+            button#dropdownMenuButton3.btn.bg-transparent.dropdown-toggle.theme-toggle.text-light data-toggle="dropdown" type="button"
+              i.fa.fa-cog
+            .dropdown-menu aria-labelledby="dropdownMenuButton3"
+              .dropdown-menu-content
+                a.dropdown-item href="#"  Action
+                a.dropdown-item href="#"  Another action
+                a.dropdown-item href="#"  Something else here
+          h4.mb-0
+            span.count 10468
+          p.text-light Members online
+        .chart-wrapper.px-0 height="70" style="height:70px;"
+          canvas#widgetChart3
+    /! /.col
+    .col-sm-6.col-lg-3
+      .card.text-white.bg-flat-color-4
+        .card-body.pb-0
+          .dropdown.float-right
+            button#dropdownMenuButton4.btn.bg-transparent.dropdown-toggle.theme-toggle.text-light data-toggle="dropdown" type="button"
+              i.fa.fa-cog
+            .dropdown-menu aria-labelledby="dropdownMenuButton4"
+              .dropdown-menu-content
+                a.dropdown-item href="#"  Action
+                a.dropdown-item href="#"  Another action
+                a.dropdown-item href="#"  Something else here
+          h4.mb-0
+            span.count 10468
+          p.text-light Members online
+          .chart-wrapper.px-3 height="70" style="height:70px;"
+            canvas#widgetChart4
+    /! /.col
+    .col-lg-3.col-md-6
+      .social-box.facebook
+        i.fa.fa-facebook
+        ul
+          li
+            span.count 40
+            | k
+            span friends
+          li
+            span.count 450
+            span feeds
+    /! /social-box
+    /! /.col
+    .col-lg-3.col-md-6
+      .social-box.twitter
+        i.fa.fa-twitter
+        ul
+          li
+            span.count 30
+            | k
+            span friends
+          li
+            span.count 450
+            span tweets
+    /! /social-box
+    /! /.col
+    .col-lg-3.col-md-6
+      .social-box.linkedin
+        i.fa.fa-linkedin
+        ul
+          li
+            span.count 40
+            | +
+            span contacts
+          li
+            span.count 250
+            span feeds
+    /! /social-box
+    /! /.col
+    .col-lg-3.col-md-6
+      .social-box.google-plus
+        i.fa.fa-google-plus
+        ul
+          li
+            span.count 94
+            | k
+            span followers
+          li
+            span.count 92
+            span circles
+    /! /social-box
+    /! /.col
+    .col-xl-6
+      .card
+        .card-body
+          .row
+            .col-sm-4
+              h4.card-title.mb-0 Traffic
+              .small.text-muted October 2017
+            /! /.col
+            .col-sm-8.hidden-sm-down
+              button.btn.btn-primary.float-right.bg-flat-color-1 type="button"
+                i.fa.fa-cloud-download
+              .btn-toolbar.float-right aria-label=("Toolbar with button groups") role="toolbar"
+                .btn-group.mr-3 aria-label=("First group") data-toggle="buttons"
+                  label.btn.btn-outline-secondary
+                    input#option1 name="options" type="radio" /
+                    | Day
+                  label.btn.btn-outline-secondary.active
+                    input#option2 checked="checked" name="options" type="radio" /
+                    | Month
+                  label.btn.btn-outline-secondary
+                    input#option3 name="options" type="radio" /
+                    | Year
+          /! /.col
+          /! /.row
+          .chart-wrapper.mt-4
+            canvas#trafficChart height="200" style="height:200px;"
+        .card-footer
+          ul
+            li
+              .text-muted Visits
+              strong 29.703 Users (40%)
+              .progress.progress-xs.mt-2 style=("height: 5px;")
+                .progress-bar.bg-success aria-valuemax="100" aria-valuemin="0" aria-valuenow="40" role="progressbar" style=("width: 40%;")
+            li.hidden-sm-down
+              .text-muted Unique
+              strong 24.093 Users (20%)
+              .progress.progress-xs.mt-2 style=("height: 5px;")
+                .progress-bar.bg-info aria-valuemax="100" aria-valuemin="0" aria-valuenow="20" role="progressbar" style=("width: 20%;")
+            li
+              .text-muted Pageviews
+              strong 78.706 Views (60%)
+              .progress.progress-xs.mt-2 style=("height: 5px;")
+                .progress-bar.bg-warning aria-valuemax="100" aria-valuemin="0" aria-valuenow="60" role="progressbar" style=("width: 60%;")
+            li.hidden-sm-down
+              .text-muted New Users
+              strong 22.123 Users (80%)
+              .progress.progress-xs.mt-2 style=("height: 5px;")
+                .progress-bar.bg-danger aria-valuemax="100" aria-valuemin="0" aria-valuenow="80" role="progressbar" style=("width: 80%;")
+            li.hidden-sm-down
+              .text-muted Bounce Rate
+              strong 40.15%
+              .progress.progress-xs.mt-2 style=("height: 5px;")
+                .progress-bar aria-valuemax="100" aria-valuemin="0" aria-valuenow="40" role="progressbar" style=("width: 40%;")
+    .col-xl-3.col-lg-6
+      section.card
+        .twt-feed.blue-bg
+          .corner-ribon.black-ribon
+            i.fa.fa-twitter
+          .fa.fa-twitter.wtt-mark
+          .media
+            a href="#"
+              img.align-self-center.rounded-circle.mr-3 alt="" src="images/admin.jpg" style=("width:85px; height:85px;") /
+            .media-body
+              h2.text-white.display-6 Jim Doe
+              p.text-light Project Manager
+        .weather-category.twt-category
+          ul
+            li.active
+              h5 750
+              | Tweets
+            li
+              h5 865
+              | Following
+            li
+              h5 3645
+              | Followers
+        .twt-write.col-sm-12
+          textarea.form-control.t-text-area placeholder=("Write your Tweet and Enter") rows="1"
+        footer.twt-footer
+          a href="#"
+            i.fa.fa-camera
+          a href="#"
+            i.fa.fa-map-marker
+          | New Castle, UK
+          span.pull-right
+            | 32
+    .col-xl-3.col-lg-6
+      .card
+        .card-body
+          .stat-widget-one
+            .stat-icon.dib
+              i.ti-money.text-success.border-success
+            .stat-content.dib
+              .stat-text Total Profit
+              .stat-digit 1,012
+    .col-xl-3.col-lg-6
+      .card
+        .card-body
+          .stat-widget-one
+            .stat-icon.dib
+              i.ti-user.text-primary.border-primary
+            .stat-content.dib
+              .stat-text New Customer
+              .stat-digit 961
+    .col-xl-3.col-lg-6
+      .card
+        .card-body
+          .stat-widget-one
+            .stat-icon.dib
+              i.ti-layout-grid2.text-warning.border-warning
+            .stat-content.dib
+              .stat-text Active Projects
+              .stat-digit 770
+    .col-xl-6
+      .card
+        .card-header
+          h4 World
+        .Vector-map-js
+          #vmap.vmap style=("height: 265px;")

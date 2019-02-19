@@ -2,11 +2,19 @@ doctype html
 html
   head
     meta content=('text/html; charset=UTF-8') http-equiv="Content-Type"
+    meta charset="utf-8"
+    meta content="IE=edge" http-equiv="X-UA-Compatible"
+    meta content="width=device-width, initial-scale=1" name="viewport"
+
     title
-      | Admin
+      | Sufee Admin - HTML5 Admin Template
+
     = csrf_meta_tags
     = csp_meta_tag
-    = stylesheet_link_tag    'admin', media: 'all', 'data-turbolinks-track': 'reload'
+
+    = stylesheet_link_tag 'admin', media: 'all', 'data-turbolinks-track': 'reload'
     = javascript_include_tag 'admin', 'data-turbolinks-track': 'reload'
+
+    link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800" rel="stylesheet" type="text/css"
   body
     = yield
