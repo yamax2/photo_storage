@@ -30,10 +30,13 @@ gem 'jbuilder', '~> 2.5'
 gem 'bootsnap', '>= 1.1.0', require: false
 
 group :development, :test do
-  # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'
+  gem 'letter_opener'
+  gem 'pry'
+  gem 'pry-rails'
 end
 
+gem 'jquery-rails'
 gem 'slim-rails', '>= 3.2'
 
 group :test do
