@@ -1,29 +1,16 @@
 header#header.header
   .header-menu
     .col-sm-7
-      a#menuToggle.menutoggle.pull-left
+      = link_to admin_root_path, id: 'menuToggle', class: 'menutoggle pull-left' do
         i.fa.fa.fa-tasks
-      .header-left
-        .form-inline
-          form.search-form
-            input.form-control.mr-sm-2 aria-label="Search" placeholder=("Search ...") type="text"
-            button.search-close type="submit"
-              i.fa.fa-close
     .col-sm-5
       .user-area.dropdown.float-right
         a.dropdown-toggle aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" href="#"
-          img.user-avatar.rounded-circle alt=("User Avatar") src="https://colorlib.com/polygon/sufee/images/admin.jpg" /
+          img.user-avatar.rounded-circle alt=("User Avatar") src="https://colorlib.com/polygon/sufee/images/admin.jpg"
         .user-menu.dropdown-menu
           a.nav-link href="#"
-            i.fa.fa-user
             | My Profile
           a.nav-link href="#"
-            i.fa.fa-user
-            | Notifications
-            span.count 13
-          a.nav-link href="#"
-            i.fa.fa-cog
             | Settings
           a.nav-link href="#"
-            i.fa.fa-power-off
             | Logout
