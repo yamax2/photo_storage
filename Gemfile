@@ -34,6 +34,8 @@ gem 'font-awesome-rails', '~> 4.7'
 gem 'jquery-rails'
 gem 'slim-rails', '>= 3.2'
 
+gem 'gretel', '>= 3'
+gem 'kaminari', '>= 1.1'
 gem 'russian'
 gem 'strip_attributes', '>= 1.8'
 

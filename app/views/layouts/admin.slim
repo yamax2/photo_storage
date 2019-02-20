@@ -7,14 +7,31 @@ html
     meta content="width=device-width, initial-scale=1" name="viewport"
 
     title
-      | Sufee Admin - HTML5 Admin Template
+      = t('title')
 
     = csrf_meta_tags
     = csp_meta_tag
-
     = stylesheet_link_tag 'admin', media: 'all', 'data-turbolinks-track': 'reload'
     = javascript_include_tag 'admin', 'data-turbolinks-track': 'reload'
 
     link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800" rel="stylesheet" type="text/css"
   body
-    = yield
+    = render partial: 'admin/partials/menu'
+    #right-panel.right-panel
+      = render partial: 'admin/partials/header'
+
+      .breadcrumbs
+        .col-sm-4
+          .page-header.float-left
+            .page-title
+              h1
+                | Dashboard
+        .col-sm-8
+          .page-header.float-right
+            .page-title
+              ol.breadcrumb.text-right
+                li.active
+                  | Dashboard
+
+      .content.mt-3
+        = yield
