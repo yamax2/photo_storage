@@ -1,2 +1,6 @@
 ru:
   title: MyCms
+  admin:
+    partials:
+      menu:
+        dashboard: Dashboard

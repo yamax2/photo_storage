@@ -6,11 +6,9 @@ header#header.header
     .col-sm-5
       .user-area.dropdown.float-right
         a.dropdown-toggle aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" href="#"
-          img.user-avatar.rounded-circle alt=("User Avatar") src="https://colorlib.com/polygon/sufee/images/admin.jpg"
+          = image_tag 'photo.jpg', class: 'user-avatar rounded-circle'
         .user-menu.dropdown-menu
           a.nav-link href="#"
             | My Profile
-          a.nav-link href="#"
-            | Settings
           a.nav-link href="#"
             | Logout
