@@ -3,4 +3,4 @@ ru:
   admin:
     partials:
       menu:
-        dashboard: Dashboard
+        dashboard: Панель управления
