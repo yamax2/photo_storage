@@ -10,6 +10,7 @@ services:
     networks:
       - default
       - frontend
+    dns: $DIP_DNS
 
   web:
     stdin_open: true
