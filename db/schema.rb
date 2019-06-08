@@ -10,21 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_02_22_110711) do
+ActiveRecord::Schema.define(version: 0) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
-
-  create_table "cities", force: :cascade do |t|
-    t.string "name", limit: 20, null: false
-    t.string "domain", limit: 15, null: false
-    t.boolean "active", default: true, null: false
-    t.string "in_city_name", limit: 50
-    t.string "google_verification", limit: 50
-    t.string "yandex_verification", limit: 50
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["domain"], name: "index_cities_on_domain", unique: true
-  end
 
 end
