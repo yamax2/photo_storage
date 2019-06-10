@@ -1,6 +1,10 @@
 ru:
-  title: MyCms
+  title: PhotoStorage
   admin:
     partials:
       menu:
+        content: Контент
         dashboard: Панель управления
+        rubrics: Рубрики
+        settings: Настройки
+        yandex_tokens: Токены Yandex

@@ -3,30 +3,38 @@ aside#left-panel.left-panel
     .navbar-header
       button.navbar-toggler aria-controls="main-menu" aria-expanded="false" aria-label=("Toggle navigation") data-target="#main-menu" data-toggle="collapse" type="button"
         i.fa.fa-bars
-      a.navbar-brand href="#{root_path}"
-        img alt="Logo" src="https://colorlib.com/polygon/sufee/images/logo.png"
-      a.navbar-brand.hidden href="#{root_path}"
-        img alt="Logo" src="https://colorlib.com/polygon/sufee/images/logo2.png"
+
+      = link_to root_path, class: 'navbar-brand' do
+        h4
+          = t('title')
+
+      = link_to root_path, class: 'navbar-brand hidden' do
+        h3
+          = t('title')[0]
 
     #main-menu.main-menu.collapse.navbar-collapse
       ul.nav.navbar-nav
         li.active
           = link_to admin_root_path do
             i.menu-icon.fa.fa-dashboard
-            = t('admin.partials.menu.dashboard')
-        h3.menu-title
-          | UI elements
+            = t('.dashboard')
 
-        li.menu-item-has-children.dropdown
-          a.dropdown-toggle aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" href="#"
+        h3.menu-title
+          = t('.content')
+        li
+          = link_to admin_root_path do
             i.menu-icon.fa.fa-laptop
-            | Components
-          ul.sub-menu.children.dropdown-menu
-            li
-              i.fa.fa-puzzle-piece
-              a href="ui-buttons.html"
-                | Buttons
-            li
-              i.fa.fa-id-badge
-              a href="ui-badges.html"
-                | Badges
+            = t('.rubrics')
+
+        h3.menu-title
+          = t('.settings')
+
+        li
+          = link_to admin_root_path do
+            i.menu-icon.fa.fa-ticket
+            = t('.yandex_tokens')
+
+        li
+          = link_to admin_sidekiq_web_path do
+            i.menu-icon.fa.fa-flag
+            = 'sidekiq'
