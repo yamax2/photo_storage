@@ -23,7 +23,6 @@ services:
       - redis
     expose:
       - "80"
-      - "443"
 
   db:
     image: postgres:${POSTGRES_IMAGE_TAG}

@@ -6,7 +6,7 @@ module Yandex
     delegate :code, :token, to: :context
 
     def call
-      context.token = Token.find_or_create_by(user_id: passport_response.delete(:id))
+      context.token = Token.find_or_initialize_by(user_id: passport_response.delete(:id))
 
       token.valid_till = Time.current + token_response.delete(:expires_in).seconds
       token.assign_attributes(passport_response.slice(:login))
