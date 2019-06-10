@@ -1,0 +1,10 @@
+default: &default
+  db: 1
+
+development:
+  <<: *default
+  url: redis://redis
+
+production:
+  <<: *default
+  url: unix:/var/run/redis/redis.sock

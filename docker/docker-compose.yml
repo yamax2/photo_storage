@@ -18,8 +18,9 @@ services:
     extends:
       service: app
     command: 'bash -c "rm -f /var/run/rails.pid && bundle exec rails s -p 80 -b 0.0.0.0 --pid /var/run/rails.pid"'
-    depends_on: 
+    depends_on:
       - db
+      - redis
     expose:
       - "80"
       - "443"
@@ -28,3 +29,14 @@ services:
     image: postgres:${POSTGRES_IMAGE_TAG}
     environment:
       - POSTGRES_DB=${POSTGRES_DB}
+
+  redis:
+    image: redis:$REDIS_IMAGE_TAG
+
+  sidekiq:
+    extends:
+      service: app
+    command: 'bundle exec sidekiq -C config/sidekiq.yml'
+    depends_on:
+      - db
+      - redis

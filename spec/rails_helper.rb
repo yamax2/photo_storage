@@ -64,3 +64,5 @@ YandexPhotoStorage.configure do |config|
   config.api_key = API_APPLICATION_KEY
   config.api_secret = API_APPLICATION_SECRET
 end
+
+RedisClassy.redis = MockRedis.new

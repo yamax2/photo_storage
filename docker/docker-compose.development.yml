@@ -35,6 +35,21 @@ services:
       - pg-data:/var/lib/postgresql/data
       - ./configs/dumps/$RAILS_ENV/pg:/docker-entrypoint-initdb.d:ro
 
+  redis:
+    volumes:
+      - redis-data:/data
+
+  sidekiq:
+    volumes:
+      - ..:/app
+      - ../../gems:/localgems
+      - ssh-data:/ssh:ro
+      - bundler-data:/bundle
+    networks:
+      - default
+      - frontend
+    dns: $DIP_DNS
+
 volumes:
   bundler-data:
     external:
@@ -45,6 +60,9 @@ volumes:
       name: ssh_data
 
   pg-data:
+    driver: local
+
+  redis-data:
     driver: local
 
 networks:
