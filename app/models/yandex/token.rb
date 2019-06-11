@@ -9,5 +9,7 @@ module Yandex
     validates :token_type, presence: true, length: {maximum: 20}
     validates :access_token, :refresh_token, presence: true, length: {maximum: 100}
     validates :dir, :other_dir, length: {maximum: 255}
+
+    paginates_per 1
   end
 end

@@ -14,6 +14,20 @@
   .col-sm-12
     .card
       .card-body
-        - @tokens.each do |token|
-          h2
-            = token.id
+        .table-scroll
+          table.table
+            thead.thead-dark
+              tr
+                - %i[login valid_till active dir other_dir updated_at].each do |col|
+                  th
+                    = ::Yandex::Token.human_attribute_name(col)
+                th
+            tbody
+              - @tokens.each do |token|
+                tr
+                  - %i[login valid_till active dir other_dir updated_at].each do |col|
+                    td
+                      = token[col]
+                  td
+          - if @tokens.total_pages > 1
+            = paginate @tokens, views_prefix: 'admin'

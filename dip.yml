@@ -4,7 +4,7 @@ environment:
   DOCKER_TLD: localhost
   DOCKER_RUBY_VERSION: 2.6.3
   POSTGRES_IMAGE_TAG: 11.2
-  REDIS_IMAGE_TAG: 5.0-alpine
+  REDIS_IMAGE_TAG: 5-alpine
   POSTGRES_DB: photos
   POSTGRES_HOST: db
   RAILS_ENV: development

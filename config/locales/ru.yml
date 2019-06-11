@@ -1,5 +1,14 @@
 ru:
   title: PhotoStorage
+  activerecord:
+    attributes:
+      yandex/token:
+        active: Активен
+        dir: Каталог фото
+        login: Логин yandex
+        other_dir: Каталог прочего
+        valid_till: Действует до
+        updated_at: Обновлён
   admin:
     partials:
       menu:
