@@ -10,6 +10,10 @@
       .card-body
         = link_to t('.new'), @new_token_url, class: 'btn btn-primary'
 
-- @tokens.each do |token|
-  h2
-    = token.id
+.row
+  .col-sm-12
+    .card
+      .card-body
+        - @tokens.each do |token|
+          h2
+            = token.id

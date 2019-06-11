@@ -14,7 +14,7 @@ aside#left-panel.left-panel
 
     #main-menu.main-menu.collapse.navbar-collapse
       ul.nav.navbar-nav
-        li.active
+        li*{class: controller_path == 'admin/dashboard' ? 'active' : ''}
           = link_to admin_root_path do
             i.menu-icon.fa.fa-dashboard
             = t('.dashboard')
@@ -29,7 +29,7 @@ aside#left-panel.left-panel
         h3.menu-title
           = t('.settings')
 
-        li
+        li*{class: controller_path == 'admin/yandex/tokens' ? 'active' : ''}
           = link_to admin_yandex_tokens_path do
             i.menu-icon.fa.fa-ticket
             = t('.yandex_tokens')

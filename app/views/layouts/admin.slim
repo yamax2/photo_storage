@@ -23,7 +23,17 @@ html
       = link_to admin_root_path, id: 'menuToggle', class: 'menutoggle pull-left' do
         i.fa.fa.fa-tasks
 
-      = render partial: 'admin/partials/breadcrumbs'
+      .breadcrumbs
+        .col-sm-4
+          .page-header.float-left
+            .page-title
+              - if (title = content_for(:title))
+                h1
+                  = title
+        .col-sm-8
+          .page-header.float-right
+            .page-title
+              == breadcrumbs style: :bootstrap
 
       .content.mt-3
         - if flash.any?
