@@ -29,7 +29,7 @@ services:
     depends_on:
       - db
     environment:
-      - VIRTUAL_HOST=*.mycms.$DOCKER_TLD
+      - VIRTUAL_HOST=*.photo_storage.$DOCKER_TLD
       - VIRTUAL_PATH=/
 
   db:

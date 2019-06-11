@@ -22,11 +22,11 @@ default: &default
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
   host: db
   username: postgres
-  database: my
+  database: photos
 
 development:
   <<: *default
-  # database: my
+  # database: photos
 
   # The specified database role being used to connect to postgres.
   # To create additional roles in postgres see `$ createuser --help`.
@@ -82,6 +82,6 @@ test:
 #
 production:
   <<: *default
-  database: my_cms_production
-  username: my_cms
+  database: photos
+  username: photos
   password: <%= ENV['MY_CMS_DATABASE_PASSWORD'] %>
