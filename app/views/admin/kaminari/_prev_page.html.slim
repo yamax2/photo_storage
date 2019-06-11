@@ -1,2 +1,4 @@
 li.page-item
-  = link_to_unless current_page.first?, raw(t 'views.pagination.previous'), url, rel: 'prev', remote: remote, class: 'page-link'
+  - unless current_page.first?
+    = link_to url, rel: 'prev', remote: remote, class: 'page-link', title: t('views.pagination.previous') do
+      i.fa.fa-angle-left

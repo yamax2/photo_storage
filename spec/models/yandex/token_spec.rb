@@ -45,4 +45,20 @@ RSpec.describe Yandex::Token do
     it { is_expected.to validate_presence_of(:used_space) }
     it { is_expected.to validate_presence_of(:total_space) }
   end
+
+  describe 'active prop validation' do
+    context 'when active' do
+      subject { build :'yandex/token', active: true }
+
+      it { is_expected.to validate_presence_of(:dir) }
+      it { is_expected.to validate_presence_of(:other_dir) }
+    end
+
+    context 'when inactive' do
+      subject { build :'yandex/token', active: false }
+
+      it { is_expected.not_to validate_presence_of(:dir) }
+      it { is_expected.not_to validate_presence_of(:other_dir) }
+    end
+  end
 end

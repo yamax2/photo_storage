@@ -1,0 +1,49 @@
+- content_for :title, @token.login
+- breadcrumb :yandex_token, @token
+
+.row
+  .col-sm-12.col-lg-6
+    .card
+      = form_for [:admin, @token], html: {class: 'form-horizontal'} do |f|
+        .card-header
+          strong
+            = t('.title')
+
+        .card-body.card-block
+          = render partial: 'admin/partials/errors', locals: {model: @token}
+
+          .row.form-group
+            .col.col-md-3
+              = f.label :active
+            .col-12.col-md-9
+              label.switch.switch-text.switch-primary
+                = f.check_box(:active, {class: 'switch-input type'})
+                span.switch-label*{data: {on: t('views.switches.on_text'), off: t('views.switches.off_text')}}
+                span.switch-handle
+              small.form-text.text-muted
+                = t('.active_hint')
+
+          .row.form-group
+            .col.col-md-3
+              = f.label :dir
+            .col-12.col-md-9
+              = f.text_field :dir, class: 'form-control', autofocus: true
+              small.form-text.text-muted
+                = t('.dir_hint')
+
+          .row.form-group
+            .col.col-md-3
+              = f.label :other_dir
+            .col-12.col-md-9
+              = f.text_field :other_dir, class: 'form-control'
+              small.form-text.text-muted
+                = t('.other_dir_hint')
+
+        .card-footer.action-buttons
+          = button_tag class: 'btn btn-primary btn-sm' do
+            .fa.fa-dot-circle-o
+            = t('.apply')
+
+          = link_to admin_yandex_tokens_path, class: 'btn btn-danger btn-sm' do
+            .fa.fa-ban
+            = t('.cancel')

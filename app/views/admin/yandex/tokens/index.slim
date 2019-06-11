@@ -16,18 +16,41 @@
       .card-body
         .table-scroll
           table.table
-            thead.thead-dark
+            thead
               tr
-                - %i[login valid_till active dir other_dir updated_at].each do |col|
+                - %i[login valid_till active dir other_dir free_space].each do |col|
                   th
                     = ::Yandex::Token.human_attribute_name(col)
                 th
             tbody
               - @tokens.each do |token|
                 tr
-                  - %i[login valid_till active dir other_dir updated_at].each do |col|
+                  - %i[login valid_till active dir other_dir free_space].each do |col|
                     td
-                      = token[col]
-                  td
+                      - if col == :free_space
+                        = t '.free_space', free_space: number_to_human_size(token.total_space - token.used_space),
+                                           total_space: number_to_human_size(token.total_space)
+                      - elsif col == :active
+                        label.switch.switch-text.switch-primary
+                          input.switch-input type="checkbox"*{checked: token.active? ? 'checked' : nil, disabled: true}
+                          span.switch-label*{data: {on: t('views.switches.on_text'), off: t('views.switches.off_text')}}
+                          span.switch-handle
+                      - else
+                        = token[col]
+                  td.action-buttons
+                    = link_to edit_admin_yandex_token_path(token), title: t('.edit'),
+                                                                   class: 'btn btn-outline-success btn-sm' do
+                      i.fa.fa-pencil
+
+                    = link_to [:admin, token], title: t('.remove'),
+                                               method: :delete,
+                                               class: 'btn btn-outline-danger btn-sm',
+                                               data: {confirm: t('.remove_confirm')} do
+                      i.fa.fa-trash
+
+                    = link_to refresh_admin_yandex_token_path(token), title: t('.refresh'),
+                                                                      class: 'btn btn-outline-primary btn-sm' do
+                      i.fa.fa-refresh
+
           - if @tokens.total_pages > 1
             = paginate @tokens, views_prefix: 'admin'

@@ -1,0 +1,10 @@
+- if model.errors.any?
+  .alert.alert-danger.alert-dismissable
+    button.close type="button" data-dismiss="alert" aria-hidden="true"
+      | ×
+    ul
+      - model.errors.each do |attr, text|
+        li
+          strong
+            = model.class.human_attribute_name(attr)
+          = ": #{text}"

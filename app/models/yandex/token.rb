@@ -10,6 +10,6 @@ module Yandex
     validates :access_token, :refresh_token, presence: true, length: {maximum: 100}
     validates :dir, :other_dir, length: {maximum: 255}
 
-    paginates_per 1
+    validates :dir, :other_dir, presence: true, if: :active?
   end
 end

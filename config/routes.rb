@@ -10,7 +10,11 @@ Rails.application.routes.draw do
     root 'dashboard#index'
 
     namespace :yandex do
-      resources :tokens, only: :index
+      resources :tokens, only: %i[index edit update destroy] do
+        member do
+          get :refresh
+        end
+      end
 
       resource :verification_code, only: :show
     end
