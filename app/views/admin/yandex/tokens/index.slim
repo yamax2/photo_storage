@@ -1,0 +1,15 @@
+- content_for :title, t('admin.partials.menu.yandex_tokens')
+- breadcrumb :yandex_tokens
+
+.row
+  .col-md-6
+    .card
+      .card-header
+        strong
+          = t('.actions')
+      .card-body
+        = link_to t('.new'), @new_token_url, class: 'btn btn-primary'
+
+- @tokens.each do |token|
+  h2
+    = token.id

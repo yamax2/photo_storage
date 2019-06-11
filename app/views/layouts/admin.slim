@@ -8,6 +8,8 @@ html
 
     title
       = t('title')
+      - if Rails.env.development?
+        |  [dev]
 
     = csrf_meta_tags
     = csp_meta_tag
@@ -18,8 +20,19 @@ html
   body
     = render partial: 'admin/partials/menu'
     #right-panel.right-panel
-      = render partial: 'admin/partials/header'
+      = link_to admin_root_path, id: 'menuToggle', class: 'menutoggle pull-left' do
+        i.fa.fa.fa-tasks
+
       = render partial: 'admin/partials/breadcrumbs'
 
       .content.mt-3
+        - if flash.any?
+          .row
+            .col-sm-12
+              .alert.alert-info.alert-dismissable.fade.show
+                - flash.each do |_, v|
+                  = v
+                button.close type="button" data-dismiss="alert" aria-label="Close"
+                  span aria-hidden="true"
+                    | ×
         = yield

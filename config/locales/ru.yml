@@ -6,5 +6,11 @@ ru:
         content: Контент
         dashboard: Панель управления
         rubrics: Рубрики
-        settings: Настройки
+        settings: Управление
         yandex_tokens: Токены Yandex
+    yandex:
+      token_performed: Создание токена запланировано
+      tokens:
+        index:
+          actions: Управление
+          new: Создать токен
