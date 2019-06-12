@@ -11,6 +11,7 @@ require 'strip_attributes/matchers'
 require 'timecop'
 require 'webmock/rspec'
 require 'vcr'
+require 'sidekiq/testing'
 
 Dir[Rails.root.join('spec', 'support', '**', '*.rb')].each { |f| require f }
 
@@ -66,3 +67,4 @@ YandexPhotoStorage.configure do |config|
 end
 
 RedisClassy.redis = MockRedis.new
+Sidekiq::Testing.inline!

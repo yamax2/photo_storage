@@ -4,7 +4,7 @@ module Admin
       before_action :find_token, only: %i[edit update destroy refresh]
 
       def destroy
-        # FIXME: move to a decorator
+        # FIXME: move to an interactor
         @token.destroy
 
         redirect_to admin_yandex_tokens_path, notice: t('.success', login: @token.login)

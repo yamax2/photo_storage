@@ -1,7 +1,4 @@
 require 'rails_helper'
-require 'sidekiq/testing'
-
-Sidekiq::Testing.inline!
 
 RSpec.describe Yandex::CreateOrUpdateTokenJob do
   before do
