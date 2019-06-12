@@ -1,0 +1,32 @@
+.row
+  .col-sm-12.col-lg-9
+    .card
+      = form_for [:admin, @rubric], html: {class: 'form-horizontal'} do |f|
+        .card-header
+          strong
+            = @rubric.persisted? ? @rubric.name.presence || @rubric.id : t('.title')
+
+        .card-body.card-block
+          = f.hidden_field :rubric_id
+          = render partial: 'admin/partials/errors', locals: {model: @rubric}
+
+          .row.form-group
+            .col.col-md-3
+              = f.label :name
+            .col-12.col-md-9
+              = f.text_field :name, class: 'form-control', autofocus: true
+
+          .row.form-group
+            .col.col-md-3
+              = f.label :description
+            .col-12.col-md-9
+              = f.text_area :description, class: 'form-control', rows: 10
+
+        .card-footer.action-buttons
+          = button_tag class: 'btn btn-primary btn-sm' do
+            .fa.fa-dot-circle-o
+            = t('.apply')
+
+          = link_to admin_rubrics_path(id: @rubric.rubric_id), class: 'btn btn-danger btn-sm' do
+            .fa.fa-ban
+            = t('.cancel')

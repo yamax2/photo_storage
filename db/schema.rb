@@ -10,10 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_06_09_073940) do
+ActiveRecord::Schema.define(version: 2019_06_12_052111) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "rubrics", force: :cascade do |t|
+    t.string "name", limit: 100, null: false
+    t.text "description"
+    t.bigint "rubric_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["rubric_id"], name: "index_rubrics_on_rubric_id"
+  end
 
   create_table "yandex_tokens", force: :cascade do |t|
     t.string "user_id", limit: 20, null: false
@@ -32,4 +41,5 @@ ActiveRecord::Schema.define(version: 2019_06_09_073940) do
     t.index ["user_id"], name: "index_yandex_tokens_on_user_id", unique: true
   end
 
+  add_foreign_key "rubrics", "rubrics", name: "fk_rubrics", on_update: :cascade, on_delete: :restrict
 end

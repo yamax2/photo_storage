@@ -1,0 +1,8 @@
+- if parent_rubric.present?
+  - content_for :title, t('.title_with_parent', name: parent_rubric.name)
+- else
+  - content_for :title, t('.title_root')
+
+- breadcrumb :rubric, @rubric
+
+= render partial: 'form'

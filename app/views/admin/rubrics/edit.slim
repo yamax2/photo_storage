@@ -1,0 +1,4 @@
+- content_for :title, t('.title', name: @rubric.name.presence || @rubric.id)
+- breadcrumb :rubric, @rubric
+
+= render partial: 'form'

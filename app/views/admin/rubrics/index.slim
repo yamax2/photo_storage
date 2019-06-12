@@ -1,0 +1,67 @@
+- if parent_rubric.present?
+  - content_for :title, t('.subrubrics', name: parent_rubric.name)
+- else
+  - content_for :title, t('admin.partials.menu.rubrics')
+
+- breadcrumb :rubrics
+
+.row
+  .col-md-6
+    .card
+      .card-header
+        strong
+          = t('.actions')
+      .card-body.action-buttons
+        - if parent_rubric.present?
+          = link_to admin_rubrics_path(id: parent_rubric.rubric_id), class: 'btn btn-success' do
+            .fa.fa-level-up
+            = t('.level_up')
+
+        = link_to new_admin_rubric_path(id: parent_id), class: 'btn btn-primary' do
+          .fa.fa-plus
+          = t('.new')
+
+.row
+  .col-sm-12
+    .card
+      .card-body
+        .table-scroll
+          table.table
+            thead
+              tr
+                - %i[id name created_at].each do |attr|
+                  th
+                    = sort_link @search, attr, Rubric.human_attribute_name(attr)
+                th
+
+            tbody
+              - @rubrics.each do |rubric|
+                tr
+                  - %i[id name created_at].each do |attr|
+                    td
+                      - if %i[id name].include?(attr)
+                        = link_to rubric[attr], admin_rubrics_path(id: rubric.id)
+                      - else
+                        = rubric[attr]
+
+                  td.action-buttons
+                    = link_to admin_rubrics_path(id: rubric.id), title: t('.subrubrics', name: rubric.name),
+                                                                 class: 'btn btn-outline-info btn-sm' do
+                      i.fa.fa-level-down
+
+                    = link_to admin_rubric_path(rubric), title: t('.content'),
+                                                         class: 'btn btn-outline-info btn-sm' do
+                      i.fa.fa-picture-o
+
+                    = link_to edit_admin_rubric_path(rubric), title: t('.edit'),
+                                                              class: 'btn btn-outline-success btn-sm' do
+                      i.fa.fa-pencil
+
+                    = link_to [:admin, rubric], title: t('.remove'),
+                                                method: :delete,
+                                                class: 'btn btn-outline-danger btn-sm',
+                                                data: {confirm: t('.remove_confirm')} do
+                      i.fa.fa-trash
+
+        - if @rubrics.total_pages > 1
+          = paginate @rubrics, views_prefix: 'admin'

@@ -2,6 +2,10 @@ ru:
   title: PhotoStorage
   activerecord:
     attributes:
+      rubric:
+        created_at: Создано
+        name: Название
+        description: Описание (html)
       yandex/token:
         active: Активность
         dir: Каталог фото
@@ -11,6 +15,10 @@ ru:
         valid_till: Действует до
         updated_at: Обновлён
   admin:
+    base:
+      form: &form_base
+        apply: Сохранить
+        cancel: Отмена
     partials:
       menu:
         content: Контент
@@ -18,15 +26,34 @@ ru:
         rubrics: Рубрики
         settings: Управление
         yandex_tokens: Токены Yandex
+    rubrics:
+      destroy:
+        success: Рубрика %{name} была успешно удалена
+      edit:
+        title: Рубрика %{name}
+      form:
+        <<: *form_base
+        title: Новая рубрика
+      index:
+        actions: Управление
+        content: Содержимое рубрики
+        edit: Редактировать рубрику
+        level_up: На уровень выше
+        new: Добавить рубрику
+        remove: Удалить рубрику
+        remove_confirm: Вы действительно хотите удалить рубрику со всеми подрубриками?
+        subrubrics: Подрубрики %{name}
+      new:
+        title_root: Создание новой корневой рубрики
+        title_with_parent: 'Создание новой подрубрики в рубрике %{name}'
     yandex:
       token_performed: Создание токена запланировано
       tokens:
         destroy:
           success: 'Токен %{login} успешно удалён'
         edit:
+          <<: *form_base
           active_hint: Для активации токена оба каталога должны быть заполнены
-          apply: Сохранить
-          cancel: Отмена
           dir_hint: >
             Для хранения фото. При изменении этого свойства необходимо вручную перенести файлы на удаленном хранилище.
           other_dir_hint: >
