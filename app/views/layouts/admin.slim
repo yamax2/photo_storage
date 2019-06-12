@@ -13,12 +13,14 @@ html
 
     = csrf_meta_tags
     = csp_meta_tag
-    = stylesheet_link_tag 'admin', media: 'all', 'data-turbolinks-track': 'reload'
+
+    = stylesheet_link_tag    'admin', media: 'all', 'data-turbolinks-track': 'reload'
     = javascript_include_tag 'admin', 'data-turbolinks-track': 'reload'
 
     link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800" rel="stylesheet" type="text/css"
   body
     = render partial: 'admin/partials/menu'
+
     #right-panel.right-panel
       = link_to admin_root_path, id: 'menuToggle', class: 'menutoggle pull-left' do
         i.fa.fa.fa-tasks

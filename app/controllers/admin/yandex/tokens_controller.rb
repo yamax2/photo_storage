@@ -14,7 +14,8 @@ module Admin
         @new_token_url = "https://oauth.yandex.ru/authorize?response_type=" \
           "code&client_id=#{YandexPhotoStorage.config.api_key}&force_confirm=false"
 
-        @tokens = ::Yandex::Token.all.page(params[:page])
+        @search = ::Yandex::Token.ransack(params[:q])
+        @tokens = @search.result.page(params[:page])
       end
 
       def refresh
