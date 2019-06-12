@@ -19,6 +19,6 @@ Rails.application.routes.draw do
       resource :verification_code, only: :show
     end
 
-    resources :rubrics
+    resources :rubrics, except: :show
   end
 end
