@@ -4,6 +4,6 @@ RUN ln -fs /usr/share/zoneinfo/Asia/Yekaterinburg /etc/localtime \
   && dpkg-reconfigure -f noninteractive tzdata
 
 RUN gem install bundler
-RUN apt update -qq && apt install -y vim nano
+RUN apt update -qq && apt install -y nano libexif-dev
 
 WORKDIR /app

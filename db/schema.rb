@@ -10,10 +10,31 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_06_12_052111) do
+ActiveRecord::Schema.define(version: 2019_06_14_173900) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "photos", force: :cascade do |t|
+    t.string "name", limit: 512, null: false
+    t.text "description"
+    t.bigint "rubric_id"
+    t.bigint "yandex_token_id"
+    t.text "storage_filename"
+    t.string "local_filename"
+    t.jsonb "exif"
+    t.point "lat_long"
+    t.string "original_filename", limit: 512, null: false
+    t.datetime "original_datetime"
+    t.bigint "size", default: 0, null: false
+    t.string "content_type", limit: 30, null: false
+    t.integer "width", default: 0, null: false
+    t.integer "height", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["rubric_id"], name: "index_photos_on_rubric_id"
+    t.index ["yandex_token_id"], name: "index_photos_on_yandex_token_id"
+  end
 
   create_table "rubrics", force: :cascade do |t|
     t.string "name", limit: 100, null: false
@@ -41,5 +62,7 @@ ActiveRecord::Schema.define(version: 2019_06_12_052111) do
     t.index ["user_id"], name: "index_yandex_tokens_on_user_id", unique: true
   end
 
+  add_foreign_key "photos", "rubrics", name: "fk_photo_rubrics", on_update: :cascade, on_delete: :restrict
+  add_foreign_key "photos", "yandex_tokens", name: "fk_photo_tokens", on_update: :cascade, on_delete: :restrict
   add_foreign_key "rubrics", "rubrics", name: "fk_rubrics", on_update: :cascade, on_delete: :restrict
 end

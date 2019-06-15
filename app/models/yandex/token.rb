@@ -11,5 +11,7 @@ module Yandex
     validates :dir, :other_dir, length: {maximum: 255}
 
     validates :dir, :other_dir, presence: true, if: :active?
+
+    has_many :photos, dependent: :destroy, inverse_of: :yandex_token, foreign_key: :yandex_token_id
   end
 end

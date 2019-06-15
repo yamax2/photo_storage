@@ -35,6 +35,7 @@ gem 'sidekiq', '>= 5'
 gem 'sidekiq-cron', '>= 1.1'
 gem 'strip_attributes', '>= 1.8'
 
+gem 'exif', '>= 2.2.0'
 gem 'yandex_photo_storage', github: 'yamax2/yandex_photo_storage'
 
 group :development, :test do
@@ -46,7 +47,6 @@ end
 
 group :test do
   gem 'factory_bot_rails'
-  gem 'faker'
   gem 'mock_redis'
   gem 'rails-controller-testing'
   gem 'rspec-rails'

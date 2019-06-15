@@ -46,6 +46,10 @@ RSpec.describe Yandex::Token do
     it { is_expected.to validate_presence_of(:total_space) }
   end
 
+  describe 'associations' do
+    it { is_expected.to have_many(:photos).inverse_of(:yandex_token).dependent(:destroy) }
+  end
+
   describe 'active prop validation' do
     context 'when active' do
       subject { build :'yandex/token', active: true }

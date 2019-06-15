@@ -16,6 +16,7 @@ RSpec.describe Rubric do
   describe 'associations' do
     it { is_expected.to belong_to(:rubric).inverse_of(:rubrics).optional }
     it { is_expected.to have_many(:rubrics).inverse_of(:rubric).dependent(:destroy) }
+    it { is_expected.to have_many(:photos).inverse_of(:rubric).dependent(:destroy) }
   end
 
   describe 'validations' do
