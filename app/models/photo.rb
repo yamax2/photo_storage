@@ -25,6 +25,10 @@ class Photo < ApplicationRecord
   scope :uploaded, -> { where.not(storage_filename: nil) }
   scope :pending, -> { where.not(local_filename: nil) }
 
+  def generate_storage_filename
+    self.storage_filename = StorageFilenameGenerator.new(self).call
+  end
+
   private
 
   def upload_status

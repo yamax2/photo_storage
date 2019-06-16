@@ -122,4 +122,15 @@ RSpec.describe Photo do
       it { expect(described_class.pending).to match_array(pending) }
     end
   end
+
+  describe '#generate_storage_filename' do
+    let(:photo) { create :photo, storage_filename: nil }
+
+    before { photo.generate_storage_filename }
+
+    it do
+      expect(photo.storage_filename).not_to be_empty
+      expect(photo).to be_changed
+    end
+  end
 end
