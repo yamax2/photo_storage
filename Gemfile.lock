@@ -1,6 +1,6 @@
 GIT
   remote: git@github.com:yamax2/yandex_photo_storage.git
-  revision: fd535d26a1d3f4e928f401799967de99ea861b4c
+  revision: 89bae194e9eaf1052b02b22ca908c42ddba4ca8c
   specs:
     yandex_photo_storage (0.1.0)
       ox
