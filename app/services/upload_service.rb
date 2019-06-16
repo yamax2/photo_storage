@@ -4,27 +4,24 @@ class UploadService
   delegate :photo, to: :context
 
   def call
+    return if photo.storage_filename.present?
+
     context.fail!(message: 'active token not found') unless token_for_upload.present?
 
-    photo.yandex_token = token_for_upload
-    photo.generate_storage_filename
+    @storage_filename = photo.generate_storage_filename
 
-    validate_remote_directories
     upload_file
-    remove_temp_file
-
-    photo.save!
+    update_photo
   end
 
   private
 
   def client
-    @client ||= ::YandexPhotoStorage::Dav::Client.new(access_token: photo.yandex_token.access_token)
+    @client ||= ::YandexPhotoStorage::Dav::Client.new(access_token: token_for_upload.access_token)
   end
 
-  def remove_temp_file
-    FileUtils.rm_f(photo.local_filename)
-    photo.local_filename = nil
+  def local_filename
+    @local_filename ||= Rails.root.join('tmp', 'files', photo.local_filename)
   end
 
   def token_for_upload
@@ -32,9 +29,11 @@ class UploadService
   end
 
   def upload_file
+    validate_remote_directories
+
     client.put(
-      file: Rails.root.join('tmp', 'files', photo.local_filename),
-      name: photo.yandex_token.dir + '/' + photo.storage_filename
+      file: local_filename,
+      name: token_for_upload.dir + '/' + @storage_filename
     )
   end
 
@@ -47,7 +46,7 @@ class UploadService
   end
 
   def validate_remote_directories
-    dirs = token_for_upload.dir.split('/') + photo.storage_filename.split('/')
+    dirs = token_for_upload.dir.split('/') + @storage_filename.split('/')
 
     dirs.pop
     dirs.delete_if(&:empty?)
@@ -57,5 +56,17 @@ class UploadService
 
       validate_directory(path)
     end
+  end
+
+  def update_photo
+    FileUtils.rm_f(local_filename)
+
+    photo.assign_attributes(
+      storage_filename: @storage_filename,
+      yandex_token: token_for_upload,
+      local_filename: nil
+    )
+
+    photo.save!
   end
 end

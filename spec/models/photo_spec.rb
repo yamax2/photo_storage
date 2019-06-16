@@ -130,7 +130,7 @@ RSpec.describe Photo do
 
     it do
       expect(photo.storage_filename).not_to be_empty
-      expect(photo).to be_changed
+      expect(photo).not_to be_changed
     end
   end
 end

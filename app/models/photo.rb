@@ -26,7 +26,7 @@ class Photo < ApplicationRecord
   scope :pending, -> { where.not(local_filename: nil) }
 
   def generate_storage_filename
-    self.storage_filename = StorageFilenameGenerator.new(self).call
+    StorageFilenameGenerator.new(self).call
   end
 
   private
