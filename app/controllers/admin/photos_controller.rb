@@ -1,0 +1,18 @@
+module Admin
+  class PhotosController < AdminController
+    layout false
+
+    def create
+      context = EnqueueUploadService.call(
+        uploaded_io: params.require(:image),
+        rubric_id: params.require(:rubric_id)
+      )
+
+      if context.sucess?
+        render json: context.photo
+      else
+        render json: context.photo.errors, status: :unprocessable_entity
+      end
+    end
+  end
+end

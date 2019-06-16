@@ -5,7 +5,7 @@ RSpec.describe Photo do
     it { is_expected.to have_db_column(:name).of_type(:string).with_options(null: false, limit: 512) }
     it { is_expected.to have_db_column(:description).of_type(:text) }
 
-    it { is_expected.to have_db_column(:rubric_id).of_type(:integer).with_options(null: true, foreign_key: true) }
+    it { is_expected.to have_db_column(:rubric_id).of_type(:integer).with_options(null: false, foreign_key: true) }
     it { is_expected.to have_db_column(:yandex_token_id).of_type(:integer).with_options(null: true, foreign_key: true) }
 
     it { is_expected.to have_db_column(:storage_filename).of_type(:text) }
@@ -29,7 +29,7 @@ RSpec.describe Photo do
 
   describe 'associations' do
     it { is_expected.to belong_to(:rubric).inverse_of(:photos) }
-    it { is_expected.to belong_to(:yandex_token).inverse_of(:photos) }
+    it { is_expected.to belong_to(:yandex_token).inverse_of(:photos).optional }
   end
 
   describe 'validations' do

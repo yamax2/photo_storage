@@ -20,5 +20,6 @@ Rails.application.routes.draw do
     end
 
     resources :rubrics, except: :show
+    resources :photos, only: :create
   end
 end

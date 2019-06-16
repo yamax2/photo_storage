@@ -1,2 +1,7 @@
 - content_for :title, t('admin.partials.menu.dashboard')
 - breadcrumb :root
+
+= form_tag(admin_photos_path, multipart: true) do
+  = hidden_field_tag :rubric_id, Rubric.first.id
+  = file_field_tag :image
+  = submit_tag 'apply'

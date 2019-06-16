@@ -8,7 +8,10 @@ class Photo < ApplicationRecord
   ].freeze
 
   belongs_to :rubric, inverse_of: :photos
-  belongs_to :yandex_token, class_name: 'Yandex::Token', inverse_of: :photos, foreign_key: :yandex_token_id
+  belongs_to :yandex_token, class_name: 'Yandex::Token',
+                            inverse_of: :photos,
+                            foreign_key: :yandex_token_id,
+                            optional: true
 
   validates :name, :original_filename, presence: true, length: {maximum: 512}
   validates :width, :height, :size, presence: true, numericality: {only_integer: true, greater_than_or_equal_to: 0}

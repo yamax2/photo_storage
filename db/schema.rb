@@ -18,14 +18,14 @@ ActiveRecord::Schema.define(version: 2019_06_14_173900) do
   create_table "photos", force: :cascade do |t|
     t.string "name", limit: 512, null: false
     t.text "description"
-    t.bigint "rubric_id"
+    t.bigint "rubric_id", null: false
     t.bigint "yandex_token_id"
     t.text "storage_filename"
-    t.string "local_filename"
+    t.text "local_filename"
     t.jsonb "exif"
     t.point "lat_long"
     t.string "original_filename", limit: 512, null: false
-    t.datetime "original_datetime"
+    t.datetime "original_timestamp", null: false
     t.bigint "size", default: 0, null: false
     t.string "content_type", limit: 30, null: false
     t.integer "width", default: 0, null: false
@@ -33,7 +33,7 @@ ActiveRecord::Schema.define(version: 2019_06_14_173900) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["rubric_id"], name: "index_photos_on_rubric_id"
-    t.index ["yandex_token_id"], name: "index_photos_on_yandex_token_id"
+    t.index ["yandex_token_id"], name: "index_photos_on_yandex_token_id", where: "(yandex_token_id IS NOT NULL)"
   end
 
   create_table "rubrics", force: :cascade do |t|

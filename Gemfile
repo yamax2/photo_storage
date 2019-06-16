@@ -35,7 +35,7 @@ gem 'sidekiq', '>= 5'
 gem 'sidekiq-cron', '>= 1.1'
 gem 'strip_attributes', '>= 1.8'
 
-gem 'exif', '>= 2.2.0'
+gem 'exifr'
 gem 'yandex_photo_storage', github: 'yamax2/yandex_photo_storage'
 
 group :development, :test do
