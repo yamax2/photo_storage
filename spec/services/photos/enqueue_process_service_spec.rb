@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe EnqueueUploadService do
+RSpec.describe Photos::EnqueueProcessService do
   let(:rubric) { create :rubric }
   let(:service_context) { described_class.call(uploaded_io: image, rubric_id: rubric.id) }
   let(:temp_file) { Rails.root.join('tmp', 'files', 'test.jpg') }

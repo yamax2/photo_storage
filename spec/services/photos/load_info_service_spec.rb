@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Yandex::LoadInfoService do
+RSpec.describe Photos::LoadInfoService do
   let(:photo) { create :photo, local_filename: filename }
 
   before do

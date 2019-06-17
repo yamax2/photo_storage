@@ -3,7 +3,7 @@ module Admin
     layout false
 
     def create
-      context = EnqueueUploadService.call(
+      context = Photos::EnqueueProcessService.call(
         uploaded_io: params.require(:image),
         rubric_id: params.require(:rubric_id)
       )
