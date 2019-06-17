@@ -4,6 +4,5 @@ FactoryBot.define do
     rubric
     sequence(:original_filename) { |n| "file #{n}" }
     content_type { 'image/jpeg' }
-    association :yandex_token, factory: :'yandex/token'
   end
 end

@@ -122,4 +122,20 @@ RSpec.describe Photo do
       it { expect(described_class.pending).to match_array(pending) }
     end
   end
+
+  describe '#tmp_local_filename' do
+    subject { photo.tmp_local_filename }
+
+    context 'when local_filename is nil' do
+      let(:photo) { create :photo, local_filename: nil }
+
+      it { is_expected.to be_nil }
+    end
+
+    context 'when local_filename presents' do
+      let(:photo) { create :photo, local_filename: 'test' }
+
+      it { is_expected.to eq(Rails.root.join('tmp', 'files', 'test')) }
+    end
+  end
 end

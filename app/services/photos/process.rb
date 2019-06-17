@@ -1,5 +1,5 @@
 module Photos
-  class ProcessService
+  class Process
     include ::Interactor::Organizer
 
     organize LoadInfoService, UploadService

@@ -1,5 +1,5 @@
 module Yandex
-  class UpdateTokenService
+  class RefreshToken
     include ::Interactor::Organizer
 
     organize RefreshTokenService, RefreshQuotaService

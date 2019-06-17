@@ -5,7 +5,7 @@ module Photos
     delegate :photo, to: :context
 
     def call
-      return if photo.storage_filename.present?
+      return unless can_upload?
 
       context.fail!(message: 'active token not found') unless token_for_upload.present?
       @storage_filename = StorageFilenameGenerator.new(photo).call
@@ -16,12 +16,16 @@ module Photos
 
     private
 
+    def can_upload?
+      photo.storage_filename.blank? && photo.local_filename.present?
+    end
+
     def client
       @client ||= ::YandexPhotoStorage::Dav::Client.new(access_token: token_for_upload.access_token)
     end
 
     def local_file
-      @local_file ||= Rails.root.join('tmp', 'files', photo.local_filename)
+      @local_file ||= photo.tmp_local_filename
     end
 
     def token_for_upload

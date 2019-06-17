@@ -25,6 +25,10 @@ class Photo < ApplicationRecord
   scope :uploaded, -> { where.not(storage_filename: nil) }
   scope :pending, -> { where.not(local_filename: nil) }
 
+  def tmp_local_filename
+    Rails.root.join('tmp', 'files', local_filename) if local_filename.present?
+  end
+
   private
 
   def upload_status

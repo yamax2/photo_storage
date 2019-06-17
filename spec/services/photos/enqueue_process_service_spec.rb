@@ -3,15 +3,10 @@ require 'rails_helper'
 RSpec.describe Photos::EnqueueProcessService do
   let(:rubric) { create :rubric }
   let(:service_context) { described_class.call(uploaded_io: image, rubric_id: rubric.id) }
-  let(:temp_file) { Rails.root.join('tmp', 'files', 'test.jpg') }
   let(:photo) { service_context.photo }
 
-  before do
-    FileUtils.rm_f(temp_file)
-    allow(SecureRandom).to receive(:hex).and_return('test.jpg')
-  end
-
-  after { FileUtils.rm_f(temp_file) }
+  before { allow(SecureRandom).to receive(:hex).and_return('test.jpg') }
+  after { FileUtils.rm_f(photo.tmp_local_filename) }
 
   context 'when correct file' do
     let(:image) { fixture_file_upload('spec/fixtures/test2.jpg', 'image/jpeg') }
@@ -19,7 +14,7 @@ RSpec.describe Photos::EnqueueProcessService do
     it do
       expect { service_context }.to change { Photo.count }.by(1)
 
-      expect(File.exist?(temp_file)).to eq(true)
+      expect(File.exist?(photo.tmp_local_filename)).to eq(true)
       expect(service_context).to be_a_success
 
       expect(photo).to be_valid
@@ -40,7 +35,7 @@ RSpec.describe Photos::EnqueueProcessService do
 
     it do
       expect(service_context).to be_a_failure
-      expect(File.exist?(temp_file)).to eq(true)
+      expect(File.exist?(photo.tmp_local_filename)).to eq(true)
 
       expect(photo).not_to be_valid
       expect(photo).not_to be_persisted

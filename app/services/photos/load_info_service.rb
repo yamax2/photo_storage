@@ -20,7 +20,7 @@ module Photos
     private
 
     def exif_data
-      @exif_data ||= EXIFR::JPEG.new(Rails.root.join('tmp', 'files', photo.local_filename).to_s)
+      @exif_data ||= EXIFR::JPEG.new(photo.tmp_local_filename.to_s)
     end
 
     def load_photo_attrs

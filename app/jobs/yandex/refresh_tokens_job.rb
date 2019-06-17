@@ -3,7 +3,7 @@ module Yandex
     include Sidekiq::Worker
 
     def perform
-      # amount of tokens is small
+      # amount is small
       Token.order(:id).pluck(:id).each do |token_id|
         RefreshTokenJob.perform_async(token_id)
       end
