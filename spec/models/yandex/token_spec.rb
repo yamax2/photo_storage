@@ -65,4 +65,45 @@ RSpec.describe Yandex::Token do
       it { is_expected.not_to validate_presence_of(:other_dir) }
     end
   end
+
+  describe 'dir validations' do
+    shared_examples 'dir validation' do |dir_attr|
+      let(:token) { build :'yandex/token', active: false }
+
+      context 'when valid' do
+        before { token[dir_attr] = '/photos' }
+
+        it { expect(token).to be_valid }
+      end
+
+      context 'when invalid' do
+        before { token[dir_attr] = 'zozo' }
+
+        it do
+          expect(token).not_to be_valid
+          expect(token.errors).to include(dir_attr)
+        end
+      end
+
+      context 'when nil' do
+        before { token[dir_attr] = nil }
+
+        it { expect(token).to be_valid }
+      end
+
+      context 'when empty' do
+        before { token[dir_attr] = '    ' }
+
+        it { expect(token).to be_valid }
+      end
+    end
+
+    it_behaves_like 'dir validation', :dir
+    it_behaves_like 'dir validation', :other_dir
+  end
+
+  describe 'strip attributes' do
+    it { is_expected.to strip_attribute(:dir) }
+    it { is_expected.to strip_attribute(:other_dir) }
+  end
 end

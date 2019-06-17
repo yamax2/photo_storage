@@ -6,5 +6,8 @@ FactoryBot.define do
     valid_till { 10.hours.from_now }
     refresh_token { 'refresh_token' }
     token_type { 'bearer' }
+
+    dir { '/test_photos' }
+    other_dir { '/other_test_photos' }
   end
 end

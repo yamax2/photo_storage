@@ -20,6 +20,12 @@ ru:
           attributes:
             local_filename:
               wrong_value: Только один атрибут с именем файла может быть заполнен
+        yandex/token:
+          attributes:
+            dir:
+              wrong_value: 'Название каталога должно начинаться с сивола "/"'
+            other_dir:
+              wrong_value: 'Название каталога должно начинаться с сивола "/"'
   admin:
     base:
       form: &form_base
