@@ -14,8 +14,8 @@ RSpec.describe Yandex::RefreshTokenJob do
     before { described_class.perform_async(token.id) }
 
     it do
-      expect(Yandex::RefreshTokenService).to have_received(:call!).with(token: token)
-      expect(Yandex::RefreshQuotaService).to have_received(:call!).with(token: token)
+      expect(Yandex::RefreshTokenService).to have_received(:call!)
+      expect(Yandex::RefreshQuotaService).to have_received(:call!)
     end
   end
 

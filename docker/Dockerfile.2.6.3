@@ -5,5 +5,6 @@ RUN ln -fs /usr/share/zoneinfo/Asia/Yekaterinburg /etc/localtime \
 
 RUN gem install bundler
 RUN apt update -qq && apt install -y nano libexif-dev
+RUN ssh-keyscan -H github.com >> /etc/ssh/ssh_known_hosts
 
 WORKDIR /app
