@@ -9,9 +9,8 @@ dip rails credentials:edit
 ``` 
 
 ### TODO:
-* cancel upload button
-* specs for api controllers
 * prevent duplicates
+* upload job
 * landings
 * views counter
 * photo counter in rubrics
