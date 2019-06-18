@@ -15,9 +15,19 @@
 
 .row
   .col-sm-12
+    .card
+      .card-header
+        = t('.rubric')
+      .card-body.rubric-container
+        .blocker
+        #rubrics
+
+  .col-sm-12
     .card.h-100
       .card-header
-        = t('.file_list')
+        strong
+          = t('.file_list')
+        span#rubric-name-text
       .card-body.upload-status-list
         ul#files.list-unstyled.p-2.d-flex.flex-column.col
 

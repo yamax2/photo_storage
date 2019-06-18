@@ -1,5 +1,6 @@
-$(window).on 'beforeunload', ->
-  $('body').data('process')
+$(window)
+  .on 'beforeunload', ->
+    $('body').data('process')
 
 $(document)
   .on 'click', '#menuToggle', ->
@@ -7,10 +8,29 @@ $(document)
     false
 
   .on 'turbolinks:load', ->
-    $("#drag-and-drop-zone").dmUploader
+    $('#rubrics')
+      .jstree
+        core:
+          data:
+            url: '/api/v1/admin/rubrics'
+            data: (node) ->
+              id: node.id unless node.id == '#'
+        plugins: ['wholerow']
+
+      .on 'ready.jstree', ->
+        id = $('ul > li:first-child', this).attr('id')
+
+        $(this).jstree('select_node', id) if id
+        $('#drag-and-drop-zone').toggle(id?)
+
+      .on 'select_node.jstree', (e, node) ->
+        $('#drag-and-drop-zone').data('rubric_id', node.node.id)
+        $('#rubric-name-text').text(node.node.text)
+
+    $('#drag-and-drop-zone').dmUploader
       url: '/admin/photos'
       extraData: ->
-        {rubric_id: 3}
+        {rubric_id: $(this).data('rubric_id')}
       headers:
         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
       fieldName: 'image'
@@ -21,6 +41,7 @@ $(document)
         this.removeClass('active')
       onNewFile: (id, file) ->
         $('body').data('process', true)
+        $('.rubric-container .blocker').show()
         ui_multi_add_file(id, file)
       onBeforeUpload: (id) ->
         ui_multi_update_file_status(id, 'uploading', $(this).data('statuses-uploading'))
@@ -37,4 +58,5 @@ $(document)
         ui_multi_update_file_status(id, 'danger', message)
         ui_multi_update_file_progress(id, 0, 'danger', false)
       onComplete: ->
+        $('.rubric-container .blocker').hide()
         $('body').removeData('process')

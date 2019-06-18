@@ -22,4 +22,12 @@ Rails.application.routes.draw do
     resources :rubrics, except: :show
     resources :photos, only: :create
   end
+
+  namespace :api, defaults: {format: :json} do
+    namespace :v1 do
+      namespace :admin do
+        resources :rubrics, only: :index
+      end
+    end
+  end
 end

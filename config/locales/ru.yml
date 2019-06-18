@@ -35,7 +35,8 @@ ru:
       index:
         drop_files_here: Перетащите файлы сюда
         file_browser: Выбрать файлы
-        file_list: Загрузка фото
+        file_list: 'Загрузка фото в рубрику '
+        rubric: Рубрика для добавления фото
         waiting: Ожидание
         statuses:
           success: Загружено успешно

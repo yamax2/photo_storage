@@ -1,7 +1,5 @@
 module Admin
-  class PhotosController < AdminController
-    layout false
-
+  class PhotosController < ::ActionController::API
     def create
       context = Photos::EnqueueProcessService.call(
         uploaded_io: params.require(:image),
