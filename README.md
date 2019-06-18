@@ -10,5 +10,6 @@ dip rails credentials:edit
 
 
 ### todo:
+* block the upload button
 * revision
 * action on photo destroy

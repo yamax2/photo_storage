@@ -1,3 +1,6 @@
+$(window).on 'beforeunload', ->
+  $('body').data('process')
+
 $(document)
   .on 'click', '#menuToggle', ->
     $('body').toggleClass('open')
@@ -16,3 +19,22 @@ $(document)
         this.addClass('active')
       onDragLeave: ->
         this.removeClass('active')
+      onNewFile: (id, file) ->
+        $('body').data('process', true)
+        ui_multi_add_file(id, file)
+      onBeforeUpload: (id) ->
+        ui_multi_update_file_status(id, 'uploading', 'uploading...')
+        ui_multi_update_file_progress(id, 0, '', true)
+      onUploadCanceled: (id) ->
+        ui_multi_update_file_status(id, 'warning', 'canceled by user')
+        ui_multi_update_file_progress(id, 0, 'warning', false)
+      onUploadProgress: (id, percent) ->
+        ui_multi_update_file_progress(id, percent)
+      onUploadSuccess: (id, data) ->
+        ui_multi_update_file_status(id, 'success', 'upload complete')
+        ui_multi_update_file_progress(id, 100, 'success', false)
+      onUploadError: (id, xhr, status, message) ->
+        ui_multi_update_file_status(id, 'danger', message)
+        ui_multi_update_file_progress(id, 0, 'danger', false)
+      onComplete: ->
+        $('body').removeData('process')

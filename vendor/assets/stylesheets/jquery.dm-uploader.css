@@ -28,10 +28,16 @@
 
 .dm-uploader {
 	border: 0.25rem dashed #A5A5C7;
+	margin-top: 1rem;
 }
 
 .dm-uploader.active {
 	border-color: red;
 
 	border-style: solid;
+}
+
+.upload-status-list {
+	max-height: 50vh;
+	overflow-y: auto;
 }
