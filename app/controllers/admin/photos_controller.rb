@@ -7,6 +7,7 @@ module Admin
       )
 
       if context.success?
+        sleep(10)
         render json: {}
       else
         render json: context.photo.errors, status: :unprocessable_entity

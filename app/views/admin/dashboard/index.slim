@@ -35,7 +35,10 @@
     #drag-and-drop-zone.dm-uploader.p-3.text-center*{data: {statuses: {uploading: t('.statuses.uploading'), warning: t('.statuses.warning'), success: t('.statuses.success')}}}
       h3.mb-2.mt-2.text-muted
         = t('.drop_files_here')
-      .btn.btn-primary.btn-block.mt-3
-        span
-          = t('.file_browser')
-        = file_field_tag :image
+      .buttons
+        .btn.btn-primary.btn-block.mt-3
+          span
+            = t('.file_browser')
+          = file_field_tag :image
+        button.btn.btn-danger.mt-3#stop-button*{data: {cofirm: t('.cancel_confirm')}}
+          = t('.stop')

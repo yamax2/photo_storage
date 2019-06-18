@@ -8,12 +8,13 @@ download master.key and run
 dip rails credentials:edit
 ``` 
 
-
-### todo:
-* upload cancel button
-* revision job
-* do not upload duplicates
+### TODO:
+* cancel upload button
+* specs for api controllers
+* prevent duplicates
+* landings
 * views counter
 * photo counter in rubrics
 * html editor for rubrics
+* revision job
 * cache

@@ -7,6 +7,10 @@ $(document)
     $('body').toggleClass('open')
     false
 
+  .on 'click', '#stop-button', ->
+    text = $(this).data('cofirm')
+    $('#drag-and-drop-zone').dmUploader('cancel') if confirm(text)
+
   .on 'turbolinks:load', ->
     $('#rubrics')
       .jstree
@@ -42,6 +46,7 @@ $(document)
       onNewFile: (id, file) ->
         $('body').data('process', true)
         $('.rubric-container .blocker').show()
+        $('#stop-button').show()
         ui_multi_add_file(id, file)
       onBeforeUpload: (id) ->
         ui_multi_update_file_status(id, 'uploading', $(this).data('statuses-uploading'))
@@ -60,3 +65,4 @@ $(document)
       onComplete: ->
         $('.rubric-container .blocker').hide()
         $('body').removeData('process')
+        $('#stop-button').hide()

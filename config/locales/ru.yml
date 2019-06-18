@@ -33,6 +33,7 @@ ru:
         cancel: Отмена
     dashboard:
       index:
+        cancel_confirm: Отменить загрузку?
         drop_files_here: Перетащите файлы сюда
         file_browser: Выбрать файлы
         file_list: 'Загрузка фото в рубрику '
@@ -42,6 +43,7 @@ ru:
           success: Загружено успешно
           uploading: Загрузка...
           warning: Отменено
+        stop: Стоп
     partials:
       menu:
         content: Контент
