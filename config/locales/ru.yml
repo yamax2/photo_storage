@@ -31,6 +31,16 @@ ru:
       form: &form_base
         apply: Сохранить
         cancel: Отмена
+    dashboard:
+      index:
+        drop_files_here: Перетащите файлы сюда
+        file_browser: Выбрать файлы
+        file_list: Загрузка фото
+        waiting: Ожидание
+        statuses:
+          success: Загружено успешно
+          uploading: Загрузка...
+          warning: Отменено
     partials:
       menu:
         content: Контент

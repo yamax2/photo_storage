@@ -10,6 +10,7 @@ dip rails credentials:edit
 
 
 ### todo:
-* block the upload button
-* revision
-* action on photo destroy
+* rubric tree
+* upload cancel button
+* revision job
+* do not upload duplicates

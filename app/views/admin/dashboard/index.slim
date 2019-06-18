@@ -8,7 +8,7 @@
         strong style="margin-right: 0.5rem"
           | %%filename%%
         span.text-muted
-          | Waiting
+          = t('.waiting')
       .progress.mb-2
         .progress-bar.progress-bar-striped.progress-bar-animated.bg-primary aria-valuemax="100" aria-valuemin="0" aria-valuenow="0" role="progressbar" style=("width: 0%")
       hr.mt-1.mb-1
@@ -17,15 +17,15 @@
   .col-sm-12
     .card.h-100
       .card-header
-        | File List
+        = t('.file_list')
       .card-body.upload-status-list
         ul#files.list-unstyled.p-2.d-flex.flex-column.col
 
   .col-sm-12
-    #drag-and-drop-zone.dm-uploader.p-3.text-center
+    #drag-and-drop-zone.dm-uploader.p-3.text-center*{data: {statuses: {uploading: t('.statuses.uploading'), warning: t('.statuses.warning'), success: t('.statuses.success')}}}
       h3.mb-2.mt-2.text-muted
-        | Drag & drop Files here
+        = t('.drop_files_here')
       .btn.btn-primary.btn-block.mt-3
         span
-          | Open the file Browser
+          = t('.file_browser')
         = file_field_tag :image

@@ -138,4 +138,52 @@ RSpec.describe Photo do
       it { is_expected.to eq(Rails.root.join('tmp', 'files', 'test')) }
     end
   end
+
+  describe 'tmp local file removing' do
+    let(:tmp_file) { Rails.root.join('tmp', 'files', 'cats.jpg') }
+    let(:photo) { create :photo, local_filename: 'cats.jpg' }
+
+    before do
+      FileUtils.mkdir_p(Rails.root.join('tmp', 'files'))
+      FileUtils.cp('spec/fixtures/cats.jpg', tmp_file)
+    end
+
+    after { FileUtils.rm_f(tmp_file) }
+
+    context 'when update' do
+      before { photo.update!(name: 'test1') }
+
+      it do
+        expect(File.exist?(tmp_file)).to eq(true)
+      end
+    end
+
+    context 'when destroy' do
+      subject { photo.destroy }
+
+      context 'and local_file is not empty' do
+        before { subject }
+
+        it do
+          expect(File.exist?(tmp_file)).to eq(false)
+        end
+      end
+
+      context 'and local_file is empty' do
+        let(:photo) { create :photo, local_filename: nil }
+
+        it do
+          expect { subject }.not_to raise_error
+        end
+      end
+
+      context 'and local_file is not exist' do
+        let(:photo) { create :photo, local_filename: 'cats1.jpg' }
+
+        it do
+          expect { subject }.not_to raise_error
+        end
+      end
+    end
+  end
 end

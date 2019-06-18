@@ -25,11 +25,19 @@ class Photo < ApplicationRecord
   scope :uploaded, -> { where.not(storage_filename: nil) }
   scope :pending, -> { where.not(local_filename: nil) }
 
+  after_commit :remove_local_file, unless: :persisted?
+
   def tmp_local_filename
     Rails.root.join('tmp', 'files', local_filename) if local_filename.present?
   end
 
   private
+
+  def remove_local_file
+    filename = tmp_local_filename
+
+    FileUtils.rm_f(filename) if filename.present? && File.exist?(filename)
+  end
 
   def upload_status
     errors.add(:local_filename, :wrong_value) if storage_filename.present? && local_filename.present?

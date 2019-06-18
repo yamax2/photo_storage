@@ -7,12 +7,19 @@ function ui_multi_add_file(id, file) {
   template.prop('id', 'uploaderFile' + id);
   template.data('file-id', id);
 
-  $('#files').append(template);
+  $('#files').prepend(template);
 }
 
 // Changes the status messages on our list
 function ui_multi_update_file_status(id, status, message) {
-  $('#uploaderFile' + id).find('span').html(message).prop('class', 'status text-' + status);
+  var $elem = $('#uploaderFile' + id);
+
+  $elem.find('span').html(message).prop('class', 'status text-' + status);
+
+  if (status !== 'success') {
+    var $box = $('#files').parent();
+    $box.scrollTop($elem.position().top);
+  }
 }
 
 // Updates a file progress, depending on the parameters it may animate it or change the color.
