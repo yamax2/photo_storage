@@ -1,7 +1,20 @@
 - content_for :title, t('admin.partials.menu.dashboard')
 - breadcrumb :root
 
-= form_tag(admin_photos_path, multipart: true) do
-  = hidden_field_tag :rubric_id, Rubric.first.id
-  = file_field_tag :image
-  = submit_tag 'apply'
+.row
+  .col-md-12.col-lg-6
+    #drag-and-drop-zone.dm-uploader.p-5.text-center
+      h3.mb-5.mt-5.text-muted
+        | Drag & drop Files here
+      .btn.btn-primary.btn-block.mb-5
+        span
+          | Open the file Browser
+        = file_field_tag :image
+
+  .col-md-12.col-lg-6
+    .card.h-100
+      .card-header
+        | File List
+      ul#files.list-unstyled.p-2.d-flex.flex-column.col
+        li.text-muted.text-center.empty
+          | No files uploaded.
