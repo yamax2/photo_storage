@@ -10,8 +10,8 @@ module Photos
       return unless valid?
 
       photo.exif = {model: exif_data.model, make: exif_data.make}
-      photo.lat_long = [exif_data.gps.latitude, exif_data.gps.longitude]
 
+      load_gps_attrs
       load_photo_attrs
 
       photo.save!
@@ -21,6 +21,12 @@ module Photos
 
     def exif_data
       @exif_data ||= EXIFR::JPEG.new(photo.tmp_local_filename.to_s)
+    end
+
+    def load_gps_attrs
+      return unless exif_data.gps.present?
+
+      photo.lat_long = [exif_data.gps.latitude, exif_data.gps.longitude]
     end
 
     def load_photo_attrs

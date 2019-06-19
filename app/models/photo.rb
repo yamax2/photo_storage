@@ -22,6 +22,7 @@ class Photo < ApplicationRecord
   validates :sha256, length: {is: 64}
   validates :sha256, uniqueness: {scope: :md5}
 
+  validates :yandex_token, presence: true, if: :storage_filename
   validate :upload_status
 
   strip_attributes only: %i[name description content_type]
@@ -54,7 +55,11 @@ class Photo < ApplicationRecord
   end
 
   def remove_file
-    FileUtils.rm_f(tmp_local_filename) if local_file?
+    if local_file?
+      FileUtils.rm_f(tmp_local_filename)
+    elsif storage_filename.present?
+      ::Photos::RemoveFileJob.perform_async(yandex_token_id, storage_filename)
+    end
   end
 
   def upload_status

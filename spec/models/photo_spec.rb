@@ -62,6 +62,32 @@ RSpec.describe Photo do
     it { is_expected.to validate_length_of(:sha256).is_equal_to(64) }
   end
 
+  describe 'token presence validation' do
+    context 'when photo is not uploaded' do
+      subject { build :photo, :fake, local_filename: 'test', yandex_token: nil }
+
+      it { is_expected.to be_valid }
+    end
+
+    context 'when photo is uploaded' do
+      context 'and token is not assigned' do
+        subject { build :photo, :fake, storage_filename: 'test', yandex_token: nil }
+
+        it do
+          is_expected.not_to be_valid
+          expect(subject.errors).to include(:yandex_token)
+        end
+      end
+
+      context 'and token is assigned' do
+        let(:token) { create :'yandex/token' }
+        subject { build :photo, :fake, storage_filename: 'test', yandex_token: token }
+
+        it { is_expected.to be_valid }
+      end
+    end
+  end
+
   describe 'upload status validation' do
     context 'when both attributes present' do
       subject { build :photo, storage_filename: 'zozo', local_filename: 'test' }
@@ -73,7 +99,9 @@ RSpec.describe Photo do
     end
 
     context 'when storage_filename presents' do
-      subject { build :photo, :fake, storage_filename: 'zozo', local_filename: nil }
+      let(:token) { create :'yandex/token' }
+
+      subject { build :photo, :fake, storage_filename: 'zozo', local_filename: nil, yandex_token: token }
 
       it { is_expected.to be_valid }
     end
@@ -124,7 +152,8 @@ RSpec.describe Photo do
   end
 
   describe 'scopes' do
-    let!(:uploaded) { create_list :photo, 2, :fake, storage_filename: 'test' }
+    let(:token) { create :'yandex/token' }
+    let!(:uploaded) { create_list :photo, 2, :fake, storage_filename: 'test', yandex_token: token }
     let!(:pending) { create_list :photo, 2, :fake, local_filename: 'zozo' }
 
     describe '#uploaded' do
@@ -140,7 +169,8 @@ RSpec.describe Photo do
     subject { photo.local_file? }
 
     context 'when local_filename is empty' do
-      let(:photo) { create :photo, :fake, local_filename: nil, storage_filename: 'zozo' }
+      let(:token) { create :'yandex/token' }
+      let(:photo) { create :photo, :fake, local_filename: nil, storage_filename: 'zozo', yandex_token: token }
 
       it { is_expected.to eq(false) }
     end
@@ -175,7 +205,7 @@ RSpec.describe Photo do
     end
   end
 
-  describe 'tmp local file removing' do
+  describe 'local file removing' do
     let(:tmp_file) { Rails.root.join('tmp', 'files', 'cats.jpg') }
     let(:photo) { create :photo, local_filename: 'cats.jpg' }
 
@@ -205,14 +235,6 @@ RSpec.describe Photo do
         end
       end
 
-      context 'and local_file is empty' do
-        let(:photo) { create :photo, :fake, local_filename: nil, storage_filename: 'zozo' }
-
-        it do
-          expect { subject }.not_to raise_error
-        end
-      end
-
       context 'and local_file is not exist' do
         let(:photo) { create :photo, :fake, local_filename: 'cats1.jpg' }
 
@@ -220,6 +242,20 @@ RSpec.describe Photo do
           expect { subject }.not_to raise_error
         end
       end
+    end
+  end
+
+  describe 'remote file removing' do
+    before do
+      allow(Photos::RemoveFileJob).to receive(:perform_async)
+    end
+
+    let(:token) { create :'yandex/token' }
+    let(:photo) { create :photo, :fake, local_filename: nil, storage_filename: 'zozo', yandex_token: token }
+
+    it do
+      expect { photo.destroy }.not_to raise_error
+      expect(Photos::RemoveFileJob).to have_received(:perform_async).with(token.id, 'zozo')
     end
   end
 

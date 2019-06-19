@@ -5,7 +5,11 @@ RSpec.describe Photos::EnqueueProcessService do
   let(:service_context) { described_class.call(uploaded_io: image, rubric_id: rubric.id) }
   let(:photo) { service_context.photo }
 
-  before { allow(SecureRandom).to receive(:hex).and_return('test.jpg') }
+  before do
+    allow(SecureRandom).to receive(:hex).and_return('test.jpg')
+    allow(Photos::ProcessFileJob).to receive(:perform_async)
+  end
+
   after { FileUtils.rm_f(photo.tmp_local_filename) }
 
   context 'when correct file' do
@@ -27,6 +31,8 @@ RSpec.describe Photos::EnqueueProcessService do
         rubric_id: rubric.id,
         local_filename: 'test.jpg'
       )
+
+      expect(Photos::ProcessFileJob).to have_received(:perform_async).with(photo.id)
     end
   end
 
@@ -39,6 +45,8 @@ RSpec.describe Photos::EnqueueProcessService do
 
       expect(photo).not_to be_valid
       expect(photo).not_to be_persisted
+
+      expect(Photos::ProcessFileJob).not_to have_received(:perform_async)
     end
   end
 end

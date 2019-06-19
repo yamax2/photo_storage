@@ -8,6 +8,8 @@ module Photos
       context.photo = Photo.new(photo_attributes)
 
       context.fail! unless photo.save
+
+      # ProcessFileJob.perform_async(photo.id)
     end
 
     private

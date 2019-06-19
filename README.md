@@ -9,11 +9,13 @@ dip rails credentials:edit
 ``` 
 
 ### TODO:
-* upload job
-* remote action on photo delete
+* broken pipe error!
+* warning on complete upload with errors
+* validate md5 and sha256 only if changed
+
+* photo counter in rubrics
 * landings
 * views counter
-* photo counter in rubrics
 * html editor for rubrics
 * revision job
 * cache

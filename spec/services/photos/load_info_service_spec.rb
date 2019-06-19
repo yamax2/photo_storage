@@ -74,6 +74,17 @@ RSpec.describe Photos::LoadInfoService do
         expect(photo.original_timestamp).to eq(Time.current)
       end
     end
+
+    context 'when jpeg without gps info' do
+      let(:filename) { 'test4.jpg' }
+
+      it do
+        expect(photo).to be_valid
+
+        expect(photo.exif).to include('model' => 'FestXL', 'make' => 'HighScreen')
+        expect(photo.lat_long).not_to be_present
+      end
+    end
   end
 
   context 'when png image' do
@@ -103,7 +114,13 @@ RSpec.describe Photos::LoadInfoService do
 
   context 'when local file does not exist' do
     let(:filename) { nil }
-    let(:photo) { build :photo, :fake, local_filename: filename, content_type: 'image/jpeg', storage_filename: 'zozo' }
+    let(:token) { create :'yandex/token' }
+    let(:photo) do
+      build :photo, :fake, local_filename: filename,
+                           content_type: 'image/jpeg',
+                           storage_filename: 'zozo',
+                           yandex_token: token
+    end
 
     it do
       expect(photo).to be_valid

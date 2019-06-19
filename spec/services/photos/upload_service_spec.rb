@@ -4,7 +4,8 @@ RSpec.describe Photos::UploadService do
   let(:service_context) { described_class.call(photo: photo) }
 
   context 'when file already uploaded' do
-    let(:photo) { create :photo, :fake, storage_filename: 'test.jpg' }
+    let(:token) { create :'yandex/token' }
+    let(:photo) { create :photo, :fake, storage_filename: 'test.jpg', yandex_token: token }
 
     it { expect(service_context).to be_a_success }
   end
