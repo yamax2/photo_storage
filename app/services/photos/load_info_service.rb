@@ -31,7 +31,10 @@ module Photos
     end
 
     def valid?
-      photo.content_type == Photo::JPEG_IMAGE && photo.exif.nil? && exif_data.exif?
+      photo.content_type == Photo::JPEG_IMAGE && \
+        photo.exif.nil? && \
+        exif_data.exif? && \
+        photo.local_file?
     end
   end
 end

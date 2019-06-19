@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_06_14_173900) do
+ActiveRecord::Schema.define(version: 2019_06_19_055128) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -32,6 +32,9 @@ ActiveRecord::Schema.define(version: 2019_06_14_173900) do
     t.integer "height", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "md5", limit: 32, null: false
+    t.string "sha256", limit: 64, null: false
+    t.index ["md5", "sha256"], name: "uq_photos", unique: true
     t.index ["rubric_id"], name: "index_photos_on_rubric_id"
     t.index ["yandex_token_id"], name: "index_photos_on_yandex_token_id", where: "(yandex_token_id IS NOT NULL)"
   end

@@ -4,28 +4,22 @@ RSpec.describe Photos::UploadService do
   let(:service_context) { described_class.call(photo: photo) }
 
   context 'when file already uploaded' do
-    let(:photo) { create :photo, storage_filename: 'test.jpg' }
+    let(:photo) { create :photo, :fake, storage_filename: 'test.jpg' }
 
     it { expect(service_context).to be_a_success }
   end
 
-  context 'when local_filename is empty' do
-    let(:photo) { create :photo }
-
-    it { expect(service_context).to be_a_success }
-  end
-
-  context 'when active token does not exist' do
-    let(:photo) { create :photo, local_filename: 'test' }
+  context 'when local file does not exist' do
+    let(:photo) { create :photo, :fake, local_filename: 'test23.jpg' }
 
     it do
       expect(service_context).to be_a_failure
-      expect(service_context.message).to eq('active token not found')
+      expect(service_context.message).to eq('local file not found')
     end
   end
 
-  context 'when correct upload' do
-    let(:photo) { create :photo, local_filename: 'cats.jpg' }
+  context 'when real upload' do
+    let(:photo) { build :photo, local_filename: 'cats.jpg' }
     let!(:tmp_file) { photo.tmp_local_filename }
 
     let!(:yandex_token) do
@@ -36,10 +30,20 @@ RSpec.describe Photos::UploadService do
     end
 
     before do
-      allow(SecureRandom).to receive(:hex).and_return('94942206a2a4eeb5015938089a066720bd919f27')
-      allow(photo).to receive(:id).and_return(368)
+      allow_any_instance_of(StorageFilenameGenerator).
+        to receive(:call).and_return('000/000/36894942206a2a4eeb5015938089a066720bd919f27')
 
       FileUtils.cp('spec/fixtures/cats.jpg', photo.tmp_local_filename)
+      photo.save!
+    end
+
+    context 'and active token does not exist' do
+      let!(:yandex_token) { nil }
+
+      it do
+        expect(service_context).to be_a_failure
+        expect(service_context.message).to eq('active token not found')
+      end
     end
 
     context 'and to a new folder' do

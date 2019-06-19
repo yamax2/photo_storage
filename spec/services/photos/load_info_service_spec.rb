@@ -1,17 +1,21 @@
 require 'rails_helper'
 
 RSpec.describe Photos::LoadInfoService do
-  let(:photo) { create :photo, local_filename: filename }
+  let(:photo) { build :photo, local_filename: filename }
 
   before do
     Timecop.freeze Time.new(2019, 06, 16, 13, 8, 32)
 
-    FileUtils.mkdir_p(Rails.root.join('tmp', 'files'))
-    FileUtils.cp("spec/fixtures/#{filename}", photo.tmp_local_filename)
+    if filename.present?
+      FileUtils.mkdir_p(Rails.root.join('tmp', 'files'))
+      FileUtils.cp("spec/fixtures/#{filename}", photo.tmp_local_filename)
+    end
+
+    photo.save!
   end
 
   after do
-    FileUtils.rm_f photo.tmp_local_filename
+    FileUtils.rm_f(photo.tmp_local_filename) if filename.present?
 
     Timecop.return
   end
@@ -74,7 +78,7 @@ RSpec.describe Photos::LoadInfoService do
 
   context 'when png image' do
     let(:filename) { 'cat.png' }
-    let(:photo) { create :photo, local_filename: filename, content_type: 'image/png' }
+    let(:photo) { build :photo, local_filename: filename, content_type: 'image/png' }
 
     it do
       expect(photo).to be_valid
@@ -87,11 +91,24 @@ RSpec.describe Photos::LoadInfoService do
 
   context 'when info already loaded' do
     let(:filename) { 'test2.jpg' }
-    let(:photo) { create :photo, exif: {}, local_filename: filename }
+    let(:photo) { build :photo, exif: {}, local_filename: filename }
 
     it do
       expect(photo).to be_valid
       expect(photo.exif).to be_empty
+      expect(photo.lat_long).to be_nil
+      expect(photo.original_timestamp).to eq(Time.current)
+    end
+  end
+
+  context 'when local file does not exist' do
+    let(:filename) { nil }
+    let(:photo) { build :photo, :fake, local_filename: filename, content_type: 'image/jpeg', storage_filename: 'zozo' }
+
+    it do
+      expect(photo).to be_valid
+
+      expect(photo.exif).to be_nil
       expect(photo.lat_long).to be_nil
       expect(photo.original_timestamp).to eq(Time.current)
     end

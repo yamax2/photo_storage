@@ -16,30 +16,48 @@ class Photo < ApplicationRecord
   validates :name, :original_filename, presence: true, length: {maximum: 512}
   validates :width, :height, :size, presence: true, numericality: {only_integer: true, greater_than_or_equal_to: 0}
   validates :content_type, presence: true, inclusion: ALLOWED_CONTENT_TYPES
+
+  validates :md5, :sha256, presence: true
+  validates :md5, length: {is: 32}
+  validates :sha256, length: {is: 64}
+  validates :sha256, uniqueness: {scope: :md5}
+
   validate :upload_status
 
   strip_attributes only: %i[name description content_type]
 
+  before_validation :read_file_attributes
   before_validation { self.original_timestamp ||= Time.current }
 
   scope :uploaded, -> { where.not(storage_filename: nil) }
   scope :pending, -> { where.not(local_filename: nil) }
 
-  after_commit :remove_local_file, unless: :persisted?
+  after_commit :remove_file, unless: :persisted?
+
+  def local_file?
+    local_filename.present? && File.exist?(tmp_local_filename)
+  end
 
   def tmp_local_filename
-    Rails.root.join('tmp', 'files', local_filename) if local_filename.present?
+    Rails.root.join('tmp', 'files', local_filename)
   end
 
   private
 
-  def remove_local_file
-    filename = tmp_local_filename
+  def read_file_attributes
+    return unless local_file?
 
-    FileUtils.rm_f(filename) if filename.present? && File.exist?(filename)
+    self.md5 ||= Digest::MD5.file(tmp_local_filename).to_s
+    self.sha256 ||= Digest::SHA256.file(tmp_local_filename).to_s
+
+    self.size = File.size(tmp_local_filename) if size.zero?
+  end
+
+  def remove_file
+    FileUtils.rm_f(tmp_local_filename) if local_file?
   end
 
   def upload_status
-    errors.add(:local_filename, :wrong_value) if storage_filename.present? && local_filename.present?
+    errors.add(:local_filename, :wrong_value) if [storage_filename, local_filename].compact.size != 1
   end
 end

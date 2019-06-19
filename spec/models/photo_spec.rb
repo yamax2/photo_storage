@@ -23,8 +23,12 @@ RSpec.describe Photo do
     it { is_expected.to have_db_column(:created_at).of_type(:datetime).with_options(null: false) }
     it { is_expected.to have_db_column(:updated_at).of_type(:datetime).with_options(null: false) }
 
+    it { is_expected.to have_db_column(:md5).of_type(:string).with_options(null: false, limit: 32) }
+    it { is_expected.to have_db_column(:sha256).of_type(:string).with_options(null: false, limit: 64) }
+
     it { is_expected.to have_db_index(:rubric_id) }
     it { is_expected.to have_db_index(:yandex_token_id) }
+    it { is_expected.to have_db_index([:md5, :sha256]).unique }
   end
 
   describe 'associations' do
@@ -50,6 +54,12 @@ RSpec.describe Photo do
 
     it { is_expected.to validate_presence_of(:content_type) }
     it { is_expected.to validate_inclusion_of(:content_type).in_array(described_class::ALLOWED_CONTENT_TYPES) }
+
+    it { is_expected.to validate_presence_of(:md5) }
+    it { is_expected.to validate_length_of(:md5).is_equal_to(32) }
+
+    it { is_expected.to validate_presence_of(:sha256) }
+    it { is_expected.to validate_length_of(:sha256).is_equal_to(64) }
   end
 
   describe 'upload status validation' do
@@ -63,21 +73,24 @@ RSpec.describe Photo do
     end
 
     context 'when storage_filename presents' do
-      subject { build :photo, storage_filename: 'zozo', local_filename: nil }
+      subject { build :photo, :fake, storage_filename: 'zozo', local_filename: nil }
 
       it { is_expected.to be_valid }
     end
 
     context 'when local_filename presents' do
-      subject { build :photo, storage_filename: nil, local_filename: 'test' }
+      subject { build :photo, :fake, storage_filename: nil, local_filename: 'test' }
 
       it { is_expected.to be_valid }
     end
 
     context 'when both attributes empty' do
-      subject { build :photo, storage_filename: nil, local_filename: nil }
+      subject { build :photo, :fake, storage_filename: nil, local_filename: nil }
 
-      it { is_expected.to be_valid }
+      it do
+        is_expected.not_to be_valid
+        expect(subject.errors).to include(:local_filename)
+      end
     end
   end
 
@@ -111,8 +124,8 @@ RSpec.describe Photo do
   end
 
   describe 'scopes' do
-    let!(:uploaded) { create_list :photo, 2, storage_filename: 'test' }
-    let!(:pending) { create_list :photo, 2, local_filename: 'zozo' }
+    let!(:uploaded) { create_list :photo, 2, :fake, storage_filename: 'test' }
+    let!(:pending) { create_list :photo, 2, :fake, local_filename: 'zozo' }
 
     describe '#uploaded' do
       it { expect(described_class.uploaded).to match_array(uploaded) }
@@ -123,19 +136,42 @@ RSpec.describe Photo do
     end
   end
 
-  describe '#tmp_local_filename' do
-    subject { photo.tmp_local_filename }
+  describe '#local_file?' do
+    subject { photo.local_file? }
 
-    context 'when local_filename is nil' do
-      let(:photo) { create :photo, local_filename: nil }
+    context 'when local_filename is empty' do
+      let(:photo) { create :photo, :fake, local_filename: nil, storage_filename: 'zozo' }
 
-      it { is_expected.to be_nil }
+      it { is_expected.to eq(false) }
     end
 
-    context 'when local_filename presents' do
-      let(:photo) { create :photo, local_filename: 'test' }
+    context 'when local_filename is not empty' do
+      let(:photo) { create :photo, :fake, local_filename: 'test.txt' }
 
-      it { is_expected.to eq(Rails.root.join('tmp', 'files', 'test')) }
+      context 'and file exists' do
+        before do
+          FileUtils.mkdir_p(Rails.root.join('tmp', 'files'))
+          FileUtils.cp 'spec/fixtures/test.txt', Rails.root.join('tmp', 'files', 'test.txt')
+        end
+
+        after do
+          FileUtils.rm_f Rails.root.join('tmp', 'files', 'test.txt')
+        end
+
+        it { is_expected.to eq(true) }
+      end
+
+      context 'and file does not exist' do
+        it { is_expected.to eq(false) }
+      end
+    end
+  end
+
+  describe '#tmp_local_filename' do
+    let(:photo) { create :photo, :fake, local_filename: 'test' }
+
+    it do
+      expect(photo.tmp_local_filename).to eq(Rails.root.join('tmp', 'files', 'test'))
     end
   end
 
@@ -170,7 +206,7 @@ RSpec.describe Photo do
       end
 
       context 'and local_file is empty' do
-        let(:photo) { create :photo, local_filename: nil }
+        let(:photo) { create :photo, :fake, local_filename: nil, storage_filename: 'zozo' }
 
         it do
           expect { subject }.not_to raise_error
@@ -178,12 +214,33 @@ RSpec.describe Photo do
       end
 
       context 'and local_file is not exist' do
-        let(:photo) { create :photo, local_filename: 'cats1.jpg' }
+        let(:photo) { create :photo, :fake, local_filename: 'cats1.jpg' }
 
         it do
           expect { subject }.not_to raise_error
         end
       end
+    end
+  end
+
+  describe 'file attrs loading' do
+    let(:photo) { build :photo, local_filename: 'test.txt' }
+    let(:tmp_file) { Rails.root.join('tmp', 'files', 'test.txt') }
+
+    before do
+      FileUtils.mkdir_p(Rails.root.join('tmp', 'files'))
+      FileUtils.cp 'spec/fixtures/test.txt', tmp_file
+    end
+
+    after do
+      FileUtils.rm_f(tmp_file)
+    end
+
+    it do
+      expect { photo.save! }.
+        to change { photo.md5 }.from(nil).to(String).
+        and change { photo.sha256 }.from(nil).to(String).
+        and change { photo.size }.from(0).to(File.size(tmp_file))
     end
   end
 end

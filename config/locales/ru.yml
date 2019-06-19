@@ -19,7 +19,7 @@ ru:
         photo:
           attributes:
             local_filename:
-              wrong_value: Только один атрибут с именем файла может быть заполнен
+              wrong_value: Один из файловых атрибутов должен быть заполнен
         yandex/token:
           attributes:
             dir:

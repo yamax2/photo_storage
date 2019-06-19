@@ -9,8 +9,8 @@ dip rails credentials:edit
 ``` 
 
 ### TODO:
-* prevent duplicates
 * upload job
+* remote action on photo delete
 * landings
 * views counter
 * photo counter in rubrics
