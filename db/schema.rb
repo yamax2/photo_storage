@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_06_19_055128) do
+ActiveRecord::Schema.define(version: 2019_06_20_175546) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -45,6 +45,8 @@ ActiveRecord::Schema.define(version: 2019_06_19_055128) do
     t.bigint "rubric_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "rubrics_count", default: 0, null: false
+    t.bigint "photos_count", default: 0, null: false
     t.index ["rubric_id"], name: "index_rubrics_on_rubric_id"
   end
 

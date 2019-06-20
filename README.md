@@ -10,7 +10,6 @@ dip rails credentials:edit
 
 ### TODO:
 * clear tmp job
-* photo counter in rubrics
 * landings
 * views counter
 * html editor for rubrics

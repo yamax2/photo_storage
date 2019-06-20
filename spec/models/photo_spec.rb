@@ -32,7 +32,7 @@ RSpec.describe Photo do
   end
 
   describe 'associations' do
-    it { is_expected.to belong_to(:rubric).inverse_of(:photos) }
+    it { is_expected.to belong_to(:rubric).inverse_of(:photos).counter_cache(true) }
     it { is_expected.to belong_to(:yandex_token).inverse_of(:photos).optional }
   end
 

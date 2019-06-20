@@ -19,8 +19,8 @@ RSpec.describe Api::V1::Admin::RubricsController do
         expect(assigns(:rubrics)).to match_array([rubric1, rubric2])
 
         expect(json).to match_array([
-          hash_including('id', 'text', 'children' => true),
-          hash_including('id', 'text', 'children' => true)
+          hash_including('text', 'id' => rubric2.id, 'children' => false),
+          hash_including('text', 'id' => rubric1.id, 'children' => true)
         ])
       end
     end

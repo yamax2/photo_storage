@@ -8,7 +8,7 @@ class Photo < ApplicationRecord
     PNG_IMAGE
   ].freeze
 
-  belongs_to :rubric, inverse_of: :photos
+  belongs_to :rubric, inverse_of: :photos, counter_cache: true
   belongs_to :yandex_token, class_name: 'Yandex::Token',
                             inverse_of: :photos,
                             foreign_key: :yandex_token_id,

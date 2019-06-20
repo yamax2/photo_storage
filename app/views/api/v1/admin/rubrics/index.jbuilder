@@ -4,6 +4,5 @@ json.array!(@rubrics) do |rubric|
   json.id rubric.id
   json.text rubric.name
 
-  # FIXME: counter
-  json.children true
+  json.children rubric.rubrics_count.positive?
 end
