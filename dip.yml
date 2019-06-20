@@ -5,6 +5,7 @@ environment:
   DOCKER_RUBY_VERSION: 2.6.3
   POSTGRES_IMAGE_TAG: 11.2
   REDIS_IMAGE_TAG: 5-alpine
+  GO_IMAGE_TAG: 1.12.5
   POSTGRES_DB: photos
   POSTGRES_HOST: db
   RAILS_ENV: development
@@ -48,6 +49,10 @@ interaction:
   psql:
     service: db
     command: psql -h ${POSTGRES_HOST} -U postgres ${POSTGRES_DB}
+
+  go:
+    service: proxy
+    command: go
 
 provision:
   - docker volume create --name bundler_data

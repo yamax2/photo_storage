@@ -39,3 +39,14 @@ services:
     depends_on:
       - db
       - redis
+
+  proxy:
+    image: golang:$GO_IMAGE_TAG
+    command: bash
+    working_dir: /app
+    volumes:
+      - .:/app
+      # - ../go:/go
+    command: 'go run proxy_service/main.go'
+    expose:
+      - '9000'

@@ -52,6 +52,17 @@ services:
       - frontend
     dns: $DIP_DNS
 
+  proxy:
+    volumes:
+      - ..:/app
+    networks:
+      - default
+      - frontend
+    dns: $DIP_DNS
+    environment:
+      - VIRTUAL_HOST=proxy.photostorage.$DOCKER_TLD
+      - VIRTUAL_PATH=/
+
 volumes:
   bundler-data:
     external:
