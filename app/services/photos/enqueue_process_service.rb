@@ -9,7 +9,7 @@ module Photos
 
       context.fail! unless photo.save
 
-      # ProcessFileJob.perform_async(photo.id)
+      ProcessFileJob.perform_async(photo.id)
     end
 
     private

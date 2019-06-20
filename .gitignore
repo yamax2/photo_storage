@@ -21,3 +21,4 @@
 /config/master.key
 /docker/configs/dumps/
 .idea
+.irb-save-history

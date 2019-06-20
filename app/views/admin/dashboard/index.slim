@@ -32,7 +32,7 @@
         ul#files.list-unstyled.p-2.d-flex.flex-column.col
 
   .col-sm-12
-    #drag-and-drop-zone.dm-uploader.p-3.text-center*{data: {statuses: {uploading: t('.statuses.uploading'), warning: t('.statuses.warning'), success: t('.statuses.success')}}}
+    #drag-and-drop-zone.dm-uploader.p-3.text-center*{data: {with_errors: t('.uploaded_with_errors'), statuses: {uploading: t('.statuses.uploading'), warning: t('.statuses.warning'), success: t('.statuses.success')}}}
       h3.mb-2.mt-2.text-muted
         = t('.drop_files_here')
       .buttons

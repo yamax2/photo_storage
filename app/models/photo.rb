@@ -1,3 +1,4 @@
+# photo model, no state machine!
 class Photo < ApplicationRecord
   JPEG_IMAGE = 'image/jpeg'.freeze
   PNG_IMAGE = 'image/png'.freeze

@@ -60,9 +60,15 @@ $(document)
         ui_multi_update_file_status(id, 'success', $(this).data('statuses-success'))
         ui_multi_update_file_progress(id, 100, 'success', false)
       onUploadError: (id, xhr, status, message) ->
+        $(this).data('errors', true)
         ui_multi_update_file_status(id, 'danger', message)
         ui_multi_update_file_progress(id, 0, 'danger', false)
       onComplete: ->
+        $this = $(this)
+
+        alert $this.data('with_errors') if $this.data('errors')
+        $this.removeData('errors')
+
         $('.rubric-container .blocker').hide()
         $('body').removeData('process')
         $('#stop-button').hide()

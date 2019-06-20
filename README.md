@@ -9,13 +9,11 @@ dip rails credentials:edit
 ``` 
 
 ### TODO:
-* broken pipe error!
-* warning on complete upload with errors
-* validate md5 and sha256 only if changed
-
+* clear tmp job
 * photo counter in rubrics
 * landings
 * views counter
 * html editor for rubrics
 * revision job
+* photo unique jobs
 * cache
