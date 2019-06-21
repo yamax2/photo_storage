@@ -31,4 +31,14 @@ RSpec.describe Rubric do
     it { is_expected.to strip_attribute(:name) }
     it { is_expected.to strip_attribute(:description) }
   end
+
+  describe 'scope with_photos' do
+    let!(:rubric1) { create :rubric, photos_count: 10 }
+    let!(:rubric2) { create :rubric, photos_count: 0 }
+    let!(:rubric3) { create :rubric, photos_count: 5 }
+
+    it do
+      expect(described_class.with_photos).to match_array([rubric1, rubric3])
+    end
+  end
 end

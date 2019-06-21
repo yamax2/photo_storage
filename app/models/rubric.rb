@@ -6,4 +6,6 @@ class Rubric < ApplicationRecord
   validates :name, presence: true, length: {maximum: 100}
 
   strip_attributes only: %i[name description]
+
+  scope :with_photos, -> { where('photos_count > 0') }
 end
