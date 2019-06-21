@@ -17,14 +17,6 @@ module Yandex
 
     strip_attributes only: %i[dir other_dir]
 
-    # FIXME: move to a decorator
-    def proxy_url(other: false)
-      actual_dir = other ? other_dir : dir
-
-      "#{Rails.application.routes.default_url_options[:protocol]}://#{Rails.application.config.proxy_domain}." \
-        "#{Rails.application.routes.default_url_options[:host]}#{actual_dir}"
-    end
-
     private
 
     def dir_names

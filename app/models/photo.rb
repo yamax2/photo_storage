@@ -44,16 +44,6 @@ class Photo < ApplicationRecord
     Rails.root.join('tmp', 'files', local_filename)
   end
 
-  # FIXME: move to a decorator
-  def url(size = :original)
-    return unless storage_filename.present?
-
-    url = [yandex_token.proxy_url, storage_filename].join('/')
-    url << "?preview&size=#{Rails.application.config.photo_sizes.fetch(size)}" unless size == :original
-
-    url
-  end
-
   private
 
   def read_file_attributes

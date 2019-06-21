@@ -6,8 +6,10 @@ Rails.application.routes.default_url_options[:protocol] = ENV.fetch('PROTOCOL', 
 
 Rails.application.configure do
   config.proxy_domain = 'proxy'.freeze
+
+  # widths
   config.photo_sizes = {
-    thumb: 400,
-    preview: 1200
+    thumb: ->(photo) { photo.width * 300 / photo.height },
+    preview: 1280
   }
 end
