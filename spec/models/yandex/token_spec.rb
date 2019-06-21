@@ -106,4 +106,20 @@ RSpec.describe Yandex::Token do
     it { is_expected.to strip_attribute(:dir) }
     it { is_expected.to strip_attribute(:other_dir) }
   end
+
+  describe '#proxy_url' do
+    before do
+      allow(Rails.application.routes).to receive(:default_url_options).and_return(host: 'test.org', protocol: 'https')
+    end
+
+    let(:token) { create :'yandex/token', dir: '/photos', other_dir: '/other_files' }
+
+    context 'when photo dir url' do
+      it { expect(token.proxy_url(other: false)).to eq('https://proxy.test.org/photos') }
+    end
+
+    context 'when other dir url' do
+      it { expect(token.proxy_url(other: true)).to eq('https://proxy.test.org/other_files') }
+    end
+  end
 end

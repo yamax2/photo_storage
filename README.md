@@ -8,11 +8,13 @@ download master.key and run
 dip rails credentials:edit
 ``` 
 
+https://codepen.io/dudleystorey/pen/Kgofa
+
 ### TODO:
-* clear tmp job
 * landings
+* clear tmp job
 * views counter
 * html editor for rubrics
 * revision job
-* photo unique jobs
 * cache
+* search

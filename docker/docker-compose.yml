@@ -42,7 +42,6 @@ services:
 
   proxy:
     image: golang:$GO_IMAGE_TAG
-    command: bash
     working_dir: /app
     volumes:
       - .:/app

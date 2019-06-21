@@ -5,6 +5,7 @@ import (
 	"io"
 	"log"
 	"net/http"
+	"strings"
 )
 
 func copyHeader(dst, src http.Header) {
@@ -23,7 +24,11 @@ type proxy struct {
 func (p *proxy) ServeHTTP(wr http.ResponseWriter, r *http.Request) {
 	client := &http.Client{}
 
-	req, err := http.NewRequest("GET", "https://webdav.yandex.ru" + r.RequestURI, nil)
+	uri := r.RequestURI
+	if strings.Index(uri, "/yandex") == 0 {
+	    uri = strings.Replace(uri, "/yandex", "", 1)
+	}
+	req, err := http.NewRequest("GET", "https://webdav.yandex.ru" + uri, nil)
 	req.Header.Add("Authorization", "OAuth ...")
 
 	resp, err := client.Do(req)

@@ -44,7 +44,7 @@ ru:
           uploading: Загрузка...
           warning: Отменено
         stop: Стоп
-        uploaded_with_errors: Некоторые не удалось загрузить
+        uploaded_with_errors: Некоторые фото не удалось загрузить
     partials:
       menu:
         content: Контент
