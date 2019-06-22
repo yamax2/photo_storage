@@ -1,5 +1,5 @@
 class PagesController < ApplicationController
-  def index
+  def show
     @page = Page.new(params[:id])
   end
 end

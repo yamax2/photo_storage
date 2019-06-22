@@ -3,11 +3,27 @@ require 'rails_helper'
 RSpec.describe PagesController do
   render_views
 
-  describe '#index' do
-    before { get :index }
+  describe '#show' do
+    let!(:rubric) { create :rubric }
 
-    it do
-      expect(response).to have_http_status(:ok)
+    context 'when root' do
+      before { get :show }
+
+      it do
+        expect(response).to have_http_status(:ok)
+        expect(assigns(:page)).to be_a(Page)
+        expect(assigns(:page).rubric).to be_nil
+      end
+    end
+
+    context 'when rubric' do
+      before { get :show, params: {id: rubric.id} }
+
+      it do
+        expect(response).to have_http_status(:ok)
+        expect(assigns(:page)).to be_a(Page)
+        expect(assigns(:page).rubric).to eq(rubric)
+      end
     end
   end
 end

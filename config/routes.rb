@@ -2,7 +2,11 @@ require 'sidekiq/web'
 require 'sidekiq/cron/web'
 
 Rails.application.routes.draw do
-  root 'pages#index'
+  root 'pages#show'
+
+  resources :pages, only: :show, path: 'rubrics' do
+    resources :photos, only: :show
+  end
 
   namespace :admin do
     mount Sidekiq::Web => '/sidekiq'

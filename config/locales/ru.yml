@@ -96,6 +96,14 @@ ru:
           remove_confirm: Вы действительно хотите удалить токен?
         refresh:
           success: 'Обновление токена %{login} запланировано'
+  photos:
+    show:
+      camera: Камера
+      created_at: Загружено
+      original_timestamp: Дата съёмки
+      map: На карте
+      show_map: Показать
+      size: Размер
   views:
     pagination:
       first: Первая страница

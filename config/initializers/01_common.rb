@@ -10,6 +10,6 @@ Rails.application.configure do
   # widths
   config.photo_sizes = {
     thumb: ->(photo) { photo.width * 260 / photo.height },
-    preview: 1280
+    preview: ->(photo) { photo.width * 800 / photo.height }
   }
 end

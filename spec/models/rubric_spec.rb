@@ -33,9 +33,10 @@ RSpec.describe Rubric do
   end
 
   describe 'scope with_photos' do
-    let!(:rubric1) { create :rubric, photos_count: 10 }
+    let!(:rubric1) { create :rubric, photos_count: 0 }
     let!(:rubric2) { create :rubric, photos_count: 0 }
-    let!(:rubric3) { create :rubric, photos_count: 5 }
+    let!(:rubric3) { create :rubric, photos_count: 5, rubric: rubric1 }
+    let!(:rubric4) { create :rubric, rubric: rubric2 }
 
     it do
       expect(described_class.with_photos).to match_array([rubric1, rubric3])

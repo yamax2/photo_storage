@@ -7,5 +7,15 @@ class Rubric < ApplicationRecord
 
   strip_attributes only: %i[name description]
 
-  scope :with_photos, -> { where('photos_count > 0') }
+  scope :with_photos, -> {
+    where(<<~SQL)
+      rubrics.id in (
+        WITH RECURSIVE tt AS (
+        SELECT id, rubric_id FROM rubrics WHERE photos_count > 0
+        UNION ALL
+        SELECT rubrics.id, rubrics.rubric_id FROM rubrics, tt WHERE rubrics.id = tt.rubric_id)
+        SELECT id FROM tt
+      )
+    SQL
+  }
 end

@@ -1,0 +1,43 @@
+.photo-content
+  h2
+    = @photo.name
+  = image_tag @photo.url(:preview)
+
+.sidebar
+  - if @photo.lat_long.present?
+    = map(center: {latlng: @photo.lat_long.to_a, zoom: 18}, markers: [{latlng: @photo.lat_long.to_a}])
+
+  .photo-info
+    table
+      tr
+        th
+          = t('.original_timestamp')
+        td
+          = @photo.original_timestamp
+
+      - if @photo.exif.present?
+        tr
+          th
+            = t('.camera')
+          td
+            = "#{@photo.exif['make']} #{@photo.exif['model']}"
+      tr
+        th
+          = t('.created_at')
+        td
+          = @photo.created_at
+
+      tr
+        th
+          = t('.size')
+        td
+          = number_to_human_size(@photo.size)
+
+      /tr
+        th
+          | Оригинал
+        td
+          = link_to @photo.original_filename, @photo.url, target: '_blank'
+
+    p.photo-description
+      = @photo.description
