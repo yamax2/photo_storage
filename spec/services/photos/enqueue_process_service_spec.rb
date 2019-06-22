@@ -27,7 +27,7 @@ RSpec.describe Photos::EnqueueProcessService do
         size: 2_236_570,
         content_type: 'image/jpeg',
         original_filename: 'test2.jpg',
-        name: 'test2.jpg',
+        name: 'test2',
         rubric_id: rubric.id,
         local_filename: 'test.jpg'
       )

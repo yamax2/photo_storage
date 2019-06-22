@@ -1,1 +1,27 @@
 //*= require_tree ./application
+
+.photos
+  flex-flow: row wrap
+  display: -webkit-box
+  display: flex
+  justify-content: center
+
+  .photo
+    margin: 0 0.25rem 0.25rem 0
+    cursor: pointer
+    position: relative
+    overflow: hidden
+
+    img
+      object-fit: cover
+
+    .photo-name
+      position: absolute
+      bottom: 0
+      display: flex
+      padding: 0.6rem
+      align-items: center
+      background: rgba(0,0,0,0.4)
+      width: 100%
+      font-size: 16px
+      color: white

@@ -12,8 +12,8 @@ class Page
     @photos = @rubric.
       photos.
       uploaded.
-      joins(:yandex_token).
-      includes(:yandex_token).
+      preload(:yandex_token).
+      order(:original_timestamp).
       decorate
   end
 
@@ -21,6 +21,6 @@ class Page
     return @rubrics if defined?(@rubrics)
 
     rubrics = @rubric&.rubrics || Rubric.where(rubric_id: nil)
-    @rubrics = rubrics.with_photos
+    @rubrics = rubrics.with_photos.order(:id)
   end
 end

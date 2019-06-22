@@ -1,2 +1,12 @@
-h1
-  | Hello
+- if @page.rubric
+  h1
+    = @page.rubric.name
+
+.photos
+  - @page.photos.each do |photo|
+    - size = photo.thumb_size
+    .photo*{style: "width: #{size.first}px; height: #{size.last}px"}
+      = image_tag photo.url(:thumb)
+      .photo-name
+        span
+          = photo.name

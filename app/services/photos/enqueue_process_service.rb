@@ -29,7 +29,7 @@ module Photos
         size: uploaded_io.size,
         content_type: uploaded_io.content_type,
         original_filename: uploaded_io.original_filename,
-        name: uploaded_io.original_filename,
+        name: File.basename(uploaded_io.original_filename, '.*'),
         rubric_id: rubric_id,
         local_filename: move_temp_file
       }
