@@ -1,6 +1,6 @@
 class PhotosController < ApplicationController
   def show
-    @rubric = Rubric.find(params[:page_id])
-    @photo = @rubric.photos.find(params[:id]).decorate
+    @rubric = RubricFinder.call(params[:page_id])
+    @photo = @rubric.photos.uploaded.find(params[:id]).decorate
   end
 end

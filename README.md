@@ -8,12 +8,17 @@ download master.key and run
 dip rails credentials:edit
 ``` 
 
-https://codepen.io/dudleystorey/pen/Kgofa
-
 ### TODO:
-* landings
-* wrong size load without exif 
+* rubric parents
+* photo show back/forward actions
+* rubric listing
+* map in photo listing
+* rubric default photo
 
+* photo edit action
+* photo original download action
+
+* wrong size load without exif 
 * clear tmp job
 * views counter
 * html editor for rubrics

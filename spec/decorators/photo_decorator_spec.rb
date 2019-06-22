@@ -11,6 +11,18 @@ RSpec.describe PhotoDecorator do
     )
   end
 
+  describe '#rubrics' do
+    let(:rubric1) { create :rubric }
+    let(:rubric2) { create :rubric, rubric: rubric1 }
+    let(:rubric3) { create :rubric, rubric: rubric2 }
+
+    let(:photo) { create :photo, :fake, local_filename: 'test', rubric: rubric3 }
+
+    it do
+      expect(subject.rubrics).to eq([rubric3, rubric2, rubric1])
+    end
+  end
+
   describe '#thumb_size' do
     let(:photo) { create :photo, :fake, width: 1_000, height: 2_000, local_filename: 'test' }
 

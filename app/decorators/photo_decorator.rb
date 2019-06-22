@@ -1,10 +1,25 @@
 class PhotoDecorator < Draper::Decorator
   delegate_all
 
-  def thumb_size
-    thumb_width = thumb_width(:thumb)
+  def rubrics
+    current_rubric = rubric
+    rubrics = []
 
-    [thumb_width, height * thumb_width / width]
+    loop do
+      rubrics << current_rubric
+      current_rubric = current_rubric.rubric
+
+      break unless current_rubric.present?
+    end
+
+    rubrics
+  end
+
+  def thumb_size
+    return @thumb_size if defined?(@thumb_size)
+
+    thumb_width = thumb_width(:thumb)
+    @thumb_size = [thumb_width, height * thumb_width / width]
   end
 
   def url(size = :original)

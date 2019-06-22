@@ -1,6 +1,12 @@
 .photo-content
-  h2
-    = @photo.name
+  .photo-header
+    ul
+      - @photo.rubrics.reverse_each do |rubric|
+        li
+          = link_to rubric.name, page_path(rubric)
+      li
+        = @photo.name
+
   = image_tag @photo.url(:preview)
 
 .sidebar

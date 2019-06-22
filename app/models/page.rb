@@ -2,7 +2,7 @@ class Page
   attr_reader :rubric
 
   def initialize(rubric_id = nil)
-    @rubric = Rubric.find(rubric_id) if rubric_id.present?
+    @rubric = RubricFinder.call(rubric_id) if rubric_id.present?
   end
 
   def photos
