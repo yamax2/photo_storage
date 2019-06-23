@@ -1,8 +1,9 @@
 class Page
   attr_reader :rubric
+  delegate :rubrics_tree, to: :rubric
 
   def initialize(rubric_id = nil)
-    @rubric = RubricFinder.call(rubric_id) if rubric_id.present?
+    @rubric = RubricFinder.call(rubric_id).decorate if rubric_id.present?
   end
 
   def photos

@@ -1,6 +1,12 @@
 - if @page.rubric
-  h1
-    = @page.rubric.name
+  .photo-header
+    ul
+      - @page.rubrics_tree.reverse_each do |rubric|
+        li
+          - if rubric == @page.rubric
+            = rubric.name
+          - else
+            = link_to rubric.name, page_path(rubric)
 
 .photos
   - @page.photos.each do |photo|

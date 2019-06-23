@@ -29,7 +29,7 @@ RSpec.describe Page do
       subject { Page.new(root_rubric1.id) }
 
       it do
-        expect(subject.rubric).to eq(root_rubric1)
+        expect(subject.rubric.object).to eq(root_rubric1)
         expect(subject.rubrics).to match_array([sub_rubric1])
         expect(subject.photos).to match_array([photo2, photo3])
       end
@@ -39,9 +39,10 @@ RSpec.describe Page do
       subject { Page.new(sub_rubric1.id) }
 
       it do
-        expect(subject.rubric).to eq(sub_rubric1)
+        expect(subject.rubric.object).to eq(sub_rubric1)
         expect(subject.rubrics).to be_empty
         expect(subject.photos).to match_array([photo4])
+        expect(subject.rubrics_tree).to eq([sub_rubric1, root_rubric1])
       end
     end
   end

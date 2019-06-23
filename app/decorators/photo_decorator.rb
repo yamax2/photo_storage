@@ -1,20 +1,6 @@
 class PhotoDecorator < Draper::Decorator
   delegate_all
 
-  def rubrics
-    current_rubric = rubric
-    rubrics = []
-
-    loop do
-      rubrics << current_rubric
-      current_rubric = current_rubric.rubric
-
-      break unless current_rubric.present?
-    end
-
-    rubrics
-  end
-
   def thumb_size
     return @thumb_size if defined?(@thumb_size)
 

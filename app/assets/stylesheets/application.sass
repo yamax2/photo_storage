@@ -1,6 +1,8 @@
 //*= require leaflet
 //*= require_tree ./application
 
+$panel_color: #f9f9f9
+
 html, body
   margin: 0
   font-family: 'Ubuntu', sans-serif
@@ -48,11 +50,26 @@ html, body
   flex-direction: column
   margin-right: 300px
 
-  h2
-    font-weight: 100
+.photo-header
+  justify-content: center
+  width: 100%
+  display: flex
+
+  ul
+    list-style: none
+    padding: 0
+    margin: 1rem 0
+    display: flex
+    font-size: 18px
+
+    li
+      &:not(:last-child):after
+        content: '\\'
+        margin-right: 0.25rem
+        font-size: 14px
 
 .sidebar
-  background: #f9f9f9
+  background: $panel_color
   width: 300px
   position: fixed
   height: 100%
@@ -61,8 +78,9 @@ html, body
   box-shadow: rgba(0, 0, 0, 0.16) 0 2px 5px 0, rgba(0, 0, 0, 0.12) 0 2px 10px 0
   box-sizing: border-box
   padding: 1rem
-  overflow-y: scroll
+  overflow-y: auto
   font-size: 14px
+  z-index: 1
 
   #map
     height: 300px
