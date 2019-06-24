@@ -7,7 +7,6 @@ class Page
   end
 
   # finds photo with prev and next in rubric
-  # Returns: PhotoInfo
   def find_photo_with_next_and_prev(photo_id)
     photos = find_photos(photo_id)
 

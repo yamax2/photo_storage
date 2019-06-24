@@ -272,6 +272,8 @@ GEM
     sidekiq-cron (1.1.0)
       fugit (~> 1.1)
       sidekiq (>= 4.2.1)
+    sidekiq-failures (1.0.0)
+      sidekiq (>= 4.0.0)
     slim (4.0.1)
       temple (>= 0.7.6, < 0.9)
       tilt (>= 2.0.6, < 2.1)
@@ -351,6 +353,7 @@ DEPENDENCIES
   shoulda-matchers
   sidekiq (>= 5)
   sidekiq-cron (>= 1.1)
+  sidekiq-failures (>= 1)
   slim-rails (>= 3.2)
   strip_attributes (>= 1.8)
   timecop
