@@ -1,3 +1,5 @@
+- size = @photos.current.image_size(:preview)
+
 .photo-content
   .photo-header
     ul
@@ -7,7 +9,14 @@
       li
         = @photos.current.name
 
-  = image_tag @photos.current.url(:preview)
+  .photo-img
+    - if @photos.prev.present?
+      = link_to '', page_photo_path(@page.rubric, @photos.prev), class: 'photo-left', title: @photos.prev.name
+
+    = image_tag @photos.current.url(:preview), id: 'mainimg'
+
+    - if @photos.next.present?
+      = link_to '', page_photo_path(@page.rubric, @photos.next), class: 'photo-right', title: @photos.next.name
 
 .sidebar
   - if @photos.current.lat_long.present?

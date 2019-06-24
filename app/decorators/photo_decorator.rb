@@ -1,11 +1,10 @@
 class PhotoDecorator < Draper::Decorator
   delegate_all
 
-  def thumb_size
-    return @thumb_size if defined?(@thumb_size)
+  def image_size(size = :thumb)
+    thumb_width = thumb_width(size)
 
-    thumb_width = thumb_width(:thumb)
-    @thumb_size = [thumb_width, height * thumb_width / width]
+    [thumb_width, height * thumb_width / width]
   end
 
   def url(size = :original)

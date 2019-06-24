@@ -10,8 +10,9 @@
 
 .photos
   - @page.photos.each do |photo|
+    - size = photo.image_size
     = link_to page_photo_path(@page.rubric, photo), class: 'photo',
-              style: "width: #{photo.thumb_size.first}px; height: #{photo.thumb_size.last}px" do
+              style: "width: #{size.first}px; height: #{size.last}px" do
       = image_tag photo.url(:thumb)
       .photo-name
         span

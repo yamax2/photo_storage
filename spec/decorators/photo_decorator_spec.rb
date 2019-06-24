@@ -11,11 +11,11 @@ RSpec.describe PhotoDecorator do
     )
   end
 
-  describe '#thumb_size' do
+  describe '#image_size' do
     let(:photo) { create :photo, :fake, width: 1_000, height: 2_000, local_filename: 'test' }
 
     it do
-      expect(subject.thumb_size).to eq([500, 1_000])
+      expect(subject.image_size).to eq([500, 1_000])
     end
   end
 
