@@ -5,13 +5,13 @@
         li
           = link_to rubric.name, page_path(rubric)
       li
-        = @photo.name
+        = @photos.current.name
 
-  = image_tag @photo.url(:preview)
+  = image_tag @photos.current.url(:preview)
 
 .sidebar
-  - if @photo.lat_long.present?
-    = map(center: {latlng: @photo.lat_long.to_a, zoom: 18}, markers: [{latlng: @photo.lat_long.to_a}])
+  - if @photos.current.lat_long.present?
+    = map(center: {latlng: @photos.current.lat_long.to_a, zoom: 18}, markers: [{latlng: @photos.current.lat_long.to_a}])
 
   .photo-info
     table
@@ -19,31 +19,25 @@
         th
           = t('.original_timestamp')
         td
-          = @photo.original_timestamp
+          = @photos.current.original_timestamp
 
-      - if @photo.exif.present?
+      - if @photos.current.exif.present?
         tr
           th
             = t('.camera')
           td
-            = "#{@photo.exif['make']} #{@photo.exif['model']}"
+            = "#{@photos.current.exif['make']} #{@photos.current.exif['model']}"
       tr
         th
           = t('.created_at')
         td
-          = @photo.created_at
+          = @photos.current.created_at
 
       tr
         th
           = t('.size')
         td
-          = number_to_human_size(@photo.size)
-
-      /tr
-        th
-          | Оригинал
-        td
-          = link_to @photo.original_filename, @photo.url, target: '_blank'
+          = number_to_human_size(@photos.current.size)
 
     p.photo-description
-      = @photo.description
+      = @photos.current.description

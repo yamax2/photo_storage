@@ -14,8 +14,8 @@ RSpec.describe PhotosController do
 
     it do
       expect(response).to have_http_status(:ok)
-      expect(assigns(:rubric)).to eq(rubric)
-      expect(assigns(:photo)).to eq(photo)
+      expect(assigns(:page).rubric).to eq(rubric)
+      expect(assigns(:photos).current).to eq(photo)
     end
   end
 end
