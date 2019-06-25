@@ -1,6 +1,6 @@
 GIT
   remote: git@github.com:yamax2/yandex_photo_storage.git
-  revision: d3348d5d8c03c89b886d56358e6d04774f3f1eff
+  revision: 50574c6063d1c37ea934495ac714391eb68c0be7
   specs:
     yandex_photo_storage (0.1.0)
       ox
@@ -131,7 +131,7 @@ GEM
     kaminari-core (1.1.1)
     launchy (2.4.3)
       addressable (~> 2.3)
-    leaflet-rails (1.4.0)
+    leaflet-rails (1.5.1)
       rails (>= 4.2.0)
     letter_opener (1.7.0)
       launchy (~> 2.2)

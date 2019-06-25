@@ -64,6 +64,23 @@ RSpec.describe Photos::UploadService do
       end
     end
 
+    context 'and to a new sub_folder' do
+      subject do
+        VCR.use_cassette('photo_upload_new_sub_folder') { service_context }
+      end
+
+      it do
+        expect { subject }.
+          to change { photo.storage_filename }.from(nil).to(String).
+          and change { photo.local_filename }.from(String).to(nil).
+          and change { photo.yandex_token_id }.from(nil).to(yandex_token.id)
+
+        expect(service_context).to be_a_success
+        expect(File.exist?(tmp_file)).to eq(false)
+        expect(photo).not_to be_changed
+      end
+    end
+
     context 'and to an existing folder' do
       before do
         VCR.use_cassette('photo_upload_old_folder') { service_context }

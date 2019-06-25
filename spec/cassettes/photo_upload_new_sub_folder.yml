@@ -25,9 +25,9 @@ http_interactions:
       message: Not Found
     headers:
       Date:
-      - Tue, 25 Jun 2019 18:26:20 GMT
+      - Tue, 25 Jun 2019 18:40:19 GMT
       Yandex-Cloud-Request-Id:
-      - dav-33ec8ff4c36da6e330d128a10d2b5573-sas1-531040e1edeb
+      - dav-d81835e92b634b94c371d6344cdc7f27-iva3-81f694239774
       Yandex-Uid:
       - '10141869'
       X-Frame-Options:
@@ -37,14 +37,14 @@ http_interactions:
       X-Content-Type-Options:
       - nosniff
       Content-Length:
-      - '16'
+      - '18'
       Server:
       - Jetty(9.4.11.v20180605)
     body:
       encoding: UTF-8
-      string: folder not found
+      string: resource not found
     http_version: 
-  recorded_at: Tue, 25 Jun 2019 18:26:20 GMT
+  recorded_at: Tue, 25 Jun 2019 18:40:19 GMT
 - request:
     method: propfind
     uri: https://webdav.yandex.ru/test_photos
@@ -66,13 +66,13 @@ http_interactions:
       - Ruby
   response:
     status:
-      code: 404
-      message: Not Found
+      code: 207
+      message: Multi-Status
     headers:
       Date:
-      - Tue, 25 Jun 2019 18:26:20 GMT
+      - Tue, 25 Jun 2019 18:40:19 GMT
       Yandex-Cloud-Request-Id:
-      - dav-38a5dfa29770cedda1bd9cd1ed600153-sas2-80cfdfd09154
+      - dav-dd6a44039676634930b3903df456344e-sas1-0c40f6665c7a
       Yandex-Uid:
       - '10141869'
       X-Frame-Options:
@@ -81,56 +81,19 @@ http_interactions:
       - 1; mode=block
       X-Content-Type-Options:
       - nosniff
+      Content-Type:
+      - application/xml; charset=UTF-8
       Content-Length:
-      - '18'
+      - '428'
       Server:
       - Jetty(9.4.11.v20180605)
     body:
       encoding: UTF-8
-      string: resource not found
+      string: <?xml version="1.0" encoding="UTF-8"?><d:multistatus xmlns:d="DAV:"><d:response><d:href>/test_photos/</d:href><d:propstat><d:status>HTTP/1.1
+        200 OK</d:status><d:prop><d:creationdate>2019-06-25T18:26:21Z</d:creationdate><d:displayname>test_photos</d:displayname><d:getlastmodified>Tue,
+        25 Jun 2019 18:26:21 GMT</d:getlastmodified><d:resourcetype><d:collection/></d:resourcetype></d:prop></d:propstat></d:response></d:multistatus>
     http_version: 
-  recorded_at: Tue, 25 Jun 2019 18:26:20 GMT
-- request:
-    method: mkcol
-    uri: https://webdav.yandex.ru/test_photos
-    body:
-      encoding: UTF-8
-      string: ''
-    headers:
-      Authorization:
-      - OAuth <TOKEN>
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-      Accept:
-      - "*/*"
-      User-Agent:
-      - Ruby
-  response:
-    status:
-      code: 201
-      message: Created
-    headers:
-      Date:
-      - Tue, 25 Jun 2019 18:26:21 GMT
-      Yandex-Cloud-Request-Id:
-      - dav-0c9cb966e9de2181aa5ea06ba6872eaa-iva7-724bc2ef1448
-      Yandex-Uid:
-      - '10141869'
-      X-Frame-Options:
-      - SAMEORIGIN
-      X-Xss-Protection:
-      - 1; mode=block
-      X-Content-Type-Options:
-      - nosniff
-      Content-Length:
-      - '0'
-      Server:
-      - Jetty(9.4.11.v20180605)
-    body:
-      encoding: UTF-8
-      string: ''
-    http_version: 
-  recorded_at: Tue, 25 Jun 2019 18:26:21 GMT
+  recorded_at: Tue, 25 Jun 2019 18:40:19 GMT
 - request:
     method: propfind
     uri: https://webdav.yandex.ru/test_photos/000
@@ -152,13 +115,13 @@ http_interactions:
       - Ruby
   response:
     status:
-      code: 404
-      message: Not Found
+      code: 207
+      message: Multi-Status
     headers:
       Date:
-      - Tue, 25 Jun 2019 18:26:21 GMT
+      - Tue, 25 Jun 2019 18:40:19 GMT
       Yandex-Cloud-Request-Id:
-      - dav-291d498bf2a2572174e3886f445ce76b-sas1-0c40f6665c7a
+      - dav-492b58001d917d0d58937425bd8d2e39-sas1-7ed1d81a9312
       Yandex-Uid:
       - '10141869'
       X-Frame-Options:
@@ -167,56 +130,19 @@ http_interactions:
       - 1; mode=block
       X-Content-Type-Options:
       - nosniff
+      Content-Type:
+      - application/xml; charset=UTF-8
       Content-Length:
-      - '18'
+      - '424'
       Server:
       - Jetty(9.4.11.v20180605)
     body:
       encoding: UTF-8
-      string: resource not found
+      string: <?xml version="1.0" encoding="UTF-8"?><d:multistatus xmlns:d="DAV:"><d:response><d:href>/test_photos/000/</d:href><d:propstat><d:status>HTTP/1.1
+        200 OK</d:status><d:prop><d:creationdate>2019-06-25T18:26:21Z</d:creationdate><d:displayname>000</d:displayname><d:getlastmodified>Tue,
+        25 Jun 2019 18:26:21 GMT</d:getlastmodified><d:resourcetype><d:collection/></d:resourcetype></d:prop></d:propstat></d:response></d:multistatus>
     http_version: 
-  recorded_at: Tue, 25 Jun 2019 18:26:21 GMT
-- request:
-    method: mkcol
-    uri: https://webdav.yandex.ru/test_photos/000
-    body:
-      encoding: UTF-8
-      string: ''
-    headers:
-      Authorization:
-      - OAuth <TOKEN>
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-      Accept:
-      - "*/*"
-      User-Agent:
-      - Ruby
-  response:
-    status:
-      code: 201
-      message: Created
-    headers:
-      Date:
-      - Tue, 25 Jun 2019 18:26:21 GMT
-      Yandex-Cloud-Request-Id:
-      - dav-e59670f8c517823432595f4a2b622098-iva2-eab9914e7541
-      Yandex-Uid:
-      - '10141869'
-      X-Frame-Options:
-      - SAMEORIGIN
-      X-Xss-Protection:
-      - 1; mode=block
-      X-Content-Type-Options:
-      - nosniff
-      Content-Length:
-      - '0'
-      Server:
-      - Jetty(9.4.11.v20180605)
-    body:
-      encoding: UTF-8
-      string: ''
-    http_version: 
-  recorded_at: Tue, 25 Jun 2019 18:26:21 GMT
+  recorded_at: Tue, 25 Jun 2019 18:40:19 GMT
 - request:
     method: propfind
     uri: https://webdav.yandex.ru/test_photos/000/000
@@ -242,9 +168,9 @@ http_interactions:
       message: Not Found
     headers:
       Date:
-      - Tue, 25 Jun 2019 18:26:22 GMT
+      - Tue, 25 Jun 2019 18:40:20 GMT
       Yandex-Cloud-Request-Id:
-      - dav-b667371ebd89154148e278c03c543d5d-sas1-7b5e1bbde504
+      - dav-e9e1b0a0fe8016db9b59be32723df365-sas1-754f0b9fb373
       Yandex-Uid:
       - '10141869'
       X-Frame-Options:
@@ -261,7 +187,7 @@ http_interactions:
       encoding: UTF-8
       string: resource not found
     http_version: 
-  recorded_at: Tue, 25 Jun 2019 18:26:22 GMT
+  recorded_at: Tue, 25 Jun 2019 18:40:20 GMT
 - request:
     method: mkcol
     uri: https://webdav.yandex.ru/test_photos/000/000
@@ -283,9 +209,9 @@ http_interactions:
       message: Created
     headers:
       Date:
-      - Tue, 25 Jun 2019 18:26:22 GMT
+      - Tue, 25 Jun 2019 18:40:20 GMT
       Yandex-Cloud-Request-Id:
-      - dav-4a0938ccc4a8c02044e13067f0d80092-myt1-95e18e6fce80
+      - dav-294b35a19870df15be15a1b89d8ae1d5-sas1-04272a8a2689
       Yandex-Uid:
       - '10141869'
       X-Frame-Options:
@@ -302,7 +228,7 @@ http_interactions:
       encoding: UTF-8
       string: ''
     http_version: 
-  recorded_at: Tue, 25 Jun 2019 18:26:22 GMT
+  recorded_at: Tue, 25 Jun 2019 18:40:20 GMT
 - request:
     method: put
     uri: https://webdav.yandex.ru/test_photos/000/000/36894942206a2a4eeb5015938089a066720bd919f27
@@ -3070,9 +2996,9 @@ http_interactions:
       message: Created
     headers:
       Date:
-      - Tue, 25 Jun 2019 18:26:22 GMT
+      - Tue, 25 Jun 2019 18:40:20 GMT
       Yandex-Cloud-Request-Id:
-      - dav-24a4c1eb5831758044ec18d55a01a8e6-sas1-f63a5072adee
+      - dav-7911576cd7355cc7b6f82db1c6bd1c8f-sas1-0c40f6665c7a
       Yandex-Uid:
       - '10141869'
       X-Frame-Options:
@@ -3091,5 +3017,5 @@ http_interactions:
       encoding: UTF-8
       string: Hardlinked
     http_version: 
-  recorded_at: Tue, 25 Jun 2019 18:26:23 GMT
+  recorded_at: Tue, 25 Jun 2019 18:40:21 GMT
 recorded_with: VCR 5.0.0

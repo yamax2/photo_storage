@@ -25,26 +25,46 @@ module Photos
     def create_remote_dir(path)
       client.propfind(name: path)
     rescue ::YandexPhotoStorage::ApiRequestError => e
-      raise if e.code == 404
+      raise unless e.code == 404
 
       client.mkcol(name: path)
     end
 
     def create_remote_dirs
-      dirs = token_for_upload.dir.split('/') + @storage_filename.split('/')
+      return if remote_path_exists?
 
-      dirs.pop
-      dirs.delete_if(&:empty?)
+      RedisMutex.with_lock("yandex:dirs:#{remote_path.join(':')}", block: 1.minute, expire: 10.minutes) do
+        remote_path.each_with_object('') do |dir, path|
+          path << '/' << dir
 
-      dirs.each_with_object('') do |dir, path|
-        path << '/' << dir
-
-        create_remote_dir(path)
+          create_remote_dir(path)
+        end
       end
     end
 
     def local_file
       @local_file ||= photo.tmp_local_filename
+    end
+
+    def remote_path
+      return @remote_path if defined?(@remote_path)
+
+      @remote_path = token_for_upload.dir.split('/') + @storage_filename.split('/')
+
+      @remote_path.pop
+      @remote_path.delete_if(&:empty?)
+
+      @remote_path
+    end
+
+    def remote_path_exists?
+      client.propfind(name: '/' + remote_path.join('/'))
+
+      true
+    rescue ::YandexPhotoStorage::ApiRequestError => e
+      raise unless e.code == 404
+
+      false
     end
 
     def token_for_upload
