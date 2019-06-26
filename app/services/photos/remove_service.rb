@@ -6,8 +6,8 @@ module Photos
 
     def call
       client.delete(name: [yandex_token.dir, storage_filename].join('/'))
-    rescue ::YandexPhotoStorage::ApiRequestError => e
-      raise unless e.code == 404
+    rescue ::YandexPhotoStorage::NotFoundError
+      false
     end
 
     private

@@ -24,9 +24,7 @@ module Photos
 
     def create_remote_dir(path)
       client.propfind(name: path)
-    rescue ::YandexPhotoStorage::ApiRequestError => e
-      raise unless e.code == 404
-
+    rescue ::YandexPhotoStorage::NotFoundError
       client.mkcol(name: path)
     end
 
@@ -61,9 +59,7 @@ module Photos
       client.propfind(name: '/' + remote_path.join('/'))
 
       true
-    rescue ::YandexPhotoStorage::ApiRequestError => e
-      raise unless e.code == 404
-
+    rescue ::YandexPhotoStorage::NotFoundError
       false
     end
 
