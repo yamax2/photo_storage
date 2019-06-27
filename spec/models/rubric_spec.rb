@@ -6,6 +6,7 @@ RSpec.describe Rubric do
     it { is_expected.to have_db_column(:description).of_type(:text) }
 
     it { is_expected.to have_db_column(:rubric_id).of_type(:integer).with_options(null: true, foreign_key: true) }
+    it { is_expected.to have_db_column(:main_photo_id).of_type(:integer).with_options(null: true, foreign_key: true) }
 
     it { is_expected.to have_db_column(:created_at).of_type(:datetime).with_options(null: false) }
     it { is_expected.to have_db_column(:updated_at).of_type(:datetime).with_options(null: false) }
@@ -14,10 +15,12 @@ RSpec.describe Rubric do
     it { is_expected.to have_db_column(:photos_count).of_type(:integer).with_options(null: false, default: 0) }
 
     it { is_expected.to have_db_index(:rubric_id) }
+    it { is_expected.to have_db_index(:main_photo_id) }
   end
 
   describe 'associations' do
     it { is_expected.to belong_to(:rubric).inverse_of(:rubrics).optional.counter_cache(true) }
+    it { is_expected.to belong_to(:main_photo).optional.class_name('Photo') }
     it { is_expected.to have_many(:rubrics).inverse_of(:rubric).dependent(:destroy) }
     it { is_expected.to have_many(:photos).inverse_of(:rubric).dependent(:destroy) }
   end

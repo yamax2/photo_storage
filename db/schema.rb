@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_06_20_175546) do
+ActiveRecord::Schema.define(version: 2019_06_27_051315) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -47,6 +47,8 @@ ActiveRecord::Schema.define(version: 2019_06_20_175546) do
     t.datetime "updated_at", null: false
     t.bigint "rubrics_count", default: 0, null: false
     t.bigint "photos_count", default: 0, null: false
+    t.bigint "main_photo_id"
+    t.index ["main_photo_id"], name: "index_rubrics_on_main_photo_id", where: "(main_photo_id IS NOT NULL)"
     t.index ["rubric_id"], name: "index_rubrics_on_rubric_id"
   end
 
@@ -69,5 +71,6 @@ ActiveRecord::Schema.define(version: 2019_06_20_175546) do
 
   add_foreign_key "photos", "rubrics", name: "fk_photo_rubrics", on_update: :cascade, on_delete: :restrict
   add_foreign_key "photos", "yandex_tokens", name: "fk_photo_tokens", on_update: :cascade, on_delete: :restrict
+  add_foreign_key "rubrics", "photos", column: "main_photo_id", name: "fk_rubrics_main_photo", on_update: :cascade, on_delete: :nullify
   add_foreign_key "rubrics", "rubrics", name: "fk_rubrics", on_update: :cascade, on_delete: :restrict
 end

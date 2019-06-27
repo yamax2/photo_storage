@@ -10,9 +10,9 @@ dip rails credentials:edit
 
 ### TODO:
 * rubric listing
-* rubric default photo
-* map in photo listing
+* set main photo for rubric action
 
+* map in photo listing
 * photo edit action
 * photo original download action
 

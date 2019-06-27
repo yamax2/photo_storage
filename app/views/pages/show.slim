@@ -8,6 +8,10 @@
           - else
             = link_to rubric.name, page_path(rubric)
 
+- if @page.rubrics.present?
+  - @page.rubrics.each do |rubric|
+    = link_to rubric.name, page_path(rubric)
+
 .photos
   - @page.photos.each do |photo|
     - size = photo.image_size
