@@ -1,4 +1,12 @@
 require 'spec_helper'
+require 'simplecov'
+SimpleCov.start 'rails' do
+  minimum_coverage 90
+
+  add_filter 'app/helpers/application_helper.rb'
+  add_filter 'app/models/application_record.rb'
+end
+
 require 'strip_attributes/matchers'
 
 ENV['RAILS_ENV'] ||= 'test'

@@ -17,10 +17,6 @@ class StorageFilenameGenerator
 
   private
 
-  def actual_extension
-    File.extname(photo.original_filename).to_s.downcase
-  end
-
   def new_filename
     [
       photo.id.to_s,
