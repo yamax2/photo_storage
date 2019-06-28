@@ -50,5 +50,11 @@
         td
           = number_to_human_size(@photos.current.size)
 
+      tr
+        th
+          = t('.original_download')
+        td
+          = link_to t('.download'), @photos.current.url, target: '_blank', title: @photos.current.original_filename
+
     p.photo-description
       = @photos.current.description

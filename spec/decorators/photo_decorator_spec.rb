@@ -28,10 +28,15 @@ RSpec.describe PhotoDecorator do
 
     context 'sizes' do
       let(:token) { create :'yandex/token', dir: '/photos' }
-      let(:photo) { create :photo, :fake, storage_filename: '001/002/test.jpg', yandex_token: token, width: 200 }
+      let(:photo) do
+        create :photo, :fake, storage_filename: '001/002/test.jpg',
+                              yandex_token: token,
+                              width: 200,
+                              original_filename: 'test.jpg'
+      end
 
       context 'when original size' do
-        it { expect(subject.url).to eq('https://proxy.test.org/photos/001/002/test.jpg') }
+        it { expect(subject.url).to eq('https://proxy.test.org/photos/001/002/test.jpg?fn=test.jpg') }
       end
 
       context 'when thumb' do

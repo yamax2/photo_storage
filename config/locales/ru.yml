@@ -100,7 +100,9 @@ ru:
     show:
       camera: Камера
       created_at: Загружено
+      download: Скачать
       original_timestamp: Дата съёмки
+      original_download: Оригинал
       map: На карте
       show_map: Показать
       size: Размер

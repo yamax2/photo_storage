@@ -11,7 +11,6 @@ dip rails credentials:edit
 ### TODO:
 * set main photo for rubric action
 * views counter
-* photo original download action
 * wrong size load without exif
 
 * photo edit action
