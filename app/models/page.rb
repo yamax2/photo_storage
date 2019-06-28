@@ -27,7 +27,12 @@ class Page
     return @rubrics if defined?(@rubrics)
 
     rubrics = @rubric&.rubrics || Rubric.where(rubric_id: nil)
-    @rubrics = rubrics.with_photos.preload(:main_photo).order(:id).map(&:decorate)
+
+    @rubrics = rubrics.
+      with_photos.
+      preload(:main_photo).
+      order(:id).
+      decorate
   end
 
   private

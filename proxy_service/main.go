@@ -12,7 +12,7 @@ func copyHeader(dst, src http.Header) {
 	for k, vv := range src {
 		for _, v := range vv {
 			if k != "Server" {
-			    dst.Add(k, v)
+				dst.Add(k, v)
 			}
 		}
 	}
@@ -38,6 +38,12 @@ func (p *proxy) ServeHTTP(wr http.ResponseWriter, r *http.Request) {
 	}
 
 	defer resp.Body.Close()
+
+	fn := r.URL.Query().Get("fn")
+	if len(fn) != 0 {
+		resp.Header.Add("Content-Disposition", "inline; filename=\"" + fn + "\"")
+	}
+
 	copyHeader(wr.Header(), resp.Header)
 	wr.WriteHeader(resp.StatusCode)
 	io.Copy(wr, resp.Body)
