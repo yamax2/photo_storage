@@ -104,6 +104,10 @@ ru:
       map: На карте
       show_map: Показать
       size: Размер
+  rubrics:
+    name:
+      rubrics_count_text: ', подрубрик: %{rubrics_count}'
+      photos_count_text: ', фото: %{photos_count}'
   views:
     pagination:
       first: Первая страница

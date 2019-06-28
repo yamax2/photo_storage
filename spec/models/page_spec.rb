@@ -40,7 +40,7 @@ RSpec.describe Page do
 
     it do
       expect(subject.rubric).to be_nil
-      expect(subject.rubrics).to match_array([root_rubric1])
+      expect(subject.rubrics.map(&:object)).to match_array([root_rubric1])
       expect(subject.photos).to be_empty
     end
   end
@@ -51,7 +51,7 @@ RSpec.describe Page do
 
       it do
         expect(subject.rubric.object).to eq(root_rubric1)
-        expect(subject.rubrics).to match_array([sub_rubric1])
+        expect(subject.rubrics.map(&:object)).to match_array([sub_rubric1])
         expect(subject.photos).to match_array([photo2, photo3])
       end
     end

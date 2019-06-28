@@ -1,6 +1,8 @@
 - if @page.rubric
   .photo-header
     ul
+      li
+        = link_to t('title'), root_path
       - @page.rubrics_tree.reverse_each do |rubric|
         li
           - if rubric == @page.rubric
@@ -8,15 +10,31 @@
           - else
             = link_to rubric.name, page_path(rubric)
 
-- if @page.rubrics.present?
-  - @page.rubrics.each do |rubric|
-    = link_to rubric.name, page_path(rubric)
+.rubric-content
+  - if @page.rubric
+    = @page.rubric.description.to_s.html_safe
+
+.rubrics
+  - if @page.rubrics.present?
+    - @page.rubrics.each do |rubric|
+      - photo = rubric.main_photo
+      - size = photo&.image_size || [480, 360]
+
+      = link_to page_path(rubric), class: 'rubric', style: "width: #{size.first}px; height: #{size.last}px" do
+        - if photo.present?
+          = image_tag photo.url(:thumb)
+        - else
+          .no-image
+        .photo-name
+          span
+            = rubric.rubric_name
 
 .photos
   - @page.photos.each do |photo|
     - size = photo.image_size
     = link_to page_photo_path(@page.rubric, photo), class: 'photo',
               style: "width: #{size.first}px; height: #{size.last}px" do
+
       = image_tag photo.url(:thumb)
       .photo-name
         span

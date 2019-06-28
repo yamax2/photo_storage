@@ -3,6 +3,8 @@
 .photo-content
   .photo-header
     ul
+      li
+        = link_to t('title'), root_path
       - @page.rubrics_tree.reverse_each do |rubric|
         li
           = link_to rubric.name, page_path(rubric)
