@@ -31,7 +31,11 @@ module Photos
     def create_remote_dirs
       return if remote_path_exists?
 
-      RedisMutex.with_lock("yandex:dirs:#{remote_path.join(':')}", block: 1.minute, expire: 10.minutes) do
+      RedisMutex.with_lock(
+        "yandex:dirs:#{token_for_upload.id}:#{remote_path.join(':')}",
+        block: 1.minute,
+        expire: 10.minutes
+      ) do
         remote_path.each_with_object('') do |dir, path|
           path << '/' << dir
 
