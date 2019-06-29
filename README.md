@@ -15,7 +15,8 @@ dip rails credentials:edit
 
 * photo edit action
 * map in photo listing
- 
+* videos
+* tracks 
 * clear tmp job
 * html editor for rubrics
 * revision job
