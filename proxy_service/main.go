@@ -1,7 +1,9 @@
 package main
 
 import(
-        // "log"
+        "fmt"
+        "log"
+        "flag"
         "net/url"
         "net/http"
         "net/http/httputil"
@@ -10,7 +12,15 @@ import(
 )
 
 func main() {
-        db, err := sql.Open("postgres", "host=db user=postgres dbname=photos sslmode=disable")
+        db_host := flag.String("host", "localhost", "db host")
+        db_user := flag.String("user", "postgres", "db user")
+        db_name := flag.String("db", "photos", "database")
+        flag.Parse()
+
+        connection_str := fmt.Sprintf("host=%s user=%s dbname=%s sslmode=disable", *db_host, *db_user, *db_name)
+        log.Println(connection_str)
+
+        db, err := sql.Open("postgres", connection_str)
         if err != nil {
                 panic(err)
         }

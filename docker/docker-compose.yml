@@ -46,6 +46,6 @@ services:
     volumes:
       - .:/app
       - ../../go:/go
-    command: 'go run proxy_service/main.go'
+    command: 'go run proxy_service/main.go -host=db -user=postgres -db=photos'
     expose:
       - '9000'
