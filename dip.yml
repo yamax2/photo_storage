@@ -59,3 +59,4 @@ provision:
   - dip compose up -d db
   - dip bundle install
   - dip rails db:migrate
+  - dip go get -u github.com/lib/pq

@@ -45,7 +45,7 @@ services:
     working_dir: /app
     volumes:
       - .:/app
-      # - ../go:/go
+      - ../../go:/go
     command: 'go run proxy_service/main.go'
     expose:
       - '9000'

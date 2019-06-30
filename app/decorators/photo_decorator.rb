@@ -11,13 +11,13 @@ class PhotoDecorator < Draper::Decorator
     return unless storage_filename.present?
 
     url = [proxy_url, storage_filename].join('/')
-
     url << if size == :original
              "?fn=#{original_filename}"
            else
              "?preview&size=#{thumb_width(size)}"
            end
 
+    url << "&id=#{yandex_token_id}"
     url
   end
 

@@ -36,15 +36,23 @@ RSpec.describe PhotoDecorator do
       end
 
       context 'when original size' do
-        it { expect(subject.url).to eq('https://proxy.test.org/photos/001/002/test.jpg?fn=test.jpg') }
+        it do
+          expect(subject.url).to eq("https://proxy.test.org/photos/001/002/test.jpg?fn=test.jpg&id=#{token.id}")
+        end
       end
 
       context 'when thumb' do
-        it { expect(subject.url(:thumb)).to eq('https://proxy.test.org/photos/001/002/test.jpg?preview&size=100') }
+        it do
+          expect(subject.url(:thumb)).
+            to eq("https://proxy.test.org/photos/001/002/test.jpg?preview&size=100&id=#{token.id}")
+        end
       end
 
       context 'when preview' do
-        it { expect(subject.url(:preview)).to eq('https://proxy.test.org/photos/001/002/test.jpg?preview&size=900') }
+        it do
+          expect(subject.url(:preview)).
+            to eq("https://proxy.test.org/photos/001/002/test.jpg?preview&size=900&id=#{token.id}")
+        end
       end
 
       context 'when wrong size type' do
