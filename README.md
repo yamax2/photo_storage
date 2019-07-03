@@ -22,3 +22,8 @@ dip rails credentials:edit
 * revision job
 * cache
 * search
+
+
+### Capistrano TODO
+* install bundler
+* copy ymls
