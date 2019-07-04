@@ -1,4 +1,3 @@
-# config valid for current version and patch releases of Capistrano
 lock '~> 3.11.0'
 
 set :application, 'photo_storage'
@@ -20,10 +19,7 @@ set :deploy_to, '/home/photos/photos'
 # Default value for :pty is false
 # set :pty, true
 
-# Default value for :linked_files is []
 append :linked_files, 'config/database.yml', 'config/redis.yml', 'config/master.key'
-
-# Default value for linked_dirs is []
 append :linked_dirs, 'log', 'tmp'
 
 # Default value for default_env is {}
@@ -32,9 +28,7 @@ append :linked_dirs, 'log', 'tmp'
 # Default value for local_user is ENV['USER']
 # set :local_user, -> { `git config user.name`.chomp }
 
-# Default value for keep_releases is 5
 set :keep_releases, 5
-
 set :ssh_options, verify_host_key: :secure
 set :ssh_options, forward_agent: true, user: 'photos'
 set :rvm_custom_path, '/usr/share/rvm'
