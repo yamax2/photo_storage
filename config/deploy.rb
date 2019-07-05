@@ -31,4 +31,6 @@ append :linked_dirs, 'log', 'tmp'
 set :keep_releases, 5
 set :ssh_options, verify_host_key: :secure
 set :ssh_options, forward_agent: true, user: 'photos'
-set :rvm_custom_path, '/usr/share/rvm'
+
+set :rbenv_type, :user
+set :rbenv_ruby, '2.6.3'
