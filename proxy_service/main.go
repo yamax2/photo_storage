@@ -51,7 +51,7 @@ func main() {
 
         proxy := httputil.NewSingleHostReverseProxy(remote)
         http.Handle("/", &ProxyHandler{env, proxy})
-        err = http.ListenAndServe(":9000", nil)
+        err = http.ListenAndServe("127.0.0.1:9000", nil)
         if err != nil {
                 panic(err)
         }

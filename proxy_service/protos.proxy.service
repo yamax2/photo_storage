@@ -1,0 +1,16 @@
+[Unit]
+Description=Yandex Disk proxy for photos project
+After=network.target
+
+[Service]
+Type=simple
+
+User=photos
+Group=photos
+
+WorkingDirectory=/home/photos/
+ExecStart=/home/photos/yandex_proxy -user=photos -host=/var/run/postgresql/
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
