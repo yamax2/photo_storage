@@ -34,3 +34,4 @@ set :ssh_options, forward_agent: true, user: 'photos'
 
 set :rbenv_type, :user
 set :rbenv_ruby, '2.6.3'
+set :default_env, {disable_binstubs: '1'}

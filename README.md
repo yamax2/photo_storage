@@ -22,9 +22,3 @@ dip rails credentials:edit
 * revision job
 * cache
 * search
-
-### Capistrano TODO
-* install bundler
-* copy ymls and master.key
-* create "sockets" and "pids" dirs in tmp
-* set RAILS_ENV=production for user
