@@ -1,4 +1,5 @@
 require 'exifr/jpeg'
+require 'image_size'
 
 module Photos
   class LoadInfoService
@@ -7,17 +8,27 @@ module Photos
     delegate :photo, to: :context
 
     def call
-      return unless valid?
+      return unless photo.local_file?
 
-      photo.exif = {model: exif_data.model, make: exif_data.make}
+      if exif?
+        photo.exif = {model: exif_data.model, make: exif_data.make}
 
-      load_gps_attrs
-      load_photo_attrs
+        load_gps_attrs
+        load_photo_exif_attrs
+      else
+        load_photo_attrs
+      end
 
       photo.save!
     end
 
     private
+
+    def exif?
+      photo.content_type == Photo::JPEG_IMAGE && \
+        photo.exif.nil? && \
+        exif_data.exif?
+    end
 
     def exif_data
       @exif_data ||= EXIFR::JPEG.new(photo.tmp_local_filename.to_s)
@@ -30,17 +41,17 @@ module Photos
     end
 
     def load_photo_attrs
-      photo.original_timestamp = exif_data.date_time
+      info = ImageSize.path(photo.tmp_local_filename.to_s)
 
-      photo.width = exif_data.width
-      photo.height = exif_data.height
+      photo.assign_attributes(width: info.w, height: info.h)
     end
 
-    def valid?
-      photo.content_type == Photo::JPEG_IMAGE && \
-        photo.exif.nil? && \
-        exif_data.exif? && \
-        photo.local_file?
+    def load_photo_exif_attrs
+      photo.assign_attributes(
+        original_timestamp: exif_data.date_time,
+        width: exif_data.width,
+        height: exif_data.height
+      )
     end
   end
 end

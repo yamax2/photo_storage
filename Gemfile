@@ -1,4 +1,5 @@
 source 'https://rubygems.org'
+
 git_source(:github) { |repo| "git@github.com:#{repo}.git" }
 
 gem 'rails', '~> 5.2.3'
@@ -11,12 +12,6 @@ gem 'mini_racer', platforms: :ruby
 gem 'coffee-rails', '~> 4.2'
 gem 'turbolinks', '~> 5'
 gem 'jbuilder', '~> 2.5'
-# Use ActiveModel has_secure_password
-# gem 'bcrypt', '~> 3.1.7'
-
-# Use Capistrano for deployment
-# gem 'capistrano-rails', group: :development
-
 gem 'bootsnap', '>= 1.1.0', require: false
 
 gem 'bootstrap', '~> 4.3.1'
@@ -37,8 +32,9 @@ gem 'sidekiq-cron', '>= 1.1'
 gem 'sidekiq-failures', '>= 1'
 gem 'strip_attributes', '>= 1.8'
 
-gem 'leaflet-rails'
 gem 'exifr'
+gem 'image_size'
+gem 'leaflet-rails'
 gem 'yandex_photo_storage', github: 'yamax2/yandex_photo_storage'
 
 group :development, :test do
