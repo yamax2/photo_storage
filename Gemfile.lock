@@ -1,6 +1,6 @@
 GIT
   remote: git@github.com:yamax2/yandex_photo_storage.git
-  revision: ee85054c43e4de37aae9ba25f37a38ccd4920982
+  revision: 6d21903483709b60f11f97a4b3b32b5b96e84b6d
   specs:
     yandex_photo_storage (0.1.0)
       ox
@@ -60,7 +60,7 @@ GEM
     arel (9.0.0)
     autoprefixer-rails (9.6.1)
       execjs
-    bindex (0.7.0)
+    bindex (0.8.1)
     bootsnap (1.4.4)
       msgpack (~> 1.0)
     bootstrap (4.3.1)
