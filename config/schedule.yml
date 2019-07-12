@@ -1,3 +1,7 @@
 yandex_refresh:
   cron: '0 1 * * *'
   class: Yandex::RefreshTokensJob
+
+dump_photo_views:
+  cron: '0 2 * * *'
+  class: Photos::DumpViewsJob

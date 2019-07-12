@@ -19,6 +19,7 @@ RSpec.describe Photo do
     it { is_expected.to have_db_column(:content_type).of_type(:string).with_options(null: false, limit: 30) }
     it { is_expected.to have_db_column(:width).of_type(:integer).with_options(null: false, default: 0) }
     it { is_expected.to have_db_column(:height).of_type(:integer).with_options(null: false, default: 0) }
+    it { is_expected.to have_db_column(:views).of_type(:integer).with_options(null: false, default: 0) }
 
     it { is_expected.to have_db_column(:created_at).of_type(:datetime).with_options(null: false) }
     it { is_expected.to have_db_column(:updated_at).of_type(:datetime).with_options(null: false) }
@@ -279,4 +280,6 @@ RSpec.describe Photo do
         and change { photo.size }.from(0).to(File.size(tmp_file))
     end
   end
+
+  it_behaves_like 'model with counter', :photo
 end

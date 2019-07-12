@@ -106,6 +106,7 @@ ru:
       map: На карте
       show_map: Показать
       size: Размер
+      views: Просмотры
   rubrics:
     name:
       rubrics_count_text: ', подрубрик: %{rubrics_count}'

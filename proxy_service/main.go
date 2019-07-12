@@ -15,6 +15,8 @@ func main() {
         db_host := flag.String("host", "localhost", "db host")
         db_user := flag.String("user", "postgres", "db user")
         db_name := flag.String("db", "photos", "database")
+        listen_addr := flag.String("listen", "127.0.0.1", "listen_addr")
+
         flag.Parse()
 
         connection_str := fmt.Sprintf("host=%s user=%s dbname=%s sslmode=disable", *db_host, *db_user, *db_name)
@@ -51,7 +53,7 @@ func main() {
 
         proxy := httputil.NewSingleHostReverseProxy(remote)
         http.Handle("/", &ProxyHandler{env, proxy})
-        err = http.ListenAndServe("127.0.0.1:9000", nil)
+        err = http.ListenAndServe(fmt.Sprintf("%s:9000", *listen_addr), nil)
         if err != nil {
                 panic(err)
         }

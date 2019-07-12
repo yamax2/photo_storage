@@ -31,7 +31,7 @@ class Page
     @rubrics = rubrics.
       with_photos.
       preload(:main_photo).
-      order(:id).
+      order(id: :desc).
       decorate
   end
 

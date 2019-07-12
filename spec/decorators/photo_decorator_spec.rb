@@ -11,6 +11,23 @@ RSpec.describe PhotoDecorator do
     )
   end
 
+  describe '#current_views' do
+    before { RedisClassy.flushdb }
+    after { RedisClassy.flushdb }
+
+    let(:photo) { create :photo, :fake, views: 1_000, local_filename: 'test' }
+
+    context 'when first call' do
+      it { expect(subject.current_views).to eq(1_001) }
+    end
+
+    context 'when second call' do
+      before { subject.inc_counter }
+
+      it { expect(subject.current_views).to eq(1_002) }
+    end
+  end
+
   describe '#image_size' do
     let(:photo) { create :photo, :fake, width: 1_000, height: 2_000, local_filename: 'test' }
 

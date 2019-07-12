@@ -8,11 +8,12 @@ dip rails credentials:edit
 ```
 
 ### TODO:
-* set main photo for rubric action
-* views counter
+* rubrics order
 
+* set main photo for rubric action
 * photo edit action
 * map in photo listing
+
 * videos
 * tracks
 * clear tmp job

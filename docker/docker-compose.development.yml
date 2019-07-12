@@ -11,6 +11,9 @@ services:
       - default
       - frontend
     dns: $DIP_DNS
+    depends_on:
+      - db
+      - redis
     environment:
       - EDITOR=nano
 
@@ -28,6 +31,7 @@ services:
     dns: $DIP_DNS
     depends_on:
       - db
+      - redis
     environment:
       - VIRTUAL_HOST=*.photostorage.$DOCKER_TLD
       - VIRTUAL_PATH=/

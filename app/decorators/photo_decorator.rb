@@ -1,6 +1,10 @@
 class PhotoDecorator < Draper::Decorator
   delegate_all
 
+  def current_views
+    views + inc_counter
+  end
+
   def image_size(size = :thumb)
     thumb_width = thumb_width(size)
 
