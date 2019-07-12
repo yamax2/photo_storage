@@ -35,7 +35,7 @@ RSpec.describe Counters::DumpService do
           and change { photo_with_views.reload.views }.by(10).
           and change { wrong_photo.reload.views }.by(0)
 
-        expect(redis.keys).to match_array(["counters:photo:#{photo_with_views.id * 2}"])
+        expect(redis.keys).to be_empty
       end
     end
   end

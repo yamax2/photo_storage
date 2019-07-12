@@ -6,11 +6,14 @@ module Counters
 
     def call
       # batches?
-      redis.
-        scan_each(match: key_for('*')).
-        each do |key|
-        model = model_klass.where(id: key.gsub(/[^\d]+/, '').to_i).first
-        dump_counter(model) if model
+      redis.scan_each(match: key_for('*')).each do |key|
+        id = key.gsub(/[^\d]+/, '').to_i
+
+        if (model = model_klass.where(id: id).first).present?
+          dump_counter(model)
+        else
+          redis.del(key_for(id))
+        end
       end
     end
 
