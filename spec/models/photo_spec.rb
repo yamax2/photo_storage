@@ -21,6 +21,14 @@ RSpec.describe Photo do
     it { is_expected.to have_db_column(:height).of_type(:integer).with_options(null: false, default: 0) }
     it { is_expected.to have_db_column(:views).of_type(:integer).with_options(null: false, default: 0) }
 
+    it do
+      is_expected.to have_db_column(:tz).of_type(:string).with_options(
+        null: false,
+        default: Rails.application.config.time_zone,
+        limit: 50
+      )
+    end
+
     it { is_expected.to have_db_column(:created_at).of_type(:datetime).with_options(null: false) }
     it { is_expected.to have_db_column(:updated_at).of_type(:datetime).with_options(null: false) }
 
@@ -61,6 +69,8 @@ RSpec.describe Photo do
 
     it { is_expected.to validate_presence_of(:sha256) }
     it { is_expected.to validate_length_of(:sha256).is_equal_to(64) }
+
+    it { is_expected.to validate_inclusion_of(:tz).in_array(Rails.application.config.photo_timezones) }
   end
 
   describe 'token presence validation' do

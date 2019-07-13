@@ -77,7 +77,8 @@ RSpec.describe Page do
       create :photo, :fake, rubric: root_rubric1,
                             storage_filename: 'test',
                             yandex_token: token,
-                            original_timestamp: 1.days.ago
+                            original_timestamp: 2.days.ago,
+                            tz: 'Europe/Moscow'
     end
 
     let(:page) { Page.new(root_rubric1.id) }

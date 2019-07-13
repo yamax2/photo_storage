@@ -101,11 +101,13 @@ ru:
       camera: Камера
       created_at: Загружено
       download: Скачать
+      original_filename: Имя файла
       original_timestamp: Дата съёмки
       original_download: Оригинал
       map: На карте
       show_map: Показать
       size: Размер
+      tz: Часовой пояс
       views: Просмотры
   rubrics:
     name:

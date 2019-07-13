@@ -12,4 +12,10 @@ Rails.application.configure do
     thumb: ->(photo) { photo.width * 360 / photo.height },
     preview: ->(photo) { photo.width * 800 / photo.height }
   }
+
+  # allowed timezones
+  config.photo_timezones = [
+    Rails.application.config.time_zone,
+    'Europe/Moscow'
+  ]
 end

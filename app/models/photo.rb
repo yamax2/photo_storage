@@ -26,6 +26,7 @@ class Photo < ApplicationRecord
   validates :sha256, uniqueness: {scope: :md5}
 
   validates :yandex_token, presence: true, if: :storage_filename
+  validates :tz, presence: true, inclusion: Rails.application.config.photo_timezones
   validate :upload_status
 
   strip_attributes only: %i[name description content_type]

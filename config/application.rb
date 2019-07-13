@@ -30,7 +30,7 @@ module PhotoStorage
     # Don't generate system test files.
     config.generators.system_tests = nil
 
-    config.time_zone = 'Asia/Yekaterinburg'
+    config.time_zone = ENV.fetch('TZ', 'Asia/Yekaterinburg')
     config.i18n.default_locale = :ru
     config.i18n.enforce_available_locales = true
   end

@@ -38,7 +38,7 @@ class Page
   private
 
   def find_photos(photo_id)
-    base_sql = photos_scope.select(:id, 'ROW_NUMBER() OVER (ORDER BY original_timestamp) rn').to_sql
+    base_sql = photos_scope.select(:id, 'ROW_NUMBER() OVER (ORDER BY original_timestamp AT TIME ZONE tz) rn').to_sql
 
     Photo.find_by_sql(<<~SQL).map(&:decorate).index_by(&:rn)
       WITH scope AS (
@@ -46,20 +46,25 @@ class Page
       ), current_photo AS (
         SELECT id, rn FROM scope WHERE id = #{photo_id}
       ), ids AS (
-         SELECT scope.id, scope.rn - current_photo.rn rn FROM scope, current_photo
+         SELECT scope.id, scope.rn - current_photo.rn rn
+           FROM scope, current_photo
          WHERE scope.id = current_photo.id OR
                scope.rn in (current_photo.rn - 1, current_photo.rn + 1)
       )
-      SELECT photos.*, ids.rn FROM #{Photo.quoted_table_name} photos, ids
-        WHERE photos.id = ids.id ORDER BY photos.original_timestamp
+      SELECT photos.*, ids.rn
+         FROM #{Photo.quoted_table_name} photos, ids
+        WHERE photos.id = ids.id
+          ORDER BY photos.original_timestamp AT TIME ZONE photos.tz
     SQL
   end
 
   def photos_scope
+    table = Photo.arel_table
+
     @rubric.
       photos.
       uploaded.
       preload(:yandex_token).
-      order(:original_timestamp)
+      order(Arel::Nodes::InfixOperation.new('AT TIME ZONE', table[:original_timestamp], table[:tz]))
   end
 end

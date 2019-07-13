@@ -62,5 +62,17 @@
         td
           = @photos.current.current_views
 
+      tr
+        th
+          = t('.tz')
+        td
+          = @photos.current.tz
+
+      tr
+        th
+          = t('.original_filename')
+        td
+          = @photos.current.original_filename
+
     p.photo-description
       = @photos.current.description

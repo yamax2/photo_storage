@@ -1,10 +1,14 @@
 require 'spec_helper'
-require 'simplecov'
-SimpleCov.start 'rails' do
-  minimum_coverage 90
 
-  add_filter 'app/helpers/application_helper.rb'
-  add_filter 'app/models/application_record.rb'
+if RSpec.configuration.files_to_run.size > 1
+  require 'simplecov'
+
+  SimpleCov.start 'rails' do
+    minimum_coverage 90
+
+    add_filter 'app/helpers/application_helper.rb'
+    add_filter 'app/models/application_record.rb'
+  end
 end
 
 require 'strip_attributes/matchers'
