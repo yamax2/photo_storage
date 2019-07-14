@@ -8,11 +8,10 @@ dip rails credentials:edit
 ```
 
 ### TODO:
-* batches in counter dumper (expire and persist)
+* revision job
 * cart and mass edit / photo edit action
 * set main photo for rubric action
 * map in photo listing
-* revision job
 
 * videos
 * tracks

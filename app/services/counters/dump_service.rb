@@ -2,11 +2,13 @@ module Counters
   class DumpService
     include ::Interactor
 
+    BATCH_SIZE = 100
+    LOADED_COUNTER_TTL = 1.hour
+
     delegate :model_klass, to: :context
 
     def call
-      # batches?
-      redis.scan_each(match: key_for('*')).each do |key|
+      redis.scan_each(match: key_for('*'), count: BATCH_SIZE).each do |key|
         id = key.gsub(/[^\d]+/, '').to_i
 
         if (model = model_klass.where(id: id).first).present?
@@ -25,8 +27,8 @@ module Counters
       key = key_for(model.id)
 
       value = redis.multi do
-        redis.get(key)
-        redis.del(key)
+        redis.getset(key, nil)
+        redis.expire(key, LOADED_COUNTER_TTL)
       end.first
 
       model.update_column(:views, model.views + value.to_i) if value.present?

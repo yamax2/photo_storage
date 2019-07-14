@@ -6,6 +6,7 @@ ru:
         created_at: Создано
         name: Название
         description: Описание (html)
+        ord: Порядок в листинге
         rubrics_count: Подрубрики
       yandex/token:
         active: Активность
@@ -116,6 +117,7 @@ ru:
       original_timestamp: Дата съёмки
       original_download: Оригинал
       map: На карте
+      resolution: Разрешение
       show_map: Показать
       size: Размер
       tz: Часовой пояс

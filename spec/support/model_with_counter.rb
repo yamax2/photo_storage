@@ -29,6 +29,22 @@ RSpec.shared_context 'model with counter' do |factory|
           is_expected.to eq(2)
         end
       end
+
+      context 'and counter with ttl' do
+        let(:key) { "counters:photo:#{model.id}" }
+
+        before do
+          redis.set(key, 0)
+          redis.expire(key, 30.minutes)
+        end
+
+        it do
+          expect(redis.ttl(key)).to be_positive
+          expect { subject }.to change { redis.ttl(key) }.to(-1)
+
+          is_expected.to eq(1)
+        end
+      end
     end
 
     context 'when not persisted' do

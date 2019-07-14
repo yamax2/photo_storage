@@ -1,7 +1,11 @@
 require 'rails_helper'
 
 RSpec.describe Counters::DumpService do
-  before { RedisClassy.flushdb }
+  before do
+    stub_const("#{described_class}::BATCH_SIZE", 1)
+    RedisClassy.flushdb
+  end
+
   after { RedisClassy.flushdb }
 
   let(:redis) { RedisClassy.redis }
@@ -35,7 +39,16 @@ RSpec.describe Counters::DumpService do
           and change { photo_with_views.reload.views }.by(10).
           and change { wrong_photo.reload.views }.by(0)
 
-        expect(redis.keys).to be_empty
+        expect(redis.keys).to match_array([
+          "counters:photo:#{photo_without_views.id}",
+          "counters:photo:#{photo_with_views.id}"
+        ])
+
+        expect(redis.get("counters:photo:#{photo_without_views.id}")).to be_empty
+        expect(redis.ttl("counters:photo:#{photo_without_views.id}")).to be_positive
+
+        expect(redis.get("counters:photo:#{photo_with_views.id}")).to be_empty
+        expect(redis.ttl("counters:photo:#{photo_with_views.id}")).to be_positive
       end
     end
   end

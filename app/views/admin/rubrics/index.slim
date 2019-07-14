@@ -29,7 +29,7 @@
           table.table
             thead
               tr
-                - %i[id name created_at rubrics_count].each do |attr|
+                - %i[id name created_at rubrics_count ord].each do |attr|
                   th
                     = sort_link @search, attr, Rubric.human_attribute_name(attr)
                 th
@@ -37,7 +37,7 @@
             tbody
               - @rubrics.each do |rubric|
                 tr
-                  - %i[id name created_at rubrics_count].each do |attr|
+                  - %i[id name created_at rubrics_count ord].each do |attr|
                     td
                       - if %i[id name].include?(attr)
                         = link_to rubric[attr], admin_rubrics_path(id: rubric.id)

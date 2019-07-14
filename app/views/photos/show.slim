@@ -74,5 +74,11 @@
         td
           = @photos.current.original_filename
 
+      tr
+        th
+          = t('.resolution')
+        td
+          = "#{@photos.current.width}x#{@photos.current.height}"
+
     p.photo-description
       = @photos.current.description
