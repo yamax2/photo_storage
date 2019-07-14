@@ -36,7 +36,8 @@ class RubricFinder
       SELECT rubrics.id, rubrics.rubric_id, tt.lv + 1
         FROM #{Rubric.quoted_table_name} rubrics, tt
           WHERE rubrics.id = tt.rubric_id)
-      SELECT rubrics.* from #{Rubric.quoted_table_name} rubrics, tt
+      SELECT rubrics.*
+        FROM #{Rubric.quoted_table_name} rubrics, tt
         WHERE tt.id = rubrics.id
           ORDER BY tt.lv
     SQL

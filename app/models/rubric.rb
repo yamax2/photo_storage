@@ -22,5 +22,5 @@ class Rubric < ApplicationRecord
     SQL
   }
 
-  scope :default_order, -> { order("ord NULLS FIRST, id DESC") }
+  scope :default_order, -> { order('ord NULLS FIRST, id DESC') }
 end
