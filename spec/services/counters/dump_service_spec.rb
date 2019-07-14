@@ -27,9 +27,9 @@ RSpec.describe Counters::DumpService do
 
   context 'when information presents' do
     before do
+      redis.set("counters:photo:#{photo_with_views.id * 2}", 1_000)
       redis.set("counters:photo:#{photo_without_views.id}", 100)
       redis.set("counters:photo:#{photo_with_views.id}", 10)
-      redis.set("counters:photo:#{photo_with_views.id * 2}", 1_000)
     end
 
     context 'when regular call' do
@@ -40,14 +40,17 @@ RSpec.describe Counters::DumpService do
           and change { wrong_photo.reload.views }.by(0)
 
         expect(redis.keys).to match_array([
+          "counters:photo:#{photo_with_views.id * 2}",
           "counters:photo:#{photo_without_views.id}",
           "counters:photo:#{photo_with_views.id}"
         ])
 
-        expect(redis.get("counters:photo:#{photo_without_views.id}")).to be_empty
+        expect(redis.ttl("counters:photo:#{photo_with_views.id * 2}")).to be_positive
+
+        expect(redis.get("counters:photo:#{photo_without_views.id}")).to eq('0')
         expect(redis.ttl("counters:photo:#{photo_without_views.id}")).to be_positive
 
-        expect(redis.get("counters:photo:#{photo_with_views.id}")).to be_empty
+        expect(redis.get("counters:photo:#{photo_with_views.id}")).to eq('0')
         expect(redis.ttl("counters:photo:#{photo_with_views.id}")).to be_positive
       end
     end

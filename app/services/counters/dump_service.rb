@@ -14,7 +14,7 @@ module Counters
         if (model = model_klass.where(id: id).first).present?
           dump_counter(model)
         else
-          redis.del(key_for(id))
+          redis.expire(key_for(id), LOADED_COUNTER_TTL)
         end
       end
     end
@@ -27,7 +27,7 @@ module Counters
       key = key_for(model.id)
 
       value = redis.multi do
-        redis.getset(key, nil)
+        redis.getset(key, 0)
         redis.expire(key, LOADED_COUNTER_TTL)
       end.first
 
