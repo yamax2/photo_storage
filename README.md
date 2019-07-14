@@ -13,8 +13,8 @@ dip rails credentials:edit
 * set main photo for rubric action
 * map in photo listing
 
-* videos
 * tracks
+* videos
 * clear tmp job
 * html editor for rubrics
 * cache

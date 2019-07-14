@@ -3,9 +3,8 @@ module Yandex
     include Sidekiq::Worker
 
     def perform
-      # amount is small
-      Token.order(:id).pluck(:id).each do |token_id|
-        RefreshTokenJob.perform_async(token_id)
+      Token.order(:id).select(:id).each_row(with_lock: true) do |row|
+        RefreshTokenJob.perform_async(row[:token_id].to_i)
       end
     end
   end
