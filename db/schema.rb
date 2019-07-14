@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_07_13_185631) do
+ActiveRecord::Schema.define(version: 2019_07_14_134926) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -50,6 +50,7 @@ ActiveRecord::Schema.define(version: 2019_07_13_185631) do
     t.bigint "rubrics_count", default: 0, null: false
     t.bigint "photos_count", default: 0, null: false
     t.bigint "main_photo_id"
+    t.integer "ord"
     t.index ["main_photo_id"], name: "index_rubrics_on_main_photo_id", where: "(main_photo_id IS NOT NULL)"
     t.index ["rubric_id"], name: "index_rubrics_on_rubric_id"
   end

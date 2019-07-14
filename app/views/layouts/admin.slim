@@ -1,3 +1,5 @@
+- title = content_for(:title)
+
 doctype html
 html
   head
@@ -10,6 +12,8 @@ html
       = t('title')
       - if Rails.env.development?
         |  [dev]
+      - if title.present?
+        = ": #{title}"
 
     = csrf_meta_tags
     = csp_meta_tag
@@ -29,7 +33,7 @@ html
         .col-sm-4
           .page-header.float-left
             .page-title
-              - if (title = content_for(:title))
+              - if title.present?
                 h1
                   = title
         .col-sm-8

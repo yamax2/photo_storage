@@ -16,6 +16,8 @@ RSpec.describe Rubric do
 
     it { is_expected.to have_db_index(:rubric_id) }
     it { is_expected.to have_db_index(:main_photo_id) }
+
+    it { is_expected.to have_db_column(:ord).of_type(:integer) }
   end
 
   describe 'associations' do
@@ -35,14 +37,20 @@ RSpec.describe Rubric do
     it { is_expected.to strip_attribute(:description) }
   end
 
-  describe 'scope with_photos' do
+  describe 'scopes' do
     let!(:rubric1) { create :rubric, photos_count: 0 }
     let!(:rubric2) { create :rubric, photos_count: 0 }
-    let!(:rubric3) { create :rubric, photos_count: 5, rubric: rubric1 }
-    let!(:rubric4) { create :rubric, rubric: rubric2 }
+    let!(:rubric3) { create :rubric, photos_count: 5, rubric: rubric1, ord: 1 }
+    let!(:rubric4) { create :rubric, rubric: rubric2, ord: 2 }
 
-    it do
-      expect(described_class.with_photos).to match_array([rubric1, rubric3])
+    describe '#with_photos' do
+      it { expect(described_class.with_photos).to match_array([rubric1, rubric3]) }
+    end
+
+    describe '#default_order' do
+      it do
+        expect(described_class.default_order).to eq([rubric2, rubric1, rubric3, rubric4])
+      end
     end
   end
 end

@@ -26,6 +26,11 @@ aside#left-panel.left-panel
             i.menu-icon.fa.fa-laptop
             = t('.rubrics')
 
+        li*{class: controller_path == 'admin/rubrics/positions' ? 'active' : ''}
+          = link_to admin_rubrics_positions_path do
+            i.menu-icon.fa.fa-sort
+            = t('.rubric_positions')
+
         h3.menu-title
           = t('.settings')
 

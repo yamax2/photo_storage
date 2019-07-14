@@ -15,6 +15,11 @@ crumb :rubrics do
   link t('admin.partials.menu.rubrics'), admin_rubrics_path
 end
 
+crumb :rubric_positions do
+  link t('admin.partials.menu.rubric_positions'), admin_rubrics_positions_path
+  parent :rubrics
+end
+
 crumb :rubric do |rubric|
   link rubric.name.presence || t('admin.rubrics.form.title'), rubric.persisted? ? admin_rubric_path(rubric) : '#'
   parent :rubrics

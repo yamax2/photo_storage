@@ -6,6 +6,7 @@ ru:
         created_at: Создано
         name: Название
         description: Описание (html)
+        rubrics_count: Подрубрики
       yandex/token:
         active: Активность
         dir: Каталог фото
@@ -50,6 +51,7 @@ ru:
         content: Контент
         dashboard: Панель управления
         rubrics: Рубрики
+        rubric_positions: Сортировка рубрик
         settings: Управление
         yandex_tokens: Токены Yandex
     rubrics:
@@ -66,12 +68,21 @@ ru:
         edit: Редактировать рубрику
         level_up: На уровень выше
         new: Добавить рубрику
+        positions: Сортировка подрубрик
         remove: Удалить рубрику
         remove_confirm: Вы действительно хотите удалить рубрику со всеми подрубриками?
         subrubrics: Подрубрики %{name}
       new:
         title_root: Создание новой корневой рубрики
         title_with_parent: 'Создание новой подрубрики в рубрике %{name}'
+      positions:
+        index:
+          apply: Сохранить порядок
+          root: корневой рубрики
+          text: |
+            По умолчанию рубрики отображаются в порядке добавления.
+            На этой странице Вы можете изменить порядок сортировки перетаскивая рубрики.
+          title: 'Сортировка подрубрик для %{name}'
     yandex:
       token_performed: Создание токена запланировано
       tokens:

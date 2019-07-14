@@ -24,6 +24,10 @@ Rails.application.routes.draw do
     end
 
     resources :rubrics, except: :show
+    namespace :rubrics do
+      resources :positions, only: %i[index create]
+    end
+
     resources :photos, only: :create
   end
 
