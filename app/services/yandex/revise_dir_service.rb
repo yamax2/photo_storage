@@ -5,11 +5,13 @@ module Yandex
     delegate :dir, :token, :errors, to: :context
 
     def call
-      context.errors = {}
+      context.errors ||= {}
 
       revise_photos
 
       errors[nil] = dav_response.keys unless dav_response.empty?
+    rescue YandexPhotoStorage::NotFoundError
+      errors[nil] = ["dir #{dir} not found on remote storage"]
     end
 
     private

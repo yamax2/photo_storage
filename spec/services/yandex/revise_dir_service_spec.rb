@@ -22,56 +22,73 @@ RSpec.describe Yandex::ReviseDirService do
                           yandex_token: token
   end
 
-  subject do
-    VCR.use_cassette('yandex_revise_dir') { described_class.call!(dir: dir, token: token) }
+  context 'when dir exists' do
+    subject do
+      VCR.use_cassette('yandex_revise_dir') { described_class.call!(dir: dir, token: token) }
+    end
+
+    context 'when photo does not exist in database' do
+      it do
+        is_expected.to be_a_success
+
+        expect(subject.errors.keys).to eq([nil])
+        expect(subject.errors[nil]).to eq(['000/013/6516fdedf98ba516916be55f04faeec88d14718325dc.jpg'])
+      end
+    end
+
+    context 'when photo does not exist on remote storage' do
+      let!(:photo3) do
+        create :photo, :fake, storage_filename: '000/013/6516fdedf98ba516916be55f04faeec88d14718325dc.jpg',
+                              size: 5_795_643,
+                              md5: '635d4505b9dfd1b49ab346c8209e09f7',
+                              content_type: 'image/jpeg',
+                              yandex_token: token
+      end
+
+      let!(:photo4) { create :photo, :fake, storage_filename: '000/013/zzz.jpg', yandex_token: token }
+
+      it do
+        is_expected.to be_a_success
+
+        expect(subject.errors.keys).to eq([photo4.id])
+        expect(subject.errors[photo4.id]).to eq(['not found on remote storage'])
+      end
+    end
+
+    context 'when wrong photo info' do
+      let!(:photo3) do
+        create :photo, :fake, storage_filename: '000/013/6516fdedf98ba516916be55f04faeec88d14718325dc.jpg',
+                              size: 5_795_644,
+                              md5: '635d4505b9dfd1b49ab346c8209e09f8',
+                              content_type: 'image/png',
+                              yandex_token: token
+      end
+
+      it do
+        is_expected.to be_a_success
+
+        expect(subject.errors.keys).to eq([photo3.id])
+        expect(subject.errors[photo3.id]).to match_array([
+          'size mismatch',
+          'content type mismatch',
+          'etag mismatch'
+        ])
+      end
+    end
   end
 
-  context 'when photo does not exist in database' do
+  context 'when dir does not exist' do
+    let(:dir) { '011/013/' }
+
+    subject do
+      VCR.use_cassette('yandex_revise_wrong_dir') { described_class.call!(dir: dir, token: token) }
+    end
+
     it do
       is_expected.to be_a_success
 
       expect(subject.errors.keys).to eq([nil])
-      expect(subject.errors[nil]).to eq(['000/013/6516fdedf98ba516916be55f04faeec88d14718325dc.jpg'])
-    end
-  end
-
-  context 'when photo does not exist on remote storage' do
-    let!(:photo3) do
-      create :photo, :fake, storage_filename: '000/013/6516fdedf98ba516916be55f04faeec88d14718325dc.jpg',
-                            size: 5_795_643,
-                            md5: '635d4505b9dfd1b49ab346c8209e09f7',
-                            content_type: 'image/jpeg',
-                            yandex_token: token
-    end
-
-    let!(:photo4) { create :photo, :fake, storage_filename: '000/013/zzz.jpg', yandex_token: token }
-
-    it do
-      is_expected.to be_a_success
-
-      expect(subject.errors.keys).to eq([photo4.id])
-      expect(subject.errors[photo4.id]).to eq(['not found on remote storage'])
-    end
-  end
-
-  context 'when wrong photo info' do
-    let!(:photo3) do
-      create :photo, :fake, storage_filename: '000/013/6516fdedf98ba516916be55f04faeec88d14718325dc.jpg',
-                            size: 5_795_644,
-                            md5: '635d4505b9dfd1b49ab346c8209e09f8',
-                            content_type: 'image/png',
-                            yandex_token: token
-    end
-
-    it do
-      is_expected.to be_a_success
-
-      expect(subject.errors.keys).to eq([photo3.id])
-      expect(subject.errors[photo3.id]).to match_array([
-        'size mismatch',
-        'content type mismatch',
-        'etag mismatch'
-      ])
+      expect(subject.errors[nil]).to eq(['dir 011/013/ not found on remote storage'])
     end
   end
 end

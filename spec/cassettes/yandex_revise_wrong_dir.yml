@@ -1,0 +1,48 @@
+---
+http_interactions:
+- request:
+    method: propfind
+    uri: https://webdav.yandex.ru/test/011/013/
+    body:
+      encoding: UTF-8
+      string: ''
+    headers:
+      Authorization:
+      - OAuth <TOKEN>
+      Depth:
+      - '1'
+      Content-Type:
+      - application/x-www-form-urlencoded
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 404
+      message: Not Found
+    headers:
+      Date:
+      - Tue, 16 Jul 2019 04:51:42 GMT
+      Yandex-Cloud-Request-Id:
+      - dav-5866ff5aa56c64fa9e4148227f6faa02-iva6-1dcd4f002f26
+      Yandex-Uid:
+      - '1130000019982670'
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Content-Type-Options:
+      - nosniff
+      Content-Length:
+      - '0'
+      Server:
+      - Jetty(9.4.11.v20180605)
+    body:
+      encoding: UTF-8
+      string: ''
+    http_version: 
+  recorded_at: Tue, 16 Jul 2019 04:51:42 GMT
+recorded_with: VCR 5.0.0
