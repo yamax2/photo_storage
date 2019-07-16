@@ -7,6 +7,20 @@ download master.key and run
 dip rails credentials:edit
 ```
 
+secrets:
+```
+yandex:
+  api_key: ...
+  api_secret: ...
+
+email:
+  login: auto@mytm.tk
+  password: ...
+  domain: mytm.tk
+
+secret_key_base: ...
+```
+
 ### TODO:
 * revision job
 * cart and mass edit / photo edit action

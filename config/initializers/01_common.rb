@@ -5,7 +5,7 @@ Rails.application.routes.default_url_options[:host] = ENV.fetch('HOST', 'photost
 Rails.application.routes.default_url_options[:protocol] = ENV.fetch('PROTOCOL', 'http')
 
 Rails.application.configure do
-  config.proxy_domain = 'proxy'.freeze
+  config.proxy_domain = ENV.fetch('PROXY_SUBDOMAIN', 'proxy').freeze
 
   # widths
   config.photo_sizes = {
