@@ -55,6 +55,8 @@ services:
       - default
       - frontend
     dns: $DIP_DNS
+    environment:
+      - BROWSER=/bin/cat
 
   proxy:
     volumes:

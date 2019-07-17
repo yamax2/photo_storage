@@ -108,6 +108,8 @@ ru:
           remove_confirm: Вы действительно хотите удалить токен?
         refresh:
           success: 'Обновление токена %{login} запланировано'
+  mail:
+    footer: 'Это автоматическое письмо сервиса %{title}. <strong>Отвечать на него не нужно.</strong>'
   photos:
     show:
       camera: Камера
@@ -132,6 +134,9 @@ ru:
       last: Последняя страница
       next: Следующая
       previous: Предыдущая
+    revise_mailer:
+      failed:
+        subject: 'Обнаружены несоотвествия в каталоге %{dir}, id токена: %{token_id}'
     switches:
       on_text: Вкл
       off_text: Выкл

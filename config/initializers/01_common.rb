@@ -18,4 +18,6 @@ Rails.application.configure do
     Rails.application.config.time_zone,
     'Europe/Moscow'
   ]
+
+  config.admin_emails = ENV.fetch('ADMIN_EMAILS', 'admin@photostorage.localhost').split(',').map(&:strip)
 end

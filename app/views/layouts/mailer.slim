@@ -1,0 +1,6 @@
+html
+  body
+    = yield
+    hr
+    small
+      = t('mail.footer', title: link_to(t('title'), root_url)).html_safe
