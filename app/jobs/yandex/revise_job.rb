@@ -18,7 +18,7 @@ module Yandex
     def query
       <<~SQL
         SELECT yandex_token_id token_id,
-               regexp_replace(storage_filename, '[a-z0-9]+\.[A-z]+', '') dir
+               regexp_replace(storage_filename, '[a-z0-9]+\.[A-z]+$', '') dir
         FROM photos
           WHERE storage_filename IS NOT NULL
             GROUP by 1,2
