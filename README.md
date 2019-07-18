@@ -22,7 +22,6 @@ secret_key_base: ...
 ```
 
 ### TODO:
-* revision job
 * unique jobs
 * cart and mass edit / photo edit action
 * set main photo for rubric action
