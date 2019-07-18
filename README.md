@@ -22,11 +22,11 @@ secret_key_base: ...
 ```
 
 ### TODO:
-* unique jobs
-* cart and mass edit / photo edit action
 * set main photo for rubric action
+* cart and mass edit / photo edit action
 * map in photo listing
 
+* unique jobs (?)
 * tracks
 * videos
 * clear tmp job

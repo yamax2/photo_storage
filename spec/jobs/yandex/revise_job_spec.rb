@@ -30,4 +30,6 @@ RSpec.describe Yandex::ReviseJob do
       expect { run_job }.not_to(change { Yandex::ReviseDirJob.jobs.size })
     end
   end
+
+  after { Sidekiq::Worker.clear_all }
 end

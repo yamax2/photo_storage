@@ -28,10 +28,11 @@ gem 'ransack', '>= 2.1'
 gem 'redis-classy', '>= 2.4'
 gem 'redis-mutex', '>= 4'
 gem 'russian'
+gem 'strip_attributes', '>= 1.8'
+
 gem 'sidekiq', '>= 5'
 gem 'sidekiq-cron', '>= 1.1'
 gem 'sidekiq-failures', '>= 1'
-gem 'strip_attributes', '>= 1.8'
 
 gem 'exifr'
 gem 'image_size'

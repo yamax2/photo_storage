@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe Yandex::ReviseDirJob do
-  let(:token) { create :'yandex/token', dir: '/test' }
+  let!(:token) { create :'yandex/token', dir: '/test' }
 
   around do |example|
     Sidekiq::Testing.fake! { example.run }
@@ -32,4 +32,6 @@ RSpec.describe Yandex::ReviseDirJob do
       expect { run_job }.not_to(change { Sidekiq::Extensions::DelayedMailer.jobs.size })
     end
   end
+
+  after { Sidekiq::Worker.clear_all }
 end
