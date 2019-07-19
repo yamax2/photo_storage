@@ -6,14 +6,14 @@ RSpec.describe Yandex::RefreshTokensJob do
   end
 
   context 'when some tokens' do
-    before do
-      create_list(:'yandex/token', 2)
+    let!(:token1) { create :'yandex/token' }
+    let!(:token2) { create :'yandex/token' }
 
-      described_class.perform_async
-    end
+    before { described_class.perform_async }
 
     it do
-      expect(Yandex::RefreshTokenJob).to have_received(:perform_async).twice
+      expect(Yandex::RefreshTokenJob).to have_received(:perform_async).with(token1.id)
+      expect(Yandex::RefreshTokenJob).to have_received(:perform_async).with(token2.id)
     end
   end
 
