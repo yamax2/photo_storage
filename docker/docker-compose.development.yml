@@ -13,7 +13,6 @@ services:
     dns: $DIP_DNS
     depends_on:
       - db
-      - redis
     environment:
       - EDITOR=nano
 
