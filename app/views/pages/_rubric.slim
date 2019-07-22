@@ -1,0 +1,13 @@
+- photo = rubric.main_photo
+- size = photo&.image_size || [480, 360]
+- style = "width: #{size.first}px; height: #{size.last}px"
+
+= link_to page_path(rubric), class: 'rubric', style: style do
+  - if photo.present?
+    img*{style: style, data: {src: photo.url(:thumb)}}
+  - else
+    .no-image
+
+  .photo-name
+    span
+      = rubric.rubric_name

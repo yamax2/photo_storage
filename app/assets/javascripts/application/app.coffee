@@ -3,7 +3,7 @@ $(document)
     $('#mainimg').on 'load', ->
       $('.photo-right, .photo-left').show()
 
-    $('.photo > img').lazy()
+    $('.photos .photo > img, .rubrics .rubric > img').lazy()
 
   .on 'keydown', (e) ->
     if e.keyCode == 37

@@ -15,27 +15,7 @@
     = @page.rubric.description.to_s.html_safe
 
 .rubrics
-  - if @page.rubrics.present?
-    - @page.rubrics.each do |rubric|
-      - photo = rubric.main_photo
-      - size = photo&.image_size || [480, 360]
-
-      = link_to page_path(rubric), class: 'rubric', style: "width: #{size.first}px; height: #{size.last}px" do
-        - if photo.present?
-          = image_tag photo.url(:thumb)
-        - else
-          .no-image
-        .photo-name
-          span
-            = rubric.rubric_name
+  = render partial: 'rubric', collection: @page.rubrics
 
 .photos
-  - @page.photos.each do |photo|
-    - size = photo.image_size
-    = link_to page_photo_path(@page.rubric, photo), class: 'photo',
-              style: "width: #{size.first}px; height: #{size.last}px" do
-
-      img*{style: "width: #{size.first}px; height: #{size.last}px", data: {src: photo.url(:thumb)}}
-      .photo-name
-        span
-          = photo.name
+  = render partial: 'photo', collection: @page.photos
