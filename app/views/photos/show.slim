@@ -80,5 +80,11 @@
         td
           = "#{@photos.current.width}x#{@photos.current.height}"
 
+      tr
+        th
+          = t('.position')
+        td
+          = t('.position_value', pos: @photos.current.pos, count: @page.rubric.photos_count)
+
     p.photo-description
       = @photos.current.description

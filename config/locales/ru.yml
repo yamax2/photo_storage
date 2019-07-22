@@ -119,6 +119,8 @@ ru:
       original_timestamp: Дата съёмки
       original_download: Оригинал
       map: На карте
+      position: Позиция
+      position_value: '%{pos} из %{count}'
       resolution: Разрешение
       show_map: Показать
       size: Размер

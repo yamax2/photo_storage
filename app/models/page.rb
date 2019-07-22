@@ -46,12 +46,14 @@ class Page
       ), current_photo AS (
         SELECT id, rn FROM scope WHERE id = #{photo_id}
       ), ids AS (
-         SELECT scope.id, scope.rn - current_photo.rn rn
+         SELECT scope.id,
+                scope.rn - current_photo.rn rn,
+                scope.rn pos
            FROM scope, current_photo
          WHERE scope.id = current_photo.id OR
                scope.rn in (current_photo.rn - 1, current_photo.rn + 1)
       )
-      SELECT photos.*, ids.rn
+      SELECT photos.*, ids.rn, ids.pos
          FROM #{Photo.quoted_table_name} photos, ids
         WHERE photos.id = ids.id
           ORDER BY photos.original_timestamp AT TIME ZONE photos.tz

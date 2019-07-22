@@ -92,6 +92,9 @@ RSpec.describe Page do
         expect(subject.prev).to be_nil
         expect(subject.current).to eq(photo3)
         expect(subject.next).to eq(photo2)
+
+        expect(subject.current.pos).to eq(1)
+        expect(subject.next.pos).to eq(2)
       end
     end
 
@@ -102,6 +105,10 @@ RSpec.describe Page do
         expect(subject.prev).to eq(photo3)
         expect(subject.current).to eq(photo2)
         expect(subject.next).to eq(photo5)
+
+        expect(subject.prev.pos).to eq(1)
+        expect(subject.current.pos).to eq(2)
+        expect(subject.next.pos).to eq(3)
       end
     end
 
@@ -112,6 +119,9 @@ RSpec.describe Page do
         expect(subject.prev).to eq(photo2)
         expect(subject.current).to eq(photo5)
         expect(subject.next).to eq(nil)
+
+        expect(subject.prev.pos).to eq(2)
+        expect(subject.current.pos).to eq(3)
       end
     end
 
