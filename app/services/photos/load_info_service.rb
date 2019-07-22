@@ -34,8 +34,12 @@ module Photos
       @exif_data ||= EXIFR::JPEG.new(photo.tmp_local_filename.to_s)
     end
 
+    def lat_long_correct?
+      !(exif_data.gps.latitude.zero? && exif_data.gps.longitude.zero?)
+    end
+
     def load_gps_attrs
-      return unless exif_data.gps.present?
+      return unless exif_data.gps.present? && lat_long_correct?
 
       photo.lat_long = [exif_data.gps.latitude, exif_data.gps.longitude]
     end

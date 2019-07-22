@@ -146,4 +146,19 @@ RSpec.describe Photos::LoadInfoService do
       expect(photo.original_timestamp).to eq(Time.current)
     end
   end
+
+  context 'when gps data with zeros' do
+    let(:filename) { 'test5.jpg' }
+    let(:photo) { build :photo, local_filename: filename, content_type: 'image/jpeg' }
+
+    it do
+      expect(photo).to be_valid
+
+      expect(photo.original_timestamp).to eq Time.new(2019, 7, 20, 14, 17, 17)
+      expect(photo.exif).to include('model' => 'Z00AD', 'make' => 'ASUS')
+      expect(photo.lat_long).to be_nil
+
+      expect(photo).to have_attributes(width: 4_096, height: 3_072)
+    end
+  end
 end
