@@ -16,7 +16,7 @@ module Photos
         load_gps_attrs
         load_photo_exif_attrs
       else
-        load_photo_attrs
+        load_file_attrs
       end
 
       photo.save!
@@ -34,28 +34,34 @@ module Photos
       @exif_data ||= EXIFR::JPEG.new(photo.tmp_local_filename.to_s)
     end
 
-    def lat_long_correct?
-      !(exif_data.gps.latitude.zero? && exif_data.gps.longitude.zero?)
+    def gps_attrs_present?
+      exif_data.gps.present? && \
+        !(exif_data.gps.latitude.zero? && exif_data.gps.longitude.zero?)
     end
 
-    def load_gps_attrs
-      return unless exif_data.gps.present? && lat_long_correct?
-
-      photo.lat_long = [exif_data.gps.latitude, exif_data.gps.longitude]
-    end
-
-    def load_photo_attrs
+    def load_file_attrs
       info = ImageSize.path(photo.tmp_local_filename.to_s)
 
       photo.assign_attributes(width: info.w, height: info.h)
     end
 
+    def load_gps_attrs
+      return unless gps_attrs_present?
+
+      photo.lat_long = [exif_data.gps.latitude, exif_data.gps.longitude]
+    end
+
     def load_photo_exif_attrs
-      photo.assign_attributes(
-        original_timestamp: exif_data.date_time,
-        width: exif_data.width,
-        height: exif_data.height
-      )
+      size =
+        case exif_data.orientation&.to_sym
+        when :RightTop, :LeftTop, :RightBottom, :LeftBottom
+          {height: exif_data.width, width: exif_data.height}
+        else
+          {width: exif_data.width, height: exif_data.height}
+        end
+
+      photo.original_timestamp = exif_data.date_time
+      photo.assign_attributes(size)
     end
   end
 end

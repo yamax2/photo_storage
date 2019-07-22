@@ -161,4 +161,18 @@ RSpec.describe Photos::LoadInfoService do
       expect(photo).to have_attributes(width: 4_096, height: 3_072)
     end
   end
+
+  context 'when right top orientation' do
+    let(:filename) { 'test6.jpg' }
+    let(:photo) { build :photo, local_filename: filename, content_type: 'image/jpeg' }
+
+    it do
+      expect(photo).to be_valid
+
+      expect(photo).to have_attributes(width: 3_072, height: 4_096)
+      expect(photo.original_timestamp).to eq Time.new(2019, 7, 20, 12, 11, 33)
+      expect(photo.exif).to include('model' => 'Z00AD', 'make' => 'ASUS')
+      expect(photo.lat_long).to be_nil
+    end
+  end
 end
