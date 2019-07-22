@@ -35,7 +35,7 @@
     = link_to page_photo_path(@page.rubric, photo), class: 'photo',
               style: "width: #{size.first}px; height: #{size.last}px" do
 
-      = image_tag photo.url(:thumb)
+      img*{style: "width: #{size.first}px; height: #{size.last}px", data: {src: photo.url(:thumb)}}
       .photo-name
         span
           = photo.name

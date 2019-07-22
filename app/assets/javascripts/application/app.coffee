@@ -3,6 +3,8 @@ $(document)
     $('#mainimg').on 'load', ->
       $('.photo-right, .photo-left').show()
 
+    $('.photo > img').lazy()
+
   .on 'keydown', (e) ->
     if e.keyCode == 37
       $link = $('.photo-left')
