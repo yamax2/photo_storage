@@ -15,7 +15,7 @@
     = @page.rubric.description.to_s.html_safe
 
 .rubrics
-  = render partial: 'rubric', collection: @page.rubrics
+  = render partial: 'rubric', collection: @page.rubrics, cached: true
 
 .photos
-  = render partial: 'photo', collection: @page.photos
+  = render partial: 'photo', collection: @page.photos, cached: true
