@@ -12,17 +12,11 @@ import(
         _ "github.com/lib/pq"
 )
 
-func main() {
-        db_host := flag.String("host", "localhost", "db host")
-        db_user := flag.String("user", "postgres", "db user")
-        db_name := flag.String("db", "photos", "database")
-        listen_addr := flag.String("listen", "127.0.0.1", "listen_addr")
+type Env struct {
+        Tokens map[string]string;
+}
 
-        flag.Parse()
-
-        connection_str := fmt.Sprintf("host=%s user=%s dbname=%s sslmode=disable", *db_host, *db_user, *db_name)
-        log.Println(connection_str)
-
+func LoadTokens(connection_str string) *Env {
         db, err := sql.Open("postgres", connection_str)
         if err != nil {
                 panic(err)
@@ -47,6 +41,21 @@ func main() {
                 env.Tokens[id] = token
         }
 
+        return env
+}
+
+func main() {
+        db_host := flag.String("host", "localhost", "db host")
+        db_user := flag.String("user", "postgres", "db user")
+        db_name := flag.String("db", "photos", "database")
+
+        listen_addr := flag.String("listen", "127.0.0.1", "listen_addr")
+        flag.Parse()
+
+        connection_str := fmt.Sprintf("host=%s user=%s dbname=%s sslmode=disable", *db_host, *db_user, *db_name)
+        log.Println(connection_str)
+        env := LoadTokens(connection_str)
+
         remote, err := url.Parse("https://webdav.yandex.ru")
         if err != nil {
                 panic(err)
@@ -61,10 +70,6 @@ func main() {
         if err != nil {
                 panic(err)
         }
-}
-
-type Env struct {
-        Tokens map[string]string;
 }
 
 type ProxyHandler struct {
