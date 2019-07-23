@@ -54,7 +54,8 @@ RSpec.describe PhotoDecorator do
 
       context 'when original size' do
         it do
-          expect(subject.url).to eq("https://proxy.test.org/photos/001/002/test.jpg?fn=test.jpg&id=#{token.id}")
+          expect(subject.url).
+            to eq("https://proxy.test.org/originals/photos/001/002/test.jpg?fn=test.jpg&id=#{token.id}")
         end
       end
 

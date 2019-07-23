@@ -14,8 +14,10 @@ class PhotoDecorator < Draper::Decorator
   def url(size = :original)
     return unless storage_filename.present?
 
-    url = [proxy_url, storage_filename].join('/')
-    url << if size == :original
+    original = size == :original
+    url = url_components(original).join('/')
+
+    url << if original
              "?fn=#{original_filename}"
            else
              "?preview&size=#{thumb_width(size)}"
@@ -27,11 +29,9 @@ class PhotoDecorator < Draper::Decorator
 
   private
 
-  def proxy_url(other: false)
-    actual_dir = other ? yandex_token.other_dir : yandex_token.dir
-
+  def proxy_url
     "#{Rails.application.routes.default_url_options[:protocol]}://#{Rails.application.config.proxy_domain}." \
-        "#{Rails.application.routes.default_url_options[:host]}#{actual_dir}"
+        "#{Rails.application.routes.default_url_options[:host]}"
   end
 
   def thumb_width(size)
@@ -41,6 +41,15 @@ class PhotoDecorator < Draper::Decorator
       width.call(self)
     else
       width
+    end
+  end
+
+  def url_components(original)
+    [proxy_url].tap do |components|
+      components << 'originals' if original
+
+      components << yandex_token.dir.sub(%r{^/}, '')
+      components << storage_filename
     end
   end
 end

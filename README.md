@@ -24,7 +24,6 @@ secret_key_base: ...
 ### TODO:
 * set main photo for rubric action
 * cart and mass edit / photo edit action
-* disable nginx cache for original photos
 * map in photo listing
 
 * unique jobs (?)

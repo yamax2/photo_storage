@@ -8,6 +8,7 @@ import(
         "net/http"
         "net/http/httputil"
         "database/sql"
+        "strings"
         _ "github.com/lib/pq"
 )
 
@@ -52,7 +53,10 @@ func main() {
         }
 
         proxy := httputil.NewSingleHostReverseProxy(remote)
-        http.Handle("/", &ProxyHandler{env, proxy})
+
+        http.Handle("/", &ProxyHandler{env, proxy, false})
+        http.Handle("/originals/", &ProxyHandler{env, proxy, true})
+
         err = http.ListenAndServe(fmt.Sprintf("%s:9000", *listen_addr), nil)
         if err != nil {
                 panic(err)
@@ -66,6 +70,7 @@ type Env struct {
 type ProxyHandler struct {
         *Env
         p *httputil.ReverseProxy
+        originals bool
 }
 
 func (ph *ProxyHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
@@ -78,9 +83,14 @@ func (ph *ProxyHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
         id := r.URL.Query().Get("id")
         token := ph.Env.Tokens[id]
+
         if len(token) == 0 {
             http.Error(w, "token not found", http.StatusBadRequest)
             return
+        }
+
+        if ph.originals {
+            r.URL.Path = strings.Replace(r.URL.Path, "/originals", "", -1)
         }
 
         r.Header.Add("Authorization", "OAuth " + token)
