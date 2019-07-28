@@ -27,7 +27,7 @@ module PhotoStorage
     config.i18n.default_locale = :ru
     config.i18n.enforce_available_locales = true
 
-    config.autoload_paths += %W[
+    config.eager_load_paths += %W[
       #{config.root}/lib
     ]
   end

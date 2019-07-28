@@ -1,3 +1,5 @@
+require 'net/http'
+
 module Nominatim
   # Reverse Geocode
   # http://nominatim.org/release-docs/latest/api/Reverse/
