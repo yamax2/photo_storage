@@ -1,3 +1,6 @@
+require 'sidekiq/throttled'
+
+Sidekiq::Throttled.setup!
 Sidekiq::Extensions.enable_delay!
 
 if (opts = Rails.application.config.try(:redis_options))

@@ -26,5 +26,9 @@ module PhotoStorage
     config.time_zone = ENV.fetch('TZ', 'Asia/Yekaterinburg')
     config.i18n.default_locale = :ru
     config.i18n.enforce_available_locales = true
+
+    config.autoload_paths += %W[
+      #{config.root}/lib
+    ]
   end
 end

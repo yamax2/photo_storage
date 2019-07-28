@@ -242,6 +242,7 @@ GEM
       redis-classy (~> 2.0)
     redis-namespace (1.6.0)
       redis (>= 3.0.4)
+    redis-prescription (1.0.0)
     request_store (1.4.1)
       rack (>= 1.4)
     rspec-core (3.8.2)
@@ -297,6 +298,10 @@ GEM
       sidekiq (>= 4.2.1)
     sidekiq-failures (1.0.0)
       sidekiq (>= 4.0.0)
+    sidekiq-throttled (0.10.0)
+      concurrent-ruby
+      redis-prescription
+      sidekiq
     simplecov (0.17.0)
       docile (~> 1.1)
       json (>= 1.8, < 3)
@@ -390,6 +395,7 @@ DEPENDENCIES
   sidekiq (>= 5)
   sidekiq-cron (>= 1.1)
   sidekiq-failures (>= 1)
+  sidekiq-throttled (>= 0.10)
   simplecov
   slim-rails (>= 3.2)
   strip_attributes (>= 1.8)

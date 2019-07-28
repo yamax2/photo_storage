@@ -1,0 +1,67 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://nominatim.openstreetmap.org/reverse?accept-language=ru&format=jsonv2&lat=57.3099288888889&lon=56.9759902777778
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - PhotoStorage https://github.com/yamax2/photo_storage
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Sun, 28 Jul 2019 17:06:42 GMT
+      Server:
+      - Apache/2.4.29 (Ubuntu)
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Methods:
+      - OPTIONS,GET
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+      Expect-Ct:
+      - max-age=0, report-uri="https://openstreetmap.report-uri.com/r/d/ct/reportOnly"
+      Upgrade:
+      - h2
+      Connection:
+      - Upgrade, close
+      Transfer-Encoding:
+      - chunked
+      Content-Type:
+      - application/json; charset=UTF-8
+    body:
+      encoding: ASCII-8BIT
+      base64_string: |
+        eyJwbGFjZV9pZCI6MTE5NjI4ODk1LCJsaWNlbmNlIjoiRGF0YSDCqSBPcGVu
+        U3RyZWV0TWFwIGNvbnRyaWJ1dG9ycywgT0RiTCAxLjAuIGh0dHBzOi8vb3Nt
+        Lm9yZy9jb3B5cmlnaHQiLCJvc21fdHlwZSI6IndheSIsIm9zbV9pZCI6MTg2
+        MDg1NTQ1LCJsYXQiOiI1Ny4zMTAxNDk3IiwibG9uIjoiNTYuOTc2NTA5NyIs
+        InBsYWNlX3JhbmsiOjMwLCJjYXRlZ29yeSI6InNob3AiLCJ0eXBlIjoieWVz
+        IiwiaW1wb3J0YW5jZSI6MCwiYWRkcmVzc3R5cGUiOiJzaG9wIiwibmFtZSI6
+        ItCT0LDQt9C/0YDQvtC80L3QtdGE0YLRjCIsImRpc3BsYXlfbmFtZSI6ItCT
+        0LDQt9C/0YDQvtC80L3QtdGE0YLRjCwg0J/QtdGA0LzRjCDigJQg0JXQutCw
+        0YLQtdGA0LjQvdCx0YPRgNCzLCDQk9C+0LvQtNGL0YDQtdCy0YHQutC+0LUg
+        0YHQtdC70YzRgdC60L7QtSDQv9C+0YHQtdC70LXQvdC40LUsINCa0YPQvdCz
+        0YPRgNGB0LrQuNC5INGA0LDQudC+0L0sINCf0LXRgNC80YHQutC40Lkg0LrR
+        gNCw0LksINCf0YDQuNCy0L7Qu9C20YHQutC40Lkg0YTQtdC00LXRgNCw0LvR
+        jNC90YvQuSDQvtC60YDRg9CzLCA2MTc0MDEsINCg0KQiLCJhZGRyZXNzIjp7
+        InNob3AiOiLQk9Cw0LfQv9GA0L7QvNC90LXRhNGC0YwiLCJyb2FkIjoi0J/Q
+        tdGA0LzRjCDigJQg0JXQutCw0YLQtdGA0LjQvdCx0YPRgNCzIiwiY2l0eSI6
+        ItCT0L7Qu9C00YvRgNC10LLRgdC60L7QtSDRgdC10LvRjNGB0LrQvtC1INC/
+        0L7RgdC10LvQtdC90LjQtSIsImNvdW50eSI6ItCa0YPQvdCz0YPRgNGB0LrQ
+        uNC5INGA0LDQudC+0L0iLCJzdGF0ZSI6ItCf0LXRgNC80YHQutC40Lkg0LrR
+        gNCw0LkiLCJwb3N0Y29kZSI6IjYxNzQwMSIsImNvdW50cnkiOiLQoNCkIiwi
+        Y291bnRyeV9jb2RlIjoicnUifSwiYm91bmRpbmdib3giOlsiNTcuMzEwMDc2
+        MyIsIjU3LjMxMDIyMzEiLCI1Ni45NzYyOTkzIiwiNTYuOTc2NzIwMSJdfQ==
+    http_version: 
+  recorded_at: Sun, 28 Jul 2019 17:06:42 GMT
+recorded_with: VCR 5.0.0
