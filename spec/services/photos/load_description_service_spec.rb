@@ -6,7 +6,7 @@ RSpec.describe Photos::LoadDescriptionService do
       let(:photo) { create :photo, :fake, lat_long: [57.3099288888889, 56.9759902777778], local_filename: 'test' }
 
       let(:service_context) do
-        VCR.use_cassette('nominatim_reverse_geocode_success.yml') { described_class.call!(photo: photo) }
+        VCR.use_cassette('nominatim_reverse_geocode_success') { described_class.call!(photo: photo) }
       end
 
       it do
