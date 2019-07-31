@@ -24,11 +24,11 @@ module Yandex
 
     def passport_response
       @passport_response ||=
-        YandexPhotoStorage::Passport::Client.new(access_token: token_response.fetch(:access_token)).info
+        YandexClient::Passport::Client.new(access_token: token_response.fetch(:access_token)).info
     end
 
     def token_response
-      @token_response ||= YandexPhotoStorage::Auth::Client.new.create_token(code: code)
+      @token_response ||= YandexClient::Auth::Client.new.create_token(code: code)
     end
   end
 end

@@ -38,7 +38,7 @@ gem 'sidekiq-throttled', '>= 0.10'
 gem 'exifr'
 gem 'image_size'
 gem 'leaflet-rails'
-gem 'yandex_photo_storage', github: 'yamax2/yandex_photo_storage'
+gem 'yandex_client'
 
 group :development, :test do
   gem 'byebug'

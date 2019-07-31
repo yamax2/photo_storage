@@ -77,7 +77,7 @@ VCR.configure do |c|
   end
 end
 
-YandexPhotoStorage.configure do |config|
+YandexClient.configure do |config|
   config.api_key = API_APPLICATION_KEY
   config.api_secret = API_APPLICATION_SECRET
 end

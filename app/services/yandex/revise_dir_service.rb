@@ -10,7 +10,7 @@ module Yandex
       revise_photos
 
       errors[nil] = dav_response.keys unless dav_response.empty?
-    rescue YandexPhotoStorage::NotFoundError
+    rescue YandexClient::NotFoundError
       errors[nil] = ["dir #{dir} not found on remote storage"]
     end
 
@@ -19,7 +19,7 @@ module Yandex
     def dav_response
       return @dav_response if defined?(@dav_response)
 
-      client = YandexPhotoStorage::Dav::Client.new(access_token: token.access_token)
+      client = YandexClient::Dav::Client.new(access_token: token.access_token)
 
       @dav_response = client.
         propfind(name: "#{token.dir}/#{dir}", depth: 1).

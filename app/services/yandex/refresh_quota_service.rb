@@ -5,7 +5,7 @@ module Yandex
     delegate :token, to: :context
 
     def call
-      response = YandexPhotoStorage::Dav::Client.
+      response = YandexClient::Dav::Client.
         new(access_token: token.access_token).
         propfind(name: '/', quota: true).
         fetch('/')

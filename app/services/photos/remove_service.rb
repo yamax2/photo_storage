@@ -6,14 +6,14 @@ module Photos
 
     def call
       client.delete(name: [yandex_token.dir, storage_filename].join('/'))
-    rescue ::YandexPhotoStorage::NotFoundError
+    rescue ::YandexClient::NotFoundError
       false
     end
 
     private
 
     def client
-      @client ||= ::YandexPhotoStorage::Dav::Client.new(access_token: yandex_token.access_token)
+      @client ||= ::YandexClient::Dav::Client.new(access_token: yandex_token.access_token)
     end
   end
 end

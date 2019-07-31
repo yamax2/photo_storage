@@ -1,4 +1,4 @@
-YandexPhotoStorage.configure do |config|
+YandexClient.configure do |config|
   unless Rails.env.test?
     config.api_key = Rails.application.credentials.yandex.fetch(:api_key)
     config.api_secret = Rails.application.credentials.yandex.fetch(:api_secret)
