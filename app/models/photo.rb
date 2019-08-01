@@ -31,7 +31,7 @@ class Photo < ApplicationRecord
 
   strip_attributes only: %i[name description content_type]
 
-  before_validation :read_file_attributes
+  before_validation :read_file_attributes, if: :local_file?
   before_validation { self.original_timestamp ||= Time.current }
 
   scope :uploaded, -> { where.not(storage_filename: nil) }
@@ -50,8 +50,6 @@ class Photo < ApplicationRecord
   private
 
   def read_file_attributes
-    return unless local_file?
-
     self.md5 ||= Digest::MD5.file(tmp_local_filename).to_s
     self.sha256 ||= Digest::SHA256.file(tmp_local_filename).to_s
 

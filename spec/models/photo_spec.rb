@@ -271,23 +271,44 @@ RSpec.describe Photo do
   end
 
   describe 'file attrs loading' do
-    let(:photo) { build :photo, local_filename: 'test.txt' }
-    let(:tmp_file) { Rails.root.join('tmp', 'files', 'test.txt') }
+    context 'when local file' do
+      let(:photo) { build :photo, local_filename: 'test.txt' }
+      let(:tmp_file) { Rails.root.join('tmp', 'files', 'test.txt') }
 
-    before do
-      FileUtils.mkdir_p(Rails.root.join('tmp', 'files'))
-      FileUtils.cp 'spec/fixtures/test.txt', tmp_file
+      before do
+        FileUtils.mkdir_p(Rails.root.join('tmp', 'files'))
+        FileUtils.cp 'spec/fixtures/test.txt', tmp_file
+      end
+
+      after do
+        FileUtils.rm_f(tmp_file)
+      end
+
+      it do
+        expect { photo.save! }.
+          to change { photo.md5 }.from(nil).to(String).
+          and change { photo.sha256 }.from(nil).to(String).
+          and change { photo.size }.from(0).to(File.size(tmp_file))
+      end
     end
 
-    after do
-      FileUtils.rm_f(tmp_file)
-    end
+    context 'when remote file' do
+      let(:token) { create :'yandex/token' }
+      let(:photo) { build :photo, :fake, storage_filename: 'test.txt', yandex_token: token }
 
-    it do
-      expect { photo.save! }.
-        to change { photo.md5 }.from(nil).to(String).
-        and change { photo.sha256 }.from(nil).to(String).
-        and change { photo.size }.from(0).to(File.size(tmp_file))
+      let(:initial_md5) { photo.md5 }
+      let(:initial_sha) { photo.sha256 }
+
+      before do
+        initial_md5
+        initial_sha
+      end
+
+      it do
+        expect { photo.save! }.not_to(change { photo.size })
+        expect(photo.md5).to eq(initial_md5)
+        expect(photo.sha256).to eq(initial_sha)
+      end
     end
   end
 
