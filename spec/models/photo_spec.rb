@@ -313,4 +313,62 @@ RSpec.describe Photo do
   end
 
   it_behaves_like 'model with counter', :photo
+
+  describe 'position in cart' do
+    before { allow(Cart::PhotoService).to receive(:call!) }
+
+    let(:rubric) { create :rubric }
+    let(:photo) { create :photo, :fake, local_filename: 'test', rubric: rubric }
+
+    context 'when try to change name' do
+      before do
+        photo.name = photo.name + 'test'
+        photo.save!
+      end
+
+      it do
+        expect(Cart::PhotoService).not_to have_received(:call!)
+      end
+    end
+
+    context 'when rubric changed' do
+      let(:new_rubric) { create :rubric }
+
+      before do
+        photo.rubric = new_rubric
+        photo.save!
+      end
+
+      it do
+        expect(photo.rubric).to eq(new_rubric)
+        expect(::Cart::PhotoService).
+          to have_received(:call!).with(photo: photo, remove: true).once
+      end
+    end
+
+    context 'when photo destroyed' do
+      before { photo.destroy }
+
+      it do
+        expect(photo).not_to be_persisted
+        expect(::Cart::PhotoService).
+          to have_received(:call!).with(photo: photo, remove: true).once
+      end
+    end
+
+    context 'when try to change rubric for a new photo' do
+      let(:photo) { build :photo, :fake, local_filename: 'test', rubric: rubric }
+      let(:new_rubric) { create :rubric }
+
+      before do
+        photo.rubric = new_rubric
+        photo.save!
+      end
+
+      it do
+        expect(photo.rubric).to eq(new_rubric)
+        expect(Cart::PhotoService).not_to have_received(:call!)
+      end
+    end
+  end
 end

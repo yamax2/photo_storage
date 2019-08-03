@@ -1,4 +1,4 @@
-# photo model, no state machine!
+# photo model, no state machine! no observers!
 class Photo < ApplicationRecord
   include Countable
 
@@ -38,6 +38,8 @@ class Photo < ApplicationRecord
   scope :pending, -> { where.not(local_filename: nil) }
 
   after_commit :remove_file, unless: :persisted?
+  after_commit :remove_from_cart
+  before_save { @rubric_changed = rubric_id_changed? if persisted? }
 
   def local_file?
     local_filename.present? && File.exist?(tmp_local_filename)
@@ -54,6 +56,14 @@ class Photo < ApplicationRecord
     self.sha256 ||= Digest::SHA256.file(tmp_local_filename).to_s
 
     self.size = File.size(tmp_local_filename) if size.zero?
+  end
+
+  def remove_from_cart
+    return unless @rubric_changed || !persisted?
+
+    ::Cart::PhotoService.call!(photo: self, remove: true)
+
+    @rubric_changed = nil
   end
 
   def remove_file
