@@ -4,7 +4,7 @@ module Api
       # rubrics list formatted for jstree
       class RubricsController < ::ActionController::API
         def index
-          @rubrics = Rubric.where(rubric_id: params[:id]).order(id: :desc)
+          @rubrics = Rubric.where(rubric_id: params[:id]).default_order
         end
       end
     end
