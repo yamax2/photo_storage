@@ -30,7 +30,7 @@ class Page
 
     @rubrics = rubrics.
       with_photos.
-      preload(:main_photo).
+      preload(main_photo: :yandex_token).
       default_order.
       decorate
   end
