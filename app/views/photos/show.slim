@@ -11,6 +11,8 @@
       li
         = @photos.current.name
 
+    .cart-selector*{title: t('.add_to_cart'), class: in_cart?(@photos.current) ? 'selected' : '', data: {url: api_v1_admin_photos_cart_path(@photos.current)}}
+
   .photo-img
     - if @photos.prev.present?
       = link_to '', page_photo_path(@page.rubric, @photos.prev), class: 'photo-left', title: @photos.prev.name

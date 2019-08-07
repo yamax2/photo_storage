@@ -112,6 +112,7 @@ ru:
     footer: 'Это автоматическое письмо сервиса %{title}. <strong>Отвечать на него не нужно.</strong>'
   photos:
     show:
+      add_to_cart: Корзина
       camera: Камера
       created_at: Загружено
       download: Скачать
