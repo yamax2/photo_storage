@@ -29,6 +29,7 @@ Rails.application.routes.draw do
     end
 
     resources :photos, only: :create
+    resources :cart, only: %i[index update]
   end
 
   namespace :api, defaults: {format: :json} do
