@@ -1,0 +1,16 @@
+.row
+  .col-sm-12.col-lg-9
+    .card
+      .card-header
+        strong
+          | Массовое редактирование фото
+      .card-body.card-block
+        / .row.form-group
+        /   .col.col-md-3
+        /     | Рубрика
+        /   .col-12.col-md-9
+        /      = select_tag :rubric_id, options_from_collection_for_select(@rubrics, :id, :name), class: 'form-control'
+      .card-footer.action-buttons
+        = button_tag class: 'btn btn-primary btn-sm' do
+          .fa.fa-dot-circle-o
+          = t('.apply')

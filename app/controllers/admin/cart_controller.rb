@@ -1,5 +1,9 @@
 module Admin
   class CartController < AdminController
+    def destroy
+
+    end
+
     def index
 
     end
