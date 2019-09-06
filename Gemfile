@@ -30,7 +30,7 @@ gem 'redis-mutex', '>= 4'
 gem 'russian'
 gem 'strip_attributes', '>= 1.8'
 
-gem 'sidekiq', '>= 5'
+gem 'sidekiq', '>= 6'
 gem 'sidekiq-cron', '>= 1.1'
 gem 'sidekiq-failures', '>= 1'
 gem 'sidekiq-throttled', '>= 0.10'
