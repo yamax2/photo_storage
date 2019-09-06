@@ -2,8 +2,8 @@ version: '2'
 
 environment:
   DOCKER_TLD: localhost
-  DOCKER_RUBY_VERSION: 2.6.3
-  POSTGRES_IMAGE_TAG: 11.4
+  DOCKER_RUBY_VERSION: 2.6.4
+  POSTGRES_IMAGE_TAG: 11.5
   REDIS_IMAGE_TAG: 5-alpine
   GO_IMAGE_TAG: 1.12.5
   POSTGRES_DB: photos
