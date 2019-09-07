@@ -1,7 +1,4 @@
 concurrency: 4
-logfile: log/sidekiq.log
-daemon: false
-pidfile: tmp/pids/sidekiq.pid
 queues:
   - default
   - mailers

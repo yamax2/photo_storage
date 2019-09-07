@@ -3,4 +3,5 @@
 //= require turbolinks
 //= require leaflet
 //= require jquery.lazy
+//= require js.cookie
 //= require_tree ./application

@@ -28,3 +28,7 @@ $(document)
     if e.keyCode == 32
       $('.cart-selector').click()
       return false
+
+  .on 'change', '#preview_id', ->
+    Cookies.set('preview_id', $(this).val())
+    Turbolinks.visit(window.location)

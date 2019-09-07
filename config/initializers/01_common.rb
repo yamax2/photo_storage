@@ -10,7 +10,8 @@ Rails.application.configure do
   # widths
   config.photo_sizes = {
     thumb: ->(photo) { photo.width * 360 / photo.height },
-    preview: ->(photo) { photo.width * 800 / photo.height }
+    preview: ->(photo) { photo.width * 800 / photo.height },
+    max: ->(photo) { photo.width * 960 / photo.height }
   }
 
   # allowed timezones
