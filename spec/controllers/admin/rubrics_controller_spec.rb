@@ -226,4 +226,38 @@ RSpec.describe Admin::RubricsController do
       end
     end
   end
+
+  describe '#warm_up' do
+    let!(:rubric) { create :rubric }
+
+    before do
+      allow(::Rubrics::WarmUpJob).to receive(:perform_async)
+    end
+
+    context 'when without photo size' do
+      let(:request) { get :warm_up, params: {id: rubric.id} }
+
+      it do
+        expect { request }.to raise_error(ActionController::ParameterMissing)
+        expect(::Rubrics::WarmUpJob).not_to have_received(:perform_async)
+      end
+    end
+
+    context 'when successful call' do
+      before { get :warm_up, params: {id: rubric.id, size: 'preview'} }
+
+      it do
+        expect(response).to redirect_to(admin_rubrics_path)
+        expect(::Rubrics::WarmUpJob).to have_received(:perform_async)
+      end
+    end
+
+    context 'when wrong rubric' do
+      let(:request) { get :warm_up, params: {id: -1} }
+
+      it do
+        expect { request }.to raise_error(ActiveRecord::RecordNotFound)
+      end
+    end
+  end
 end

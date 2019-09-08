@@ -1,6 +1,6 @@
 module Admin
   class RubricsController < AdminController
-    before_action :find_rubric, only: %i[edit update destroy]
+    before_action :find_rubric, only: %i[edit update destroy warm_up]
     helper_method :parent_id, :parent_rubric
 
     def create
@@ -34,6 +34,12 @@ module Admin
       else
         render 'edit'
       end
+    end
+
+    def warm_up
+      ::Rubrics::WarmUpJob.perform_async(@rubric.id, params.require(:size))
+
+      redirect_to admin_rubrics_path(id: @rubric.rubric_id), notice: t('.success', name: @rubric.name)
     end
 
     private

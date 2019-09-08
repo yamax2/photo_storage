@@ -23,7 +23,12 @@ Rails.application.routes.draw do
       resource :verification_code, only: :show
     end
 
-    resources :rubrics, except: :show
+    resources :rubrics, except: :show do
+      member do
+        get :warm_up
+      end
+    end
+
     namespace :rubrics do
       resources :positions, only: %i[index create]
     end

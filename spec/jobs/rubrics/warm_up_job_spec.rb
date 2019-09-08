@@ -52,7 +52,15 @@ RSpec.describe Rubrics::WarmUpJob do
     let(:photo_size) { :zozo }
 
     it do
-      expect { run_job }.to raise_error(KeyError)
+      expect { run_job }.to raise_error('wrong photo size zozo')
+    end
+  end
+
+  context 'when thumb photo size' do
+    let(:photo_size) { :thumb }
+
+    it do
+      expect { run_job }.to raise_error('wrong photo size thumb')
     end
   end
 
