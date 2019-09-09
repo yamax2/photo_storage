@@ -42,6 +42,10 @@ Rails.application.routes.draw do
       namespace :admin do
         resources :rubrics, only: :index
 
+        namespace :cart do
+          resources :rubrics, only: :index
+        end
+
         namespace :photos do
           post   ':photo_id/cart' => 'cart#create', as: :cart
           delete ':photo_id/cart' => 'cart#destroy', as: nil

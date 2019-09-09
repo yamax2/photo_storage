@@ -6,11 +6,11 @@ module Api
           before_action :find_photo
 
           def create
-            Cart::PhotoService.call!(photo: @photo, remove: false)
+            ::Cart::PhotoService.call!(photo: @photo, remove: false)
           end
 
           def destroy
-            Cart::PhotoService.call!(photo: @photo, remove: true)
+            ::Cart::PhotoService.call!(photo: @photo, remove: true)
           end
 
           private
