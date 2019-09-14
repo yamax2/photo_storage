@@ -24,11 +24,29 @@ RSpec.describe Admin::PhotosController do
       let(:rubric) { create :rubric }
       let(:image) { fixture_file_upload('spec/fixtures/test2.jpg', 'image/jpeg') }
 
-      before { post :create, params: {rubric_id: rubric.id, image: image}, xhr: true }
+      let(:json) { JSON.parse(response.body) }
 
-      it do
-        expect(response).to have_http_status(:ok)
-        expect(JSON.parse(response.body)).to be_empty
+      context 'when without external info' do
+        before { post :create, params: {rubric_id: rubric.id, image: image}, xhr: true }
+
+        it do
+          expect(response).to have_http_status(:ok)
+          expect(json).to include('id')
+        end
+      end
+
+      context 'when with external info' do
+        before { post :create, params: {rubric_id: rubric.id, image: image, external_info: 'test'}, xhr: true }
+
+        let(:photo) { assigns(:photo) }
+
+        it do
+          expect(response).to have_http_status(:ok)
+          expect(json.keys).to match_array(%w[id])
+
+          expect(json['id']).to eq(photo.id)
+          expect(photo.external_info).to eq('test')
+        end
       end
 
       after do

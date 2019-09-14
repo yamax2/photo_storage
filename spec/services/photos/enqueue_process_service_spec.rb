@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe Photos::EnqueueProcessService do
   let(:rubric) { create :rubric }
-  let(:service_context) { described_class.call(uploaded_io: image, rubric_id: rubric.id) }
+  let(:service_context) { described_class.call(uploaded_io: image, rubric_id: rubric.id, external_info: 'test') }
   let(:photo) { service_context.photo }
 
   before do
@@ -29,7 +29,8 @@ RSpec.describe Photos::EnqueueProcessService do
         original_filename: 'test2.jpg',
         name: 'test2',
         rubric_id: rubric.id,
-        local_filename: 'test.jpg'
+        local_filename: 'test.jpg',
+        external_info: 'test'
       )
 
       expect(Photos::ProcessFileJob).to have_received(:perform_async).with(photo.id)

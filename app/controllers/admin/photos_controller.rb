@@ -3,14 +3,14 @@ module Admin
     def create
       context = Photos::EnqueueProcessService.call(
         uploaded_io: params.require(:image),
-        rubric_id: params.require(:rubric_id)
+        rubric_id: params.require(:rubric_id),
+        external_info: params[:external_info]
       )
 
-      if context.success?
-        render json: {}
-      else
-        render json: context.photo.errors, status: :unprocessable_entity
-      end
+      @success = context.success?
+      @photo = context.photo
+
+      render status: :unprocessable_entity unless @success
     end
   end
 end
