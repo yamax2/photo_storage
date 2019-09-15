@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_09_14_181224) do
+ActiveRecord::Schema.define(version: 2019_09_15_022325) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -36,7 +36,7 @@ ActiveRecord::Schema.define(version: 2019_09_14_181224) do
     t.string "sha256", limit: 64, null: false
     t.bigint "views", default: 0, null: false
     t.string "tz", limit: 50, default: "Asia/Yekaterinburg", null: false
-    t.text "external_info"
+    t.jsonb "external_info"
     t.index ["md5", "sha256"], name: "uq_photos", unique: true
     t.index ["rubric_id"], name: "index_photos_on_rubric_id"
     t.index ["yandex_token_id"], name: "index_photos_on_yandex_token_id", where: "(yandex_token_id IS NOT NULL)"
@@ -52,6 +52,7 @@ ActiveRecord::Schema.define(version: 2019_09_14_181224) do
     t.bigint "photos_count", default: 0, null: false
     t.bigint "main_photo_id"
     t.integer "ord"
+    t.text "external_info"
     t.index ["main_photo_id"], name: "index_rubrics_on_main_photo_id", where: "(main_photo_id IS NOT NULL)"
     t.index ["rubric_id"], name: "index_rubrics_on_rubric_id"
   end
