@@ -3,6 +3,7 @@ module Photos
     include Sidekiq::Worker
     include Sidekiq::Throttled::Worker
 
+    sidekiq_options queue: :descr
     sidekiq_throttle concurrency: {limit: 1}, threshold: {limit: 1, period: 2.second}
 
     def perform(photo_id)
