@@ -20,9 +20,6 @@ namespace :loader do
     rubric = Rubric.find_by_external_info!(args.fetch(:external_rubric_id))
     piwigo_host = args.fetch(:host)
 
-    api_url = Rails.application.routes.url_helpers.admin_photos_url
-    api_url = api_url.sub('://', '://www.') if Rails.env.development?
-
     dir = Rails.root.join('tmp', 'piwigo_import')
     FileUtils.mkdir_p(dir)
 
@@ -37,9 +34,19 @@ namespace :loader do
         open(url) { |uri| file.write(uri.read) }
       end
 
-      system <<~TEXT
-        curl -F 'rubric_id=#{rubric.id}' -F 'external_info=#{row['id']}' -F 'image=@#{local_file}' #{api_url}
-      TEXT
+      uploaded_io = ActionDispatch::Http::UploadedFile.new(
+        filename: row['original_filename'],
+        type: Rack::Mime.mime_type(File.extname(row['original_filename'])),
+        tempfile: File.open(local_file)
+      )
+
+      context = Photos::EnqueueProcessService.call!(
+        uploaded_io: uploaded_io,
+        rubric_id: rubric.id,
+        external_info: row['id']
+      )
+
+      puts context.photo.id
 
       FileUtils.rm_f(local_file)
     end
