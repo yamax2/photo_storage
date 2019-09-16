@@ -4,18 +4,14 @@ RSpec.describe Admin::Rubrics::PositionsController do
   render_views
 
   describe '#create' do
-    before do
-      allow(::Rubrics::ApplyOrder).to receive(:call!)
-    end
-
     let(:rubric) { create :rubric }
 
     context 'when bad request (without positions)' do
       subject { post :create, params: {id: rubric.id} }
 
       it do
+        expect(::Rubrics::ApplyOrder).not_to receive(:call!)
         expect { subject }.to raise_error(ActionController::ParameterMissing).with_message(/positions/)
-        expect(::Rubrics::ApplyOrder).not_to have_received(:call!)
       end
     end
 
@@ -23,25 +19,31 @@ RSpec.describe Admin::Rubrics::PositionsController do
       subject { post :create, params: {positions: {id: rubric.id}} }
 
       it do
+        expect(::Rubrics::ApplyOrder).not_to receive(:call!)
         expect { subject }.to raise_error(ActionController::ParameterMissing).with_message(/data/)
-        expect(::Rubrics::ApplyOrder).not_to have_received(:call!)
       end
     end
 
     context 'when correct params' do
-      before { post :create, params: {positions: {id: rubric.id, data: '1,2,5'}} }
+      subject { post :create, params: {positions: {id: rubric.id, data: '1,2,5'}} }
 
       it do
-        expect(::Rubrics::ApplyOrder).to have_received(:call!).with(data: [1, 2, 5], id: rubric.id.to_s)
+        expect(::Rubrics::ApplyOrder).to receive(:call!).with(data: [1, 2, 5], id: rubric.id.to_s)
+
+        subject
+
         expect(response).to redirect_to(admin_rubrics_path)
       end
     end
 
     context 'when root' do
-      before { post :create, params: {positions: {data: '1,2,5'}} }
+      subject { post :create, params: {positions: {data: '1,2,5'}} }
 
       it do
-        expect(::Rubrics::ApplyOrder).to have_received(:call!).with(data: [1, 2, 5], id: nil)
+        expect(::Rubrics::ApplyOrder).to receive(:call!).with(data: [1, 2, 5], id: nil)
+
+        subject
+
         expect(response).to redirect_to(admin_rubrics_path)
       end
     end

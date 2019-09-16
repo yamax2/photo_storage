@@ -36,7 +36,7 @@ ActiveRecord::Schema.define(version: 2019_09_15_022325) do
     t.string "sha256", limit: 64, null: false
     t.bigint "views", default: 0, null: false
     t.string "tz", limit: 50, default: "Asia/Yekaterinburg", null: false
-    t.jsonb "external_info"
+    t.text "external_info"
     t.index ["md5", "sha256"], name: "uq_photos", unique: true
     t.index ["rubric_id"], name: "index_photos_on_rubric_id"
     t.index ["yandex_token_id"], name: "index_photos_on_yandex_token_id", where: "(yandex_token_id IS NOT NULL)"
