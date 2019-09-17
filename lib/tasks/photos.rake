@@ -9,7 +9,9 @@ namespace :photos do
     FileUtils.mkdir_p(dir)
 
     Photo.
-      where.not(original_timestamp: nil).where.not(external_info: nil).
+      where.not(original_timestamp: nil).
+      where.not(external_info: nil).
+      where.not(exif: nil).
       where(table[:original_timestamp].gt(table[:created_at])).
       where(rubric_id: args.fetch(:rubric_id)).
       order(:id).
@@ -22,7 +24,7 @@ namespace :photos do
       end
 
       data = EXIFR::JPEG.new(local_file.to_s)
-      photo.original_timestamp = data.date_time || data.date_time_original
+      photo.original_timestamp = data.date_time_original || data.date_time
       photo.save!
 
       FileUtils.rm_f(local_file)
