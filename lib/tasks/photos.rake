@@ -2,7 +2,7 @@ require 'open-uri'
 require 'exifr/jpeg'
 
 namespace :photos do
-  task repair_dates: :environment do
+  task :repair_dates, [:rubric_id] => :environment do |_, args|
     table = Photo.arel_table
     dir = Rails.root.join('tmp', 'piwigo_import')
 
@@ -11,6 +11,7 @@ namespace :photos do
     Photo.
       where.not(original_timestamp: nil).where.not(external_info: nil).
       where(table[:original_timestamp].gt(table[:created_at])).
+      where(rubric_id: args.fetch(:rubric_id)).
       order(:id).
       each_instance(with_lock: true) do |photo|
       puts photo.id

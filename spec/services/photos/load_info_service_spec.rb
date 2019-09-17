@@ -131,6 +131,22 @@ RSpec.describe Photos::LoadInfoService do
         )
       end
     end
+
+    context 'when asus p750 corrupted by Microsoft Windows Photo Viewer' do
+      let(:filename) { 'test9.jpg' }
+
+      it do
+        expect(photo).to be_valid
+
+        expect(photo.exif).to include('model' => 'PDA/SP', 'make' => 'OEM')
+        expect(photo.lat_long).not_to be_present
+        expect(photo).to have_attributes(
+          width: 1_536,
+          height: 2_048,
+          original_timestamp: Time.new(2011, 3, 13, 13, 34, 36)
+        )
+      end
+    end
   end
 
   context 'when png image' do

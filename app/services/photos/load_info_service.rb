@@ -61,7 +61,7 @@ module Photos
         end
 
       photo.assign_attributes(size)
-      photo.original_timestamp = exif_data.date_time || exif_data.date_time_original
+      photo.original_timestamp = exif_data.date_time_original || exif_data.date_time
     end
   end
 end
