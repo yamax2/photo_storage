@@ -98,6 +98,39 @@ RSpec.describe Photos::LoadInfoService do
         expect(photo).to have_attributes(width: 4_160, height: 3_120)
       end
     end
+
+    # exif date_time is empty
+    context 'when htc desire v photo' do
+      let(:filename) { 'test7.jpg' }
+
+      it do
+        expect(photo).to be_valid
+
+        expect(photo.exif).to include('model' => 'HTC Desire V', 'make' => 'HTC')
+        expect(photo.lat_long).not_to be_present
+        expect(photo).to have_attributes(
+          width: 2_592,
+          height: 1_552,
+          original_timestamp: Time.new(2013, 9, 28, 11, 37, 34)
+        )
+      end
+    end
+
+    context 'when asus p750 phone' do
+      let(:filename) { 'test8.jpg' }
+
+      it do
+        expect(photo).to be_valid
+
+        expect(photo.exif).to include('model' => 'PDA/SP', 'make' => 'OEM')
+        expect(photo.lat_long).not_to be_present
+        expect(photo).to have_attributes(
+          width: 2_048,
+          height: 1_536,
+          original_timestamp: Time.new(2011, 6, 12, 15, 47, 38)
+        )
+      end
+    end
   end
 
   context 'when png image' do

@@ -60,8 +60,8 @@ module Photos
           {width: exif_data.width, height: exif_data.height}
         end
 
-      photo.original_timestamp = exif_data.date_time
       photo.assign_attributes(size)
+      photo.original_timestamp = exif_data.date_time || exif_data.date_time_original
     end
   end
 end
