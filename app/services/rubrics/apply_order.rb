@@ -27,7 +27,7 @@ module Rubrics
         uniq.
         each_with_index.
         each_with_object([]) { |(id, index), sql| sql << "SELECT #{id} id, #{index} rn\n" }.
-        join("UNION ALL\n")
+        join('UNION ALL ')
     end
 
     def build_parent_condition

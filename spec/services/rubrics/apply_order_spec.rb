@@ -37,6 +37,15 @@ RSpec.describe Rubrics::ApplyOrder do
     end
   end
 
+  context 'when large amount of rubrics' do
+    let!(:rubrics) { create_list :rubric, 1_000 }
+
+    it do
+      expect { described_class.call!(data: Rubric.pluck(:id).shuffle) }.
+        to change { Rubric.where(ord: nil).count }.from(1_000).to(0)
+    end
+  end
+
   context 'when sub rubric' do
     let(:parent_rubric) { create :rubric }
 
