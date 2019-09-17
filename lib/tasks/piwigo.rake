@@ -1,7 +1,7 @@
 require 'csv'
 require 'open-uri'
 
-namespace :loader do
+namespace :piwigo do
   task :rubrics, [:filename] => :environment do |_, args|
     Rubric.transaction do
       CSV.foreach(args.fetch(:filename), col_sep: ';', quote_char: '"', headers: true) do |row|
@@ -15,7 +15,7 @@ namespace :loader do
     end
   end
 
-  # rails loader:photos_upload[ph_photos.csv,101,http://10.0.0.2:8082]
+  # rails piwigo:photos_upload[ph_photos.csv,101,http://10.0.0.2:8082]
   task :photos_upload, %i[filename external_rubric_id host] => :environment do |_, args|
     rubric = Rubric.find_by_external_info!(args.fetch(:external_rubric_id))
     piwigo_host = args.fetch(:host)
@@ -52,7 +52,7 @@ namespace :loader do
     end
   end
 
-  # rails loader:photos_attrs[ph_photos.csv]
+  # rails piwigo:photos_attrs[ph_photos.csv]
   task :photos_attrs, %i[filename] => :environment do |_, args|
     redis_key = 'piwigo:loaded'
 
