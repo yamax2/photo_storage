@@ -1,26 +1,27 @@
 module Admin
   module Rubrics
     class PositionsController < AdminController
+      before_action :find_rubric
+
       def create
         ::Rubrics::ApplyOrder.call!(
-          id: positions_params[:id].presence,
-          data: positions_params.require(:data).split(',').map(&:to_i)
+          id: @rubric&.id,
+          data: params.require(:data).split(',').map(&:to_i)
         )
 
-        redirect_to admin_rubrics_path
+        redirect_to admin_rubrics_positions_path(id: @rubric&.id)
       end
 
       def index
-        @rubric = Rubric.find(params[:id]) if params[:id]
         @rubrics = (@rubric&.rubrics || Rubric.where(rubric_id: nil)).default_order
 
-        redirect_to admin_rubrics_path unless @rubrics.count > 1
+        redirect_to admin_rubrics_positions_path unless @rubrics.count > 1
       end
 
       private
 
-      def positions_params
-        params.require(:positions).permit(:id, :data)
+      def find_rubric
+        @rubric = Rubric.find(params[:id]) if params[:id].present?
       end
     end
   end

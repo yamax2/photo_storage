@@ -5,8 +5,8 @@
   .col-sm-12
     .card
       = form_tag admin_rubrics_positions_path, id: 'positions-form' do
-        = hidden_field_tag 'positions[id]', @rubric&.id
-        = hidden_field_tag 'positions[data]'
+        = hidden_field_tag :id, @rubric&.id
+        = hidden_field_tag :data
         .card-header
           = t('.title', name: @rubric&.name || t('.root'))
         .card-body

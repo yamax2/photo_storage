@@ -26,7 +26,7 @@ module Rubrics
       data.
         uniq.
         each_with_index.
-        each_with_object([]) { |(id, index), sql| sql << "SELECT #{id} id, #{index} rn\n" }.
+        each_with_object([]) { |(id, index), sql| sql << "SELECT #{id} id, #{index} rn " }.
         join('UNION ALL ')
     end
 

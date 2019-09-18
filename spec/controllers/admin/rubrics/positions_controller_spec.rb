@@ -6,15 +6,6 @@ RSpec.describe Admin::Rubrics::PositionsController do
   describe '#create' do
     let(:rubric) { create :rubric }
 
-    context 'when bad request (without positions)' do
-      subject { post :create, params: {id: rubric.id} }
-
-      it do
-        expect(::Rubrics::ApplyOrder).not_to receive(:call!)
-        expect { subject }.to raise_error(ActionController::ParameterMissing).with_message(/positions/)
-      end
-    end
-
     context 'when bad request (without data param)' do
       subject { post :create, params: {positions: {id: rubric.id}} }
 
@@ -25,26 +16,48 @@ RSpec.describe Admin::Rubrics::PositionsController do
     end
 
     context 'when correct params' do
-      subject { post :create, params: {positions: {id: rubric.id, data: '1,2,5'}} }
+      subject { post :create, params: {id: rubric.id, data: '1,2,5'} }
 
       it do
-        expect(::Rubrics::ApplyOrder).to receive(:call!).with(data: [1, 2, 5], id: rubric.id.to_s)
+        expect(::Rubrics::ApplyOrder).to receive(:call!).with(data: [1, 2, 5], id: rubric.id)
 
         subject
 
-        expect(response).to redirect_to(admin_rubrics_path)
+        expect(response).to redirect_to(admin_rubrics_positions_path(id: rubric.id))
       end
     end
 
-    context 'when root' do
-      subject { post :create, params: {positions: {data: '1,2,5'}} }
+    context 'when wrong parent rubric' do
+      subject { post :create, params: {id: rubric.id * 2, data: '1,2,5'} }
+
+      it do
+        expect(::Rubrics::ApplyOrder).not_to receive(:call!)
+
+        expect { subject }.to raise_error(ActiveRecord::RecordNotFound)
+      end
+    end
+
+    context 'when empty string as parent value' do
+      subject { post :create, params: {id: '', data: '1,2,5'} }
 
       it do
         expect(::Rubrics::ApplyOrder).to receive(:call!).with(data: [1, 2, 5], id: nil)
 
         subject
 
-        expect(response).to redirect_to(admin_rubrics_path)
+        expect(response).to redirect_to(admin_rubrics_positions_path)
+      end
+    end
+
+    context 'when root' do
+      subject { post :create, params: {data: '1,2,5'} }
+
+      it do
+        expect(::Rubrics::ApplyOrder).to receive(:call!).with(data: [1, 2, 5], id: nil)
+
+        subject
+
+        expect(response).to redirect_to(admin_rubrics_positions_path)
       end
     end
   end
@@ -55,7 +68,7 @@ RSpec.describe Admin::Rubrics::PositionsController do
         before { get :index }
 
         it do
-          expect(response).to redirect_to(admin_rubrics_path)
+          expect(response).to redirect_to(admin_rubrics_positions_path)
         end
       end
 
@@ -65,7 +78,7 @@ RSpec.describe Admin::Rubrics::PositionsController do
         before { get :index }
 
         it do
-          expect(response).to redirect_to(admin_rubrics_path)
+          expect(response).to redirect_to(admin_rubrics_positions_path)
           expect(assigns(:rubric)).to be_nil
           expect(assigns(:rubrics)).to match_array([rubric])
         end
@@ -93,7 +106,7 @@ RSpec.describe Admin::Rubrics::PositionsController do
         before { get :index, params: {id: rubric.id} }
 
         it do
-          expect(response).to redirect_to(admin_rubrics_path)
+          expect(response).to redirect_to(admin_rubrics_positions_path)
           expect(assigns(:rubric)).to eq(rubric)
           expect(assigns(:rubrics)).to be_empty
         end
@@ -105,7 +118,7 @@ RSpec.describe Admin::Rubrics::PositionsController do
         before { get :index, params: {id: rubric.id} }
 
         it do
-          expect(response).to redirect_to(admin_rubrics_path)
+          expect(response).to redirect_to(admin_rubrics_positions_path)
           expect(assigns(:rubric)).to eq(rubric)
           expect(assigns(:rubrics)).to match_array([rubric1])
         end
