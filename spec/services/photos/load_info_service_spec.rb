@@ -132,7 +132,7 @@ RSpec.describe Photos::LoadInfoService do
       end
     end
 
-    context 'when asus p750 corrupted by Microsoft Windows Photo Viewer' do
+    context 'when asus p750 edited by Microsoft Windows Photo Viewer' do
       let(:filename) { 'test9.jpg' }
 
       it do
@@ -144,6 +144,21 @@ RSpec.describe Photos::LoadInfoService do
           width: 1_536,
           height: 2_048,
           original_timestamp: Time.new(2011, 3, 13, 13, 34, 36)
+        )
+      end
+    end
+
+    context 'when exif info presents but without make and model values' do
+      let(:filename) { 'test10.jpg' }
+
+      it do
+        expect(photo).to be_valid
+
+        expect(photo.exif).not_to be_present
+        expect(photo).to have_attributes(
+          width: 3_513,
+          height: 1_118,
+          original_timestamp: Time.current
         )
       end
     end
