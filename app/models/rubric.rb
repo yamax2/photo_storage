@@ -13,10 +13,10 @@ class Rubric < ApplicationRecord
     where(<<~SQL)
       rubrics.id in (
         WITH RECURSIVE tt AS (
-        SELECT id, rubric_id FROM #{Rubric.quoted_table_name} WHERE photos_count > 0
+        SELECT id, rubric_id FROM #{quoted_table_name} WHERE photos_count > 0
         UNION ALL
         SELECT rubrics.id, rubrics.rubric_id
-        FROM #{Rubric.quoted_table_name} rubrics, tt WHERE rubrics.id = tt.rubric_id)
+        FROM #{quoted_table_name} rubrics, tt WHERE rubrics.id = tt.rubric_id)
         SELECT id FROM tt
       )
     SQL

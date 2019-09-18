@@ -26,15 +26,15 @@ module Rubrics
       data.
         uniq.
         each_with_index.
-        each_with_object([]) { |(id, index), sql| sql << "SELECT #{id} id, #{index} rn " }.
-        join('UNION ALL ')
+        each_with_object([]) { |(id, index), sql| sql << "SELECT #{id} id, #{index} rn" }.
+        join(' UNION ALL ')
     end
 
     def build_parent_condition
       if id.to_i.positive?
         "AND rubrics.rubric_id = #{id}"
       else
-        'AND rubrics.rubric_id is null'
+        'AND rubrics.rubric_id IS NULL'
       end
     end
   end
