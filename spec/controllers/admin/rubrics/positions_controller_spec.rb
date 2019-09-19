@@ -63,6 +63,35 @@ RSpec.describe Admin::Rubrics::PositionsController do
   end
 
   describe '#index' do
+    context 'rubric sorting' do
+      let!(:rubric1) { create :rubric }
+      let!(:rubric2) { create :rubric }
+
+      let!(:photo) do
+        create :photo, :fake, rubric: rubric1, exif: {}, original_timestamp: Date.yesterday, local_filename: 'test'
+      end
+
+      context 'when by first photo' do
+        before { get :index, params: {ord: 'first_photo'} }
+
+        it do
+          expect(response).to have_http_status(:ok)
+          expect(assigns(:rubrics)).to eq([rubric1, rubric2])
+          expect(response).to render_template(:index)
+        end
+      end
+
+      context 'when default' do
+        before { get :index }
+
+        it do
+          expect(response).to have_http_status(:ok)
+          expect(assigns(:rubrics)).to eq([rubric2, rubric1])
+          expect(response).to render_template(:index)
+        end
+      end
+    end
+
     context 'when root rubric' do
       context 'and without rubrics' do
         before { get :index }

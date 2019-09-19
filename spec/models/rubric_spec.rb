@@ -53,5 +53,38 @@ RSpec.describe Rubric do
         expect(described_class.default_order).to eq([rubric2, rubric1, rubric3, rubric4])
       end
     end
+
+    describe '#by_first_photo' do
+      context 'when all rubrics without photo' do
+        # should sort by id
+        it do
+          expect(described_class.by_first_photo).to eq([rubric4, rubric3, rubric2, rubric1])
+        end
+      end
+
+      context 'when some rubrics have photo' do
+        let!(:photo1) { create :photo, :fake, exif: nil, rubric: rubric1, local_filename: 'test' }
+
+        let!(:photo2) do
+          create :photo, :fake, exif: {}, rubric: rubric2, local_filename: 'test', original_timestamp: Date.yesterday
+        end
+
+        let!(:photo3) do
+          create :photo, :fake, exif: {}, rubric: rubric2, local_filename: 'test', original_timestamp: Date.today
+        end
+
+        let!(:photo4) do
+          create :photo, :fake, exif: {}, rubric: rubric4, local_filename: 'test', original_timestamp: 2.days.ago
+        end
+
+        let!(:photo5) do
+          create :photo, :fake, exif: nil, rubric: rubric4, local_filename: 'test', original_timestamp: 10.days.ago
+        end
+
+        it do
+          expect(described_class.by_first_photo).to eq([rubric2, rubric4, rubric3, rubric1])
+        end
+      end
+    end
   end
 end

@@ -13,7 +13,14 @@ module Admin
       end
 
       def index
-        @rubrics = (@rubric&.rubrics || Rubric.where(rubric_id: nil)).default_order
+        @rubrics = Rubric.where(rubric_id: @rubric&.id)
+
+        @rubrics =
+          if params[:ord] == 'first_photo'
+            @rubrics.by_first_photo
+          else
+            @rubrics.default_order
+          end
 
         redirect_to admin_rubrics_positions_path unless @rubrics.count > 1
       end

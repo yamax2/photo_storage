@@ -12,6 +12,10 @@
         .card-body
           p
             = t('.text')
+          .action-buttons
+            = link_to t('.sorting.default'), admin_rubrics_positions_path(id: @rubric&.id), class: 'btn btn-primary'
+            = link_to t('.sorting.first_photo'), admin_rubrics_positions_path(ord: :first_photo, id: @rubric&.id),
+                                                 class: 'btn btn-primary'
           ol.rubrics-sorting.list-group
             - @rubrics.each do |rubric|
               li.list-group-item*{data: {id: rubric.id}}

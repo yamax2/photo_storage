@@ -23,4 +23,22 @@ class Rubric < ApplicationRecord
   }
 
   scope :default_order, -> { order('ord NULLS FIRST, id DESC') }
+  scope :by_first_photo, -> {
+    joins(<<~SQL).order('sort.rn')
+      JOIN (
+        WITH ords as (
+          SELECT rubrics.id,
+                 (
+                    SELECT MIN(original_timestamp)
+                      FROM #{Photo.quoted_table_name}
+                     WHERE rubric_id = rubrics.id AND exif IS NOT NULL
+                 ) time_to_order
+          FROM #{quoted_table_name} rubrics
+        )
+        SELECT id,
+               ROW_NUMBER() OVER (ORDER BY time_to_order DESC NULLS LAST, id DESC) rn
+          FROM ords
+      ) sort ON sort.id = #{quoted_table_name}.id
+    SQL
+  }
 end
