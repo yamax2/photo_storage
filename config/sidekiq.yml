@@ -1,5 +1,6 @@
 concurrency: 4
 queues:
+  - mailers
+  - maintance
   - default
   - descr
-  - mailers

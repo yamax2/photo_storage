@@ -1,6 +1,7 @@
 module Yandex
   class RefreshTokensJob
     include Sidekiq::Worker
+    sidekiq_options queue: :maintance
 
     def perform
       Token.order(:id).select(:id).each_row(with_lock: true, symbolize_keys: true) do |row|

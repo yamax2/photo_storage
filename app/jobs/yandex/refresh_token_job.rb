@@ -1,6 +1,7 @@
 module Yandex
   class RefreshTokenJob
     include Sidekiq::Worker
+    sidekiq_options queue: :maintance
 
     def perform(token_id)
       token = Token.find(token_id)
