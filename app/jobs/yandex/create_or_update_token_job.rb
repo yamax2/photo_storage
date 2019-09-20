@@ -1,7 +1,7 @@
 module Yandex
   class CreateOrUpdateTokenJob
     include Sidekiq::Worker
-    sidekiq_options queue: :maintance
+    sidekiq_options queue: :tokens
 
     def perform(code)
       CreateOrUpdateTokenService.call!(code: code)

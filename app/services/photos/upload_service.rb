@@ -87,15 +87,13 @@ module Photos
     end
 
     def update_photo
-      FileUtils.rm_f(local_file)
-
-      photo.assign_attributes(
+      photo.update!(
         storage_filename: @storage_filename,
         yandex_token: token_for_upload,
         local_filename: nil
       )
 
-      photo.save!
+      FileUtils.rm_f(local_file)
     end
   end
 end
