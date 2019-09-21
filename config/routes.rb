@@ -33,13 +33,13 @@ Rails.application.routes.draw do
       resources :positions, only: %i[index create]
     end
 
-    resources :photos, only: :create
     resources :cart, only: %i[index update]
   end
 
   namespace :api, defaults: {format: :json} do
     namespace :v1 do
       namespace :admin do
+        resources :photos, only: :create
         resources :rubrics, only: :index
 
         namespace :cart do

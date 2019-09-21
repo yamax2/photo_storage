@@ -30,7 +30,7 @@ $(document)
         $('#drag-and-drop-zone').toggle(id?)
 
     $('#drag-and-drop-zone').dmUploader
-      url: '/admin/photos'
+      url: '/api/v1/admin/photos'
       extraData: ->
         {rubric_id: $(this).data('rubric_id')}
       headers:

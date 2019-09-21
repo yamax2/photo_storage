@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Admin::PhotosController do
+RSpec.describe Api::V1::Admin::PhotosController do
   render_views
 
   describe '#create' do
