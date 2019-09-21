@@ -29,11 +29,12 @@
 
   .photo-info
     table
-      tr
-        th
-          = t('.original_timestamp')
-        td
-          = @photos.current.original_timestamp
+      - if @photos.current.original_timestamp.present?
+        tr
+          th
+            = t('.original_timestamp')
+          td
+            = @photos.current.original_timestamp
 
       - if @photos.current.exif.present?
         tr

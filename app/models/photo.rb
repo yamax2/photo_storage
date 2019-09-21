@@ -32,7 +32,6 @@ class Photo < ApplicationRecord
   strip_attributes only: %i[name description content_type]
 
   before_validation :read_file_attributes, if: :local_file?
-  before_validation { self.original_timestamp ||= Time.current }
 
   scope :uploaded, -> { where.not(storage_filename: nil) }
   scope :pending, -> { where.not(local_filename: nil) }

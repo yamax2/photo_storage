@@ -22,7 +22,7 @@ class Rubric < ApplicationRecord
     SQL
   }
 
-  scope :default_order, -> { order('ord NULLS FIRST, id DESC') }
+  scope :default_order, -> { order(PhotosNullsFirstAsc.new(arel_table[:ord]), arel_table[:id].desc) }
   scope :by_first_photo, -> {
     joins(<<~SQL).order('sort.rn')
       JOIN (

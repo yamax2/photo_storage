@@ -14,7 +14,7 @@ RSpec.describe Photo do
     it { is_expected.to have_db_column(:exif).of_type(:jsonb) }
     it { is_expected.to have_db_column(:lat_long).of_type(:point) }
     it { is_expected.to have_db_column(:original_filename).of_type(:string).with_options(null: false, limit: 512) }
-    it { is_expected.to have_db_column(:original_timestamp).of_type(:datetime) }
+    it { is_expected.to have_db_column(:original_timestamp).of_type(:datetime).with_options(null: true) }
     it { is_expected.to have_db_column(:size).of_type(:integer).with_options(null: false, default: 0) }
     it { is_expected.to have_db_column(:content_type).of_type(:string).with_options(null: false, limit: 30) }
     it { is_expected.to have_db_column(:width).of_type(:integer).with_options(null: false, default: 0) }
@@ -139,29 +139,6 @@ RSpec.describe Photo do
     it { is_expected.to strip_attribute(:name) }
     it { is_expected.to strip_attribute(:description) }
     it { is_expected.to strip_attribute(:content_type) }
-  end
-
-  describe '#original_timestamp' do
-    before { Timecop.freeze }
-    after { Timecop.return }
-
-    before { subject.validate }
-
-    context 'when empty value' do
-      subject { build :photo, created_at: 10.days.ago }
-
-      it do
-        expect(subject.original_timestamp).to eq(Time.current)
-      end
-    end
-
-    context 'when non-empty value' do
-      subject { build :photo, created_at: 10.days.ago, original_timestamp: 20.days.ago }
-
-      it do
-        expect(subject.original_timestamp).to eq(20.days.ago)
-      end
-    end
   end
 
   describe 'scopes' do

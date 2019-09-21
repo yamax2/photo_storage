@@ -80,7 +80,7 @@ RSpec.describe Photos::LoadInfoService do
         expect(photo).to have_attributes(
           width: 750,
           height: 750,
-          original_timestamp: Time.current,
+          original_timestamp: nil,
           lat_long: nil,
           exif: nil
         )
@@ -158,7 +158,7 @@ RSpec.describe Photos::LoadInfoService do
         expect(photo).to have_attributes(
           width: 3_513,
           height: 1_118,
-          original_timestamp: Time.current
+          original_timestamp: nil
         )
       end
     end
@@ -173,7 +173,7 @@ RSpec.describe Photos::LoadInfoService do
       expect(photo).to have_attributes(
         width: 400,
         height: 400,
-        original_timestamp: Time.current,
+        original_timestamp: nil,
         lat_long: nil,
         exif: nil
       )
@@ -188,7 +188,7 @@ RSpec.describe Photos::LoadInfoService do
       expect(photo).to be_valid
       expect(photo.exif).to be_empty
       expect(photo.lat_long).to be_nil
-      expect(photo.original_timestamp).to eq(Time.current)
+      expect(photo.original_timestamp).to be_nil
     end
   end
 
@@ -207,7 +207,7 @@ RSpec.describe Photos::LoadInfoService do
 
       expect(photo.exif).to be_nil
       expect(photo.lat_long).to be_nil
-      expect(photo.original_timestamp).to eq(Time.current)
+      expect(photo.original_timestamp).to be_nil
     end
   end
 

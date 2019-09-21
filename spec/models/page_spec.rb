@@ -12,6 +12,12 @@ RSpec.describe Page do
 
   let(:token) { create :'yandex/token' }
 
+  # photo6
+  # photo7
+  # photo3
+  # photo2
+  # photo5
+
   let!(:photo1) { create :photo, :fake, rubric: root_rubric1, local_filename: 'test', original_timestamp: 1.day.ago }
 
   let!(:photo2) do
@@ -35,6 +41,28 @@ RSpec.describe Page do
                           original_timestamp: 4.days.ago
   end
 
+  let!(:photo5) do
+    create :photo, :fake, rubric: root_rubric1,
+                          storage_filename: 'test',
+                          yandex_token: token,
+                          original_timestamp: 2.days.ago,
+                          tz: 'Europe/Moscow'
+  end
+
+  let!(:photo6) do
+    create :photo, :fake, rubric: root_rubric1,
+                          storage_filename: 'test',
+                          yandex_token: token,
+                          original_timestamp: nil
+  end
+
+  let!(:photo7) do
+    create :photo, :fake, rubric: root_rubric1,
+                          storage_filename: 'test',
+                          yandex_token: token,
+                          original_timestamp: nil
+  end
+
   context 'when page is root' do
     subject { Page.new }
 
@@ -52,7 +80,7 @@ RSpec.describe Page do
       it do
         expect(subject.rubric.object).to eq(root_rubric1)
         expect(subject.rubrics.map(&:object)).to match_array([sub_rubric1])
-        expect(subject.photos).to match_array([photo2, photo3])
+        expect(subject.photos.map(&:object)).to eq([photo6, photo7, photo3, photo2, photo5])
       end
     end
 
@@ -69,46 +97,34 @@ RSpec.describe Page do
   end
 
   describe '#find_photo_with_next_and_prev' do
-    # photo3
-    # photo2
-    # photo5
-
-    let!(:photo5) do
-      create :photo, :fake, rubric: root_rubric1,
-                            storage_filename: 'test',
-                            yandex_token: token,
-                            original_timestamp: 2.days.ago,
-                            tz: 'Europe/Moscow'
-    end
-
     let(:page) { Page.new(root_rubric1.id) }
 
     subject { page.find_photo_with_next_and_prev(photo_id) }
 
     context 'and first photo in listing' do
-      let(:photo_id) { photo3.id }
+      let(:photo_id) { photo6.id }
 
       it do
         expect(subject.prev).to be_nil
-        expect(subject.current).to eq(photo3)
-        expect(subject.next).to eq(photo2)
+        expect(subject.current).to eq(photo6)
+        expect(subject.next).to eq(photo7)
 
         expect(subject.current.pos).to eq(1)
         expect(subject.next.pos).to eq(2)
       end
     end
 
-    context 'and second photo in listing' do
-      let(:photo_id) { photo2.id }
+    context 'and first photo with exif' do
+      let(:photo_id) { photo3.id }
 
       it do
-        expect(subject.prev).to eq(photo3)
-        expect(subject.current).to eq(photo2)
-        expect(subject.next).to eq(photo5)
+        expect(subject.prev).to eq(photo7)
+        expect(subject.current).to eq(photo3)
+        expect(subject.next).to eq(photo2)
 
-        expect(subject.prev.pos).to eq(1)
-        expect(subject.current.pos).to eq(2)
-        expect(subject.next.pos).to eq(3)
+        expect(subject.prev.pos).to eq(2)
+        expect(subject.current.pos).to eq(3)
+        expect(subject.next.pos).to eq(4)
       end
     end
 
@@ -120,8 +136,8 @@ RSpec.describe Page do
         expect(subject.current).to eq(photo5)
         expect(subject.next).to eq(nil)
 
-        expect(subject.prev.pos).to eq(2)
-        expect(subject.current.pos).to eq(3)
+        expect(subject.prev.pos).to eq(4)
+        expect(subject.current.pos).to eq(5)
       end
     end
 

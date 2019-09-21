@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_09_15_022325) do
+ActiveRecord::Schema.define(version: 2019_09_21_102948) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -25,7 +25,7 @@ ActiveRecord::Schema.define(version: 2019_09_15_022325) do
     t.jsonb "exif"
     t.point "lat_long"
     t.string "original_filename", limit: 512, null: false
-    t.datetime "original_timestamp", null: false
+    t.datetime "original_timestamp"
     t.bigint "size", default: 0, null: false
     t.string "content_type", limit: 30, null: false
     t.integer "width", default: 0, null: false
