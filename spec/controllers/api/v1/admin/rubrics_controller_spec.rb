@@ -4,9 +4,9 @@ RSpec.describe Api::V1::Admin::RubricsController do
   render_views
 
   describe '#index' do
-    let!(:rubric2) { create :rubric }
-    let!(:rubric1) { create :rubric }
-    let!(:rubric3) { create :rubric, rubric: rubric1 }
+    let!(:rubric2) { create :rubric, name: 'rubric 2' }
+    let!(:rubric1) { create :rubric, name: 'rubric 1' }
+    let!(:rubric3) { create :rubric, rubric: rubric1, name: 'sub rubric' }
 
     let(:json) { JSON.parse(response.body) }
 
@@ -27,6 +27,26 @@ RSpec.describe Api::V1::Admin::RubricsController do
 
     context 'when with id param' do
       before { get :index, params: {id: rubric1.id} }
+
+      it do
+        expect(response).to have_http_status(:ok)
+        expect(response).to render_template(:index)
+        expect(assigns(:rubrics)).to match_array([rubric3])
+      end
+    end
+
+    context 'when with str param' do
+      before { get :index, params: {str: 'sub'} }
+
+      it do
+        expect(response).to have_http_status(:ok)
+        expect(response).to render_template(:index)
+        expect(assigns(:rubrics)).to match_array([rubric1])
+      end
+    end
+
+    context 'when with str and id params' do
+      before { get :index, params: {str: 'sub', id: rubric1.id} }
 
       it do
         expect(response).to have_http_status(:ok)

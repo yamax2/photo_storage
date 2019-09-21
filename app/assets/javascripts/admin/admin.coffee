@@ -11,25 +11,23 @@ $(document)
     text = $(this).data('cofirm')
     $('#drag-and-drop-zone').dmUploader('cancel') if confirm(text)
 
+  .on 'submit', '#positions-form', ->
+    value = ($('#positions-form ol > li').map -> $(this).data('id')).toArray()
+    $('#data').val(value.join(','))
+
   .on 'turbolinks:load', ->
+    $('.rubrics-sorting').sortable()
+
     $('#rubrics')
-      .jstree
-        core:
-          data:
-            url: '/api/v1/admin/rubrics'
-            data: (node) ->
-              id: node.id unless node.id == '#'
-        plugins: ['wholerow']
+      .on 'select_node.jstree', (e, node) ->
+        $('#drag-and-drop-zone').data('rubric_id', node.node.id)
+        $('#rubric-name-text').text(node.node.text)
 
       .on 'ready.jstree', ->
         id = $('ul > li:first-child', this).attr('id')
 
         $(this).jstree('select_node', id) if id
         $('#drag-and-drop-zone').toggle(id?)
-
-      .on 'select_node.jstree', (e, node) ->
-        $('#drag-and-drop-zone').data('rubric_id', node.node.id)
-        $('#rubric-name-text').text(node.node.text)
 
     $('#drag-and-drop-zone').dmUploader
       url: '/admin/photos'

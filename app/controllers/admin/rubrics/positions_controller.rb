@@ -3,6 +3,8 @@ module Admin
     class PositionsController < AdminController
       before_action :find_rubric
 
+      FIRST_PHOTO = 'first_photo'.freeze
+
       def create
         ::Rubrics::ApplyOrder.call!(
           id: @rubric&.id,
@@ -16,7 +18,7 @@ module Admin
         @rubrics = Rubric.where(rubric_id: @rubric&.id)
 
         @rubrics =
-          if params[:ord] == 'first_photo'
+          if params[:ord] == FIRST_PHOTO
             @rubrics.by_first_photo
           else
             @rubrics.default_order

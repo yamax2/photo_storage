@@ -20,7 +20,13 @@
         = t('.rubric')
       .card-body.rubric-container
         .blocker
-        #rubrics
+        .form-group
+          = text_field_tag :rubric_name_search, nil,
+                                                class: 'form-control rubric_name_search',
+                                                autofocus: true,
+                                                placeholder: t('.rubric_search'),
+                                                data: {tree: '#rubrics'}
+        #rubrics.rubrics-tree
 
   .col-sm-12
     .card.h-100
