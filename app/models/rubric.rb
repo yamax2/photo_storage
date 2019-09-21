@@ -31,7 +31,7 @@ class Rubric < ApplicationRecord
                  (
                     SELECT MIN(original_timestamp)
                       FROM #{Photo.quoted_table_name}
-                     WHERE rubric_id = rubrics.id AND exif IS NOT NULL
+                     WHERE rubric_id = rubrics.id AND original_timestamp IS NOT NULL
                  ) time_to_order
           FROM #{quoted_table_name} rubrics
         )

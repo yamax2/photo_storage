@@ -63,23 +63,21 @@ RSpec.describe Rubric do
       end
 
       context 'when some rubrics have photo' do
-        let!(:photo1) { create :photo, :fake, exif: nil, rubric: rubric1, local_filename: 'test' }
+        let!(:photo1) { create :photo, :fake, rubric: rubric1, local_filename: 'test', original_timestamp: nil }
 
         let!(:photo2) do
-          create :photo, :fake, exif: {}, rubric: rubric2, local_filename: 'test', original_timestamp: Date.yesterday
+          create :photo, :fake, rubric: rubric2, local_filename: 'test', original_timestamp: Date.yesterday
         end
 
         let!(:photo3) do
-          create :photo, :fake, exif: {}, rubric: rubric2, local_filename: 'test', original_timestamp: Date.today
+          create :photo, :fake, rubric: rubric2, local_filename: 'test', original_timestamp: Date.today
         end
 
         let!(:photo4) do
-          create :photo, :fake, exif: {}, rubric: rubric4, local_filename: 'test', original_timestamp: 2.days.ago
+          create :photo, :fake, rubric: rubric4, local_filename: 'test', original_timestamp: 2.days.ago
         end
 
-        let!(:photo5) do
-          create :photo, :fake, exif: nil, rubric: rubric4, local_filename: 'test', original_timestamp: 10.days.ago
-        end
+        let!(:photo5) { create :photo, :fake, rubric: rubric4, local_filename: 'test', original_timestamp: nil }
 
         it do
           expect(described_class.by_first_photo).to eq([rubric2, rubric4, rubric3, rubric1])
