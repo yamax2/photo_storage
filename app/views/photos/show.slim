@@ -11,7 +11,6 @@
       li
         = @photos.current.name
 
-    .cart-selector*{title: t('.add_to_cart'), class: in_cart?(@photos.current) ? 'selected' : '', data: {url: api_v1_admin_photos_cart_path(@photos.current)}}
     = select_tag :preview_id, photo_size_selector_opts(preview_id)
 
   .photo-img
@@ -25,7 +24,8 @@
 
 .sidebar
   - if @photos.current.lat_long.present?
-    = map(center: {latlng: @photos.current.lat_long.to_a, zoom: 18}, markers: [{latlng: @photos.current.lat_long.to_a}])
+    = map(center: {latlng: @photos.current.lat_long.to_a, zoom: Leaflet.max_zoom},
+          markers: [{latlng: @photos.current.lat_long.to_a}])
 
   .photo-info
     table
@@ -92,3 +92,7 @@
 
     p.photo-description
       = @photos.current.description
+
+    .photo-buttons
+      a.cart-selector*{title: t('.add_to_cart'), class: in_cart?(@photos.current) ? 'selected' : '', data: {url: api_v1_admin_photos_cart_path(@photos.current)}}
+      = link_to '', edit_admin_photo_path(@photos.current), class: 'photo-edit-button', title: t('.edit'), target: '_blank'

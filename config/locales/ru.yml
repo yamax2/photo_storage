@@ -2,6 +2,13 @@ ru:
   title: PhotoStorage
   activerecord:
     attributes:
+      photo:
+        description: Подробное описание
+        lat_long: Координаты
+        name: Название
+        original_timestamp: Дата съёмки
+        rubric: Рубрика
+        tz: Часовой пояс
       rubric:
         created_at: Создано
         name: Название
@@ -56,6 +63,13 @@ ru:
         rubric_positions: Сортировка рубрик
         settings: Управление
         yandex_tokens: Токены Yandex
+    photos:
+      edit:
+        apply: Сохранить
+        cancel: Отмена
+        clear: Очистить
+        rubric_search: Название рубрики
+        rubric_select: Выбрать
     rubrics:
       destroy:
         success: Рубрика %{name} была успешно удалена
@@ -125,6 +139,7 @@ ru:
       camera: Камера
       created_at: Загружено
       download: Скачать
+      edit: Редактировать
       original_filename: Имя файла
       original_timestamp: Дата съёмки
       original_download: Оригинал

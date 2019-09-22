@@ -130,16 +130,23 @@ html, body
         margin: 0 0.25rem
         font-size: 14px
 
-  .cart-selector
-    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" fill="rgba(0, 0, 0, 0.05)" width="459" height="459"><path d="M124.95 181.05l-35.7 35.7L204 331.5l255-255-35.7-35.7L204 260.1l-79.05-79.05zM408 408H51V51h255V0H51C22.95 0 0 22.95 0 51v357c0 28.05 22.95 51 51 51h357c28.05 0 51-22.95 51-51V204h-51v204z"/></svg>')
+.photo-buttons
+  a
+    display: inline-block
     width: 20px
     height: 20px
     background-size: 20px
-    margin-left: 0.5rem
     cursor: pointer
+    margin-right: 0.5rem
+
+  .cart-selector
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" fill="rgba(0, 0, 0, 0.1)" width="459" height="459"><path d="M124.95 181.05l-35.7 35.7L204 331.5l255-255-35.7-35.7L204 260.1l-79.05-79.05zM408 408H51V51h255V0H51C22.95 0 0 22.95 0 51v357c0 28.05 22.95 51 51 51h357c28.05 0 51-22.95 51-51V204h-51v204z"/></svg>')
 
     &.selected
       background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" fill="rgba(0, 0, 0, 0.6)" width="459" height="459"><path d="M124.95 181.05l-35.7 35.7L204 331.5l255-255-35.7-35.7L204 260.1l-79.05-79.05zM408 408H51V51h255V0H51C22.95 0 0 22.95 0 51v357c0 28.05 22.95 51 51 51h357c28.05 0 51-22.95 51-51V204h-51v204z"/></svg>')
+
+  .photo-edit-button
+    background-image: url("data:image/svg+xml,%3Csvg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' fill='rgba(0, 0, 0, 0.9)' x='0px' y='0px' viewBox='0 0 1000 1000' enable-background='new 0 0 1000 1000' xml:space='preserve'%3E%3Cmetadata%3E Svg Vector Icons : http://www.onlinewebfonts.com/icon %3C/metadata%3E%3Cg%3E%3Cpath d='M622.7,10v61.8c0,0-472.3,0-490,0c-46.2,0-61.7,35-61.7,62c0,29.7-0.7,666.6-0.7,732.2c0,41.8,45.1,60.4,63,60.4c34.9,0,687.7,0,735.2,0c25.9,0,59.7-21.2,59.7-84.9c0-41.1,0-462.3,0-462.3H990c0,0,0,457.6,0,488.7c0,32.8-4.9,121.9-123.4,121.9c-99.9,0-703.7,0-734.5,0C68.4,990,10,950.4,10,867.1c0-62.7,0-696,0-735.5C10,59.6,55.7,10,132.1,10C236.2,10,622.7,10,622.7,10z'/%3E%3Cpath d='M957.2,165.8C934.3,143,866.5,74.6,851.4,58.4c-27.2-29.1-63.3-31-92.1-3.9C730.5,81.7,268,528.3,268,528.3L129.6,873.2l318.6-141.8c0,0,471.9-454.4,504-486.5C979.4,217.8,974,182.6,957.2,165.8z M208.1,791.7l82.1-198.6l102.9,111.4L208.1,791.7z M438.8,662.4L327.7,544l345.7-334l115.4,120.1L438.8,662.4z M828.3,288.3L716.1,171.9l85.7-82.3l114,112.5L828.3,288.3z'/%3E%3C/g%3E%3C/svg%3E")
 
 .sidebar
   background: $panel_color

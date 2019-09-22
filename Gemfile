@@ -18,6 +18,7 @@ gem 'bootstrap', '~> 4.3.1'
 gem 'font-awesome-rails', '~> 4.7'
 gem 'jquery-rails'
 gem 'slim-rails', '>= 3.2'
+gem 'bootstrap4-datetime-picker-rails'
 
 gem 'draper', '>= 3.1'
 gem 'gretel', '>= 3'

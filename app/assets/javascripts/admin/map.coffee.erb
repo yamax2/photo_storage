@@ -1,0 +1,18 @@
+$(document).on 'turbolinks:load', ->
+  $map = $('#map')
+  return unless $map.length > 0
+
+  latlng = $map.data('point')
+  map = L.map('map', {})
+  map.setView(latlng, <%= Leaflet.max_zoom %>)
+  marker = L.marker(latlng).addTo(map)
+
+  L.tileLayer('<%= Leaflet.tile_layer %>', {maxZoom: <%= Leaflet.max_zoom %>}).addTo(map)
+
+  map.on 'drag', ->
+    center = map.getCenter()
+
+    $('#photo_lat_long_x').val(center.lat)
+    $('#photo_lat_long_y').val(center.lng)
+
+    marker.setLatLng center

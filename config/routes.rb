@@ -33,6 +33,7 @@ Rails.application.routes.draw do
       resources :positions, only: %i[index create]
     end
 
+    resources :photos, only: %i[edit update]
     resources :cart, only: %i[index update]
   end
 

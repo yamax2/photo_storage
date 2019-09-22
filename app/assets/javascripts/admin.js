@@ -7,4 +7,8 @@
 //= require uploader-ui
 //= require jstree
 //= require jquery-sortable
+//= require moment
+//= require moment/ru
+//= require tempusdominus-bootstrap-4
+//= require leaflet
 //= require_tree ./admin

@@ -1,0 +1,105 @@
+- content_for :title, @photo.name
+/ - breadcrumb :rubric, @rubric
+
+.row
+  .col-sm-12.col-lg-9
+    .card
+      = form_for [:admin, @photo], html: {class: 'form-horizontal'} do |f|
+        .card-header
+          strong
+            = "#{@photo.name} (#{@photo.rubric.name})"
+
+        .card-body.card-block
+          = f.hidden_field :rubric_id
+          = render partial: 'admin/partials/errors', locals: {model: @photo}
+
+          .row.form-group
+            .col.col-md-3
+              = f.label :name
+            .col-12.col-md-9
+              = f.text_field :name, class: 'form-control', autofocus: true
+
+          .row.form-group
+            .col.col-md-3
+              = f.label :rubric
+            .col-12.col-md-9
+              .input-group
+                = f.text_field :rubric, class: 'form-control', readonly: true, value: @photo.rubric.name
+                .input-group-append
+                  button.btn.btn-outline-secondary.rubric-select type="button"
+                    = t('.rubric_select')
+
+          .row.form-group
+            .col.col-md-3
+              = f.label :tz
+            .col-12.col-md-9
+              = f.select :tz, Rails.application.config.photo_timezones, {}, class: 'form-control'
+
+          .row.form-group
+            .col.col-md-3
+              = f.label :original_timestamp
+            .col-12.col-md-9
+              .input-group
+                = f.text_field :original_timestamp, class: 'form-control datetimepicker',
+                                                    readonly: true,
+                                                    data: {toggle: 'datetimepicker', target: '#photo_original_timestamp'}
+                .input-group-append
+                  button.btn.btn-outline-secondary.btn-clear type="button"
+                    = t('.clear')
+
+          .row.form-group
+            .col.col-md-3
+              = f.label :description
+            .col-12.col-md-9
+              = f.text_area :description, class: 'form-control', rows: 10
+
+          .row.form-group
+            .col.col-md-3
+              = f.label :lat_long
+
+            .col-5.col-md-3
+              = f.text_field :lat_long, class: 'form-control',
+                                        readonly: true,
+                                        multiple: true,
+                                        value: @photo.lat_long&.x,
+                                        id: 'photo_lat_long_x'
+            .col-5.col-md-3
+              = f.text_field :lat_long, class: 'form-control',
+                                        readonly: true,
+                                        multiple: true,
+                                        value: @photo.lat_long&.y,
+                                        id: 'photo_lat_long_y'
+            .col.col-md-3
+              = button_tag class: 'btn btn-outline-secondary btn-clear', type: 'button' do
+                = t('.clear')
+
+            .col.col-md-3
+            .col.col-md-9
+              #map*{data: {point: @photo.lat_long&.to_a || Rails.application.config.default_map_center}}
+
+        .card-footer.action-buttons
+          = button_tag class: 'btn btn-primary btn-sm' do
+            .fa.fa-dot-circle-o
+            = t('.apply')
+
+.modal#rubric-modal
+  .modal-dialog.modal-xl
+    .modal-content
+      .modal-header
+        h5.modal-title
+          = Photo.human_attribute_name(:rubric)
+        button.close*{type: 'button', data: {dismiss: 'modal'}}
+          span
+            | &times;
+      .modal-body
+        .form-group
+          = text_field_tag :rubric_name_search, nil,
+                                                class: 'form-control rubric_name_search',
+                                                placeholder: t('.rubric_search'),
+                                                data: {tree: '#photo-rubric-selector'}
+        #photo-rubric-selector.rubrics-tree
+      .modal-footer
+        button.btn.btn-secondary*{data: {dismiss: 'modal'}}
+          = t('.cancel')
+        button.btn.btn-primary.btn-photo-rubric-apply
+          = t('.apply')

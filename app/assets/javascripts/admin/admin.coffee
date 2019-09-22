@@ -15,6 +15,9 @@ $(document)
     value = ($('#positions-form ol > li').map -> $(this).data('id')).toArray()
     $('#data').val(value.join(','))
 
+  .on 'click', '.btn-clear', ->
+    $('input', $(this).closest('.form-group')).val('')
+
   .on 'turbolinks:load', ->
     $('.rubrics-sorting').sortable()
 

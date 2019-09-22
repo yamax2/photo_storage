@@ -21,4 +21,5 @@ Rails.application.configure do
   ]
 
   config.admin_emails = ENV.fetch('ADMIN_EMAILS', 'admin@photostorage.localhost').split(',').map(&:strip)
+  config.default_map_center = [56.809735, 60.623366]
 end

@@ -1,9 +1,11 @@
 //*= require jquery.dm-uploader
 //*= require jstree
 //*= require font-awesome
+//*= require leaflet
 //*= require_tree ./admin
 
 @import 'bootstrap'
+@import 'tempusdominus-bootstrap-4'
 @import 'sufee'
 
 #right-panel
@@ -53,3 +55,15 @@ table
       padding: 0.25rem
       font-size: 0.75rem
       line-height: 1
+
+// datetime picker
+body .bootstrap-datetimepicker-widget.dropdown-menu
+  width: auto
+
+.datetimepicker:read-only
+  background-color: inherit
+
+// map
+#map
+  height: 500px
+  margin-top: 1rem
