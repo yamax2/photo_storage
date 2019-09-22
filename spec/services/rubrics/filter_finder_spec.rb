@@ -47,4 +47,11 @@ RSpec.describe Rubrics::FilterFinder do
       expect { subject.to_a }.not_to raise_error
     end
   end
+
+  context 'when both rubric and sub_rubric include part' do
+    let!(:deep_sub_rubric) { create :rubric, rubric: sub_rubric, name: 'my deep sub_rubric' }
+    let(:name_part) { 'sub_rubric' }
+
+    it { is_expected.to match_array([rubric1, sub_rubric, deep_sub_rubric]) }
+  end
 end

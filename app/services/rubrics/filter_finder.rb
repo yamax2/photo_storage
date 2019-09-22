@@ -17,13 +17,13 @@ module Rubrics
         JOIN (
           WITH RECURSIVE filtered AS (
             SELECT id, rubric_id FROM #{table_name}
-              WHERE name ILIKE #{Rubric.connection.quote("%#{@name_part}%")}
-              UNION ALL
-              SELECT rubrics.id, rubrics.rubric_id
+            WHERE name ILIKE #{Rubric.connection.quote("%#{@name_part}%")}
+            UNION ALL
+            SELECT rubrics.id, rubrics.rubric_id
               FROM #{table_name} rubrics, filtered
-              WHERE rubrics.id = filtered.rubric_id
+             WHERE rubrics.id = filtered.rubric_id
           )
-          SELECT id FROM filtered
+          SELECT DISTINCT id FROM filtered
         ) filtered ON filtered.id = #{table_name}.id
       SQL
     end
