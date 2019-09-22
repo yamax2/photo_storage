@@ -7,7 +7,7 @@ $(document)
       .datetimepicker
         locale: 'ru'
         ignoreReadonly: true
-        format: 'DD.MM.YYYY HH:mm'
+        format: 'DD.MM.YYYY HH:mm:ss'
         buttons:
           showClose: true
         icons:
