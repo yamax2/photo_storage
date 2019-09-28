@@ -17,7 +17,8 @@ Rails.application.configure do
   # allowed timezones
   config.photo_timezones = [
     Rails.application.config.time_zone,
-    'Europe/Moscow'
+    'Europe/Moscow',
+    'Europe/Samara'
   ]
 
   config.admin_emails = ENV.fetch('ADMIN_EMAILS', 'admin@photostorage.localhost').split(',').map(&:strip)
