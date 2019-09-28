@@ -1,4 +1,5 @@
 class RubricFinder
+  # rubric with all loaded parents
   def initialize(id)
     @id = id
   end
@@ -31,11 +32,14 @@ class RubricFinder
   def rubrics
     @rubrics ||= Rubric.find_by_sql(<<~SQL).index_by(&:id)
       WITH RECURSIVE tt AS (
-      SELECT id, rubric_id, 0 lv FROM #{Rubric.quoted_table_name} WHERE id = #{@id}
-      UNION ALL
-      SELECT rubrics.id, rubrics.rubric_id, tt.lv + 1
-        FROM #{Rubric.quoted_table_name} rubrics, tt
-          WHERE rubrics.id = tt.rubric_id)
+        SELECT id, rubric_id, 0 lv 
+          FROM #{Rubric.quoted_table_name}
+         WHERE id = #{@id}
+        UNION ALL
+        SELECT rubrics.id, rubrics.rubric_id, tt.lv + 1
+          FROM #{Rubric.quoted_table_name} rubrics, tt
+            WHERE rubrics.id = tt.rubric_id
+      )
       SELECT rubrics.*
         FROM #{Rubric.quoted_table_name} rubrics, tt
         WHERE tt.id = rubrics.id

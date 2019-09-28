@@ -10,7 +10,7 @@ RSpec.describe Admin::Rubrics::PositionsController do
       subject { post :create, params: {positions: {id: rubric.id}} }
 
       it do
-        expect(::Rubrics::ApplyOrder).not_to receive(:call!)
+        expect(::Rubrics::ApplyOrderService).not_to receive(:call!)
         expect { subject }.to raise_error(ActionController::ParameterMissing).with_message(/data/)
       end
     end
@@ -19,7 +19,7 @@ RSpec.describe Admin::Rubrics::PositionsController do
       subject { post :create, params: {id: rubric.id, data: '1,2,5'} }
 
       it do
-        expect(::Rubrics::ApplyOrder).to receive(:call!).with(data: [1, 2, 5], id: rubric.id)
+        expect(::Rubrics::ApplyOrderService).to receive(:call!).with(data: [1, 2, 5], id: rubric.id)
 
         subject
 
@@ -31,7 +31,7 @@ RSpec.describe Admin::Rubrics::PositionsController do
       subject { post :create, params: {id: rubric.id * 2, data: '1,2,5'} }
 
       it do
-        expect(::Rubrics::ApplyOrder).not_to receive(:call!)
+        expect(::Rubrics::ApplyOrderService).not_to receive(:call!)
 
         expect { subject }.to raise_error(ActiveRecord::RecordNotFound)
       end
@@ -41,7 +41,7 @@ RSpec.describe Admin::Rubrics::PositionsController do
       subject { post :create, params: {id: '', data: '1,2,5'} }
 
       it do
-        expect(::Rubrics::ApplyOrder).to receive(:call!).with(data: [1, 2, 5], id: nil)
+        expect(::Rubrics::ApplyOrderService).to receive(:call!).with(data: [1, 2, 5], id: nil)
 
         subject
 
@@ -53,7 +53,7 @@ RSpec.describe Admin::Rubrics::PositionsController do
       subject { post :create, params: {data: '1,2,5'} }
 
       it do
-        expect(::Rubrics::ApplyOrder).to receive(:call!).with(data: [1, 2, 5], id: nil)
+        expect(::Rubrics::ApplyOrderService).to receive(:call!).with(data: [1, 2, 5], id: nil)
 
         subject
 

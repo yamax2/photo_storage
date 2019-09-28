@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Rubrics::ApplyOrder do
+RSpec.describe Rubrics::ApplyOrderService do
   context 'when root rubric' do
     let(:service_context) do
       described_class.call(data: [rubric4.id, rubric3.id, rubric2.id, rubric1.id, rubric4.id * 2])

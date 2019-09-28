@@ -39,6 +39,7 @@ class Photo < ApplicationRecord
   after_commit :remove_file, unless: :persisted?
   after_commit :remove_from_cart
   before_save { @rubric_changed = rubric_id_changed? if persisted? }
+  after_save :change_rubric, on: :update
 
   def local_file?
     local_filename.present? && File.exist?(tmp_local_filename)
@@ -49,6 +50,10 @@ class Photo < ApplicationRecord
   end
 
   private
+
+  def change_rubric
+    ::Photos::ChangeMainPhotoService.call!(photo: self) if @rubric_changed
+  end
 
   def read_file_attributes
     self.md5 ||= Digest::MD5.file(tmp_local_filename).to_s
@@ -61,7 +66,7 @@ class Photo < ApplicationRecord
     return unless @rubric_changed || !persisted?
 
     ::Cart::PhotoService.call!(photo: self, remove: true)
-
+  ensure
     @rubric_changed = nil
   end
 

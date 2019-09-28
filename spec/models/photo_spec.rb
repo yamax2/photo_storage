@@ -350,4 +350,36 @@ RSpec.describe Photo do
       end
     end
   end
+
+  describe 'rubric changing' do
+    let(:old_rubric) { create :rubric }
+    let(:new_rubric) { create :rubric }
+
+    context 'when photo is persisted' do
+      let(:photo) { create :photo, :fake, local_filename: 'test', rubric: old_rubric }
+
+      before do
+        Rubric.where(id: old_rubric.id).update_all(main_photo_id: photo.id)
+      end
+
+      it do
+        expect { photo.update!(rubric: new_rubric) }.to change { old_rubric.reload.main_photo }.from(photo).to(nil)
+      end
+    end
+
+    context 'when photo is not persisted' do
+      let(:photo) { build :photo, :fake, local_filename: 'test', rubric: old_rubric }
+
+      subject do
+        photo.rubric = new_rubric
+        photo.save!
+      end
+
+      it do
+        expect(::Photos::ChangeMainPhotoService).not_to receive(:call!)
+
+        expect { subject }.to change { photo.rubric }.from(old_rubric).to(new_rubric)
+      end
+    end
+  end
 end

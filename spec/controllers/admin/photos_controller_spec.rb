@@ -37,8 +37,6 @@ RSpec.describe Admin::PhotosController do
   end
 
   describe '#update' do
-    before { allow(::Photos::MainPhotoService).to receive(:call!) }
-
     context 'when wrong photo' do
       subject { put :update, params: {id: 1, photo: {name: 'test'}} }
 
@@ -79,7 +77,6 @@ RSpec.describe Admin::PhotosController do
         expect(assigns(:photo)).not_to be_valid
         expect(response).to have_http_status(:ok)
         expect(response).to render_template(:edit)
-        expect(::Photos::MainPhotoService).not_to have_received(:call!)
       end
     end
 
@@ -94,7 +91,6 @@ RSpec.describe Admin::PhotosController do
         expect(assigns(:photo)).to be_valid
         expect(assigns(:photo).name).to eq('test')
         expect(response).to redirect_to(edit_admin_photo_path(photo))
-        expect(::Photos::MainPhotoService).to have_received(:call!)
       end
     end
   end

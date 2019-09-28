@@ -1,4 +1,5 @@
 module Rubrics
+  # filters rubrics by name
   class FilterFinder
     def initialize(name_part:)
       @name_part = name_part

@@ -20,7 +20,7 @@ RSpec.describe Photos::MainPhotoService do
       let(:rubric) { create :rubric, main_photo: another_photo }
 
       it do
-        expect { service_context }.not_to change { rubric.reload.main_photo }
+        expect { service_context }.not_to(change { rubric.reload.main_photo })
         expect(service_context).to be_a_success
       end
     end
@@ -45,8 +45,7 @@ RSpec.describe Photos::MainPhotoService do
       let(:rubric) { create :rubric, rubric: root_rubric, main_photo: another_photo }
 
       it do
-        expect { service_context }.
-          not_to change { rubric.reload.main_photo }
+        expect { service_context }.not_to(change { rubric.reload.main_photo })
 
         expect(root_rubric.reload.main_photo).to be_nil
         expect(service_context).to be_a_success
@@ -62,6 +61,7 @@ RSpec.describe Photos::MainPhotoService do
 
       it do
         expect { service_context }.to change { rubric.reload.main_photo }.from(nil).to(photo)
+
         expect(parent_rubric.reload.main_photo).to eq(another_photo)
         expect(root_rubric.reload.main_photo).to be_nil
         expect(service_context).to be_a_success

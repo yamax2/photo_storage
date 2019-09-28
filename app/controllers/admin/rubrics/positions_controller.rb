@@ -6,7 +6,7 @@ module Admin
       FIRST_PHOTO = 'first_photo'.freeze
 
       def create
-        ::Rubrics::ApplyOrder.call!(
+        ::Rubrics::ApplyOrderService.call!(
           id: @rubric&.id,
           data: params.require(:data).split(',').map(&:to_i)
         )

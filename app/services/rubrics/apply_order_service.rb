@@ -1,6 +1,6 @@
 module Rubrics
   # data - array of ids
-  class ApplyOrder
+  class ApplyOrderService
     include ::Interactor
 
     delegate :data, :id, to: :context

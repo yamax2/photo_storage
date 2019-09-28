@@ -3,7 +3,6 @@ module Photos
     include ::Interactor
 
     delegate :photo, to: :context
-    delegate :rubric, to: :photo
 
     def call
       return if rubric.main_photo_id.present?
@@ -12,6 +11,8 @@ module Photos
     end
 
     private
+
+    delegate :rubric, to: :photo
 
     def apply_main_photo_for(current_rubric)
       with_lock(current_rubric.id) do

@@ -4,7 +4,6 @@ module Admin
 
     def update
       if @photo.update(photo_params)
-        ::Photos::MainPhotoService.call!(photo: @photo)
         redirect_to action: :edit, id: @photo.id
       else
         render 'edit'
