@@ -18,13 +18,12 @@ module Admin
 
     def photo_params
       params.require(:photo).permit(
-        :name,
-        :rubric_id,
-        :tz,
-        :original_timestamp,
-        :description,
-        lat_long: []
-      )
+        :name, :rubric_id, :tz, :original_timestamp, :description, lat_long: []
+      ).tap do |par|
+        if (value = par[:lat_long]).present? && value.map(&:presence).compact.empty?
+          par[:lat_long] = nil
+        end
+      end
     end
   end
 end

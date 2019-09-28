@@ -93,5 +93,19 @@ RSpec.describe Admin::PhotosController do
         expect(response).to redirect_to(edit_admin_photo_path(photo))
       end
     end
+
+    context 'when try to clear lat_long' do
+      let(:token) { create :'yandex/token' }
+      let!(:photo) { create :photo, :fake, storage_filename: 'test', yandex_token: token, name: 'my', lat_long: [1, 2] }
+
+      before { put :update, params: {id: photo.id, photo: {lat_long: ['', '']}} }
+
+      it do
+        expect(assigns(:photo)).to eq(photo)
+        expect(assigns(:photo)).to be_valid
+        expect(assigns(:photo).lat_long).to be_nil
+        expect(response).to redirect_to(edit_admin_photo_path(photo))
+      end
+    end
   end
 end
