@@ -40,7 +40,7 @@
             .col-12.col-md-9
               .input-group
                 = f.text_field :original_timestamp, class: 'form-control datetimepicker',
-                                                    readonly: true,
+                                                    autocomplete: 'off',
                                                     data: {toggle: 'datetimepicker', target: '#photo_original_timestamp'}
                 .input-group-append
                   button.btn.btn-outline-secondary.btn-clear type="button"
