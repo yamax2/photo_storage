@@ -22,7 +22,6 @@ secret_key_base: ...
 ```
 
 ### TODO:
-* set main photo for rubric action
 * cart and mass edit / photo edit action
 * map in photo listing
 

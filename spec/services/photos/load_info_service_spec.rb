@@ -30,7 +30,7 @@ RSpec.describe Photos::LoadInfoService do
         expect(photo).to be_valid
 
         expect(photo.exif).to include('model' => 'CLT-L29', 'make' => 'HUAWEI')
-        expect(photo.lat_long.to_a).to eq([56.4737777708333, 58.1308860777778])
+        expect(photo.lat_long.to_a).to eq([56.47377777083333, 58.130886077777774])
         expect(photo).to have_attributes(
           original_timestamp: Time.new(2019, 6, 15, 21, 43, 32),
           width: 7_296,
@@ -46,7 +46,7 @@ RSpec.describe Photos::LoadInfoService do
         expect(photo).to be_valid
 
         expect(photo.exif).to include('model' => 'FestXL', 'make' => 'HighScreen')
-        expect(photo.lat_long.to_a).to eq([56.0975074722222, 49.8604278333333])
+        expect(photo.lat_long.to_a).to eq([56.09750747222222, 49.86042783333333])
         expect(photo).to have_attributes(
           original_timestamp: Time.new(2019, 5, 2, 18, 40, 53),
           width: 4_160,
@@ -62,7 +62,7 @@ RSpec.describe Photos::LoadInfoService do
         expect(photo).to be_valid
 
         expect(photo.exif).to include('model' => 'ZB602KL', 'make' => 'asus')
-        expect(photo.lat_long.to_a).to eq([59.2284763888889, 56.8072841944444])
+        expect(photo.lat_long.to_a).to eq([59.22847638888889, 56.80728419444444])
 
         expect(photo).to have_attributes(
           original_timestamp: Time.new(2019, 5, 28, 18, 22, 10),

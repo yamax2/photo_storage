@@ -9,7 +9,7 @@ module Rubrics
 
       Rubric.
         find(rubric_id).
-        photos.uploaded.
+        photos.uploaded.order(:id).
         each_instance(with_lock: true) do |photo|
         warm_photo_cache(photo.decorate, photo_size.to_sym)
       end

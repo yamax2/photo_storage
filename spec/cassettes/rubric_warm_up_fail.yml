@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: get
-    uri: http://proxy.photostorage.localhost/test/000/000/217881fe6f1ff99c098d69ac53c65f7db70b53998.jpg?id=1361&preview&size=1066
+    uri: http://proxy.photostorage.localhost/test/000/000/18ef3cef09b2bcffcb637905e3c7668871a9463d3.jpg?id=1361&preview&size=1066
     body:
       encoding: US-ASCII
       string: ''
