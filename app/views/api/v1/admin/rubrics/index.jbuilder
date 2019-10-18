@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 json.array!(@rubrics) do |rubric|
   # json.(rubric, :id, :rubric_id, :name)
 
