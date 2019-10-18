@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Cart
   class ProcessPhotosService
     def initialize(rubric_id)

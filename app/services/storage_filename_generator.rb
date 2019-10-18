@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class StorageFilenameGenerator
   PARTITION_SIZE = 500
 

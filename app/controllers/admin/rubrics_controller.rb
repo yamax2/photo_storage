@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Admin
   class RubricsController < AdminController
     before_action :find_rubric, only: %i[edit update destroy warm_up]

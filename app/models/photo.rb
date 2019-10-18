@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # photo model, no state machine! no observers!
 class Photo < ApplicationRecord
   include Countable

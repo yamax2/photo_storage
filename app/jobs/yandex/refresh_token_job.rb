@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Yandex
   class RefreshTokenJob
     include Sidekiq::Worker

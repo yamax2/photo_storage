@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.shared_context 'model with counter' do |factory|
   describe '#inc_counter' do
     before { RedisClassy.flushdb }

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ReviseMailer < ApplicationMailer
   def failed(dir, token_id, info)
     return unless info.present? && admin_emails.present?

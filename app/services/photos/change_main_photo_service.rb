@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Photos
   # when photo's rubric changed from old_rubric to photo.rubric
   # the next step is main_photo_service for photo

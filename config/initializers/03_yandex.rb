@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 YandexClient.configure do |config|
   unless Rails.env.test?
     config.api_key = Rails.application.credentials.yandex.fetch(:api_key)

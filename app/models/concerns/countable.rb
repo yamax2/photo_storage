@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Countable
   def inc_counter
     return unless persisted?

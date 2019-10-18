@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class RubricDecorator < Draper::Decorator
   delegate_all
 

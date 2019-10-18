@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Counters
   class DumpService
     include ::Interactor

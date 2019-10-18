@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AddUniqAttrsToPhotos < ActiveRecord::Migration[5.2]
   def change
     add_column :photos, :md5, :string, limit: 32, null: false

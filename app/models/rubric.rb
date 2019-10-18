@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Rubric < ApplicationRecord
   belongs_to :rubric, optional: true, inverse_of: :rubrics, counter_cache: true
   belongs_to :main_photo, optional: true, class_name: 'Photo'

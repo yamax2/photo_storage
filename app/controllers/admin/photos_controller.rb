@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Admin
   class PhotosController < AdminController
     before_action :find_photo

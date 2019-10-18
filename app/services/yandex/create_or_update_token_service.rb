@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Yandex
   # https://oauth.yandex.ru/authorize?response_type=code&client_id=<client_id>&force_confirm=false
   class CreateOrUpdateTokenService

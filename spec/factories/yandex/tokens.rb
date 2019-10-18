@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 FactoryBot.define do
   factory :'yandex/token' do
     sequence(:user_id) { |n| n * 10 }

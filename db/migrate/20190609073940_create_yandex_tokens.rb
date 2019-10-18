@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateYandexTokens < ActiveRecord::Migration[5.2]
   def change
     create_table :yandex_tokens do |t|

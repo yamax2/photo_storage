@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Photos
   class UploadService
     include ::Interactor
@@ -36,10 +38,10 @@ module Photos
         block: 1.minute,
         expire: 10.minutes
       ) do
-        remote_path.each_with_object('') do |dir, path|
-          path << '/' << dir
+        remote_path.each_with_object([]) do |dir, path|
+          path.push(dir)
 
-          create_remote_dir(path)
+          create_remote_dir("/#{path.join('/')}")
         end
       end
     end

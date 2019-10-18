@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Rails.application.configure do
   # google smtp
   # config.action_mailer.smtp_settings = {

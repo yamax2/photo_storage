@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AddCountersToRubrics < ActiveRecord::Migration[5.2]
   def change
     add_column :rubrics, :rubrics_count, :bigint, default: 0, null: false

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module PhotosHelper
   def photo_size_selector_opts(selected = nil)
     keys = Rails.application.config.photo_sizes.keys - [:thumb]

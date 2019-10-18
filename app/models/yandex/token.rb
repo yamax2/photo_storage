@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Yandex
   class Token < ApplicationRecord
     self.table_name = 'yandex_tokens'

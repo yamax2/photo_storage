@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Rubrics
   # filters rubrics by name
   class FilterFinder

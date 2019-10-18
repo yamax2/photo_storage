@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # FIXME: NULLS FIRST for arel
 #
 # how to use it:

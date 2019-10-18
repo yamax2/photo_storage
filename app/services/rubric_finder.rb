@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class RubricFinder
   # rubric with all loaded parents
   def initialize(id)

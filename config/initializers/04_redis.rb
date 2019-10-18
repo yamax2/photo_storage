@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 unless Rails.env.test?
   config = Rails.root.join('config', 'redis.yml')
 

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Cart
   # add to cart or remove photo
   class PhotoService
