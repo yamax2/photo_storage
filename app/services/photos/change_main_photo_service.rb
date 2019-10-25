@@ -21,22 +21,8 @@ module Photos
 
     private
 
-    # FIXME: duplicates RubricFinder code
     def current_rubric_with_parent_ids
-      Rubric.where(<<~SQL).pluck(:id)
-        id in (
-          WITH RECURSIVE tt AS (
-            SELECT id, rubric_id
-              FROM #{Rubric.quoted_table_name}
-             WHERE id = #{photo.rubric_id}
-          UNION ALL
-          SELECT rubrics.id, rubrics.rubric_id
-            FROM #{Rubric.quoted_table_name} rubrics, tt
-              WHERE rubrics.id = tt.rubric_id
-          )
-          SELECT tt.id FROM tt
-        )
-      SQL
+      Rubrics::ParentsFinder.call(photo.rubric_id).pluck(:id)
     end
 
     def first_photo_id(rubric)

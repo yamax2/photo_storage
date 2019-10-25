@@ -1,15 +1,15 @@
 # frozen_string_literal: true
 
+# rubric with all loaded parents
 class RubricFinder
-  # rubric with all loaded parents
   def initialize(id)
     @id = id
   end
 
   def call
-    raise ActiveRecord::RecordNotFound, "rubric #{@id} not found" unless rubrics.present?
+    raise ActiveRecord::RecordNotFound, "rubric #{@id} not found" unless rubrics_by_id.present?
 
-    preload_rubric(rubrics.values.first)
+    preload_rubric(rubrics_by_id.values.first)
   end
 
   def self.call(id)
@@ -23,7 +23,7 @@ class RubricFinder
     return rubric unless rubric.rubric_id.present?
 
     association = rubric.association(:rubric)
-    record = preload_rubric(rubrics.fetch(rubric.rubric_id))
+    record = preload_rubric(rubrics_by_id.fetch(rubric.rubric_id))
 
     association.target = record
     association.set_inverse_instance(record)
@@ -31,21 +31,7 @@ class RubricFinder
     rubric
   end
 
-  def rubrics
-    @rubrics ||= Rubric.find_by_sql(<<~SQL).index_by(&:id)
-      WITH RECURSIVE tt AS (
-        SELECT id, rubric_id, 0 lv 
-          FROM #{Rubric.quoted_table_name}
-         WHERE id = #{@id}
-        UNION ALL
-        SELECT rubrics.id, rubrics.rubric_id, tt.lv + 1
-          FROM #{Rubric.quoted_table_name} rubrics, tt
-            WHERE rubrics.id = tt.rubric_id
-      )
-      SELECT rubrics.*
-        FROM #{Rubric.quoted_table_name} rubrics, tt
-        WHERE tt.id = rubrics.id
-          ORDER BY tt.lv
-    SQL
+  def rubrics_by_id
+    @rubrics_by_id ||= Rubrics::ParentsFinder.call(@id).index_by(&:id)
   end
 end
