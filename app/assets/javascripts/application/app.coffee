@@ -17,24 +17,22 @@ $(document)
     $('.photos .photo > img, .rubrics .rubric > img').lazy()
 
   .on 'keydown', (e) ->
-    # left
-    if e.keyCode == 37
-      $link = $('.photo-left')
-      Turbolinks.visit $link.attr('href') if $link.length > 0
+    switch e.keyCode
+      when 37 # left
+        $link = $('.photo-left')
+        Turbolinks.visit $link.attr('href') if $link.length > 0
 
-    # right
-    if e.keyCode == 39
-      $link = $('.photo-right')
-      Turbolinks.visit $link.attr('href') if $link.length > 0
+      when 39 # right
+        $link = $('.photo-right')
+        Turbolinks.visit $link.attr('href') if $link.length > 0
 
-    # space
-    if e.keyCode == 32
-      $('.cart-selector').click()
-      return false
+      when 32 # space
+        $('.cart-selector').click()
+        return false
 
-    if e.keyCode == 113
-      $link = $('.photo-edit-button')
-      Turbolinks.visit $link.attr('href') if $link.length > 0
+      when 113 # f2
+        $link = $('.photo-edit-button')
+        window.open $link.attr('href') if $link.length > 0
 
   .on 'change', '#preview_id', ->
     Cookies.set('preview_id', $(this).val())
