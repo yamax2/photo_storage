@@ -36,5 +36,21 @@ RSpec.describe PhotosController do
         expect(response.body).to match(/proxy.+1280/)
       end
     end
+
+    context 'when wrong rubric in params' do
+      before { get :show, params: {page_id: rubric.id * 2, id: photo.id} }
+
+      it do
+        expect(response).to redirect_to(page_photo_path(rubric.id, photo.id))
+      end
+    end
+
+    context 'when non-existent photo' do
+      subject { get :show, params: {page_id: rubric.id, id: photo.id * 2} }
+
+      it do
+        expect { subject }.to raise_error(ActiveRecord::RecordNotFound)
+      end
+    end
   end
 end
