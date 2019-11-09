@@ -35,7 +35,7 @@ class ProxySessionService
     encryptor = cipher(:encrypt)
 
     @session = Base64.urlsafe_encode64(
-      encryptor.update(Oj.dump({started: Time.current.to_i}, mode: :json)) + encryptor.final,
+      encryptor.update(Oj.dump({till: (Time.current + SESSION_TTL).to_i}, mode: :json)) + encryptor.final,
       padding: false
     )
   end
@@ -49,7 +49,7 @@ class ProxySessionService
       mode: :json
     )
 
-    payload.fetch(:started) + SESSION_TTL <= Time.current.to_i
+    payload.fetch(:till) < Time.current.to_i
   rescue StandardError
     true
   end

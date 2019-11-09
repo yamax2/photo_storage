@@ -9,7 +9,7 @@ User=photos
 Group=photos
 
 WorkingDirectory=/home/photos/
-ExecStart=/home/photos/yandex_proxy -user=photos -host=/var/run/postgresql/
+ExecStart=/home/photos/yandex_proxy -user=photos -db_host=/var/run/postgresql/ -host=photostorage.localhost -secret=secret
 Restart=always
 
 [Install]

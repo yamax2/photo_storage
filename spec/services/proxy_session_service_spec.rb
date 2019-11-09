@@ -31,7 +31,7 @@ RSpec.describe ProxySessionService do
       before { Timecop.freeze }
       after { Timecop.return }
 
-      let(:current_session) { generate_proxy_session({started: Time.current.to_i}.to_json) }
+      let(:current_session) { generate_proxy_session({till: 1.month.from_now.to_i}.to_json) }
 
       it { is_expected.to be_nil }
     end
@@ -40,7 +40,7 @@ RSpec.describe ProxySessionService do
       before { Timecop.freeze }
       after { Timecop.return }
 
-      let(:current_session) { generate_proxy_session({started: 2.months.to_i}.to_json) }
+      let(:current_session) { generate_proxy_session({till: 1.day.ago.to_i}.to_json) }
 
       it do
         is_expected.not_to be_empty
@@ -79,7 +79,7 @@ RSpec.describe ProxySessionService do
         end
       end
 
-      context 'and without "started" key' do
+      context 'and without "till" key' do
         let(:current_session) { generate_proxy_session({qq: :zozo}.to_json) }
 
         it do

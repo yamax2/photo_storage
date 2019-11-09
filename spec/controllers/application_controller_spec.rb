@@ -44,7 +44,7 @@ RSpec.describe ApplicationController do
   end
 
   context 'when session is not expired' do
-    let(:session_value) { generate_proxy_session({started: Time.current.to_i}.to_json) }
+    let(:session_value) { generate_proxy_session({till: 1.day.from_now.to_i}.to_json) }
 
     before do
       request.cookies['proxy_session'] = session_value

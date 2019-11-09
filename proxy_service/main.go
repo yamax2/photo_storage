@@ -9,6 +9,13 @@ import(
         "net/http/httputil"
         "database/sql"
         "strings"
+        "crypto/aes"
+        "crypto/cipher"
+        "crypto/sha256"
+        "crypto/md5"
+        "encoding/base64"
+        "encoding/json"
+        "time"
         _ "github.com/lib/pq"
 )
 
@@ -45,9 +52,12 @@ func LoadTokens(connection_str string) *Env {
 }
 
 func main() {
-        db_host := flag.String("host", "localhost", "db host")
+        db_host := flag.String("db_host", "localhost", "db host")
         db_user := flag.String("user", "postgres", "db user")
         db_name := flag.String("db", "photos", "database")
+
+        session_secret := flag.String("secret", "secret", "secret for session cookie")
+        app_host := flag.String("host", "photostorage.localhost", "app host")
 
         listen_addr := flag.String("listen", "127.0.0.1", "listen_addr")
         flag.Parse()
@@ -62,9 +72,11 @@ func main() {
         }
 
         proxy := httputil.NewSingleHostReverseProxy(remote)
+        secret := sha256.Sum256([]byte(*session_secret))
+        iv := md5.Sum([]byte(*app_host))
 
-        http.Handle("/", &ProxyHandler{env, proxy, false})
-        http.Handle("/originals/", &ProxyHandler{env, proxy, true})
+        http.Handle("/", &ProxyHandler{env, proxy, false, secret[:], iv[:]})
+        http.Handle("/originals/", &ProxyHandler{env, proxy, true, secret[:], iv[:]})
 
         err = http.ListenAndServe(fmt.Sprintf("%s:9000", *listen_addr), nil)
         if err != nil {
@@ -76,10 +88,25 @@ type ProxyHandler struct {
         *Env
         p *httputil.ReverseProxy
         originals bool
+        secret    []byte
+        iv        []byte
+}
+
+type SessionInfo struct {
+        Till int64 `json:"till"`
 }
 
 func (ph *ProxyHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-        // log.Println(r.URL)
+        session, err := r.Cookie("proxy_session")
+        if err != nil {
+            http.Error(w, "not authorized", http.StatusUnauthorized)
+            return
+        }
+
+        if !ph.ValidateSession(session.Value) {
+            http.Error(w, "forbidden", http.StatusForbidden)
+            return
+        }
 
         fn := r.URL.Query().Get("fn")
         if len(fn) != 0 {
@@ -100,4 +127,30 @@ func (ph *ProxyHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
         r.Header.Add("Authorization", "OAuth " + token)
         ph.p.ServeHTTP(w, r)
+}
+
+func  (ph *ProxyHandler) ValidateSession(session string) bool {
+        decoded, err := base64.RawURLEncoding.DecodeString(session)
+        if err != nil {
+            return false
+        }
+
+        block, err := aes.NewCipher(ph.secret)
+        if (err != nil || len(decoded)%aes.BlockSize != 0) {
+            return false
+        }
+
+        mode := cipher.NewCBCDecrypter(block, ph.iv)
+        mode.CryptBlocks(decoded, decoded)
+
+        var info SessionInfo
+        err = json.Unmarshal(decoded, &info)
+
+        if err != nil {
+            return false
+        }
+
+        till := time.Unix(info.Till, 0)
+
+        return till.After(time.Now().UTC())
 }
