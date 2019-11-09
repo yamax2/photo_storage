@@ -39,6 +39,7 @@ end
 RSpec.configure do |config|
   config.include FactoryBot::Syntax::Methods
   config.include StripAttributes::Matchers
+  config.include ProxySessionHelper
 
   config.use_transactional_fixtures = true
 

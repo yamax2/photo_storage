@@ -18,6 +18,9 @@ email:
   password: ...
   domain: mytm.tk
 
+proxy:
+  secret: ...
+
 secret_key_base: ...
 ```
 
