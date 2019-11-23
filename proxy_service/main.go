@@ -55,6 +55,7 @@ func main() {
         db_host := flag.String("db_host", "localhost", "db host")
         db_user := flag.String("user", "postgres", "db user")
         db_name := flag.String("db", "photos", "database")
+        no_session := flag.Bool("no_session", false, "disable auth session usage")
 
         session_secret := flag.String("secret", "secret", "secret for session cookie")
         app_host := flag.String("host", "photostorage.localhost", "app host")
@@ -75,8 +76,8 @@ func main() {
         secret := sha256.Sum256([]byte(*session_secret))
         iv := md5.Sum([]byte(*app_host))
 
-        http.Handle("/", &ProxyHandler{env, proxy, false, secret[:], iv[:]})
-        http.Handle("/originals/", &ProxyHandler{env, proxy, true, secret[:], iv[:]})
+        http.Handle("/", &ProxyHandler{env, proxy, *no_session, false, secret[:], iv[:]})
+        http.Handle("/originals/", &ProxyHandler{env, proxy, *no_session, true, secret[:], iv[:]})
 
         err = http.ListenAndServe(fmt.Sprintf("%s:9000", *listen_addr), nil)
         if err != nil {
@@ -87,9 +88,10 @@ func main() {
 type ProxyHandler struct {
         *Env
         p *httputil.ReverseProxy
-        originals bool
-        secret    []byte
-        iv        []byte
+        no_session bool
+        originals  bool
+        secret     []byte
+        iv         []byte
 }
 
 type SessionInfo struct {
@@ -97,15 +99,18 @@ type SessionInfo struct {
 }
 
 func (ph *ProxyHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-        session, err := r.Cookie("proxy_session")
-        if err != nil {
-            http.Error(w, "not authorized", http.StatusUnauthorized)
-            return
-        }
+        if !ph.no_session {
+            session, err := r.Cookie("proxy_session")
 
-        if !ph.ValidateSession(session.Value) {
-            http.Error(w, "forbidden", http.StatusForbidden)
-            return
+            if err != nil {
+                http.Error(w, "not authorized", http.StatusUnauthorized)
+                return
+            }
+
+            if  !ph.ValidateSession(session.Value) {
+                http.Error(w, "forbidden", http.StatusForbidden)
+                return
+            }
         }
 
         fn := r.URL.Query().Get("fn")
