@@ -3,7 +3,17 @@
 require 'rails_helper'
 
 RSpec.describe ProxySessionService do
-  context 'when proxy.secret is unassigned' do
+  context 'when without proxy session settings' do
+    before do
+      allow(Rails.application.credentials).to receive(:proxy).and_return(nil)
+    end
+
+    it do
+      expect { described_class.new }.to raise_error(/proxy.secret/)
+    end
+  end
+
+  context 'when proxy secrets unassigned' do
     before do
       allow(Rails.application.credentials).to receive(:proxy).and_return({})
     end
@@ -17,30 +27,26 @@ RSpec.describe ProxySessionService do
     subject { described_class.new(current_session).call }
 
     before do
-      allow(Rails.application.credentials.proxy).to receive(:fetch).with(:secret).and_return('secret')
-      allow(Rails.application.routes.default_url_options).to receive(:[]).with(:host).and_return('example.com')
+      allow(Rails.application.credentials).to receive(:proxy).and_return(secret: 'secret', iv: '389ed464a551f644')
+      Timecop.freeze
     end
+
+    after { Timecop.return }
 
     context 'when current session is nil' do
       let(:current_session) { nil }
 
-      it { is_expected.not_to be_empty }
+      it { is_expected.to eq(generate_proxy_session) }
     end
 
     context 'when session is not expired' do
-      before { Timecop.freeze }
-      after { Timecop.return }
-
-      let(:current_session) { generate_proxy_session({till: 1.month.from_now.to_i}.to_json) }
+      let(:current_session) { generate_proxy_session(1.month.from_now.to_i) }
 
       it { is_expected.to be_nil }
     end
 
     context 'when session is expired' do
-      before { Timecop.freeze }
-      after { Timecop.return }
-
-      let(:current_session) { generate_proxy_session({till: 1.day.ago.to_i}.to_json) }
+      let(:current_session) { generate_proxy_session(1.day.ago.to_i) }
 
       it do
         is_expected.not_to be_empty
@@ -49,43 +55,48 @@ RSpec.describe ProxySessionService do
     end
 
     context 'when call with incorrect current session' do
+      context 'and wrong md5' do
+
+      end
+
       context 'and value is empty' do
         let(:current_session) { '' }
 
-        it { is_expected.not_to be_empty }
+        it { is_expected.to eq(generate_proxy_session) }
       end
 
       context 'and value is spaces' do
         let(:current_session) { '  ' }
 
-        it { expect(subject.strip).not_to be_empty }
+        it { expect(subject.strip).to eq(generate_proxy_session) }
       end
 
       context 'and value is not a base64 string' do
         let(:current_session) { 'zz' }
 
-        it do
-          is_expected.not_to be_empty
-          is_expected.not_to eq(current_session)
-        end
+        it { is_expected.to eq(generate_proxy_session) }
       end
 
       context 'and value is incorrect json' do
-        let(:current_session) { generate_proxy_session('zozo') }
+        let(:current_session) { generate_proxy_session(custom_json: 'zozo') }
 
-        it do
-          is_expected.not_to be_empty
-          is_expected.not_to eq(current_session)
-        end
+        it { is_expected.to eq(generate_proxy_session) }
       end
 
       context 'and without "till" key' do
-        let(:current_session) { generate_proxy_session({qq: :zozo}.to_json) }
+        let(:current_session) { generate_proxy_session(custom_json: {qq: :zozo}) }
 
-        it do
-          is_expected.not_to be_empty
-          is_expected.not_to eq(current_session)
+        it { is_expected.to eq(generate_proxy_session) }
+      end
+
+      context 'and wrong md5 sign' do
+        let(:current_session) do
+          session = generate_proxy_session(1.month.from_now.to_i)
+
+          Base64.encode64(Digest::MD5.digest('zozo') + Base64.decode64(session)[16..-1]).gsub(/[[:space:]]/, '')
         end
+
+        it { is_expected.to eq(generate_proxy_session) }
       end
 
       context 'and unknown error' do

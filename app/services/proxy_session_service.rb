@@ -5,14 +5,12 @@ require 'oj'
 
 # just for fun
 class ProxySessionService
-  SESSION_TTL = 1.month
+  SESSION_TTL = 90.days
+  MD5_LENGTH = 16
 
   def initialize(session = nil)
-    if Rails.application.credentials.proxy[:secret].nil?
-      raise <<~MSG
-        Proxy session secret is empty.
-        Provide "proxy.secret" value in rails credential file.
-      MSG
+    if proxy.nil? || proxy[:secret].nil? || proxy[:iv].nil? || proxy[:iv].to_s.length != MD5_LENGTH
+      settings_validation_error
     end
 
     @session = session
@@ -24,33 +22,46 @@ class ProxySessionService
 
   private
 
+  delegate :proxy, to: 'Rails.application.credentials'
+
   def cipher(operation)
     OpenSSL::Cipher::AES256.new(:CBC).public_send(operation).tap do |cipher|
-      cipher.key = Digest::SHA256.digest(Rails.application.credentials.proxy.fetch(:secret))
-      cipher.iv = Digest::MD5.digest(Rails.application.routes.default_url_options[:host])
+      cipher.key = Digest::MD5.hexdigest(proxy.fetch(:secret))
+      cipher.iv = proxy.fetch(:iv)
     end
   end
 
   def generate_session
     encryptor = cipher(:encrypt)
 
-    @session = Base64.urlsafe_encode64(
-      encryptor.update(Oj.dump({till: (Time.current + SESSION_TTL).to_i}, mode: :json)) + encryptor.final,
-      padding: false
-    )
+    till = (Time.current + SESSION_TTL).to_i
+    value = "#{Oj.dump({till: till}, mode: :json)}#{[till].pack('Q').reverse}"
+
+    @session = Base64.encode64(
+      Digest::MD5.digest(value) + encryptor.update(value) + encryptor.final
+    ).gsub(/[[:space:]]/, '')
   end
 
   def need_generate?
     decryptor = cipher(:decrypt)
 
-    payload = Oj.load(
-      decryptor.update(Base64.urlsafe_decode64(@session)) + decryptor.final,
-      symbol_keys: true,
-      mode: :json
-    )
+    value = Base64.decode64(@session)
+    md5 = value.first(MD5_LENGTH)
 
+    value = decryptor.update(value[MD5_LENGTH..-1]) + decryptor.final
+    return true unless md5 == Digest::MD5.digest(value)
+
+    # remove last 8 bytes
+    payload = Oj.load(value[0..-9], symbol_keys: true, mode: :json)
     payload.fetch(:till) < Time.current.to_i
   rescue StandardError
     true
+  end
+
+  def settings_validation_error
+    raise <<~MSG
+      Proxy session settings not found.
+      Provide "proxy.secret" and "proxy.iv" values in rails credential file.
+    MSG
   end
 end

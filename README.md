@@ -20,6 +20,7 @@ email:
 
 proxy:
   secret: ...
+  iv: <16 bytes>
 
 secret_key_base: ...
 ```

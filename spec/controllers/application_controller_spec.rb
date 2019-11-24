@@ -12,8 +12,7 @@ RSpec.describe ApplicationController do
   end
 
   before do
-    allow(Rails.application.credentials.proxy).to receive(:fetch).with(:secret).and_return('secret')
-    allow(Rails.application.routes.default_url_options).to receive(:[]).with(:host).and_return('example.com')
+    allow(Rails.application.credentials).to receive(:proxy).and_return(secret: 'secret', iv: '389ed464a551f644')
   end
 
   context 'when session is empty' do
@@ -44,7 +43,7 @@ RSpec.describe ApplicationController do
   end
 
   context 'when session is not expired' do
-    let(:session_value) { generate_proxy_session({till: 1.day.from_now.to_i}.to_json) }
+    let(:session_value) { generate_proxy_session(1.day.from_now.to_i) }
 
     before do
       request.cookies['proxy_session'] = session_value
