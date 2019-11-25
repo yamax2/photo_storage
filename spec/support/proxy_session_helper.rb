@@ -11,10 +11,8 @@ module ProxySessionHelper
     cipher.iv = Rails.application.credentials.proxy.fetch(:iv)
 
     value = "#{Oj.dump(custom_json || {till: till}, mode: :json)}#{[till].pack('Q').reverse}"
-    session = Base64.encode64(
+    Base64.encode64(
       Digest::MD5.digest(value) + cipher.update(value) + cipher.final
     ).gsub(/[[:space:]]/, '')
-
-    CGI.escape(session)
   end
 end

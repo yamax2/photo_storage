@@ -13,11 +13,11 @@ class ProxySessionService
       settings_validation_error
     end
 
-    @session = CGI.unescape(session) if session
+    @session = session if session
   end
 
   def call
-    CGI.escape(generate_session) if !@session.present? || need_generate?
+    generate_session if !@session.present? || need_generate?
   end
 
   private
