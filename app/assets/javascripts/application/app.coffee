@@ -7,8 +7,23 @@ $(document)
            type: if selected then 'DELETE' else 'POST'
            error: (jqXHR, textStatus, errorThrown) ->
              console.log "AJAX Error: #{textStatus}"
-           success:
+           success: ->
              $this.toggleClass('selected')
+
+  .on 'click', '.photo-set-main-button', ->
+    $this = $(this)
+
+    $.ajax
+      url: $this.data('url')
+      type: 'put'
+      contentType: 'application/json'
+      data: JSON.stringify({rubric: {main_photo_id: $this.data('photo-id')}})
+      error: (jqXHR, textStatus, errorThrown) ->
+        console.log "AJAX Error: #{textStatus}"
+      success: ->
+        Turbolinks.visit(window.location)
+
+    false
 
   .on 'turbolinks:load', ->
     $('#mainimg').on 'load', ->

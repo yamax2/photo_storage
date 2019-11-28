@@ -95,4 +95,7 @@
 
     .photo-buttons
       a.cart-selector*{title: t('.add_to_cart'), class: in_cart?(@photos.current) ? 'selected' : '', data: {url: api_v1_admin_photos_cart_path(@photos.current)}}
+      - unless @photos.current.id == @page.rubric.main_photo_id
+        = link_to '', '#', class: 'photo-set-main-button', title: t('.set_main_photo'),
+                           data: {confirm: t('.set_main_photo_confirm'), photo_id: @photos.current.id, url: api_v1_admin_rubric_path(@page.rubric) }
       = link_to '', edit_admin_photo_path(@photos.current), class: 'photo-edit-button', title: t('.edit'), target: '_blank'

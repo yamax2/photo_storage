@@ -43,7 +43,7 @@ Rails.application.routes.draw do
     namespace :v1 do
       namespace :admin do
         resources :photos, only: :create
-        resources :rubrics, only: :index
+        resources :rubrics, only: %i[index update]
 
         namespace :cart do
           resources :rubrics, only: :index

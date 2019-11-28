@@ -147,6 +147,8 @@ ru:
       position: Позиция
       position_value: '%{pos} из %{count}'
       resolution: Разрешение
+      set_main_photo: Сделать аватаром рубрики
+      set_main_photo_confirm: Установить в качестве аватара рубрики?
       show_map: Показать
       size: Размер
       sizes:
