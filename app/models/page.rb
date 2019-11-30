@@ -4,8 +4,15 @@ class Page
   attr_reader :rubric
   delegate :rubrics_tree, to: :rubric
 
-  def initialize(rubric_id = nil)
-    @rubric = RubricFinder.call(rubric_id).decorate if rubric_id.present?
+  PageStruct = Struct.new(:prev, :current, :next)
+
+  def initialize(rubric_id = nil, offset: nil, limit: nil)
+    @offset = offset
+    @limit = limit
+
+    return unless rubric_id
+
+    @rubric = RubricFinder.call(rubric_id).decorate
   end
 
   # finds photo with prev and next in rubric
@@ -14,15 +21,26 @@ class Page
 
     raise ActiveRecord::RecordNotFound, "photo #{photo_id} not found" if photos.empty?
 
-    Struct.new(:prev, :current, :next).
-      new(photos[-1], photos.fetch(0), photos[1])
+    PageStruct.new(photos[-1], photos.fetch(0), photos[1])
   end
 
   def photos
     return @photos if defined?(@photos)
     return @photos = Photo.none unless @rubric
 
-    @photos = photos_scope.decorate
+    scope =
+      if @offset && @limit
+        Photo.
+          select(Photo.arel_table[Arel.star], 'x.rn').
+          where("x.rn > #{@offset}").limit(@limit).
+          joins(<<~SQL)
+            join (#{photos_scope(true).to_sql}) x on x.id = #{quoted_table_name}.id
+          SQL
+      else
+        photos_scope
+      end
+
+    @photos = scope.order(:rn).decorate
   end
 
   def rubrics
@@ -37,17 +55,18 @@ class Page
       decorate
   end
 
+  def with_rubrics?
+    @rubric.nil? || @rubric.rubrics_count.positive? && rubrics.any?
+  end
+
   private
 
-  def find_photos(photo_id)
-    base_sql = photos_scope.select(
-      :id,
-      'ROW_NUMBER() OVER (ORDER BY original_timestamp AT TIME ZONE tz NULLS FIRST, id) rn'
-    ).to_sql
+  delegate :quoted_table_name, to: Photo
 
+  def find_photos(photo_id)
     Photo.find_by_sql(<<~SQL).map(&:decorate).index_by(&:rn)
       WITH scope AS (
-        #{base_sql}
+        #{photos_scope(true).to_sql}
       ), current_photo AS (
         SELECT id, rn FROM scope WHERE id = #{photo_id}
       ), ids AS (
@@ -59,23 +78,20 @@ class Page
                scope.rn in (current_photo.rn - 1, current_photo.rn + 1)
       )
       SELECT photos.*, ids.rn, ids.pos
-         FROM #{Photo.quoted_table_name} photos, ids
+         FROM #{quoted_table_name} photos, ids
         WHERE photos.id = ids.id
-          ORDER BY photos.original_timestamp AT TIME ZONE photos.tz NULLS FIRST, photos.id
     SQL
   end
 
-  def photos_scope
-    table = Photo.arel_table
+  def photos_scope(only_id = false)
+    columns = Array.wrap(only_id ? Photo.arel_table[:id] : Photo.arel_table[Arel.star])
+    columns << <<~SQL
+      ROW_NUMBER() OVER (
+        ORDER BY #{quoted_table_name}.original_timestamp AT TIME ZONE #{quoted_table_name}.tz NULLS FIRST,
+                 #{quoted_table_name}.id
+      ) rn
+    SQL
 
-    @rubric.
-      photos.
-      uploaded.
-      preload(:yandex_token).
-      order(
-        PhotosNullsFirstAsc.new(
-          Arel::Nodes::InfixOperation.new('AT TIME ZONE', table[:original_timestamp], table[:tz])
-        ), table[:id]
-      )
+    @rubric.photos.uploaded.preload(:yandex_token).select(*columns)
   end
 end

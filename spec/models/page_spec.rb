@@ -82,7 +82,9 @@ RSpec.describe Page do
       it do
         expect(subject.rubric.object).to eq(root_rubric1)
         expect(subject.rubrics.map(&:object)).to match_array([sub_rubric1])
+
         expect(subject.photos.map(&:object)).to eq([photo6, photo7, photo3, photo2, photo5])
+        expect(subject.photos.map(&:rn)).to eq([1, 2, 3, 4, 5])
       end
     end
 
@@ -93,7 +95,45 @@ RSpec.describe Page do
         expect(subject.rubric.object).to eq(sub_rubric1)
         expect(subject.rubrics).to be_empty
         expect(subject.photos).to match_array([photo4])
+        expect(subject.photos.first.rn).to eq(1)
         expect(subject.rubrics_tree).to eq([sub_rubric1, root_rubric1])
+      end
+    end
+
+    context 'when pagination' do
+      context 'and first 2 photos' do
+        subject { Page.new(root_rubric1.id, offset: 0, limit: 2) }
+
+        it do
+          expect(subject.photos.map(&:rn)).to eq([1, 2])
+          expect(subject.photos.map(&:object)).to eq([photo6, photo7])
+        end
+      end
+
+      context 'and last 2 photos' do
+        subject { Page.new(root_rubric1.id, offset: 3, limit: 2) }
+
+        it do
+          expect(subject.photos.map(&:rn)).to eq([4, 5])
+          expect(subject.photos.map(&:object)).to eq([photo2, photo5])
+        end
+      end
+
+      context 'and 3 photos in the middle' do
+        subject { Page.new(root_rubric1.id, offset: 1, limit: 3) }
+
+        it do
+          expect(subject.photos.map(&:rn)).to eq([2, 3, 4])
+          expect(subject.photos.map(&:object)).to eq([photo7, photo3, photo2])
+        end
+      end
+
+      context 'and offset without limit' do
+        subject { Page.new(root_rubric1.id, offset: 1) }
+
+        it do
+          expect(subject.photos.map(&:rn)).to eq([1, 2, 3, 4, 5])
+        end
       end
     end
   end
@@ -149,6 +189,45 @@ RSpec.describe Page do
       it do
         expect { subject }.to raise_error(ActiveRecord::RecordNotFound)
       end
+    end
+  end
+
+  describe '#with_rubrics?' do
+    subject { Page.new(rubric_id).with_rubrics? }
+
+    context 'when root' do
+      let(:rubric_id) { nil }
+
+      it { is_expected.to eq(true) }
+    end
+
+    context 'when rubric without subrubrics' do
+      let(:rubric_id) { root_rubric2.id }
+
+      it { is_expected.to eq(false) }
+    end
+
+    context 'when rubric with subrubrics and photos but without counter' do
+      let(:rubric_id) { root_rubric1.id }
+
+      before do
+        Rubric.where(id: root_rubric1.id).update_all(rubrics_count: 0)
+      end
+
+      it { is_expected.to eq(false) }
+    end
+
+    context 'when rubric with subrubrics but without photos' do
+      let(:rubric_id) { root_rubric2.id }
+      let!(:test_rubric) { create :rubric, rubric: root_rubric2 }
+
+      it { is_expected.to eq(false) }
+    end
+
+    context 'when rubric with subrubrics and photos' do
+      let(:rubric_id) { root_rubric1.id }
+
+      it { is_expected.to eq(true) }
     end
   end
 end

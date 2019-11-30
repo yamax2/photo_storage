@@ -14,8 +14,9 @@
   - if @page.rubric
     = @page.rubric.description.to_s.html_safe
 
-.rubrics
-  = render partial: 'rubric', collection: @page.rubrics
+- if @page.with_rubrics?
+  .rubrics
+    = render partial: 'rubric', collection: @page.rubrics
 
 .photos
   = render partial: 'photo', collection: @page.photos, cached: true

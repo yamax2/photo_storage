@@ -181,7 +181,7 @@ GEM
     nio4r (2.5.2)
     nokogiri (1.10.5)
       mini_portile2 (~> 2.4.0)
-    oj (3.9.2)
+    oj (3.10.0)
     ox (2.11.0)
     pg (1.1.4)
     polyamorous (2.3.0)

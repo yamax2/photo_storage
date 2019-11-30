@@ -6,6 +6,6 @@ class PagesController < ApplicationController
 
     @page = Page.new(id)
 
-    redirect_to root_path if id.present? && @page.rubrics.empty? && @page.photos.empty?
+    redirect_to root_path if !@page.with_rubrics? && @page.photos.empty?
   end
 end
