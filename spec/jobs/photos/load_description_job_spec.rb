@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe Photos::LoadDescriptionJob do
-  let(:photo) { create :photo, :fake, local_filename: 'test' }
+  let(:photo) { create :photo, local_filename: 'test' }
 
   before do
     allow(Photos::LoadDescriptionService).to receive(:call!)

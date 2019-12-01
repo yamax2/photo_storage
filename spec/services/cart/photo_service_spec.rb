@@ -9,7 +9,7 @@ RSpec.describe Cart::PhotoService do
   let(:cart_key) { "cart:photos:#{rubric.id}" }
 
   context 'when photo is not persisted' do
-    let(:photo) { build :photo, :fake, local_filename: 'test', rubric: rubric }
+    let(:photo) { build :photo, local_filename: 'test', rubric: rubric }
     let(:remove) { false }
 
     it do
@@ -21,7 +21,7 @@ RSpec.describe Cart::PhotoService do
 
   context 'when add correct photo' do
     let(:remove) { false }
-    let(:photo) { create :photo, :fake, local_filename: 'test', rubric: rubric }
+    let(:photo) { create :photo, local_filename: 'test', rubric: rubric }
 
     context 'and photo already in cart' do
       before { redis.sadd(cart_key, photo.id) }
@@ -42,7 +42,7 @@ RSpec.describe Cart::PhotoService do
 
   context 'when remove correct photo' do
     let(:remove) { true }
-    let(:photo) { create :photo, :fake, local_filename: 'test', rubric: rubric }
+    let(:photo) { create :photo, local_filename: 'test', rubric: rubric }
 
     context 'and photo not in cart' do
       it do

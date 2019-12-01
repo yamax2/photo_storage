@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe Photos::RemoveService do
   let(:token) { create :'yandex/token', access_token: API_ACCESS_TOKEN, dir: '/test' }
   let(:service_context) { described_class.call!(storage_filename: photo.storage_filename, yandex_token: token) }
-  let(:photo) { create :photo, :fake, storage_filename: 'IMG_20190501_142011.jpg', yandex_token: token }
+  let(:photo) { create :photo, storage_filename: 'IMG_20190501_142011.jpg', yandex_token: token }
 
   context 'when file exists' do
     subject do

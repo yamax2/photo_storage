@@ -15,7 +15,7 @@ RSpec.describe Admin::PhotosController do
     end
 
     context 'when unpublished photo' do
-      let!(:photo) { create :photo, :fake, local_filename: 'test' }
+      let!(:photo) { create :photo, local_filename: 'test' }
 
       subject { get :edit, params: {id: photo.id} }
 
@@ -26,7 +26,7 @@ RSpec.describe Admin::PhotosController do
 
     context 'when published photo' do
       let(:token) { create :'yandex/token' }
-      let!(:photo) { create :photo, :fake, storage_filename: 'test', yandex_token: token }
+      let!(:photo) { create :photo, storage_filename: 'test', yandex_token: token }
 
       before { get :edit, params: {id: photo.id} }
 
@@ -48,7 +48,7 @@ RSpec.describe Admin::PhotosController do
     end
 
     context 'when unpublished photo' do
-      let!(:photo) { create :photo, :fake, local_filename: 'test' }
+      let!(:photo) { create :photo, local_filename: 'test' }
 
       subject { put :update, params: {id: photo.id, photo: {name: 'test'}} }
 
@@ -59,7 +59,7 @@ RSpec.describe Admin::PhotosController do
 
     context 'when without photo param' do
       let(:token) { create :'yandex/token' }
-      let!(:photo) { create :photo, :fake, storage_filename: 'test', yandex_token: token }
+      let!(:photo) { create :photo, storage_filename: 'test', yandex_token: token }
 
       subject { put :update, params: {id: photo.id, photo1: {name: 'test'}} }
 
@@ -70,7 +70,7 @@ RSpec.describe Admin::PhotosController do
 
     context 'when update with errors' do
       let(:token) { create :'yandex/token' }
-      let!(:photo) { create :photo, :fake, storage_filename: 'test', yandex_token: token }
+      let!(:photo) { create :photo, storage_filename: 'test', yandex_token: token }
 
       before { put :update, params: {id: photo.id, photo: {name: ''}} }
 
@@ -84,7 +84,7 @@ RSpec.describe Admin::PhotosController do
 
     context 'when successful update' do
       let(:token) { create :'yandex/token' }
-      let!(:photo) { create :photo, :fake, storage_filename: 'test', yandex_token: token, name: 'my' }
+      let!(:photo) { create :photo, storage_filename: 'test', yandex_token: token, name: 'my' }
 
       before { put :update, params: {id: photo.id, photo: {name: 'test'}} }
 
@@ -98,7 +98,7 @@ RSpec.describe Admin::PhotosController do
 
     context 'when try to clear lat_long' do
       let(:token) { create :'yandex/token' }
-      let!(:photo) { create :photo, :fake, storage_filename: 'test', yandex_token: token, name: 'my', lat_long: [1, 2] }
+      let!(:photo) { create :photo, storage_filename: 'test', yandex_token: token, name: 'my', lat_long: [1, 2] }
 
       before { put :update, params: {id: photo.id, photo: {lat_long: ['', '']}} }
 

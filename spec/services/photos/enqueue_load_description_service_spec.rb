@@ -11,7 +11,7 @@ RSpec.describe Photos::EnqueueLoadDescriptionService do
 
   context 'when photo without description' do
     context 'and has lat_long' do
-      let(:photo) { create :photo, :fake, lat_long: [1, 2], local_filename: 'test' }
+      let(:photo) { create :photo, lat_long: [1, 2], local_filename: 'test' }
 
       it do
         expect(service_context).to be_a_success
@@ -20,7 +20,7 @@ RSpec.describe Photos::EnqueueLoadDescriptionService do
     end
 
     context 'and without lat_long' do
-      let(:photo) { create :photo, :fake, local_filename: 'test' }
+      let(:photo) { create :photo, local_filename: 'test' }
 
       it do
         expect(service_context).to be_a_success
@@ -30,7 +30,7 @@ RSpec.describe Photos::EnqueueLoadDescriptionService do
   end
 
   context 'when photo with description' do
-    let(:photo) { create :photo, :fake, local_filename: 'test', lat_long: [1, 2], description: 'zozo' }
+    let(:photo) { create :photo, local_filename: 'test', lat_long: [1, 2], description: 'zozo' }
 
     it do
       expect(service_context).to be_a_success

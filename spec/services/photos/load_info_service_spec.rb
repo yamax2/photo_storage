@@ -198,10 +198,10 @@ RSpec.describe Photos::LoadInfoService do
     let(:filename) { nil }
     let(:token) { create :'yandex/token' }
     let(:photo) do
-      build :photo, :fake, local_filename: filename,
-                           content_type: 'image/jpeg',
-                           storage_filename: 'zozo',
-                           yandex_token: token
+      build :photo, local_filename: filename,
+                    content_type: 'image/jpeg',
+                    storage_filename: 'zozo',
+                    yandex_token: token
     end
 
     it do

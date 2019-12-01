@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_09_21_102948) do
+ActiveRecord::Schema.define(version: 2019_12_01_194514) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -55,6 +55,22 @@ ActiveRecord::Schema.define(version: 2019_09_21_102948) do
     t.text "external_info"
     t.index ["main_photo_id"], name: "index_rubrics_on_main_photo_id", where: "(main_photo_id IS NOT NULL)"
     t.index ["rubric_id"], name: "index_rubrics_on_rubric_id"
+  end
+
+  create_table "track_items", force: :cascade do |t|
+    t.string "name", limit: 512, null: false
+    t.bigint "yandex_token_id"
+    t.text "storage_filename"
+    t.text "local_filename"
+    t.string "md5", limit: 32, null: false
+    t.string "sha256", limit: 64, null: false
+    t.decimal "avg_speed", default: "0.0", null: false
+    t.decimal "duration", default: "0.0", null: false
+    t.decimal "distance", default: "0.0", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["md5", "sha256"], name: "uq_track_items", unique: true
+    t.index ["yandex_token_id"], name: "index_track_items_on_yandex_token_id", where: "(yandex_token_id IS NOT NULL)"
   end
 
   create_table "yandex_tokens", force: :cascade do |t|

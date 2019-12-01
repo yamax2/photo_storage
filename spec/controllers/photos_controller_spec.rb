@@ -9,7 +9,7 @@ RSpec.describe PhotosController do
     let(:rubric) { create :rubric }
     let(:token) { create :'yandex/token' }
     let(:photo) do
-      create :photo, :fake, storage_filename: 'test', yandex_token: token, rubric: rubric, width: 4_096, height: 3_072
+      create :photo, storage_filename: 'test', yandex_token: token, rubric: rubric, width: 4_096, height: 3_072
     end
 
     context 'when preview selected' do

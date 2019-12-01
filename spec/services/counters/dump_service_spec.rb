@@ -14,9 +14,9 @@ RSpec.describe Counters::DumpService do
 
   subject { described_class.call!(model_klass: Photo) }
 
-  let!(:photo_without_views) { create :photo, :fake, local_filename: 'test', views: 0 }
-  let!(:photo_with_views) { create :photo, :fake, local_filename: 'test', views: 1_000 }
-  let!(:wrong_photo) { create :photo, :fake, local_filename: 'test', views: 2_000 }
+  let!(:photo_without_views) { create :photo, local_filename: 'test', views: 0 }
+  let!(:photo_with_views) { create :photo, local_filename: 'test', views: 1_000 }
+  let!(:wrong_photo) { create :photo, local_filename: 'test', views: 2_000 }
 
   context 'when no counters in redis' do
     it do

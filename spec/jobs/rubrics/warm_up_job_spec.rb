@@ -7,13 +7,13 @@ RSpec.describe Rubrics::WarmUpJob do
   let(:rubric) { create :rubric }
 
   let!(:published_photo1) do
-    create :photo, :fake, storage_filename: '000/000/18ef3cef09b2bcffcb637905e3c7668871a9463d3.jpg',
-                          width: 4_096, height: 3_072, yandex_token: token, rubric: rubric
+    create :photo, storage_filename: '000/000/18ef3cef09b2bcffcb637905e3c7668871a9463d3.jpg',
+                   width: 4_096, height: 3_072, yandex_token: token, rubric: rubric
   end
 
   let!(:published_photo2) do
-    create :photo, :fake, storage_filename: '000/000/217881fe6f1ff99c098d69ac53c65f7db70b53998.jpg',
-                          width: 4_096, height: 3_072, yandex_token: token, rubric: rubric
+    create :photo, storage_filename: '000/000/217881fe6f1ff99c098d69ac53c65f7db70b53998.jpg',
+                   width: 4_096, height: 3_072, yandex_token: token, rubric: rubric
   end
 
   around do |example|
@@ -85,13 +85,13 @@ RSpec.describe Rubrics::WarmUpJob do
     let(:token) { create :'yandex/token', dir: '/photos' }
 
     let!(:published_photo1) do
-      create :photo, :fake, storage_filename: '000/002/1399af5ae507b68fa87cf9c608be76b6736a8789ff7c.jpg',
-                            width: 4_096, height: 3_072, yandex_token: token, rubric: rubric
+      create :photo, storage_filename: '000/002/1399af5ae507b68fa87cf9c608be76b6736a8789ff7c.jpg',
+                     width: 4_096, height: 3_072, yandex_token: token, rubric: rubric
     end
 
     let!(:published_photo2) do
-      create :photo, :fake, storage_filename: '000/002/13980400eed762a03139516b0763ab5975f07bbce466.jpg',
-                            width: 4_096, height: 3_072, yandex_token: token, rubric: rubric
+      create :photo, storage_filename: '000/002/13980400eed762a03139516b0763ab5975f07bbce466.jpg',
+                     width: 4_096, height: 3_072, yandex_token: token, rubric: rubric
     end
 
     before do

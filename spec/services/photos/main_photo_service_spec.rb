@@ -7,7 +7,7 @@ RSpec.describe Photos::MainPhotoService do
 
   let(:rubric) { create :rubric }
   let(:token) { create :'yandex/token' }
-  let(:photo) { create :photo, :fake, storage_filename: 'test', rubric: rubric, yandex_token: token }
+  let(:photo) { create :photo, storage_filename: 'test', rubric: rubric, yandex_token: token }
 
   context 'when root rubric' do
     context 'and rubric without main photo' do
@@ -18,7 +18,7 @@ RSpec.describe Photos::MainPhotoService do
     end
 
     context 'and rubric with main photo' do
-      let(:another_photo) { create :photo, :fake, local_filename: 'test' }
+      let(:another_photo) { create :photo, local_filename: 'test' }
       let(:rubric) { create :rubric, main_photo: another_photo }
 
       it do
@@ -43,7 +43,7 @@ RSpec.describe Photos::MainPhotoService do
     end
 
     context 'and rubric with main_photo' do
-      let(:another_photo) { create :photo, :fake, local_filename: 'test' }
+      let(:another_photo) { create :photo, local_filename: 'test' }
       let(:rubric) { create :rubric, rubric: root_rubric, main_photo: another_photo }
 
       it do
@@ -55,7 +55,7 @@ RSpec.describe Photos::MainPhotoService do
     end
 
     context 'and parent rubric with main_photo' do
-      let(:another_photo) { create :photo, :fake, local_filename: 'test' }
+      let(:another_photo) { create :photo, local_filename: 'test' }
 
       let(:root_rubric) { create :rubric }
       let(:parent_rubric) { create :rubric, rubric: root_rubric, main_photo: another_photo }

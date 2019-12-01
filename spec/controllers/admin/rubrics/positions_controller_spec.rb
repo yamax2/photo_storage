@@ -70,7 +70,7 @@ RSpec.describe Admin::Rubrics::PositionsController do
       let!(:rubric2) { create :rubric }
 
       let!(:photo) do
-        create :photo, :fake, rubric: rubric1, exif: {}, original_timestamp: Date.yesterday, local_filename: 'test'
+        create :photo, rubric: rubric1, exif: {}, original_timestamp: Date.yesterday, local_filename: 'test'
       end
 
       context 'when by first photo' do

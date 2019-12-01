@@ -50,6 +50,7 @@ RSpec.describe Yandex::Token do
 
   describe 'associations' do
     it { is_expected.to have_many(:photos).inverse_of(:yandex_token).dependent(:destroy) }
+    it { is_expected.to have_many(:track_items).inverse_of(:yandex_token).dependent(:destroy) }
   end
 
   describe 'active prop validation' do

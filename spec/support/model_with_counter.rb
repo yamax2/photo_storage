@@ -10,7 +10,7 @@ RSpec.shared_context 'model with counter' do |factory|
     subject { model.inc_counter }
 
     context 'when persisted' do
-      let(:model) { create :photo, :fake, local_filename: 'test' }
+      let(:model) { create factory, local_filename: 'test' }
 
       context 'and first view' do
         it do
@@ -33,7 +33,7 @@ RSpec.shared_context 'model with counter' do |factory|
       end
 
       context 'and counter with ttl' do
-        let(:key) { "counters:photo:#{model.id}" }
+        let(:key) { "counters:#{factory}:#{model.id}" }
 
         before do
           redis.set(key, 0)

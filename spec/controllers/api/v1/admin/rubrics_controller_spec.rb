@@ -87,7 +87,7 @@ RSpec.describe Api::V1::Admin::RubricsController do
 
     context 'when correct params' do
       let(:rubric) { create :rubric }
-      let!(:photo) { create :photo, :fake, local_filename: 'test', rubric: rubric }
+      let!(:photo) { create :photo, local_filename: 'test', rubric: rubric }
 
       it do
         expect { post :update, params: {id: rubric.id, rubric: {main_photo_id: photo.id}} }.

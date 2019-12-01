@@ -8,13 +8,13 @@ RSpec.describe Photos::UploadService do
 
   context 'when file already uploaded' do
     let(:token) { create :'yandex/token' }
-    let(:photo) { create :photo, :fake, storage_filename: 'test.jpg', yandex_token: token }
+    let(:photo) { create :photo, storage_filename: 'test.jpg', yandex_token: token }
 
     it { expect(service_context).to be_a_success }
   end
 
   context 'when local file does not exist' do
-    let(:photo) { create :photo, :fake, local_filename: 'test23.jpg' }
+    let(:photo) { create :photo, local_filename: 'test23.jpg' }
 
     it do
       expect(service_context).to be_a_failure

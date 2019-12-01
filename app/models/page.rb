@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# decorator
 class Page
   attr_reader :rubric
   delegate :rubrics_tree, to: :rubric

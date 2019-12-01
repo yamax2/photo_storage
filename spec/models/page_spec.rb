@@ -20,49 +20,49 @@ RSpec.describe Page do
   # photo2
   # photo5
 
-  let!(:photo1) { create :photo, :fake, rubric: root_rubric1, local_filename: 'test', original_timestamp: 1.day.ago }
+  let!(:photo1) { create :photo, rubric: root_rubric1, local_filename: 'test', original_timestamp: 1.day.ago }
 
   let!(:photo2) do
-    create :photo, :fake, rubric: root_rubric1,
-                          storage_filename: 'test',
-                          yandex_token: token,
-                          original_timestamp: 2.days.ago
+    create :photo, rubric: root_rubric1,
+                   storage_filename: 'test',
+                   yandex_token: token,
+                   original_timestamp: 2.days.ago
   end
 
   let!(:photo3) do
-    create :photo, :fake, rubric: root_rubric1,
-                          storage_filename: 'test',
-                          yandex_token: token,
-                          original_timestamp: 3.days.ago
+    create :photo, rubric: root_rubric1,
+                   storage_filename: 'test',
+                   yandex_token: token,
+                   original_timestamp: 3.days.ago
   end
 
   let!(:photo4) do
-    create :photo, :fake, rubric: sub_rubric1,
-                          storage_filename: 'test',
-                          yandex_token: token,
-                          original_timestamp: 4.days.ago
+    create :photo, rubric: sub_rubric1,
+                   storage_filename: 'test',
+                   yandex_token: token,
+                   original_timestamp: 4.days.ago
   end
 
   let!(:photo5) do
-    create :photo, :fake, rubric: root_rubric1,
-                          storage_filename: 'test',
-                          yandex_token: token,
-                          original_timestamp: 2.days.ago,
-                          tz: 'Europe/Moscow'
+    create :photo, rubric: root_rubric1,
+                   storage_filename: 'test',
+                   yandex_token: token,
+                   original_timestamp: 2.days.ago,
+                   tz: 'Europe/Moscow'
   end
 
   let!(:photo6) do
-    create :photo, :fake, rubric: root_rubric1,
-                          storage_filename: 'test',
-                          yandex_token: token,
-                          original_timestamp: nil
+    create :photo, rubric: root_rubric1,
+                   storage_filename: 'test',
+                   yandex_token: token,
+                   original_timestamp: nil
   end
 
   let!(:photo7) do
-    create :photo, :fake, rubric: root_rubric1,
-                          storage_filename: 'test',
-                          yandex_token: token,
-                          original_timestamp: nil
+    create :photo, rubric: root_rubric1,
+                   storage_filename: 'test',
+                   yandex_token: token,
+                   original_timestamp: nil
   end
 
   context 'when page is root' do

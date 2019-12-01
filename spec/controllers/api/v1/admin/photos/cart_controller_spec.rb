@@ -19,7 +19,7 @@ RSpec.describe Api::V1::Admin::Photos::CartController do
     end
 
     context 'when correct photo' do
-      let(:photo) { create :photo, :fake, local_filename: 'test' }
+      let(:photo) { create :photo, local_filename: 'test' }
 
       subject { post :create, params: {photo_id: photo.id} }
 
@@ -52,7 +52,7 @@ RSpec.describe Api::V1::Admin::Photos::CartController do
     end
 
     context 'when correct photo' do
-      let(:photo) { create :photo, :fake, local_filename: 'test' }
+      let(:photo) { create :photo, local_filename: 'test' }
 
       subject { delete :destroy, params: {photo_id: photo.id} }
 

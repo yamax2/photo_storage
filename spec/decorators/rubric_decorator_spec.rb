@@ -7,7 +7,7 @@ RSpec.describe RubricDecorator do
     subject { rubric.decorate.main_photo }
 
     context 'when rubric with main_photo' do
-      let(:main_photo) { create :photo, :fake, local_filename: 'test' }
+      let(:main_photo) { create :photo, local_filename: 'test' }
       let(:rubric) { create :rubric, main_photo: main_photo }
 
       it do

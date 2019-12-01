@@ -16,6 +16,7 @@ module Yandex
     validate :dir_names
 
     has_many :photos, dependent: :destroy, inverse_of: :yandex_token, foreign_key: :yandex_token_id
+    has_many :track_items, dependent: :destroy, inverse_of: :yandex_token, foreign_key: :yandex_token_id
 
     strip_attributes only: %i[dir other_dir]
 

@@ -21,7 +21,7 @@ RSpec.describe PagesController do
     context 'when rubric' do
       context 'and without photos and rubrics' do
         before do
-          create :photo, :fake, local_filename: 'test', rubric: rubric
+          create :photo, local_filename: 'test', rubric: rubric
           get :show, params: {id: rubric.id}
         end
 
@@ -36,7 +36,7 @@ RSpec.describe PagesController do
         let(:token) { create :'yandex/token' }
 
         before do
-          create :photo, :fake, storage_filename: 'test', rubric: rubric, yandex_token: token, width: 100, height: 100
+          create :photo, storage_filename: 'test', rubric: rubric, yandex_token: token, width: 100, height: 100
 
           get :show, params: {id: rubric.id}
         end
@@ -65,7 +65,7 @@ RSpec.describe PagesController do
         let(:token) { create :'yandex/token' }
 
         before do
-          create :photo, :fake, storage_filename: 'test', rubric: rubric, yandex_token: token, width: 100, height: 100
+          create :photo, storage_filename: 'test', rubric: rubric, yandex_token: token, width: 100, height: 100
 
           get :show, params: {id: rubric.id}
         end

@@ -13,8 +13,8 @@ RSpec.describe Photos::ChangeMainPhotoService do
   let!(:old_rubric) { create :rubric }
   let!(:new_rubric) { create :rubric }
 
-  let!(:another_photo) { create :photo, :fake, local_filename: 'test', rubric: old_rubric }
-  let(:photo) { create :photo, :fake, local_filename: 'test', rubric: old_rubric }
+  let!(:another_photo) { create :photo, local_filename: 'test', rubric: old_rubric }
+  let(:photo) { create :photo, local_filename: 'test', rubric: old_rubric }
 
   context 'when simple change to a new rubric' do
     before do

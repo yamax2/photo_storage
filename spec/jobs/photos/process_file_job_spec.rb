@@ -10,7 +10,7 @@ RSpec.describe Photos::ProcessFileJob do
   subject { described_class.perform_async(photo_id) }
 
   context 'when photo exists' do
-    let(:photo) { create :photo, :fake, local_filename: 'zozo' }
+    let(:photo) { create :photo, local_filename: 'zozo' }
     let(:photo_id) { photo.id }
 
     before { subject }
