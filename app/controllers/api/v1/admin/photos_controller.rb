@@ -3,7 +3,7 @@
 module Api
   module V1
     module Admin
-      class PhotosController < ::ActionController::API
+      class PhotosController < BaseController
         def create
           context = ::Photos::EnqueueProcessService.call(
             uploaded_io: params.require(:image),

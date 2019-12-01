@@ -41,6 +41,8 @@ Rails.application.routes.draw do
 
   namespace :api, defaults: {format: :json} do
     namespace :v1 do
+      resources :pages, only: :show
+
       namespace :admin do
         resources :photos, only: :create
         resources :rubrics, only: %i[index update]

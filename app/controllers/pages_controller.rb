@@ -2,10 +2,8 @@
 
 class PagesController < ApplicationController
   def show
-    id = params[:id]
+    @page = Page.new(params[:id])
 
-    @page = Page.new(id)
-
-    redirect_to root_path if !@page.with_rubrics? && @page.photos.empty?
+    redirect_to root_path if !@page.with_rubrics? && @page.photos.object.empty?
   end
 end

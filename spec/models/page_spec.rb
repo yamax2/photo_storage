@@ -93,6 +93,7 @@ RSpec.describe Page do
 
       it do
         expect(subject.rubric.object).to eq(sub_rubric1)
+        expect(subject.rubric.association(:rubric)).to be_loaded
         expect(subject.rubrics).to be_empty
         expect(subject.photos).to match_array([photo4])
         expect(subject.photos.first.rn).to eq(1)
@@ -228,6 +229,15 @@ RSpec.describe Page do
       let(:rubric_id) { root_rubric1.id }
 
       it { is_expected.to eq(true) }
+    end
+  end
+
+  describe 'single rubric mode' do
+    subject { Page.new(sub_rubric2.id, single_rubric_mode: true) }
+
+    it do
+      expect(subject.rubric).to eq(sub_rubric2)
+      expect(subject.rubric.association(:rubric)).not_to be_loaded
     end
   end
 end

@@ -6,13 +6,20 @@ class Page
 
   PageStruct = Struct.new(:prev, :current, :next)
 
-  def initialize(rubric_id = nil, offset: nil, limit: nil)
+  def initialize(rubric_id = nil, offset: nil, limit: nil, single_rubric_mode: false)
     @offset = offset
     @limit = limit
 
     return unless rubric_id
 
-    @rubric = RubricFinder.call(rubric_id).decorate
+    rubric =
+      if single_rubric_mode
+        Rubric.find(rubric_id)
+      else
+        RubricFinder.call(rubric_id)
+      end
+
+    @rubric = rubric.decorate
   end
 
   # finds photo with prev and next in rubric
@@ -40,7 +47,7 @@ class Page
         photos_scope
       end
 
-    @photos = scope.order(:rn).decorate
+    @photos = scope.preload(:yandex_token).order(:rn).decorate
   end
 
   def rubrics
@@ -92,6 +99,6 @@ class Page
       ) rn
     SQL
 
-    @rubric.photos.uploaded.preload(:yandex_token).select(*columns)
+    @rubric.photos.uploaded.select(*columns)
   end
 end
