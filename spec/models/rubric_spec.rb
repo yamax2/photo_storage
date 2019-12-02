@@ -28,6 +28,7 @@ RSpec.describe Rubric do
     it { is_expected.to belong_to(:main_photo).optional.class_name('Photo') }
     it { is_expected.to have_many(:rubrics).inverse_of(:rubric).dependent(:destroy) }
     it { is_expected.to have_many(:photos).inverse_of(:rubric).dependent(:destroy) }
+    it { is_expected.to have_many(:tracks).inverse_of(:rubric).dependent(:destroy) }
   end
 
   describe 'validations' do

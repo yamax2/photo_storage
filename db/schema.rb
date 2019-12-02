@@ -59,6 +59,7 @@ ActiveRecord::Schema.define(version: 2019_12_01_194514) do
 
   create_table "track_items", force: :cascade do |t|
     t.string "name", limit: 512, null: false
+    t.bigint "track_id", null: false
     t.bigint "yandex_token_id"
     t.text "storage_filename"
     t.text "local_filename"
@@ -70,7 +71,16 @@ ActiveRecord::Schema.define(version: 2019_12_01_194514) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["md5", "sha256"], name: "uq_track_items", unique: true
+    t.index ["track_id"], name: "index_track_items_on_track_id"
     t.index ["yandex_token_id"], name: "index_track_items_on_yandex_token_id", where: "(yandex_token_id IS NOT NULL)"
+  end
+
+  create_table "tracks", force: :cascade do |t|
+    t.string "name", limit: 512, null: false
+    t.bigint "rubric_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["rubric_id"], name: "index_tracks_on_rubric_id"
   end
 
   create_table "yandex_tokens", force: :cascade do |t|

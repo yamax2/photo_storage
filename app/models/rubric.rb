@@ -6,6 +6,7 @@ class Rubric < ApplicationRecord
 
   has_many :rubrics, dependent: :destroy, inverse_of: :rubric
   has_many :photos, dependent: :destroy, inverse_of: :rubric
+  has_many :tracks, dependent: :destroy, inverse_of: :rubric
 
   validates :name, presence: true, length: {maximum: 100}
 

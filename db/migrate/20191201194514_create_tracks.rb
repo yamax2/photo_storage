@@ -1,7 +1,16 @@
-class CreateTrackItems < ActiveRecord::Migration[5.2]
+class CreateTracks < ActiveRecord::Migration[5.2]
   def change
+    create_table :tracks do |t|
+      t.string     :name, null: false, limit: 512
+      t.references :rubric, index: true, null: false
+
+      t.timestamps null: false
+    end
+
     create_table :track_items do |t|
       t.string     :name, null: false, limit: 512
+
+      t.references :track, index: true, null: false
 
       # storage properties
       t.references :yandex_token, index: false

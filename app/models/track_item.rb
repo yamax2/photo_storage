@@ -6,6 +6,7 @@ class TrackItem < ApplicationRecord
 
   strip_attributes only: :name
 
+  belongs_to :track, inverse_of: :track_items
   belongs_to :yandex_token, class_name: 'Yandex::Token',
                             foreign_key: :yandex_token_id,
                             inverse_of: :track_items,
