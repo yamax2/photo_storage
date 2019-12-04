@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe StorageFilenameGenerator do
+RSpec.describe Photos::StorageFilenameGenerator do
   before do
     allow(SecureRandom).to receive(:hex).and_return('test')
   end
