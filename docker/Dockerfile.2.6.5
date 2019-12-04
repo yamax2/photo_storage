@@ -7,4 +7,6 @@ RUN gem install bundler
 RUN apt update -qq && apt install -y nano libexif-dev
 RUN ssh-keyscan -H github.com >> /etc/ssh/ssh_known_hosts
 
+ENV BUNDLE_APP_CONFIG /app/.bundle
+
 WORKDIR /app
