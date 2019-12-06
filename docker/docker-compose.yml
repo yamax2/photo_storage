@@ -17,7 +17,7 @@ services:
   web:
     extends:
       service: app
-    command: 'bash -c "rm -f /var/run/rails.pid && bundle exec rails s -p 80 -b 0.0.0.0 --pid /var/run/rails.pid"'
+    command: 'sh -c "rm -f /var/run/rails.pid && bundle exec rails s -p 80 -b 0.0.0.0 --pid /var/run/rails.pid"'
     depends_on:
       - db
       - redis

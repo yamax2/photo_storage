@@ -24,3 +24,4 @@
 .irb-save-history
 coverage
 *.csv
+*.sql

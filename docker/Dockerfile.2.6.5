@@ -1,10 +1,12 @@
-FROM ruby:2.6.5
+FROM ruby:2.6.5-alpine
 
-RUN ln -fs /usr/share/zoneinfo/Asia/Yekaterinburg /etc/localtime \
-  && dpkg-reconfigure -f noninteractive tzdata
+# RUN ln -fs /usr/share/zoneinfo/Asia/Yekaterinburg /etc/localtime \
+#  && dpkg-reconfigure -f noninteractive tzdata
+RUN apk add tzdata nano libexif-dev openssh-client xz-dev libpq nodejs gcompat
+RUN echo 'Asia/Yekaterinburg' > /etc/timezone
 
 RUN gem install bundler
-RUN apt update -qq && apt install -y nano libexif-dev
+# RUN apt update -qq && apt install -y nano libexif-dev
 RUN ssh-keyscan -H github.com >> /etc/ssh/ssh_known_hosts
 
 ENV BUNDLE_APP_CONFIG /app/.bundle
