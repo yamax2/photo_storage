@@ -15,10 +15,10 @@ gem 'jbuilder', '~> 2.5'
 gem 'bootsnap', '>= 1.1.0', require: false
 
 gem 'bootstrap', '~> 4.3.1'
+gem 'bootstrap4-datetime-picker-rails'
 gem 'font-awesome-rails', '~> 4.7'
 gem 'jquery-rails'
 gem 'slim-rails', '>= 3.2'
-gem 'bootstrap4-datetime-picker-rails'
 
 gem 'draper', '>= 3.1'
 gem 'gretel', '>= 3'
@@ -37,6 +37,7 @@ gem 'sidekiq-failures', '>= 1'
 gem 'sidekiq-throttled', '>= 0.10'
 
 gem 'exifr'
+gem 'gpx'
 gem 'image_size'
 gem 'leaflet-rails'
 gem 'yandex_client'

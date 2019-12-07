@@ -2,15 +2,8 @@ class CreateTracks < ActiveRecord::Migration[5.2]
   def change
     create_table :tracks do |t|
       t.string     :name, null: false, limit: 512
+
       t.references :rubric, index: true, null: false
-
-      t.timestamps null: false
-    end
-
-    create_table :track_items do |t|
-      t.string     :name, null: false, limit: 512
-
-      t.references :track, index: true, null: false
 
       # storage properties
       t.references :yandex_token, index: false
@@ -28,7 +21,7 @@ class CreateTracks < ActiveRecord::Migration[5.2]
       t.timestamps null: false
     end
 
-    add_index :track_items, :yandex_token_id, where: 'yandex_token_id is not null'
-    add_index :track_items, %i[md5 sha256], unique: true, name: 'uq_track_items'
+    add_index :tracks, :yandex_token_id, where: 'yandex_token_id is not null'
+    add_index :tracks, %i[md5 sha256], unique: true, name: 'uq_tracks'
   end
 end
