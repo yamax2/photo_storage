@@ -15,6 +15,9 @@ ru:
         description: Описание (html)
         ord: Порядок в листинге
         rubrics_count: Подрубрики
+      track:
+        content: gpx-файл (содержимое)
+        name: Название
       yandex/token:
         active: Активность
         dir: Каталог фото
@@ -29,6 +32,10 @@ ru:
           attributes:
             local_filename:
               wrong_value: Один из файловых атрибутов должен быть заполнен
+        track:
+          attributes:
+            content:
+              wrong_value: Допускаются только gpx-файлы
         yandex/token:
           attributes:
             dir:
@@ -107,6 +114,10 @@ ru:
           title: 'Сортировка подрубрик для %{name}'
       warm_up:
         success: 'Обновление кэша для рубрики "%{name}" запланировано'
+    tracks:
+      form:
+        <<: *form_base
+        title: 'Новый трек в рубрике %{rubric_name}'
     yandex:
       token_performed: Создание токена запланировано
       tokens:

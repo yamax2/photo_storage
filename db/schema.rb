@@ -65,6 +65,8 @@ ActiveRecord::Schema.define(version: 2019_12_01_194514) do
     t.text "local_filename"
     t.string "md5", limit: 32, null: false
     t.string "sha256", limit: 64, null: false
+    t.string "original_filename", limit: 512, null: false
+    t.bigint "size", default: 0, null: false
     t.decimal "avg_speed", default: "0.0", null: false
     t.decimal "duration", default: "0.0", null: false
     t.decimal "distance", default: "0.0", null: false

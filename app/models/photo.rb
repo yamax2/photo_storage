@@ -5,8 +5,8 @@ class Photo < ApplicationRecord
   include Countable
   include Storable
 
-  JPEG_IMAGE = 'image/jpeg'.freeze
-  PNG_IMAGE = 'image/png'.freeze
+  JPEG_IMAGE = 'image/jpeg'
+  PNG_IMAGE = 'image/png'
 
   ALLOWED_CONTENT_TYPES = [
     JPEG_IMAGE,
@@ -19,8 +19,8 @@ class Photo < ApplicationRecord
                             foreign_key: :yandex_token_id,
                             optional: true
 
-  validates :name, :original_filename, presence: true, length: {maximum: 512}
-  validates :width, :height, :size, presence: true, numericality: {only_integer: true, greater_than_or_equal_to: 0}
+  validates :name, presence: true, length: {maximum: 512}
+  validates :width, :height, presence: true, numericality: {only_integer: true, greater_than_or_equal_to: 0}
   validates :content_type, presence: true, inclusion: ALLOWED_CONTENT_TYPES
 
   validates :tz, presence: true, inclusion: Rails.application.config.photo_timezones
@@ -35,12 +35,6 @@ class Photo < ApplicationRecord
 
   def change_rubric
     ::Photos::ChangeMainPhotoService.call!(photo: self) if @rubric_changed
-  end
-
-  def read_file_attributes
-    super
-
-    self.size = File.size(tmp_local_filename) if size.zero?
   end
 
   def remove_from_cart

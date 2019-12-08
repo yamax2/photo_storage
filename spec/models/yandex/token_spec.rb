@@ -53,6 +53,16 @@ RSpec.describe Yandex::Token do
     it { is_expected.to have_many(:tracks).inverse_of(:yandex_token).dependent(:destroy) }
   end
 
+  describe 'scopes' do
+    let!(:token1) { create :'yandex/token', active: true }
+    let!(:token2) { create :'yandex/token', active: true }
+    let!(:token3) { create :'yandex/token', active: false }
+
+    it do
+      expect(described_class.active).to eq([token1, token2])
+    end
+  end
+
   describe 'active prop validation' do
     context 'when active' do
       subject { build :'yandex/token', active: true }

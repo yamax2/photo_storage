@@ -20,6 +20,8 @@ module Yandex
 
     strip_attributes only: %i[dir other_dir]
 
+    scope :active, -> { where(active: true).order(:id) }
+
     private
 
     def dir_names

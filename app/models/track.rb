@@ -3,6 +3,8 @@
 class Track < ApplicationRecord
   include Storable
 
+  MIME_TYPE = 'application/gpx+xml'
+
   validates :name, presence: true, length: {maximum: 512}
   validates :avg_speed, :duration, :distance, presence: true, numericality: {greater_than_or_equal_to: 0}
 

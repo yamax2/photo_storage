@@ -16,16 +16,6 @@ module Photos
 
     private
 
-    def move_temp_file
-      dir = Rails.root.join('tmp', 'files')
-      local_filename = SecureRandom.hex(26)
-
-      FileUtils.mkdir_p(dir)
-      FileUtils.mv(uploaded_io.tempfile, dir.join(local_filename))
-
-      local_filename
-    end
-
     def photo_attributes
       {
         size: uploaded_io.size,
@@ -33,7 +23,7 @@ module Photos
         original_filename: uploaded_io.original_filename,
         name: File.basename(uploaded_io.original_filename, '.*'),
         rubric_id: rubric_id,
-        local_filename: move_temp_file,
+        local_filename: UploadFileService.move(uploaded_io),
         external_info: external_info
       }
     end

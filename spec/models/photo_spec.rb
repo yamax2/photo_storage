@@ -13,9 +13,7 @@ RSpec.describe Photo do
 
     it { is_expected.to have_db_column(:exif).of_type(:jsonb) }
     it { is_expected.to have_db_column(:lat_long).of_type(:point) }
-    it { is_expected.to have_db_column(:original_filename).of_type(:string).with_options(null: false, limit: 512) }
     it { is_expected.to have_db_column(:original_timestamp).of_type(:datetime).with_options(null: true) }
-    it { is_expected.to have_db_column(:size).of_type(:integer).with_options(null: false, default: 0) }
     it { is_expected.to have_db_column(:content_type).of_type(:string).with_options(null: false, limit: 30) }
     it { is_expected.to have_db_column(:width).of_type(:integer).with_options(null: false, default: 0) }
     it { is_expected.to have_db_column(:height).of_type(:integer).with_options(null: false, default: 0) }
@@ -42,17 +40,11 @@ RSpec.describe Photo do
     it { is_expected.to validate_presence_of(:name) }
     it { is_expected.to validate_length_of(:name).is_at_most(512) }
 
-    it { is_expected.to validate_presence_of(:original_filename) }
-    it { is_expected.to validate_length_of(:original_filename).is_at_most(512) }
-
     it { is_expected.to validate_presence_of(:width) }
     it { is_expected.to validate_numericality_of(:width).is_greater_than_or_equal_to(0).only_integer }
 
     it { is_expected.to validate_presence_of(:height) }
     it { is_expected.to validate_numericality_of(:height).is_greater_than_or_equal_to(0).only_integer }
-
-    it { is_expected.to validate_presence_of(:size) }
-    it { is_expected.to validate_numericality_of(:size).is_greater_than_or_equal_to(0).only_integer }
 
     it { is_expected.to validate_presence_of(:content_type) }
     it { is_expected.to validate_inclusion_of(:content_type).in_array(described_class::ALLOWED_CONTENT_TYPES) }
@@ -77,44 +69,6 @@ RSpec.describe Photo do
     it do
       expect { photo.destroy }.not_to raise_error
       expect(Photos::RemoveFileJob).to have_received(:perform_async).with(token.id, 'zozo')
-    end
-  end
-
-  describe 'size loading' do
-    let(:tmp_file) { Rails.root.join('tmp', 'files', 'test.txt') }
-
-    context 'when local file' do
-      before do
-        FileUtils.mkdir_p(Rails.root.join('tmp', 'files'))
-        FileUtils.cp 'spec/fixtures/test.txt', tmp_file
-      end
-
-      after { FileUtils.rm_f(tmp_file) }
-
-      context 'when size = 0' do
-        let(:photo) { build :photo, local_filename: 'test.txt', size: 0 }
-
-        it do
-          expect { photo.save! }.to change { photo.size }.from(0).to(File.size(tmp_file))
-        end
-      end
-
-      context 'when size > 0' do
-        let(:photo) { build :photo, local_filename: 'test.txt', size: 10 }
-
-        it do
-          expect { photo.save! }.not_to(change { photo.size })
-        end
-      end
-    end
-
-    context 'when remote file' do
-      let(:token) { create :'yandex/token' }
-      let(:photo) { build :photo, storage_filename: 'test.txt', yandex_token: token, size: 0 }
-
-      it do
-        expect { photo.save! }.not_to(change { photo.size })
-      end
     end
   end
 

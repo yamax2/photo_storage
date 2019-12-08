@@ -70,13 +70,13 @@ module Photos
     end
 
     def token_for_upload
-      @token_for_upload ||= Yandex::Token.where(active: true).order(:id).first
+      @token_for_upload ||= Yandex::Token.active.first
     end
 
     def upload_file
       client.put(
         file: local_file,
-        name: token_for_upload.dir + '/' + @storage_filename,
+        name: "#{token_for_upload.dir}/#{@storage_filename}",
         size: photo.size,
         md5: photo.md5,
         sha256: photo.sha256

@@ -26,6 +26,8 @@ Rails.application.routes.draw do
     end
 
     resources :rubrics, except: :show do
+      resources :tracks
+
       member do
         get :warm_up
       end

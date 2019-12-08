@@ -4,6 +4,9 @@ module Storable
   extend ActiveSupport::Concern
 
   included do
+    validates :original_filename, presence: true, length: {maximum: 512}
+    validates :size, presence: true, numericality: {only_integer: true, greater_than_or_equal_to: 0}
+
     validates :md5, :sha256, presence: true
     validates :md5, length: {is: 32}
     validates :sha256, length: {is: 64}
@@ -32,6 +35,8 @@ module Storable
   def read_file_attributes
     self.md5 ||= Digest::MD5.file(tmp_local_filename).to_s
     self.sha256 ||= Digest::SHA256.file(tmp_local_filename).to_s
+
+    self.size = File.size(tmp_local_filename) if size.zero?
   end
 
   def remove_file

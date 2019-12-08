@@ -12,6 +12,8 @@ class CreateTracks < ActiveRecord::Migration[5.2]
 
       t.string     :md5, limit: 32, null: false
       t.string     :sha256, limit: 64, null: false
+      t.string     :original_filename, null: false, limit: 512
+      t.bigint     :size, null: false, default: 0
 
       # gpx
       t.numeric    :avg_speed, default: 0, null: false

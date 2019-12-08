@@ -10,8 +10,10 @@ RSpec.shared_context 'storable model' do |factory|
     it { is_expected.to have_db_column(:created_at).of_type(:datetime).with_options(null: false) }
     it { is_expected.to have_db_column(:updated_at).of_type(:datetime).with_options(null: false) }
 
+    it { is_expected.to have_db_column(:size).of_type(:integer).with_options(null: false, default: 0) }
     it { is_expected.to have_db_column(:md5).of_type(:string).with_options(null: false, limit: 32) }
     it { is_expected.to have_db_column(:sha256).of_type(:string).with_options(null: false, limit: 64) }
+    it { is_expected.to have_db_column(:original_filename).of_type(:string).with_options(null: false, limit: 512) }
 
     it { is_expected.to have_db_index(:yandex_token_id) }
     it { is_expected.to have_db_index([:md5, :sha256]).unique }
@@ -23,6 +25,12 @@ RSpec.shared_context 'storable model' do |factory|
 
     it { is_expected.to validate_presence_of(:sha256) }
     it { is_expected.to validate_length_of(:sha256).is_equal_to(64) }
+
+    it { is_expected.to validate_presence_of(:original_filename) }
+    it { is_expected.to validate_length_of(:original_filename).is_at_most(512) }
+
+    it { is_expected.to validate_presence_of(:size) }
+    it { is_expected.to validate_numericality_of(:size).is_greater_than_or_equal_to(0).only_integer }
   end
 
   describe 'token presence validation' do
@@ -217,6 +225,44 @@ RSpec.shared_context 'storable model' do |factory|
       it do
         expect(model.md5).to eq(initial_md5)
         expect(model.sha256).to eq(initial_sha)
+      end
+    end
+  end
+
+  describe 'size loading' do
+    let(:tmp_file) { Rails.root.join('tmp', 'files', 'test.txt') }
+
+    context 'when local file' do
+      before do
+        FileUtils.mkdir_p(Rails.root.join('tmp', 'files'))
+        FileUtils.cp 'spec/fixtures/test.txt', tmp_file
+      end
+
+      after { FileUtils.rm_f(tmp_file) }
+
+      context 'when size = 0' do
+        let(:model) { build factory, local_filename: 'test.txt', size: 0 }
+
+        it do
+          expect { model.save! }.to change { model.size }.from(0).to(File.size(tmp_file))
+        end
+      end
+
+      context 'when size > 0' do
+        let(:model) { build factory, local_filename: 'test.txt', size: 10 }
+
+        it do
+          expect { model.save! }.not_to(change { model.size })
+        end
+      end
+    end
+
+    context 'when remote file' do
+      let(:token) { create :'yandex/token' }
+      let(:model) { build factory, storage_filename: 'test.txt', yandex_token: token, size: 0 }
+
+      it do
+        expect { model.save! }.not_to(change { model.size })
       end
     end
   end
