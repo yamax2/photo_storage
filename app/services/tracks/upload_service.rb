@@ -9,18 +9,18 @@ module Tracks
     def call
       return if track.storage_filename.present?
 
-      @storage_filename = ''
-
       validate_upload
-      upload_file
 
+      @storage_filename = StorageFilenameGenerator.new(track, partition: false).call
+
+      upload_file
       update_track
     end
 
     private
 
     def local_file
-      @local_file ||= @track.tmp_local_filename
+      @local_file ||= track.tmp_local_filename
     end
 
     def token_for_upload

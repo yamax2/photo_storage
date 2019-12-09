@@ -11,7 +11,7 @@ module Tracks
       validate_gpx
 
       if track.errors.empty? && track.save
-        # perform job here
+        ProcessFileJob.perform_async(track.id)
       else
         fail_context
       end

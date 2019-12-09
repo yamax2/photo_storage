@@ -7,8 +7,8 @@ module Nominatim
   # http://nominatim.org/release-docs/latest/api/Reverse/
   # https://operations.osmfoundation.org/policies/nominatim/
   class ReverseGeocode
-    ACTION_URL = 'https://nominatim.openstreetmap.org/reverse'.freeze
-    USER_AGENT = 'PhotoStorage https://github.com/yamax2/photo_storage'.freeze
+    ACTION_URL = 'https://nominatim.openstreetmap.org/reverse'
+    USER_AGENT = 'PhotoStorage https://github.com/yamax2/photo_storage'
 
     class Error < StandardError
       attr_reader :code, :error_text

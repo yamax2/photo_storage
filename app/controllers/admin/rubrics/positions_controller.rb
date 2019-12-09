@@ -5,7 +5,7 @@ module Admin
     class PositionsController < AdminController
       before_action :find_rubric
 
-      FIRST_PHOTO = 'first_photo'.freeze
+      FIRST_PHOTO = 'first_photo'
 
       def create
         ::Rubrics::ApplyOrderService.call!(

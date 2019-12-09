@@ -34,7 +34,7 @@ RSpec.describe Photos::UploadService do
     end
 
     before do
-      allow_any_instance_of(Photos::StorageFilenameGenerator).
+      allow_any_instance_of(StorageFilenameGenerator).
         to receive(:call).and_return('000/000/36894942206a2a4eeb5015938089a066720bd919f27')
 
       FileUtils.cp('spec/fixtures/cats.jpg', photo.tmp_local_filename)
