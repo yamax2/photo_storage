@@ -55,31 +55,39 @@ RSpec.describe Admin::RubricsController do
   end
 
   describe '#destroy' do
-    let!(:parent_rubric) { create :rubric }
-    let!(:rubric) { create :rubric, rubric: parent_rubric }
+    context 'when correct rubric' do
+      let!(:parent_rubric) { create :rubric }
+      let!(:rubric) { create :rubric, rubric: parent_rubric }
 
-    context 'when single destroy' do
-      before { delete :destroy, params: {id: rubric.id} }
+      context 'when single destroy' do
+        before { delete :destroy, params: {id: rubric.id} }
 
-      it do
-        expect(response).to redirect_to(admin_rubrics_path(id: parent_rubric.id))
-        expect(assigns(:rubric)).not_to be_persisted
-        expect(flash[:notice]).to eq I18n.t('admin.rubrics.destroy.success', name: rubric.name)
+        it do
+          expect(response).to redirect_to(admin_rubrics_path(id: parent_rubric.id))
+          expect(assigns(:rubric)).not_to be_persisted
+          expect(flash[:notice]).to eq I18n.t('admin.rubrics.destroy.success', name: rubric.name)
 
-        expect { rubric.reload }.to raise_error(ActiveRecord::RecordNotFound)
+          expect { rubric.reload }.to raise_error(ActiveRecord::RecordNotFound)
+        end
+      end
+
+      context 'when rubric with sub_rubrics' do
+        before { delete :destroy, params: {id: parent_rubric.id} }
+
+        it do
+          expect(response).to redirect_to(admin_rubrics_path)
+          expect(assigns(:rubric)).not_to be_persisted
+          expect(flash[:notice]).to eq I18n.t('admin.rubrics.destroy.success', name: parent_rubric.name)
+
+          expect { rubric.reload }.to raise_error(ActiveRecord::RecordNotFound)
+          expect { parent_rubric.reload }.to raise_error(ActiveRecord::RecordNotFound)
+        end
       end
     end
 
-    context 'when rubric with sub_rubrics' do
-      before { delete :destroy, params: {id: parent_rubric.id} }
-
+    context 'when wrong id' do
       it do
-        expect(response).to redirect_to(admin_rubrics_path)
-        expect(assigns(:rubric)).not_to be_persisted
-        expect(flash[:notice]).to eq I18n.t('admin.rubrics.destroy.success', name: parent_rubric.name)
-
-        expect { rubric.reload }.to raise_error(ActiveRecord::RecordNotFound)
-        expect { parent_rubric.reload }.to raise_error(ActiveRecord::RecordNotFound)
+        expect { delete :destroy, params: {id: 2} }.to raise_error(ActiveRecord::RecordNotFound)
       end
     end
   end
@@ -117,6 +125,18 @@ RSpec.describe Admin::RubricsController do
           expect(response).to render_template(:index)
           expect(response).to have_http_status(:ok)
           expect(assigns(:rubrics)).to be_empty
+        end
+      end
+
+      context 'when filter' do
+        let!(:my_rubric) { create :rubric, name: 'zozo' }
+
+        before { get :index, params: {q: {name_cont: 'zo'}} }
+
+        it do
+          expect(response).to render_template(:index)
+          expect(response).to have_http_status(:ok)
+          expect(assigns(:rubrics)).to match_array([my_rubric])
         end
       end
     end
@@ -259,6 +279,26 @@ RSpec.describe Admin::RubricsController do
 
       it do
         expect { request }.to raise_error(ActiveRecord::RecordNotFound)
+      end
+    end
+  end
+
+  describe '#edit' do
+    context 'when correct id' do
+      let(:rubric) { create :rubric }
+
+      before { get :edit, params: {id: rubric.id} }
+
+      it do
+        expect(response).to render_template(:edit)
+        expect(response).to have_http_status(:ok)
+        expect(assigns(:rubric)).to eq(rubric)
+      end
+    end
+
+    context 'when wrong id' do
+      it do
+        expect { get :edit, params: {id: 1} }.to raise_error(ActiveRecord::RecordNotFound)
       end
     end
   end

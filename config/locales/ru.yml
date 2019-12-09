@@ -16,8 +16,13 @@ ru:
         ord: Порядок в листинге
         rubrics_count: Подрубрики
       track:
+        avg_speed: Средняя скорость, км/ч
         content: gpx-файл (содержимое)
+        created_at: Загружено
+        distance: Расстояние, км.
+        duration: Длительность, ч.
         name: Название
+        size: Размер
       yandex/token:
         active: Активность
         dir: Каталог фото
@@ -69,6 +74,7 @@ ru:
         rubrics: Рубрики
         rubric_positions: Сортировка рубрик
         settings: Управление
+        tracks: Треки
         yandex_tokens: Токены Yandex
     photos:
       edit:
@@ -97,6 +103,7 @@ ru:
         search: Найти
         search_by_name: Поиск по названию
         subrubrics: Подрубрики %{name}
+        tracks: Треки
         warm_up: 'Прогреть кэш для размера %{size}'
       new:
         title_root: Создание новой корневой рубрики
@@ -115,9 +122,21 @@ ru:
       warm_up:
         success: 'Обновление кэша для рубрики "%{name}" запланировано'
     tracks:
+      destroy:
+        success: 'Трек %{name} был удалён'
+      edit:
+        title: Трек %{name}
       form:
         <<: *form_base
-        title: 'Новый трек в рубрике %{rubric_name}'
+      index:
+        actions: Управление
+        edit: Редактировать трек
+        new: Добавить треки
+        remove: Удалить трек
+        remove_confirm: Вы действительно хотите удалить трек?
+        search: Найти
+        search_by_name: Поиск по названию
+        title: Треки рубрики %{name}
     yandex:
       token_performed: Создание токена запланировано
       tokens:

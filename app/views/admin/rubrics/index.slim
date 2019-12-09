@@ -55,12 +55,16 @@
                       i.fa.fa-level-down
 
                     = link_to page_path(rubric), title: t('.content'), target: '_blank',
-                                                                       class: 'btn btn-outline-info btn-sm' do
+                                                                              class: 'btn btn-outline-info btn-sm' do
                       i.fa.fa-picture-o
 
                     = link_to edit_admin_rubric_path(rubric), title: t('.edit'),
                                                               class: 'btn btn-outline-success btn-sm' do
                       i.fa.fa-pencil
+
+                    = link_to admin_rubric_tracks_path(rubric), title: '',
+                                                                class: 'btn btn-outline-info btn-sm' do
+                      i.fa.fa-map-marker
 
                     = link_to [:admin, rubric], title: t('.remove'),
                                                 method: :delete,

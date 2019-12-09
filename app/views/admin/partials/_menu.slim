@@ -21,7 +21,7 @@ aside#left-panel.left-panel
 
         h3.menu-title
           = t('.content')
-        li*{class: controller_path == 'admin/rubrics' ? 'active' : ''}
+        li*{class:  %w[admin/rubrics admin/tracks].include?(controller_path) ? 'active' : ''}
           = link_to admin_rubrics_path do
             i.menu-icon.fa.fa-laptop
             = t('.rubrics')

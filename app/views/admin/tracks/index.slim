@@ -1,0 +1,54 @@
+- content_for :title, t('.title', name: @rubric.name)
+- breadcrumb :tracks, @rubric
+
+.row
+  .col-md-6
+    .card
+      .card-header
+        strong
+          = t('.actions')
+      .card-body.action-buttons
+        /= link_to new_admin_rubric_track_path(@rubric), class: 'btn btn-primary' do
+          .fa.fa-plus
+          = t('.new')
+
+.row
+  .col-sm-12
+    .card
+      .card-body
+        = search_form_for [:admin, @rubric, @search], class: 'form-inline rubric-search-form' do |f|
+          .form-group
+            = f.search_field :name_cont, class: 'form-control', autofocus: true, placeholder: t('.search_by_name')
+          = f.submit t('.search'), class: 'btn btn-success'
+
+        .table-scroll
+          table.table
+            thead
+              tr
+                - %i[id name created_at avg_speed distance duration size].each do |attr|
+                  th
+                    = sort_link @search, attr, Track.human_attribute_name(attr)
+                th
+            tbody
+              - @tracks.each do |track|
+                tr
+                  - %i[id name created_at avg_speed distance duration size].each do |attr|
+                    td
+                      - if attr == :size
+                        = number_to_human_size(track[attr])
+                      - elsif %i[avg_speed distance].include?(attr)
+                        = track[attr].round(2)
+                      - elsif attr == :duration
+                        = (track[attr] / 3600.0).round(2)
+                      - else
+                        = track[attr]
+                  td.action-buttons
+                    = link_to edit_admin_rubric_track_path(@rubric, track), title: t('.edit'),
+                                                                            class: 'btn btn-outline-success btn-sm' do
+                      i.fa.fa-pencil
+
+                    = link_to [:admin, @rubric, track], title: t('.remove'),
+                                                        method: :delete,
+                                                        class: 'btn btn-outline-danger btn-sm',
+                                                        data: {confirm: t('.remove_confirm')} do
+                      i.fa.fa-trash

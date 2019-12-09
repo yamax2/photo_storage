@@ -23,6 +23,16 @@ crumb :rubric_positions do
 end
 
 crumb :rubric do |rubric|
-  link rubric.name.presence || t('admin.rubrics.form.title'), rubric.persisted? ? admin_rubric_path(rubric) : '#'
+  link rubric.name.presence || t('admin.rubrics.form.title'), rubric.persisted? ? edit_admin_rubric_path(rubric) : '#'
   parent :rubrics
+end
+
+crumb :tracks do |rubric|
+  link t('admin.partials.menu.tracks'), admin_rubric_tracks_path(rubric)
+  parent :rubric, rubric
+end
+
+crumb :track do |track|
+  link track.name, '#'
+  parent :tracks, track.rubric
 end

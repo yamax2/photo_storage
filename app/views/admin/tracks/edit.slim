@@ -1,0 +1,4 @@
+- content_for :title, t('.title', name: @track.name.presence || @track.id)
+- breadcrumb :track, @track
+
+= render partial: 'form'
