@@ -2,12 +2,12 @@
 
 require 'rails_helper'
 
-RSpec.describe Photos::RemoveFileJob do
+RSpec.describe Tracks::RemoveFileJob do
   context 'when token exists' do
     let(:token) { create :'yandex/token' }
 
     it do
-      expect(Photos::RemoveService).to receive(:call!).with(yandex_token: token, storage_filename: 'test')
+      expect(Tracks::RemoveService).to receive(:call!).with(yandex_token: token, storage_filename: 'test')
 
       expect { described_class.perform_async(token.id, 'test') }.not_to raise_error
     end
@@ -15,7 +15,7 @@ RSpec.describe Photos::RemoveFileJob do
 
   context 'when token does not exist' do
     it do
-      expect(Photos::RemoveService).not_to receive(:call!)
+      expect(Tracks::RemoveService).not_to receive(:call!)
 
       expect { described_class.perform_async(5, 'test') }.to raise_error(ActiveRecord::RecordNotFound)
     end

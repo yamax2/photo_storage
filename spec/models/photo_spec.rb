@@ -59,16 +59,13 @@ RSpec.describe Photo do
   end
 
   describe 'remote file removing' do
-    before do
-      allow(Photos::RemoveFileJob).to receive(:perform_async)
-    end
-
     let(:token) { create :'yandex/token' }
     let(:photo) { create :photo, local_filename: nil, storage_filename: 'zozo', yandex_token: token }
 
     it do
+      expect(Photos::RemoveFileJob).to receive(:perform_async).with(token.id, 'zozo')
+
       expect { photo.destroy }.not_to raise_error
-      expect(Photos::RemoveFileJob).to have_received(:perform_async).with(token.id, 'zozo')
     end
   end
 

@@ -38,4 +38,15 @@ RSpec.describe Track do
     it { is_expected.to belong_to(:yandex_token).inverse_of(:tracks).optional }
     it { is_expected.to belong_to(:rubric).inverse_of(:tracks) }
   end
+
+  describe 'remote file removing' do
+    let(:token) { create :'yandex/token' }
+    let(:track) { create :track, local_filename: nil, storage_filename: 'zozo', yandex_token: token }
+
+    it do
+      expect(Tracks::RemoveFileJob).to receive(:perform_async).with(token.id, 'zozo')
+
+      expect { track.destroy }.not_to raise_error
+    end
+  end
 end

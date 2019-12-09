@@ -15,4 +15,17 @@ class Track < ApplicationRecord
                             foreign_key: :yandex_token_id,
                             inverse_of: :tracks,
                             optional: true
+
+  private
+
+  def remove_file
+    super
+
+    return unless storage_filename.present?
+
+    ::Tracks::RemoveFileJob.perform_async(
+      yandex_token_id,
+      storage_filename
+    )
+  end
 end

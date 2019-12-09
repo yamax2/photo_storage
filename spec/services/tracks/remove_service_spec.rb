@@ -2,13 +2,18 @@
 
 require 'rails_helper'
 
-RSpec.describe Photos::RemoveService do
-  let(:token) { create :'yandex/token', access_token: API_ACCESS_TOKEN, dir: '/test' }
-  let(:service_context) { described_class.call!(storage_filename: 'IMG_20190501_142011.jpg', yandex_token: token) }
+RSpec.describe Tracks::RemoveService do
+  let(:token) { create :'yandex/token', access_token: API_ACCESS_TOKEN, other_dir: '/other' }
+  let(:service_context) do
+    described_class.call!(
+      storage_filename: '2019-05-02_15-28_Thu.gpx',
+      yandex_token: token
+    )
+  end
 
   context 'when file exists' do
     subject do
-      VCR.use_cassette('photo_remove_success') { service_context }
+      VCR.use_cassette('track_remove_success') { service_context }
     end
 
     it do
@@ -18,7 +23,7 @@ RSpec.describe Photos::RemoveService do
 
   context 'when file does not exist' do
     subject do
-      VCR.use_cassette('photo_remove_404') { service_context }
+      VCR.use_cassette('track_remove_404') { service_context }
     end
 
     it do
