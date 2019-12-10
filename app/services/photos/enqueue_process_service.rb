@@ -4,10 +4,10 @@ module Photos
   class EnqueueProcessService
     include ::Interactor
 
-    delegate :rubric_id, :external_info, :uploaded_io, :photo, to: :context
+    delegate :external_info, :uploaded_io, :photo, to: :context
 
     def call
-      context.photo = Photo.new(photo_attributes)
+      photo.assign_attributes(photo_attributes)
 
       context.fail! unless photo.save
 
@@ -21,8 +21,6 @@ module Photos
         size: uploaded_io.size,
         content_type: uploaded_io.content_type,
         original_filename: uploaded_io.original_filename,
-        name: File.basename(uploaded_io.original_filename, '.*'),
-        rubric_id: rubric_id,
         local_filename: UploadFileService.move(uploaded_io),
         external_info: external_info
       }

@@ -13,7 +13,7 @@ module Admin
 
     def index
       @search = Track.where(rubric: @rubric).ransack(params[:q])
-      @tracks = @search.result.page(params[:page])
+      @tracks = @search.result.page(params[:page]).decorate
     end
 
     def update

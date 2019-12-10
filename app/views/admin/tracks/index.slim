@@ -2,17 +2,6 @@
 - breadcrumb :tracks, @rubric
 
 .row
-  .col-md-6
-    .card
-      .card-header
-        strong
-          = t('.actions')
-      .card-body.action-buttons
-        /= link_to new_admin_rubric_track_path(@rubric), class: 'btn btn-primary' do
-          .fa.fa-plus
-          = t('.new')
-
-.row
   .col-sm-12
     .card
       .card-body
@@ -32,16 +21,11 @@
             tbody
               - @tracks.each do |track|
                 tr
-                  - %i[id name created_at avg_speed distance duration size].each do |attr|
+                  - %i[id name created_at avg_speed distance duration].each do |attr|
                     td
-                      - if attr == :size
-                        = number_to_human_size(track[attr])
-                      - elsif %i[avg_speed distance].include?(attr)
-                        = track[attr].round(2)
-                      - elsif attr == :duration
-                        = (track[attr] / 3600.0).round(2)
-                      - else
-                        = track[attr]
+                      = track.public_send(attr)
+                  td
+                    = number_to_human_size(track.size)
                   td.action-buttons
                     = link_to edit_admin_rubric_track_path(@rubric, track), title: t('.edit'),
                                                                             class: 'btn btn-outline-success btn-sm' do

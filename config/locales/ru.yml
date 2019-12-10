@@ -129,7 +129,6 @@ ru:
       form:
         <<: *form_base
       index:
-        actions: Управление
         edit: Редактировать трек
         new: Добавить треки
         remove: Удалить трек

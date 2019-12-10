@@ -6,6 +6,15 @@ RSpec.describe Api::V1::Admin::PhotosController do
   render_views
 
   describe '#create' do
+    context 'when wrong rubric' do
+      let(:image) { fixture_file_upload('spec/fixtures/test2.jpg', 'image/jpeg') }
+
+      it do
+        expect { post :create, params: {rubric_id: 1, image: image}, xhr: true }.
+          to raise_error(ActiveRecord::RecordNotFound)
+      end
+    end
+
     context 'when without image param' do
       subject { post :create, params: {rubric_id: 1}, xhr: true }
 
@@ -15,7 +24,9 @@ RSpec.describe Api::V1::Admin::PhotosController do
     end
 
     context 'when without rubric_id param' do
-      subject { post :create, params: {image: 'test'}, xhr: true }
+      let(:image) { fixture_file_upload('spec/fixtures/test2.jpg', 'image/jpeg') }
+
+      subject { post :create, params: {image: image}, xhr: true }
 
       it do
         expect { subject }.to raise_error(ActionController::ParameterMissing).with_message(/rubric_id/)

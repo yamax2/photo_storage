@@ -5,14 +5,20 @@ module Api
     module Admin
       class PhotosController < BaseController
         def create
+          uploaded_io = params.require(:image)
+
+          @photo = Photo.new(
+            name: File.basename(uploaded_io.original_filename, '.*'),
+            rubric: Rubric.find(params.require(:rubric_id))
+          )
+
           context = ::Photos::EnqueueProcessService.call(
-            uploaded_io: params.require(:image),
-            rubric_id: params.require(:rubric_id),
+            photo: @photo,
+            uploaded_io: uploaded_io,
             external_info: params[:external_info]
           )
 
           @success = context.success?
-          @photo = context.photo
 
           render status: :unprocessable_entity unless @success
         end
