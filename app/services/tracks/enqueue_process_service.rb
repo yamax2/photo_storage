@@ -36,7 +36,7 @@ module Tracks
       return if uploaded_io.content_type == Track::MIME_TYPE
 
       track.errors.add(
-        :content,
+        :content_type,
         I18n.t('activerecord.errors.models.track.attributes.content.wrong_value')
       )
     end

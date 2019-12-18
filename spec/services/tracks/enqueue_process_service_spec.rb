@@ -19,7 +19,7 @@ RSpec.describe Tracks::EnqueueProcessService do
     it do
       expect(service_context).to be_a_failure
       expect(track).not_to be_persisted
-      expect(track.errors).to include(:content)
+      expect(track.errors).to include(:content_type)
       expect(File.exist?(tmp_filename)).to eq(false)
 
       expect(Tracks::ProcessFileJob).not_to have_received(:perform_async)

@@ -3,19 +3,18 @@
 module Api
   module V1
     module Admin
-      class PhotosController < BaseController
+      class TracksController < BaseController
         def create
           uploaded_io = params.require(:content)
 
-          @photo = Photo.new(
+          @track = Track.new(
             name: File.basename(uploaded_io.original_filename, '.*'),
             rubric: Rubric.find(params.require(:rubric_id))
           )
 
-          context = ::Photos::EnqueueProcessService.call(
-            photo: @photo,
-            uploaded_io: uploaded_io,
-            external_info: params[:external_info]
+          context = ::Tracks::EnqueueProcessService.call(
+            track: @track,
+            uploaded_io: uploaded_io
           )
 
           @success = context.success?

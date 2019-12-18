@@ -10,23 +10,23 @@ RSpec.describe Api::V1::Admin::PhotosController do
       let(:image) { fixture_file_upload('spec/fixtures/test2.jpg', 'image/jpeg') }
 
       it do
-        expect { post :create, params: {rubric_id: 1, image: image}, xhr: true }.
+        expect { post :create, params: {rubric_id: 1, content: image}, xhr: true }.
           to raise_error(ActiveRecord::RecordNotFound)
       end
     end
 
-    context 'when without image param' do
+    context 'when without content param' do
       subject { post :create, params: {rubric_id: 1}, xhr: true }
 
       it do
-        expect { subject }.to raise_error(ActionController::ParameterMissing).with_message(/image/)
+        expect { subject }.to raise_error(ActionController::ParameterMissing).with_message(/content/)
       end
     end
 
     context 'when without rubric_id param' do
       let(:image) { fixture_file_upload('spec/fixtures/test2.jpg', 'image/jpeg') }
 
-      subject { post :create, params: {image: image}, xhr: true }
+      subject { post :create, params: {content: image}, xhr: true }
 
       it do
         expect { subject }.to raise_error(ActionController::ParameterMissing).with_message(/rubric_id/)
@@ -40,7 +40,7 @@ RSpec.describe Api::V1::Admin::PhotosController do
       let(:json) { JSON.parse(response.body) }
 
       context 'when without external info' do
-        before { post :create, params: {rubric_id: rubric.id, image: image}, xhr: true }
+        before { post :create, params: {rubric_id: rubric.id, content: image}, xhr: true }
 
         it do
           expect(response).to have_http_status(:ok)
@@ -49,7 +49,7 @@ RSpec.describe Api::V1::Admin::PhotosController do
       end
 
       context 'when with external info' do
-        before { post :create, params: {rubric_id: rubric.id, image: image, external_info: 'test'}, xhr: true }
+        before { post :create, params: {rubric_id: rubric.id, content: image, external_info: 'test'}, xhr: true }
 
         let(:photo) { assigns(:photo) }
 
@@ -71,7 +71,7 @@ RSpec.describe Api::V1::Admin::PhotosController do
       let(:rubric) { create :rubric }
       let(:image) { fixture_file_upload('spec/fixtures/test.txt', 'text/plain') }
 
-      before { post :create, params: {rubric_id: rubric.id, image: image}, xhr: true }
+      before { post :create, params: {rubric_id: rubric.id, content: image}, xhr: true }
 
       it do
         expect(response).to have_http_status(422)

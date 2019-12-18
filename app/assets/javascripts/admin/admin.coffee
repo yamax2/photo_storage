@@ -33,13 +33,17 @@ $(document)
         $('#drag-and-drop-zone').toggle(id?)
 
     $('#drag-and-drop-zone').dmUploader
-      url: '/api/v1/admin/photos'
+      url: ->
+        if this.type.match('application/gpx')
+          '/api/v1/admin/tracks'
+        else
+          '/api/v1/admin/photos'
       extraData: ->
         {rubric_id: $(this).data('rubric_id')}
       headers:
         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-      fieldName: 'image'
-      extFilter: ['jpg', 'jpeg', 'png']
+      fieldName: 'content'
+      extFilter: ['jpg', 'jpeg', 'png', 'gpx']
       onDragEnter: ->
         this.addClass('active')
       onDragLeave: ->

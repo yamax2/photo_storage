@@ -57,8 +57,8 @@ ru:
         cancel_confirm: Отменить загрузку?
         drop_files_here: Перетащите файлы сюда
         file_browser: Выбрать файлы
-        file_list: 'Загрузка фото в рубрику '
-        rubric: Рубрика для добавления фото
+        file_list: 'Загрузка в рубрику '
+        rubric: Рубрика для загрузки (изображения и gpx-файлы)
         rubric_search: Название рубрики
         waiting: Ожидание
         statuses:
@@ -66,7 +66,7 @@ ru:
           uploading: Загрузка...
           warning: Отменено
         stop: Стоп
-        uploaded_with_errors: Некоторые фото не удалось загрузить
+        uploaded_with_errors: Некоторые файлы не удалось загрузить
     partials:
       menu:
         content: Контент

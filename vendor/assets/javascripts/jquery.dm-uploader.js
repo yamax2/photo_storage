@@ -116,9 +116,14 @@
 
     file.widget.settings.onBeforeUpload.call(file.widget.element, file.id);
 
+    var url = file.widget.settings.url;
+    if (typeof(url) === "function") {
+      url = url.call(file.data)
+    }
+
     // Ajax Submit
     file.jqXHR = $.ajax({
-      url: file.widget.settings.url,
+      url: url,
       type: file.widget.settings.method,
       dataType: file.widget.settings.dataType,
       data: fd,
