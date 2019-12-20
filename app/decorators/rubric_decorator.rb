@@ -17,7 +17,7 @@ class RubricDecorator < Draper::Decorator
   end
 
   def rubrics_tree
-    current_rubric = self.object
+    current_rubric = object
     rubrics = []
 
     loop do

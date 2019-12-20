@@ -1,18 +1,20 @@
+# frozen_string_literal: true
+
 source 'https://rubygems.org'
 
 git_source(:github) { |repo| "git@github.com:#{repo}.git" }
 
-gem 'rails', '~> 5.2.4'
+gem 'mini_racer', platforms: :ruby
 gem 'pg'
 gem 'puma', '~> 4.3'
+gem 'rails', '~> 5.2.4'
 gem 'sass-rails', '~> 5.0'
 gem 'uglifier', '>= 1.3.0'
-gem 'mini_racer', platforms: :ruby
 
-gem 'coffee-rails', '~> 4.2'
-gem 'turbolinks', '~> 5'
-gem 'jbuilder', '~> 2.5'
 gem 'bootsnap', '>= 1.1.0', require: false
+gem 'coffee-rails', '~> 4.2'
+gem 'jbuilder', '~> 2.5'
+gem 'turbolinks', '~> 5'
 
 gem 'bootstrap', '~> 4.3.1'
 gem 'bootstrap4-datetime-picker-rails'
@@ -47,6 +49,9 @@ group :development, :test do
   gem 'letter_opener'
   gem 'pry'
   gem 'pry-rails'
+  gem 'rubocop', '~> 0.78'
+  gem 'rubocop-rails'
+  gem 'rubocop-rspec'
 end
 
 group :test do
@@ -54,8 +59,8 @@ group :test do
   gem 'mock_redis'
   gem 'rails-controller-testing'
   gem 'rspec-rails'
-  gem 'simplecov', require: false
   gem 'shoulda-matchers'
+  gem 'simplecov', require: false
   gem 'timecop'
   gem 'vcr'
   gem 'webmock'

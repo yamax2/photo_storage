@@ -55,16 +55,17 @@ module Photos
     end
 
     def load_photo_exif_attrs
-      size =
-        case exif_data.orientation&.to_sym
-        when :RightTop, :LeftTop, :RightBottom, :LeftBottom
-          {height: exif_data.width, width: exif_data.height}
-        else
-          {width: exif_data.width, height: exif_data.height}
-        end
-
-      photo.assign_attributes(size)
+      photo.assign_attributes(photo_size)
       photo.original_timestamp = exif_data.date_time_original || exif_data.date_time
+    end
+
+    def photo_size
+      case exif_data.orientation&.to_sym
+      when :RightTop, :LeftTop, :RightBottom, :LeftBottom
+        {height: exif_data.width, width: exif_data.height}
+      else
+        {width: exif_data.width, height: exif_data.height}
+      end
     end
   end
 end

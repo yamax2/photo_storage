@@ -1,0 +1,47 @@
+# require: rubocop-rspec
+# require: rubocop-rails
+
+AllCops:
+  TargetRubyVersion: 2.6
+  Exclude:
+    - 'db/**/*'
+    - 'config/**/*'
+    - 'lib/tasks/**/*'
+    - 'bin/**/*'
+    - '.pryrc'
+
+# Rails:
+#  Enabled: true
+
+Layout/LineLength:
+  Max: 120
+
+Style/AsciiComments:
+  Enabled: false
+
+Layout/SpaceInsideHashLiteralBraces:
+  EnforcedStyle: no_space
+
+Style/Documentation:
+  Enabled: false
+
+Layout/DotPosition:
+  EnforcedStyle: trailing
+
+Style/EmptyMethod:
+  EnforcedStyle: expanded
+
+Layout/MultilineMethodCallIndentation:
+  EnforcedStyle: indented
+
+Style/LambdaCall:
+  Exclude:
+    - app/views/**/*.jbuilder
+
+Metrics/BlockLength:
+  Exclude:
+    - spec/**/*
+
+Metrics/AbcSize:
+  Exclude:
+    - spec/support/**/*

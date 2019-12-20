@@ -12,7 +12,7 @@ class Rubric < ApplicationRecord
 
   strip_attributes only: %i[name description]
 
-  scope :with_photos, -> {
+  scope(:with_photos, lambda do
     where(<<~SQL)
       rubrics.id in (
         WITH RECURSIVE tt AS (
@@ -23,10 +23,10 @@ class Rubric < ApplicationRecord
         SELECT id FROM tt
       )
     SQL
-  }
+  end)
 
   scope :default_order, -> { order(PhotosNullsFirstAsc.new(arel_table[:ord]), arel_table[:id].desc) }
-  scope :by_first_photo, -> {
+  scope(:by_first_photo, lambda do
     joins(<<~SQL).order('sort.rn')
       JOIN (
         WITH ords as (
@@ -43,5 +43,5 @@ class Rubric < ApplicationRecord
           FROM ords
       ) sort ON sort.id = #{quoted_table_name}.id
     SQL
-  }
+  end)
 end

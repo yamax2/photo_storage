@@ -32,7 +32,8 @@ class Page
     PageStruct.new(photos[-1], photos.fetch(0), photos[1])
   end
 
-  def photos
+  # rubocop:disable Metrics/MethodLength
+  def photos # rubocop:disable Metrics/AbcSize
     return @photos if defined?(@photos)
     return @photos = Photo.none unless @rubric
 
@@ -50,6 +51,7 @@ class Page
 
     @photos = scope.preload(:yandex_token).order(:rn).decorate
   end
+  # rubocop:enable Metrics/MethodLength
 
   def rubrics
     return @rubrics if defined?(@rubrics)
