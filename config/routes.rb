@@ -46,7 +46,7 @@ Rails.application.routes.draw do
       resources :pages, only: :show
 
       namespace :admin do
-        resources :photos, :tracks, only: :create
+        resources :uploads, only: :create
         resources :rubrics, only: %i[index update]
 
         namespace :cart do

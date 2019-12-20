@@ -20,6 +20,9 @@ class CreateTracks < ActiveRecord::Migration[5.2]
       t.numeric    :duration, default: 0, null: false
       t.numeric    :distance, default: 0, null: false
 
+      # other
+      t.text       :external_info
+
       t.timestamps null: false
     end
 

@@ -55,10 +55,6 @@ RSpec.describe ProxySessionService do
     end
 
     context 'when call with incorrect current session' do
-      context 'and wrong md5' do
-
-      end
-
       context 'and value is empty' do
         let(:current_session) { '' }
 

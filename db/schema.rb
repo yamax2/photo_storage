@@ -70,6 +70,7 @@ ActiveRecord::Schema.define(version: 2019_12_01_194514) do
     t.decimal "avg_speed", default: "0.0", null: false
     t.decimal "duration", default: "0.0", null: false
     t.decimal "distance", default: "0.0", null: false
+    t.text "external_info"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["md5", "sha256"], name: "uq_tracks", unique: true

@@ -14,6 +14,8 @@ RSpec.describe Track do
 
     it { is_expected.to have_db_column(:rubric_id).of_type(:integer).with_options(null: false, foreign_key: true) }
     it { is_expected.to have_db_index(:rubric_id) }
+
+    it { is_expected.to have_db_column(:external_info).of_type(:text) }
   end
 
   describe 'validations' do

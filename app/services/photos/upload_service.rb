@@ -35,8 +35,7 @@ module Photos
 
       RedisMutex.with_lock(
         "yandex:dirs:#{token_for_upload.id}:#{remote_path.join(':')}",
-        block: 1.minute,
-        expire: 10.minutes
+        block: 1.minute, expire: 10.minutes
       ) do
         remote_path.each_with_object([]) do |dir, path|
           path.push(dir)

@@ -33,11 +33,7 @@ $(document)
         $('#drag-and-drop-zone').toggle(id?)
 
     $('#drag-and-drop-zone').dmUploader
-      url: ->
-        if this.type.match('application/gpx')
-          '/api/v1/admin/tracks'
-        else
-          '/api/v1/admin/photos'
+      url: '/api/v1/admin/uploads'
       extraData: ->
         {rubric_id: $(this).data('rubric_id')}
       headers:

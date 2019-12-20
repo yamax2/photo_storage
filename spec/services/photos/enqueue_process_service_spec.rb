@@ -6,7 +6,7 @@ RSpec.describe Photos::EnqueueProcessService do
   let(:rubric) { create :rubric }
   let(:photo) { build :photo, :real, name: 'test', rubric: rubric }
 
-  let(:service_context) { described_class.call(photo: photo, uploaded_io: image, external_info: 'test') }
+  let(:service_context) { described_class.call(model: photo, uploaded_io: image) }
 
   before do
     allow(SecureRandom).to receive(:hex).and_return('test.jpg')
@@ -33,8 +33,7 @@ RSpec.describe Photos::EnqueueProcessService do
         original_filename: 'test2.jpg',
         name: 'test',
         rubric_id: rubric.id,
-        local_filename: 'test.jpg',
-        external_info: 'test'
+        local_filename: 'test.jpg'
       )
 
       expect(Photos::ProcessFileJob).to have_received(:perform_async).with(photo.id)

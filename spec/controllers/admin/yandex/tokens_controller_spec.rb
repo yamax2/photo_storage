@@ -114,7 +114,7 @@ RSpec.describe Admin::Yandex::TokensController do
       let!(:token) { create :'yandex/token' }
 
       before do
-        post :update, params: {id: token.id, yandex_token: {dir: '/my_dir', other_dir: '/other_dir', active: true }}
+        post :update, params: {id: token.id, yandex_token: {dir: '/my_dir', other_dir: '/other_dir', active: true}}
       end
 
       it do
@@ -128,7 +128,7 @@ RSpec.describe Admin::Yandex::TokensController do
       let!(:token) { create :'yandex/token' }
 
       before do
-        post :update, params: {id: token.id, yandex_token: {dir: '', other_dir: '', active: true }}
+        post :update, params: {id: token.id, yandex_token: {dir: '', other_dir: '', active: true}}
       end
 
       it do
@@ -142,7 +142,7 @@ RSpec.describe Admin::Yandex::TokensController do
       let!(:token) { create :'yandex/token' }
 
       let(:request) do
-        post :update, params: {id: token.id, yandex_token1: {dir: '', other_dir: '', active: true }}
+        post :update, params: {id: token.id, yandex_token1: {dir: '', other_dir: '', active: true}}
       end
 
       it do

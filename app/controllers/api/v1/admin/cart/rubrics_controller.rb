@@ -6,7 +6,7 @@ module Api
       module Cart
         # rubrics cart formatted for jstree
         class RubricsController < BaseController
-          helper_method :selected_rubric_ids
+          helper_method :selected_rubric_ids, :children?
 
           def index
             @rubrics = Rubric.
@@ -18,6 +18,11 @@ module Api
           private
 
           delegate :redis, to: RedisClassy
+
+          # FIXME: wft?
+          def children?(rubric)
+            rubric.rubrics_count.positive? && (rubric.rubrics.with_photos.pluck(:id) & selected_rubric_ids.keys).any?
+          end
 
           def selected_rubric_ids
             @selected_rubric_ids ||= redis.

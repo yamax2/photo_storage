@@ -12,7 +12,7 @@ RSpec.describe Yandex::RefreshQuotaService do
     end
 
     it do
-      expect { subject }.to(change { token.reload.used_space }.and(change{ token.total_space }))
+      expect { subject }.to(change { token.reload.used_space }.and(change { token.total_space }))
     end
   end
 

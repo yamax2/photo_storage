@@ -70,11 +70,13 @@ RSpec.describe Yandex::ReviseDirService do
         is_expected.to be_a_success
 
         expect(subject.errors.keys).to eq([photo3.id])
-        expect(subject.errors[photo3.id]).to match_array([
-          'size mismatch',
-          'content type mismatch',
-          'etag mismatch'
-        ])
+        expect(subject.errors[photo3.id]).to match_array(
+          [
+            'size mismatch',
+            'content type mismatch',
+            'etag mismatch'
+          ]
+        )
       end
     end
   end

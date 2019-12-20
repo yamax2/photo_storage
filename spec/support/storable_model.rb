@@ -16,7 +16,7 @@ RSpec.shared_context 'storable model' do |factory|
     it { is_expected.to have_db_column(:original_filename).of_type(:string).with_options(null: false, limit: 512) }
 
     it { is_expected.to have_db_index(:yandex_token_id) }
-    it { is_expected.to have_db_index([:md5, :sha256]).unique }
+    it { is_expected.to have_db_index(%i[md5 sha256]).unique }
   end
 
   describe 'validations' do

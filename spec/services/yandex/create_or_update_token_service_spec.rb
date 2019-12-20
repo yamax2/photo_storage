@@ -26,8 +26,7 @@ RSpec.describe Yandex::CreateOrUpdateTokenService do
     end
 
     it do
-      expect { subject }.to change { Yandex::Token.count }.by(0).
-        and change { token.reload.access_token }
+      expect { subject }.to change { Yandex::Token.count }.by(0).and(change { token.reload.access_token })
     end
   end
 

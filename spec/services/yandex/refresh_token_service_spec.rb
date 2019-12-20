@@ -19,7 +19,7 @@ RSpec.describe Yandex::RefreshTokenService do
       end
 
       it do
-        expect { subject }.to change { token.reload.refresh_token }.and change { token.valid_till }
+        expect { subject }.to change { token.reload.refresh_token }.and(change { token.valid_till })
       end
     end
 

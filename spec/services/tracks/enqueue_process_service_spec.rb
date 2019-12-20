@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe Tracks::EnqueueProcessService do
   let(:track) { build :track }
-  let(:service_context) { described_class.call(track: track, uploaded_io: gpx) }
+  let(:service_context) { described_class.call(model: track, uploaded_io: gpx) }
   let(:tmp_filename) { Rails.root.join('tmp', 'files', track.local_filename) }
 
   before do

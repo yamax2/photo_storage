@@ -4,14 +4,14 @@ module Photos
   class EnqueueProcessService
     include ::Interactor
 
-    delegate :external_info, :uploaded_io, :photo, to: :context
+    delegate :uploaded_io, :model, to: :context
 
     def call
-      photo.assign_attributes(photo_attributes)
+      model.assign_attributes(photo_attributes)
 
-      context.fail! unless photo.save
+      context.fail! unless model.save
 
-      ProcessFileJob.perform_async(photo.id)
+      ProcessFileJob.perform_async(model.id)
     end
 
     private
@@ -21,8 +21,7 @@ module Photos
         size: uploaded_io.size,
         content_type: uploaded_io.content_type,
         original_filename: uploaded_io.original_filename,
-        local_filename: UploadFileService.move(uploaded_io),
-        external_info: external_info
+        local_filename: UploadFileService.move(uploaded_io)
       }
     end
   end

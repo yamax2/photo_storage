@@ -18,7 +18,7 @@ RSpec.describe Nominatim::ReverseGeocode do
   context 'when failed request' do
     subject do
       VCR.use_cassette('nominatim_reverse_geocode_failed') do
-        described_class.new(lat: 57.3099288888889, long: 1111156).call
+        described_class.new(lat: 57.3099288888889, long: 1_111_156).call
       end
     end
 

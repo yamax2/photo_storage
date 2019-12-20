@@ -44,9 +44,9 @@ RSpec.describe Api::V1::Admin::Cart::RubricsController do
           expect(response).to have_http_status(:ok)
           expect(response).to render_template(:index)
 
-          expect(json).to match_array([
-            hash_including('id' => rubric1.id, 'text' => 'first [1]', 'children' => true)
-          ])
+          expect(json).to match_array(
+            [hash_including('id' => rubric1.id, 'text' => 'first [1]', 'children' => true)]
+          )
         end
       end
 
@@ -57,9 +57,9 @@ RSpec.describe Api::V1::Admin::Cart::RubricsController do
           expect(response).to have_http_status(:ok)
           expect(response).to render_template(:index)
 
-          expect(json).to match_array([
-            hash_including('id' => sub_rubric1.id, 'text' => 'sub 1 [1]', 'children' => false)
-          ])
+          expect(json).to match_array(
+            [hash_including('id' => sub_rubric1.id, 'text' => 'sub 1 [1]', 'children' => false)]
+          )
         end
       end
     end
