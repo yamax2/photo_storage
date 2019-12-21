@@ -1,5 +1,6 @@
-# require: rubocop-rspec
-# require: rubocop-rails
+require:
+  - rubocop-rails
+  # - rubocop-rspec
 
 AllCops:
   TargetRubyVersion: 2.6
@@ -10,8 +11,8 @@ AllCops:
     - 'bin/**/*'
     - '.pryrc'
 
-# Rails:
-#  Enabled: true
+Rails:
+  Enabled: true
 
 Layout/LineLength:
   Max: 120
@@ -45,3 +46,6 @@ Metrics/BlockLength:
 Metrics/AbcSize:
   Exclude:
     - spec/support/**/*
+
+Rails/SkipsModelValidations:
+  Enabled: false

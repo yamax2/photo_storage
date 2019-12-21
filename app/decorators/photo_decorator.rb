@@ -14,7 +14,7 @@ class PhotoDecorator < Draper::Decorator
   end
 
   def url(size = :original)
-    return unless storage_filename.present?
+    return if storage_filename.blank?
 
     original = size == :original
     url = url_components(original).join('/')

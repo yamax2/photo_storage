@@ -3,6 +3,7 @@
 require 'csv'
 require 'open-uri'
 
+# FIXME: not actual
 # import photos and rubrics from piwigo
 namespace :piwigo do
   # rails piwigo:rubrics[ph_categories.csv]

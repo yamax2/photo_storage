@@ -11,6 +11,9 @@ module Admin
       redirect_to admin_rubric_tracks_path(@rubric), notice: t('.success', name: @track.name)
     end
 
+    def edit
+    end
+
     def index
       @search = Track.where(rubric: @rubric).ransack(params[:q])
       @tracks = @search.result.page(params[:page]).decorate

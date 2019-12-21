@@ -57,7 +57,7 @@ module Yandex
           next
         end
 
-        next unless (er = match_photo_info(photo, dav_info)).present?
+        next if (er = match_photo_info(photo, dav_info)).blank?
 
         errors[photo.id] = er
       end

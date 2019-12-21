@@ -13,7 +13,7 @@ module Counters
       redis.scan_each(match: key_for('*'), count: BATCH_SIZE).each do |key|
         id = key.gsub(/[^\d]+/, '').to_i
 
-        if (model = model_klass.find_by_id(id)).present?
+        if (model = model_klass.find_by(id: id)).present?
           dump_counter(model)
         else
           redis.expire(key_for(id), LOADED_COUNTER_TTL)

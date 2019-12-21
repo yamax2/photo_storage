@@ -19,7 +19,7 @@ module Photos
     def apply_main_photo_for(current_rubric)
       with_lock(current_rubric.id) do
         current_rubric.reload
-        current_rubric.update!(main_photo: photo) unless current_rubric.main_photo_id.present?
+        current_rubric.update!(main_photo: photo) if current_rubric.main_photo_id.blank?
       end
 
       return unless current_rubric.rubric_id.present? && current_rubric.rubric.main_photo_id.nil?

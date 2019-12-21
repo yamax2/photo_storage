@@ -21,6 +21,9 @@ module Admin
       redirect_to admin_rubrics_path(id: @rubric.rubric_id), notice: t('.success', name: @rubric.name)
     end
 
+    def edit
+    end
+
     def index
       @search = Rubric.where(rubric: parent_rubric).ransack(params[:q])
       @rubrics = @search.result.page(params[:page])

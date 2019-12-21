@@ -11,6 +11,9 @@ module Admin
         redirect_to admin_yandex_tokens_path, notice: t('.success', login: @token.login)
       end
 
+      def edit
+      end
+
       def index
         @new_token_url = 'https://oauth.yandex.ru/authorize?response_type=' \
           "code&client_id=#{YandexClient.config.api_key}&force_confirm=false"

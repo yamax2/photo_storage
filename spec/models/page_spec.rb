@@ -4,6 +4,7 @@ require 'rails_helper'
 
 RSpec.describe Page do
   before { Timecop.freeze }
+
   after { Timecop.return }
 
   let!(:root_rubric1) { create :rubric }
@@ -66,83 +67,83 @@ RSpec.describe Page do
   end
 
   context 'when page is root' do
-    subject { Page.new }
+    subject(:page) { described_class.new }
 
     it do
-      expect(subject.rubric).to be_nil
-      expect(subject.rubrics.map(&:object)).to match_array([root_rubric1])
-      expect(subject.photos).to be_empty
+      expect(page.rubric).to be_nil
+      expect(page.rubrics.map(&:object)).to match_array([root_rubric1])
+      expect(page.photos).to be_empty
     end
   end
 
   context 'when page is rubric' do
     context 'and root rubric' do
-      subject { Page.new(root_rubric1.id) }
+      subject(:page) { described_class.new(root_rubric1.id) }
 
       it do
-        expect(subject.rubric.object).to eq(root_rubric1)
-        expect(subject.rubrics.map(&:object)).to match_array([sub_rubric1])
+        expect(page.rubric.object).to eq(root_rubric1)
+        expect(page.rubrics.map(&:object)).to match_array([sub_rubric1])
 
-        expect(subject.photos.map(&:object)).to eq([photo6, photo7, photo3, photo2, photo5])
-        expect(subject.photos.map(&:rn)).to eq([1, 2, 3, 4, 5])
+        expect(page.photos.map(&:object)).to eq([photo6, photo7, photo3, photo2, photo5])
+        expect(page.photos.map(&:rn)).to eq([1, 2, 3, 4, 5])
       end
     end
 
     context 'and sub_rubric' do
-      subject { Page.new(sub_rubric1.id) }
+      subject(:page) { described_class.new(sub_rubric1.id) }
 
       it do
-        expect(subject.rubric.object).to eq(sub_rubric1)
-        expect(subject.rubric.association(:rubric)).to be_loaded
-        expect(subject.rubrics).to be_empty
-        expect(subject.photos).to match_array([photo4])
-        expect(subject.photos.first.rn).to eq(1)
-        expect(subject.rubrics_tree).to eq([sub_rubric1, root_rubric1])
+        expect(page.rubric.object).to eq(sub_rubric1)
+        expect(page.rubric.association(:rubric)).to be_loaded
+        expect(page.rubrics).to be_empty
+        expect(page.photos).to match_array([photo4])
+        expect(page.photos.first.rn).to eq(1)
+        expect(page.rubrics_tree).to eq([sub_rubric1, root_rubric1])
       end
     end
 
     context 'when pagination' do
       context 'and first 2 photos' do
-        subject { Page.new(root_rubric1.id, offset: 0, limit: 2) }
+        subject(:page) { described_class.new(root_rubric1.id, offset: 0, limit: 2) }
 
         it do
-          expect(subject.photos.map(&:rn)).to eq([1, 2])
-          expect(subject.photos.map(&:object)).to eq([photo6, photo7])
+          expect(page.photos.map(&:rn)).to eq([1, 2])
+          expect(page.photos.map(&:object)).to eq([photo6, photo7])
         end
       end
 
       context 'and last 2 photos' do
-        subject { Page.new(root_rubric1.id, offset: 3, limit: 2) }
+        subject(:page) { described_class.new(root_rubric1.id, offset: 3, limit: 2) }
 
         it do
-          expect(subject.photos.map(&:rn)).to eq([4, 5])
-          expect(subject.photos.map(&:object)).to eq([photo2, photo5])
+          expect(page.photos.map(&:rn)).to eq([4, 5])
+          expect(page.photos.map(&:object)).to eq([photo2, photo5])
         end
       end
 
       context 'and 3 photos in the middle' do
-        subject { Page.new(root_rubric1.id, offset: 1, limit: 3) }
+        subject(:page) { described_class.new(root_rubric1.id, offset: 1, limit: 3) }
 
         it do
-          expect(subject.photos.map(&:rn)).to eq([2, 3, 4])
-          expect(subject.photos.map(&:object)).to eq([photo7, photo3, photo2])
+          expect(page.photos.map(&:rn)).to eq([2, 3, 4])
+          expect(page.photos.map(&:object)).to eq([photo7, photo3, photo2])
         end
       end
 
       context 'and offset without limit' do
-        subject { Page.new(root_rubric1.id, offset: 1) }
+        subject(:page) { described_class.new(root_rubric1.id, offset: 1) }
 
         it do
-          expect(subject.photos.map(&:rn)).to eq([1, 2, 3, 4, 5])
+          expect(page.photos.map(&:rn)).to eq([1, 2, 3, 4, 5])
         end
       end
     end
   end
 
   describe '#find_photo_with_next_and_prev' do
-    let(:page) { Page.new(root_rubric1.id) }
-
     subject { page.find_photo_with_next_and_prev(photo_id) }
+
+    let(:page) { described_class.new(root_rubric1.id) }
 
     context 'and first photo in listing' do
       let(:photo_id) { photo6.id }
@@ -194,7 +195,7 @@ RSpec.describe Page do
   end
 
   describe '#with_rubrics?' do
-    subject { Page.new(rubric_id).with_rubrics? }
+    subject { described_class.new(rubric_id).with_rubrics? }
 
     context 'when root' do
       let(:rubric_id) { nil }
@@ -233,7 +234,7 @@ RSpec.describe Page do
   end
 
   describe 'single rubric mode' do
-    subject { Page.new(sub_rubric2.id, single_rubric_mode: true) }
+    subject { described_class.new(sub_rubric2.id, single_rubric_mode: true) }
 
     it do
       expect(subject.rubric).to eq(sub_rubric2)

@@ -6,10 +6,10 @@ RSpec.describe Photos::LoadInfoService do
   let(:photo) { build :photo, local_filename: filename }
 
   before do
-    Timecop.freeze Time.new(2019, 6, 16, 13, 8, 32)
+    Timecop.freeze Time.zone.local(2019, 6, 16, 13, 8, 32)
 
     if filename.present?
-      FileUtils.mkdir_p(Rails.root.join('tmp', 'files'))
+      FileUtils.mkdir_p(Rails.root.join('tmp/files'))
       FileUtils.cp("spec/fixtures/#{filename}", photo.tmp_local_filename)
     end
 
@@ -34,7 +34,7 @@ RSpec.describe Photos::LoadInfoService do
         expect(photo.exif).to include('model' => 'CLT-L29', 'make' => 'HUAWEI')
         expect(photo.lat_long.to_a).to eq([56.47377777083333, 58.130886077777774])
         expect(photo).to have_attributes(
-          original_timestamp: Time.new(2019, 6, 15, 21, 43, 32),
+          original_timestamp: Time.zone.local(2019, 6, 15, 21, 43, 32),
           width: 7_296,
           height: 5_472
         )
@@ -50,7 +50,7 @@ RSpec.describe Photos::LoadInfoService do
         expect(photo.exif).to include('model' => 'FestXL', 'make' => 'HighScreen')
         expect(photo.lat_long.to_a).to eq([56.09750747222222, 49.86042783333333])
         expect(photo).to have_attributes(
-          original_timestamp: Time.new(2019, 5, 2, 18, 40, 53),
+          original_timestamp: Time.zone.local(2019, 5, 2, 18, 40, 53),
           width: 4_160,
           height: 3_120
         )
@@ -67,7 +67,7 @@ RSpec.describe Photos::LoadInfoService do
         expect(photo.lat_long.to_a).to eq([59.22847638888889, 56.80728419444444])
 
         expect(photo).to have_attributes(
-          original_timestamp: Time.new(2019, 5, 28, 18, 22, 10),
+          original_timestamp: Time.zone.local(2019, 5, 28, 18, 22, 10),
           width: 4_160,
           height: 3_120
         )
@@ -113,7 +113,7 @@ RSpec.describe Photos::LoadInfoService do
         expect(photo).to have_attributes(
           width: 2_592,
           height: 1_552,
-          original_timestamp: Time.new(2013, 9, 28, 11, 37, 34)
+          original_timestamp: Time.zone.local(2013, 9, 28, 11, 37, 34)
         )
       end
     end
@@ -129,7 +129,7 @@ RSpec.describe Photos::LoadInfoService do
         expect(photo).to have_attributes(
           width: 2_048,
           height: 1_536,
-          original_timestamp: Time.new(2011, 6, 12, 15, 47, 38)
+          original_timestamp: Time.zone.local(2011, 6, 12, 15, 47, 38)
         )
       end
     end
@@ -145,7 +145,7 @@ RSpec.describe Photos::LoadInfoService do
         expect(photo).to have_attributes(
           width: 1_536,
           height: 2_048,
-          original_timestamp: Time.new(2011, 3, 13, 13, 34, 36)
+          original_timestamp: Time.zone.local(2011, 3, 13, 13, 34, 36)
         )
       end
     end
@@ -220,7 +220,7 @@ RSpec.describe Photos::LoadInfoService do
     it do
       expect(photo).to be_valid
 
-      expect(photo.original_timestamp).to eq Time.new(2019, 7, 20, 14, 17, 17)
+      expect(photo.original_timestamp).to eq Time.zone.local(2019, 7, 20, 14, 17, 17)
       expect(photo.exif).to include('model' => 'Z00AD', 'make' => 'ASUS')
       expect(photo.lat_long).to be_nil
 
@@ -236,7 +236,7 @@ RSpec.describe Photos::LoadInfoService do
       expect(photo).to be_valid
 
       expect(photo).to have_attributes(width: 3_072, height: 4_096)
-      expect(photo.original_timestamp).to eq Time.new(2019, 7, 20, 12, 11, 33)
+      expect(photo.original_timestamp).to eq Time.zone.local(2019, 7, 20, 12, 11, 33)
       expect(photo.exif).to include('model' => 'Z00AD', 'make' => 'ASUS')
       expect(photo.lat_long).to be_nil
     end

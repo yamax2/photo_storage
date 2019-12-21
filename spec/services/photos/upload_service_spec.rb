@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe Photos::UploadService do
   let(:service_context) { described_class.call(photo: photo) }
-  before { FileUtils.mkdir_p(Rails.root.join('tmp', 'files')) }
+  before { FileUtils.mkdir_p(Rails.root.join('tmp/files')) }
 
   context 'when file already uploaded' do
     let(:token) { create :'yandex/token' }

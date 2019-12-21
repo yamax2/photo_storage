@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe UploadFileService do
   let(:gpx) { fixture_file_upload('spec/fixtures/test1.gpx', 'application/gpx+xml') }
-  let(:dir) { Rails.root.join('tmp', 'files') }
+  let(:dir) { Rails.root.join('tmp/files') }
 
   before do
     allow(SecureRandom).to receive(:hex).and_return('test')

@@ -5,7 +5,7 @@ class UploadFileService
   include Singleton
 
   def call(uploaded_io)
-    dir = Rails.root.join('tmp', 'files')
+    dir = Rails.root.join('tmp/files')
     local_filename = SecureRandom.hex(26)
 
     FileUtils.mkdir_p(dir)

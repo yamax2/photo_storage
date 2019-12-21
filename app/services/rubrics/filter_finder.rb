@@ -12,7 +12,7 @@ module Rubrics
     end
 
     def call
-      return Rubric.all unless @name_part.present?
+      return Rubric.all if @name_part.blank?
 
       table_name = Rubric.quoted_table_name
 

@@ -122,12 +122,12 @@ RSpec.shared_context 'storable model' do |factory|
 
       context 'and file exists' do
         before do
-          FileUtils.mkdir_p(Rails.root.join('tmp', 'files'))
-          FileUtils.cp 'spec/fixtures/test.txt', Rails.root.join('tmp', 'files', 'test.txt')
+          FileUtils.mkdir_p(Rails.root.join('tmp/files'))
+          FileUtils.cp 'spec/fixtures/test.txt', Rails.root.join('tmp/files/test.txt')
         end
 
         after do
-          FileUtils.rm_f Rails.root.join('tmp', 'files', 'test.txt')
+          FileUtils.rm_f Rails.root.join('tmp/files/test.txt')
         end
 
         it { is_expected.to eq(true) }
@@ -143,16 +143,16 @@ RSpec.shared_context 'storable model' do |factory|
     let(:model) { create factory, local_filename: 'test' }
 
     it do
-      expect(model.tmp_local_filename).to eq(Rails.root.join('tmp', 'files', 'test'))
+      expect(model.tmp_local_filename).to eq(Rails.root.join('tmp/files/test'))
     end
   end
 
   describe 'local file removing' do
-    let(:tmp_file) { Rails.root.join('tmp', 'files', 'cats.jpg') }
+    let(:tmp_file) { Rails.root.join('tmp/files/cats.jpg') }
     let(:model) { create factory, local_filename: 'cats.jpg' }
 
     before do
-      FileUtils.mkdir_p(Rails.root.join('tmp', 'files'))
+      FileUtils.mkdir_p(Rails.root.join('tmp/files'))
       FileUtils.cp('spec/fixtures/cats.jpg', tmp_file)
     end
 
@@ -190,10 +190,10 @@ RSpec.shared_context 'storable model' do |factory|
   describe 'file attrs loading' do
     context 'when local file' do
       let(:model) { build factory, :real, local_filename: 'test.txt' }
-      let(:tmp_file) { Rails.root.join('tmp', 'files', 'test.txt') }
+      let(:tmp_file) { Rails.root.join('tmp/files/test.txt') }
 
       before do
-        FileUtils.mkdir_p(Rails.root.join('tmp', 'files'))
+        FileUtils.mkdir_p(Rails.root.join('tmp/files'))
         FileUtils.cp 'spec/fixtures/test.txt', tmp_file
       end
 
@@ -230,11 +230,11 @@ RSpec.shared_context 'storable model' do |factory|
   end
 
   describe 'size loading' do
-    let(:tmp_file) { Rails.root.join('tmp', 'files', 'test.txt') }
+    let(:tmp_file) { Rails.root.join('tmp/files/test.txt') }
 
     context 'when local file' do
       before do
-        FileUtils.mkdir_p(Rails.root.join('tmp', 'files'))
+        FileUtils.mkdir_p(Rails.root.join('tmp/files'))
         FileUtils.cp 'spec/fixtures/test.txt', tmp_file
       end
 

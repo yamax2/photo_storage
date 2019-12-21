@@ -21,7 +21,7 @@ class Track < ApplicationRecord
   def remove_file
     super
 
-    return unless storage_filename.present?
+    return if storage_filename.blank?
 
     ::Tracks::RemoveFileJob.perform_async(
       yandex_token_id,

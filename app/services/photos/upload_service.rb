@@ -84,7 +84,7 @@ module Photos
 
     def validate_upload
       context.fail!(message: 'local file not found') unless photo.local_file?
-      context.fail!(message: 'active token not found') unless token_for_upload.present?
+      context.fail!(message: 'active token not found') if token_for_upload.blank?
     end
 
     def update_photo

@@ -24,7 +24,7 @@ class RubricDecorator < Draper::Decorator
       rubrics << current_rubric
       current_rubric = current_rubric.rubric
 
-      break unless current_rubric.present?
+      break if current_rubric.blank?
     end
 
     rubrics

@@ -12,7 +12,7 @@ module Yandex
         propfind(name: '/', quota: true).
         fetch('/')
 
-      token.update_attributes!(
+      token.update!(
         used_space: response.fetch(:'quota-used-bytes'),
         total_space: response.fetch(:'quota-available-bytes')
       )

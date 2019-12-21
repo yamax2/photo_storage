@@ -7,7 +7,7 @@ class RubricFinder
   end
 
   def call
-    raise ActiveRecord::RecordNotFound, "rubric #{@id} not found" unless rubrics_by_id.present?
+    raise ActiveRecord::RecordNotFound, "rubric #{@id} not found" if rubrics_by_id.blank?
 
     preload_rubric(rubrics_by_id.values.first)
   end
@@ -20,7 +20,7 @@ class RubricFinder
 
   # https://gist.github.com/sobstel/19f40ac2141cc1db0803d360127b2945
   def preload_rubric(rubric)
-    return rubric unless rubric.rubric_id.present?
+    return rubric if rubric.rubric_id.blank?
 
     association = rubric.association(:rubric)
     record = preload_rubric(rubrics_by_id.fetch(rubric.rubric_id))

@@ -76,7 +76,7 @@ RSpec.describe Rubric do
         end
 
         let!(:photo3) do
-          create :photo, rubric: rubric2, local_filename: 'test', original_timestamp: Date.today
+          create :photo, rubric: rubric2, local_filename: 'test', original_timestamp: Time.zone.today
         end
 
         let!(:photo4) do

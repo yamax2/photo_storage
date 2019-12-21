@@ -17,7 +17,7 @@ class ProxySessionService
   end
 
   def call
-    generate_session if !@session.present? || need_generate?
+    generate_session if @session.blank? || need_generate?
   end
 
   private

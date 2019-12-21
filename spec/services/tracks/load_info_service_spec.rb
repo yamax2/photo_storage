@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe Tracks::LoadInfoService do
   let(:service_context) { described_class.call(track: track) }
-  let(:tmp_dir) { Rails.root.join('tmp', 'files') }
+  let(:tmp_dir) { Rails.root.join('tmp/files') }
 
   before { FileUtils.rm_f(tmp_dir.join('test.gpx')) }
 

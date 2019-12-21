@@ -25,7 +25,7 @@ RSpec.describe Api::V1::Admin::UploadsController do
         expect(response.body).to be_empty
       end
 
-      after { FileUtils.rm_rf(Rails.root.join('tmp', 'files').to_s) }
+      after { FileUtils.rm_rf(Rails.root.join('tmp/files').to_s) }
     end
 
     shared_examples 'content upload' do |test_file, test_type, klass|

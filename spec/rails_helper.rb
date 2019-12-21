@@ -27,7 +27,7 @@ require 'webmock/rspec'
 require 'vcr'
 require 'sidekiq/testing'
 
-Dir[Rails.root.join('spec', 'support', '**', '*.rb')].sort.each { |file| require(file) }
+Dir[Rails.root.join('spec/support/**/*.rb')].sort.each { |file| require(file) }
 
 begin
   ActiveRecord::Migration.maintain_test_schema!
