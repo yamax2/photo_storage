@@ -20,6 +20,16 @@
             .col-12.col-md-9
               = f.text_field :name, class: 'form-control', autofocus: true
 
+          .row.form-group
+            .col.col-md-3
+              = f.label :rubric
+            .col-12.col-md-9
+              .input-group
+                = f.text_field :rubric, class: 'form-control', readonly: true, value: @track.rubric.name
+                .input-group-append
+                  button.btn.btn-outline-secondary.rubric-select type="button"
+                    = t('.rubric_select')
+
         .card-footer.action-buttons
           = button_tag class: 'btn btn-primary btn-sm' do
             .fa.fa-dot-circle-o
@@ -28,3 +38,25 @@
           = link_to admin_rubric_tracks_path(@rubric), class: 'btn btn-danger btn-sm' do
             .fa.fa-ban
             = t('.cancel')
+
+.modal#rubric-modal
+  .modal-dialog.modal-xl
+    .modal-content
+      .modal-header
+        h5.modal-title
+          = Track.human_attribute_name(:rubric)
+        button.close*{type: 'button', data: {dismiss: 'modal'}}
+          span
+            | &times;
+      .modal-body
+        .form-group
+          = text_field_tag :rubric_name_search, nil,
+                                                class: 'form-control rubric_name_search',
+                                                placeholder: t('.rubric_search'),
+                                                data: {tree: '#track-rubric-selector'}
+        #track-rubric-selector.rubrics-tree
+      .modal-footer
+        button.btn.btn-secondary*{data: {dismiss: 'modal'}}
+          = t('.cancel')
+        button.btn.btn-primary.btn-photo-rubric-apply*{data: {id: '#track_rubric_id', name: '#track_rubric'}}
+          = t('.apply')

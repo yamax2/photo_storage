@@ -21,7 +21,7 @@ module Admin
 
     def update
       if @track.update(track_params)
-        redirect_to admin_rubric_tracks_path(@rubric)
+        redirect_to admin_rubric_tracks_path(@track.rubric_id)
       else
         render 'edit'
       end
@@ -38,7 +38,7 @@ module Admin
     end
 
     def track_params
-      params.require(:track).permit(:name)
+      params.require(:track).permit(:name, :rubric_id)
     end
   end
 end

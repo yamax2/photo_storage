@@ -14,7 +14,7 @@ $(document)
     selected = $('.rubrics-tree').jstree('get_selected', true)
     return unless selected.length > 0
 
-    $('#photo_rubric_id').val(selected[0].id)
-    $('#photo_rubric').val(selected[0].text)
+    $($(this).data('id')).val(selected[0].id)
+    $($(this).data('name')).val(selected[0].text)
 
     $('#rubric-modal').modal('hide')

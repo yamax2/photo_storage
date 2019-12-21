@@ -23,6 +23,7 @@ ru:
         duration: Длительность, ч.
         name: Название
         size: Размер
+        rubric: Рубрика
       yandex/token:
         active: Активность
         dir: Каталог фото
@@ -126,6 +127,8 @@ ru:
       edit:
         <<: *form_base
         title: Трек %{name}
+        rubric_select: Выбрать
+        rubric_search: Название рубрики
       index:
         edit: Редактировать трек
         new: Добавить треки

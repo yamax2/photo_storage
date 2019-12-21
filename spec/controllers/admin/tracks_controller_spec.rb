@@ -166,7 +166,7 @@ RSpec.describe Admin::TracksController do
       end
     end
 
-    context 'when successful update' do
+    context 'when successful update of name' do
       let(:track) { create :track, local_filename: 'test', name: 'test' }
 
       before { post :update, params: {rubric_id: track.rubric_id, id: track.id, track: {name: 'zozo'}} }
@@ -175,6 +175,25 @@ RSpec.describe Admin::TracksController do
         expect(response).to redirect_to(admin_rubric_tracks_path(track.rubric))
         expect(assigns(:track)).to eq(track)
         expect(assigns(:track)).to have_attributes(name: 'zozo')
+      end
+    end
+
+    context 'when rubric changed' do
+      let(:new_rubric) { create :rubric }
+      let(:track) { create :track, local_filename: 'test', name: 'test' }
+
+      before do
+        post :update, params: {
+          rubric_id: track.rubric_id,
+          id: track.id,
+          track: {name: 'zozo', rubric_id: new_rubric.id}
+        }
+      end
+
+      it do
+        expect(response).to redirect_to(admin_rubric_tracks_path(new_rubric))
+        expect(assigns(:track)).to eq(track)
+        expect(track.reload).to have_attributes(name: 'zozo', rubric: new_rubric)
       end
     end
   end
