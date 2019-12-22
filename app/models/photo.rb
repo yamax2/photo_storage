@@ -34,7 +34,7 @@ class Photo < ApplicationRecord
   private
 
   def change_rubric
-    ::Photos::ChangeMainPhotoService.call!(photo: self) if @rubric_changed
+    ::Photos::ChangeMainPhoto.call!(photo: self) if @rubric_changed
   end
 
   def remove_from_cart

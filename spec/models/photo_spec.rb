@@ -139,7 +139,10 @@ RSpec.describe Photo do
       end
 
       it do
-        expect { photo.update!(rubric: new_rubric) }.to change { old_rubric.reload.main_photo }.from(photo).to(nil)
+        expect { photo.update!(rubric: new_rubric) }.
+          to change { photo.rubric }.from(old_rubric).to(new_rubric).
+          and change { old_rubric.reload.main_photo }.from(photo).to(nil).
+          and change { new_rubric.reload.main_photo }.from(nil).to(photo)
       end
     end
 
@@ -152,9 +155,49 @@ RSpec.describe Photo do
       end
 
       it do
-        expect(::Photos::ChangeMainPhotoService).not_to receive(:call!)
+        expect(::Photos::ChangeMainPhoto).not_to receive(:call!)
 
         expect { subject }.to change { photo.rubric }.from(old_rubric).to(new_rubric)
+      end
+    end
+
+    context 'when move to a rubric with another main photo' do
+      let(:photo) { create :photo, local_filename: 'test', rubric: old_rubric }
+      let(:other_photo) { create :photo, local_filename: 'test', rubric: new_rubric }
+
+      before do
+        old_rubric.update!(main_photo_id: photo.id)
+        new_rubric.update!(main_photo_id: other_photo.id)
+      end
+
+      it do
+        expect { photo.update!(rubric: new_rubric) }.
+          to change { photo.reload.rubric }.from(old_rubric).to(new_rubric).
+          and change { old_rubric.reload.main_photo }.from(photo).to(nil)
+
+        expect(new_rubric.reload.main_photo).to eq(other_photo)
+      end
+    end
+
+    context 'when move to a deep rubric without main photo' do
+      let(:old_rubric_parent) { create :rubric }
+      let(:old_rubric) { create :rubric, rubric: old_rubric_parent }
+      let(:photo) { create :photo, local_filename: 'test', rubric: old_rubric }
+
+      let(:new_rubric_parent) { create :rubric }
+      let(:new_rubric) { create :rubric, rubric: new_rubric_parent }
+
+      before do
+        Rubric.where(id: [old_rubric_parent.id, old_rubric.id]).update_all(main_photo_id: photo.id)
+      end
+
+      it do
+        expect { photo.update!(rubric: new_rubric) }.
+          to change { photo.reload.rubric }.from(old_rubric).to(new_rubric).
+          and change { old_rubric.reload.main_photo }.from(photo).to(nil).
+          and change { old_rubric_parent.reload.main_photo }.from(photo).to(nil).
+          and change { new_rubric.reload.main_photo }.from(nil).to(photo).
+          and change { new_rubric_parent.reload.main_photo }.from(nil).to(photo)
       end
     end
   end
