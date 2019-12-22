@@ -64,4 +64,19 @@ RSpec.describe Tracks::LoadInfoService do
       expect(track.duration).to eq(6152)
     end
   end
+
+  context 'when corrupted file' do
+    before do
+      FileUtils.mkdir_p(tmp_dir)
+      FileUtils.cp('spec/fixtures/test2.gpx', tmp_dir.join('test.gpx'))
+    end
+
+    after { FileUtils.rm_f(tmp_dir.join('test.gpx')) }
+
+    let(:track) { create :track, local_filename: 'test.gpx' }
+
+    it do
+      expect(service_context).to be_a_success
+    end
+  end
 end
