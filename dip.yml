@@ -54,6 +54,10 @@ interaction:
     service: proxy
     command: go
 
+  rubocop:
+    service: app
+    command: rubocop
+
 provision:
   - docker volume create --name bundler_data
   - dip compose up -d db
