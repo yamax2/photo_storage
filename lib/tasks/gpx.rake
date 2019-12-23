@@ -9,9 +9,9 @@ namespace :gpx do
     )
 
     SQL = <<~SQL
-      SELECT i.id, i.name, i.created_at, t.name track_name, t.code, i.data 
-        FROM track_items i, tracks t 
-          WHERE t.code = i.track_code 
+      SELECT i.id, i.name, i.created_at, t.name track_name, t.code, i.data
+        FROM track_items i, tracks t
+          WHERE t.code = i.track_code AND length(i.data::text) > 1000
             ORDER BY i.id
     SQL
 

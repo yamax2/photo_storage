@@ -49,9 +49,6 @@ group :development, :test do
   gem 'letter_opener'
   gem 'pry'
   gem 'pry-rails'
-  gem 'rubocop', '~> 0.78'
-  gem 'rubocop-rails'
-  gem 'rubocop-rspec'
 end
 
 group :test do

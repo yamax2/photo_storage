@@ -17,7 +17,10 @@ module Api
           @model = create_model(klass)
           @success = enqueue_process.success?
 
-          render status: :unprocessable_entity unless @success
+          return if @success
+
+          FileUtils.rm_f(@model.tmp_local_filename)
+          render status: :unprocessable_entity
         end
 
         private

@@ -24,8 +24,6 @@ RSpec.describe Api::V1::Admin::UploadsController do
         expect(response).to have_http_status(422)
         expect(response.body).to be_empty
       end
-
-      after { FileUtils.rm_rf(Rails.root.join('tmp/files').to_s) }
     end
 
     shared_examples 'content upload' do |test_file, test_type, klass|
@@ -74,6 +72,25 @@ RSpec.describe Api::V1::Admin::UploadsController do
         after do
           klass.all.each { |photo| FileUtils.rm_f(photo.tmp_local_filename) }
         end
+      end
+
+      context 'when error on save' do
+        let(:rubric) { create :rubric }
+        let(:json) { JSON.parse(response.body) }
+        let(:local_file) { Rails.root.join('tmp/files', assigns[:model].local_filename) }
+
+        before do
+          allow_any_instance_of(klass).to receive(:valid?).and_return(false)
+          post :create, params: {rubric_id: rubric.id, content: content}, xhr: true
+        end
+
+        it do
+          expect(response).to have_http_status(:unprocessable_entity)
+          expect(File.exist?(local_file)).to eq(false)
+          expect(json).to be_empty
+        end
+
+        after { FileUtils.rm_f(local_file) }
       end
     end
 

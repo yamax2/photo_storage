@@ -20,7 +20,7 @@ RSpec.describe Tracks::EnqueueProcessService do
       expect(service_context).to be_a_failure
       expect(track).not_to be_persisted
       expect(track.errors).to include(:content_type)
-      expect(File.exist?(tmp_filename)).to eq(false)
+      expect(File.exist?(track.tmp_local_filename)).to eq(true)
 
       expect(Tracks::ProcessFileJob).not_to have_received(:perform_async)
     end
@@ -40,7 +40,7 @@ RSpec.describe Tracks::EnqueueProcessService do
 
       expect(track).to have_attributes(original_filename: 'test1.gpx', size: 1_453_201)
 
-      expect(File.exist?(tmp_filename)).to eq(true)
+      expect(File.exist?(track.tmp_local_filename)).to eq(true)
 
       expect(Tracks::ProcessFileJob).to have_received(:perform_async).with(track.id)
     end
@@ -54,7 +54,7 @@ RSpec.describe Tracks::EnqueueProcessService do
       expect(service_context).to be_a_failure
       expect(track).not_to be_persisted
       expect(track.errors).to include(:name)
-      expect(File.exist?(tmp_filename)).to eq(false)
+      expect(File.exist?(track.tmp_local_filename)).to eq(true)
 
       expect(Tracks::ProcessFileJob).not_to have_received(:perform_async)
     end

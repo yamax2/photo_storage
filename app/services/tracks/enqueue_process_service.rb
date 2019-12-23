@@ -13,7 +13,7 @@ module Tracks
       if model.errors.empty? && model.save
         ProcessFileJob.perform_async(model.id)
       else
-        fail_context
+        context.fail!
       end
     end
 
@@ -25,11 +25,6 @@ module Tracks
         original_filename: uploaded_io.original_filename,
         size: uploaded_io.size
       )
-    end
-
-    def fail_context
-      FileUtils.rm_f(Rails.root.join('tmp', 'files', model.local_filename))
-      context.fail!
     end
 
     def validate_gpx
