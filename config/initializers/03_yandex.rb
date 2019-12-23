@@ -7,4 +7,5 @@ YandexClient.configure do |config|
   end
 
   config.logger = Logger.new(Rails.root.join('log', "yandex_#{Rails.env}.log"))
+  config.read_timeout = 2.minutes
 end
