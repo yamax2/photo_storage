@@ -1,0 +1,58 @@
+---
+http_interactions:
+- request:
+    method: propfind
+    uri: https://webdav.yandex.ru/other
+    body:
+      encoding: UTF-8
+      string: ''
+    headers:
+      Authorization:
+      - OAuth <TOKEN>
+      Depth:
+      - '1'
+      Content-Type:
+      - application/x-www-form-urlencoded
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 207
+      message: Multi-Status
+    headers:
+      Date:
+      - Fri, 27 Dec 2019 20:30:44 GMT
+      Yandex-Cloud-Request-Id:
+      - dav-4e0d0255994ab2fa73f335c324428d08-iva4-646b2d75e43c
+      Yandex-Uid:
+      - '1130000019982670'
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Content-Type-Options:
+      - nosniff
+      Content-Type:
+      - application/xml; charset=UTF-8
+      Transfer-Encoding:
+      - chunked
+      Server:
+      - Jetty(9.4.11.v20180605)
+    body:
+      encoding: UTF-8
+      string: <?xml version="1.0" encoding="UTF-8"?><d:multistatus xmlns:d="DAV:"><d:response><d:href>/other/</d:href><d:propstat><d:status>HTTP/1.1
+        200 OK</d:status><d:prop><d:creationdate>2019-12-08T19:13:41Z</d:creationdate><d:displayname>other</d:displayname><d:getlastmodified>Sun,
+        08 Dec 2019 19:13:41 GMT</d:getlastmodified><d:resourcetype><d:collection /></d:resourcetype></d:prop></d:propstat></d:response><d:response><d:href>/other/100629933dd18a31a7bc895ec04ee18fa70f15266512.gpx</d:href><d:propstat><d:status>HTTP/1.1
+        200 OK</d:status><d:prop><d:getetag>d01370991b04c6089763ae93c4ae9799</d:getetag><d:creationdate>2019-12-23T17:57:15Z</d:creationdate><d:displayname>100629933dd18a31a7bc895ec04ee18fa70f15266512.gpx</d:displayname><d:getlastmodified>Mon,
+        23 Dec 2019 17:57:15 GMT</d:getlastmodified><d:getcontenttype>text/plain</d:getcontenttype><d:getcontentlength>3801113</d:getcontentlength><d:resourcetype /></d:prop></d:propstat></d:response><d:response><d:href>/other/1007fcb25a39fb7254397755506edee33cd602e27714.gpx</d:href><d:propstat><d:status>HTTP/1.1
+        200 OK</d:status><d:prop><d:getetag>9d23b5658fb6c202e54b48f65b8ca35e</d:getetag><d:creationdate>2019-12-23T17:57:16Z</d:creationdate><d:displayname>1007fcb25a39fb7254397755506edee33cd602e27714.gpx</d:displayname><d:getlastmodified>Mon,
+        23 Dec 2019 17:57:16 GMT</d:getlastmodified><d:getcontenttype>text/plain</d:getcontenttype><d:getcontentlength>1984394</d:getcontentlength><d:resourcetype /></d:prop></d:propstat></d:response><d:response><d:href>/other/1008c271d57b9d519ba2d304bdb8584ed1666dc64069.gpx</d:href><d:propstat><d:status>HTTP/1.1
+        200 OK</d:status><d:prop><d:getetag>a568fedd7b0b3224611a3e29a9127c21</d:getetag><d:creationdate>2019-12-23T17:57:16Z</d:creationdate><d:displayname>1008c271d57b9d519ba2d304bdb8584ed1666dc64069.gpx</d:displayname><d:getlastmodified>Mon,
+        23 Dec 2019 17:57:16 GMT</d:getlastmodified><d:getcontenttype>text/plain</d:getcontenttype><d:getcontentlength>3780953</d:getcontentlength><d:resourcetype /></d:prop></d:propstat></d:response></d:multistatus>
+    http_version: 
+  recorded_at: Fri, 27 Dec 2019 20:30:46 GMT
+recorded_with: VCR 5.0.0

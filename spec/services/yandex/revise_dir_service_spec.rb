@@ -79,6 +79,21 @@ RSpec.describe Yandex::ReviseDirService do
         )
       end
     end
+
+    context 'when without errors' do
+      let!(:photo3) do
+        create :photo, storage_filename: '000/013/6516fdedf98ba516916be55f04faeec88d14718325dc.jpg',
+                       size: 5_795_643,
+                       md5: '635d4505b9dfd1b49ab346c8209e09f7',
+                       content_type: 'image/jpeg',
+                       yandex_token: token
+      end
+
+      it do
+        is_expected.to be_a_success
+        expect(subject.errors).to be_empty
+      end
+    end
   end
 
   context 'when dir does not exist' do
@@ -92,7 +107,7 @@ RSpec.describe Yandex::ReviseDirService do
       is_expected.to be_a_success
 
       expect(subject.errors.keys).to eq([nil])
-      expect(subject.errors[nil]).to eq(['dir 011/013/ not found on remote storage'])
+      expect(subject.errors[nil]).to eq(['dir /test/011/013/ not found on remote storage'])
     end
   end
 end
