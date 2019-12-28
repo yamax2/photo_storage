@@ -5,27 +5,33 @@ module Yandex
     include Sidekiq::Worker
 
     def perform
-      ActiveRecord::Base.each_row_by_sql(
-        query,
-        with_hold: true,
-        symbolize_keys: true,
-        block_size: 10
-      ) do |row|
-        ReviseDirJob.perform_async(row[:dir], row[:token_id])
-      end
+      revise_photos
+      revise_tracks
     end
 
     private
 
-    def query
-      <<~SQL
-        SELECT yandex_token_id token_id,
-               regexp_replace(storage_filename, '[a-z0-9]+\.[A-z]+$', '') dir
-        FROM photos
-          WHERE storage_filename IS NOT NULL
-            GROUP by 1,2
-              ORDER BY MAX(created_at)
-      SQL
+    def revise_photos
+      Photo.uploaded.select(
+        :yandex_token_id,
+        "regexp_replace(storage_filename, '[a-z0-9]+\.[A-z]+$', '') dir"
+      ).distinct.each_row(
+        with_hold: true,
+        symbolize_keys: true,
+        block_size: 10
+      ) do |row|
+        ReviseDirJob.perform_async(row[:dir], row[:yandex_token_id])
+      end
+    end
+
+    def revise_tracks
+      Track.uploaded.select(:yandex_token_id).distinct.each_row(
+        with_hold: true,
+        symbolize_keys: true,
+        block_size: 10
+      ) do |row|
+        ReviseOtherDirJob.perform_async(row[:yandex_token_id])
+      end
     end
   end
 end

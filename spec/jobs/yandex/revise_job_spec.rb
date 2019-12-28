@@ -12,7 +12,7 @@ RSpec.describe Yandex::ReviseJob do
     described_class.drain
   end
 
-  context 'when photos exist' do
+  context 'when photos and tracks exist' do
     let(:token1) { create :'yandex/token', dir: '/test1' }
     let(:token2) { create :'yandex/token', dir: '/test2' }
 
@@ -22,14 +22,42 @@ RSpec.describe Yandex::ReviseJob do
 
     let!(:unpublished_photo) { create :photo, yandex_token: token1, local_filename: 'test.jpg' }
 
+    let!(:track1) { create :track, yandex_token: token2, storage_filename: '111.gpx' }
+    let!(:track2) { create :track, yandex_token: token2, storage_filename: '112.gpx' }
+
     it do
-      expect { run_job }.to change { Yandex::ReviseDirJob.jobs.size }.by(3)
+      expect { run_job }.
+        to change { Yandex::ReviseDirJob.jobs.size }.by(3).
+        and change { Yandex::ReviseOtherDirJob.jobs.size }.by(1)
+
+      expect(Yandex::ReviseDirJob.jobs.map { |x| x['args'] }).to match_array(
+        [
+          ['000/013/', token1.id],
+          ['000/014/', token1.id],
+          ['000/013/', token2.id]
+        ]
+      )
+
+      expect(Yandex::ReviseOtherDirJob.jobs.map { |x| x['args'] }).to match_array([[token2.id]])
     end
   end
 
-  context 'when without photos' do
+  context 'when without photos and tracks' do
     it do
-      expect { run_job }.not_to(change { Yandex::ReviseDirJob.jobs.size })
+      expect { run_job }.
+        to change { Yandex::ReviseDirJob.jobs.size }.by(0).
+        and change { Yandex::ReviseOtherDirJob.jobs.size }.by(0)
+    end
+  end
+
+  context 'when only tracks exist' do
+    let(:token1) { create :'yandex/token' }
+    let!(:track2) { create :track, yandex_token: token1, storage_filename: '112.gpx' }
+
+    it do
+      expect { run_job }.
+        to change { Yandex::ReviseDirJob.jobs.size }.by(0).
+        and change { Yandex::ReviseOtherDirJob.jobs.size }.by(1)
     end
   end
 
