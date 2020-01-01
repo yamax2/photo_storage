@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class RubricDecorator < Draper::Decorator
+class RubricDecorator < ApplicationDecorator
   delegate_all
 
   def main_photo

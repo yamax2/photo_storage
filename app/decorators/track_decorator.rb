@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class TrackDecorator < Draper::Decorator
+class TrackDecorator < ApplicationDecorator
   delegate_all
 
   def avg_speed
@@ -13,5 +13,19 @@ class TrackDecorator < Draper::Decorator
 
   def duration
     (super / 3600.0).round(2)
+  end
+
+  def url
+    return if storage_filename.blank?
+
+    [
+      proxy_url,
+      'originals',
+      yandex_token.other_dir.sub(%r{^/}, ''),
+      storage_filename
+    ].join('/').tap do |url|
+      url << "?fn=#{original_filename}"
+      url << "&id=#{yandex_token_id}"
+    end
   end
 end

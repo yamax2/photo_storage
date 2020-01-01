@@ -43,7 +43,9 @@ Rails.application.routes.draw do
 
   namespace :api, defaults: {format: :json} do
     namespace :v1 do
-      resources :pages, only: :show
+      resources :pages, only: :show do
+        resources :tracks, only: :index
+      end
 
       namespace :admin do
         resources :uploads, only: :create

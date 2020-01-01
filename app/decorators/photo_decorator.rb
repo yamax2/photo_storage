@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class PhotoDecorator < Draper::Decorator
+class PhotoDecorator < ApplicationDecorator
   delegate_all
 
   def current_views
@@ -30,11 +30,6 @@ class PhotoDecorator < Draper::Decorator
   end
 
   private
-
-  def proxy_url
-    "#{Rails.application.routes.default_url_options[:protocol]}://#{Rails.application.config.proxy_domain}." \
-      "#{Rails.application.routes.default_url_options[:host]}"
-  end
 
   def thumb_width(size)
     width = Rails.application.config.photo_sizes.fetch(size)
