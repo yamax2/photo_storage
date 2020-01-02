@@ -102,14 +102,26 @@ type SessionInfo struct {
 
 func (ph *ProxyHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
         if !ph.no_session {
-            session, err := r.Cookie("proxy_session")
+            sessionValue := r.URL.Query().Get("session")
 
-            if err != nil {
-                http.Error(w, "not authorized", http.StatusUnauthorized)
-                return
+            if len(sessionValue) == 0 {
+                session, err := r.Cookie("proxy_session")
+
+                if err != nil {
+                    http.Error(w, "not authorized", http.StatusUnauthorized)
+                    return
+                }
+
+                raw, err := url.QueryUnescape(session.Value)
+                if err != nil {
+                    http.Error(w, "not authorized", http.StatusUnauthorized)
+                    return
+                }
+
+                sessionValue = raw
             }
 
-            if  !ph.ValidateSession(session.Value) {
+            if  !ph.ValidateSession(sessionValue) {
                 http.Error(w, "forbidden", http.StatusForbidden)
                 return
             }
@@ -130,6 +142,7 @@ func (ph *ProxyHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
         if ph.originals {
             r.URL.Path = strings.Replace(r.URL.Path, "/originals", "", -1)
+            w.Header().Add("Access-Control-Allow-Origin", "*")
         }
 
         r.Header.Add("Authorization", "OAuth " + token)
@@ -137,12 +150,7 @@ func (ph *ProxyHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 }
 
 func  (ph *ProxyHandler) ValidateSession(session string) bool {
-        raw, err := url.QueryUnescape(session)
-        if err != nil {
-            return false
-        }
-
-        decoded, err := base64.StdEncoding.DecodeString(raw)
+        decoded, err := base64.StdEncoding.DecodeString(session)
         if err != nil {
             return false
         }

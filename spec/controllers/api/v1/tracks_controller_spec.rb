@@ -56,7 +56,11 @@ RSpec.describe Api::V1::TracksController do
 
       let!(:track4) { create :track, storage_filename: 'test3.gpx', yandex_token: token }
 
-      before { get :index, params: {page_id: rubric.id} }
+      before do
+        request.cookies['proxy_session'] = 'session'
+
+        get :index, params: {page_id: rubric.id}
+      end
 
       it do
         expect(response).to have_http_status(:ok)
@@ -71,7 +75,8 @@ RSpec.describe Api::V1::TracksController do
               'avg_speed' => '3.0',
               'distance' => '300.0',
               'duration' => '0.01',
-              'url' => "http://proxy.photostorage.localhost/originals/other/test3.gpx?fn=track3.gpx&id=#{token.id}"
+              'url' => 'http://proxy.photostorage.localhost/originals/other/test3.gpx' \
+                       "?fn=track3.gpx&id=#{token.id}&session=session"
             },
             {
               'id' => track2.id,
@@ -79,7 +84,8 @@ RSpec.describe Api::V1::TracksController do
               'avg_speed' => '2.0',
               'distance' => '200.0',
               'duration' => '0.01',
-              'url' => "http://proxy.photostorage.localhost/originals/other/test2.gpx?fn=track2.gpx&id=#{token.id}"
+              'url' => 'http://proxy.photostorage.localhost/originals/other/test2.gpx?fn=track2.gpx' \
+                       "&id=#{token.id}&session=session"
             }
           ]
         )
