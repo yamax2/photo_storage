@@ -190,6 +190,10 @@ ru:
     name:
       rubrics_count_text: ', подрубрик: %{rubrics_count}'
       photos_count_text: ', фото: %{photos_count}'
+  tracks:
+    duration:
+      hours: '%{hours}ч.'
+      minutes: '%{minutes}мин.'
   views:
     pagination:
       first: Первая страница
@@ -202,3 +206,8 @@ ru:
     switches:
       on_text: Вкл
       off_text: Выкл
+  api:
+    v1:
+      tracks:
+        index:
+          name: '%{name}: %{distance} км, %{duration}, ср. скорость %{avg_speed} км/ч'

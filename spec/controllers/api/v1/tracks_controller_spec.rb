@@ -37,7 +37,7 @@ RSpec.describe Api::V1::TracksController do
                        rubric: rubric,
                        yandex_token: token,
                        avg_speed: 2,
-                       duration: 20,
+                       duration: 2.hours + 59.minutes,
                        distance: 200,
                        name: 'track2',
                        original_filename: 'track2.gpx'
@@ -48,7 +48,7 @@ RSpec.describe Api::V1::TracksController do
                        rubric: rubric,
                        yandex_token: token,
                        avg_speed: 3,
-                       duration: 30,
+                       duration: 5.minutes,
                        distance: 300,
                        name: 'track3',
                        original_filename: 'track3.gpx'
@@ -71,19 +71,13 @@ RSpec.describe Api::V1::TracksController do
           [
             {
               'id' => track3.id,
-              'name' => 'track3',
-              'avg_speed' => '3.0',
-              'distance' => '300.0',
-              'duration' => '0.01',
+              'name' => 'track3: 300.0 км, 05мин., ср. скорость 3.0 км/ч',
               'url' => 'http://proxy.photostorage.localhost/originals/other/test3.gpx' \
                        "?fn=track3.gpx&id=#{token.id}&session=session"
             },
             {
               'id' => track2.id,
-              'name' => 'track2',
-              'avg_speed' => '2.0',
-              'distance' => '200.0',
-              'duration' => '0.01',
+              'name' => 'track2: 200.0 км, 2ч. 59мин., ср. скорость 2.0 км/ч',
               'url' => 'http://proxy.photostorage.localhost/originals/other/test2.gpx?fn=track2.gpx' \
                        "&id=#{token.id}&session=session"
             }

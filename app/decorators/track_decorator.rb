@@ -12,7 +12,12 @@ class TrackDecorator < ApplicationDecorator
   end
 
   def duration
-    (super / 3600.0).round(2)
+    value = (super / 60).round
+
+    hours = (value / 60).floor
+    minutes = (value - hours * 60).floor
+
+    format_duration(hours, minutes)
   end
 
   def url
@@ -27,5 +32,16 @@ class TrackDecorator < ApplicationDecorator
       url << "?fn=#{original_filename}"
       url << "&id=#{yandex_token_id}"
     end
+  end
+
+  private
+
+  def format_duration(hours, minutes)
+    result = []
+
+    result << I18n.t('tracks.duration.hours', hours: hours) if hours.positive?
+    result << I18n.t('tracks.duration.minutes', minutes: minutes.to_s.rjust(2, '0')) if minutes.positive?
+
+    result.empty? ? '0' : result.join(' ')
   end
 end
