@@ -21,6 +21,7 @@ gem 'bootstrap4-datetime-picker-rails'
 gem 'font-awesome-rails', '~> 4.7'
 gem 'jquery-rails'
 gem 'jquery-simplecolorpicker-rails'
+gem 'leaflet-rails'
 gem 'slim-rails', '>= 3.2'
 
 gem 'draper', '>= 3.1'
@@ -42,7 +43,6 @@ gem 'sidekiq-throttled', '>= 0.10'
 gem 'exifr'
 gem 'gpx', github: 'yamax2/gpx'
 gem 'image_size'
-gem 'leaflet-rails'
 gem 'yandex_client'
 
 group :development, :test do

@@ -22,7 +22,9 @@ RSpec.describe Api::V1::TracksController do
       it do
         expect(response).to have_http_status(:ok)
         expect(assigns(:rubric)).to eq(rubric)
-        expect(json).to be_empty
+
+        expect(json['tracks']).to be_empty
+        expect(json['bounds']).to be_nil
       end
     end
 
@@ -71,7 +73,9 @@ RSpec.describe Api::V1::TracksController do
         expect(assigns(:rubric)).to eq(rubric)
         expect(assigns(:tracks)).to eq([track3, track2])
 
-        expect(json).to eq(
+        expect(json).to include(
+          'bounds' => {'max_lat' => 3.0, 'max_long' => 4.0, 'min_lat' => 1.0, 'min_long' => 2.0},
+          'tracks' =>
           [
             {
               'id' => track3.id,

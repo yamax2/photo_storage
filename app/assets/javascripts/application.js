@@ -2,6 +2,7 @@
 //= require rails-ujs
 //= require turbolinks
 //= require leaflet
+//= require leaflet.markercluster
 //= require gpx
 //= require jquery.lazy
 //= require js.cookie
