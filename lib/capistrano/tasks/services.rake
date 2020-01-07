@@ -1,15 +1,16 @@
 # frozen_string_literal: true
 
+# rubocop:disable Rails/RakeEnvironment
 namespace :deploy do
   desc 'Restart Puma'
-  task restart_puma: :environment do
+  task :restart_puma do
     on roles(:app), in: :sequence, wait: 5 do
       execute :sudo, :systemctl, :restart, :'photos.puma'
     end
   end
 
   desc 'Restart Sidekiq'
-  task restart_sidekiq: :environment do
+  task :restart_sidekiq do
     on roles(:app), in: :sequence, wait: 5 do
       execute :sudo, :systemctl, :restart, :'photos.sidekiq'
     end
@@ -18,3 +19,4 @@ namespace :deploy do
   after :finishing, :restart_puma
   after :finishing, :restart_sidekiq
 end
+# rubocop:enable Rails/RakeEnvironment
