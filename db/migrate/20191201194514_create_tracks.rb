@@ -19,8 +19,11 @@ class CreateTracks < ActiveRecord::Migration[5.2]
       t.numeric    :avg_speed, default: 0, null: false
       t.numeric    :duration, default: 0, null: false
       t.numeric    :distance, default: 0, null: false
+      t.datetime   :started_at
+      t.point      :bounds, array: true, default: [], null: false
 
       # other
+      t.text       :color, null: false, default: 'red'
       t.text       :external_info
 
       t.timestamps null: false

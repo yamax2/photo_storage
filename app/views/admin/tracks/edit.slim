@@ -22,6 +22,13 @@
 
           .row.form-group
             .col.col-md-3
+              = f.label :color
+            .col-12.col-md-9
+              = f.select :color, options_from_collection_for_select(Track.available_colors, :to_s, :to_s, @track.color),
+                                 class: 'form-control'
+
+          .row.form-group
+            .col.col-md-3
               = f.label :rubric
             .col-12.col-md-9
               .input-group

@@ -166,15 +166,16 @@ RSpec.describe Admin::TracksController do
       end
     end
 
-    context 'when successful update of name' do
-      let(:track) { create :track, local_filename: 'test', name: 'test' }
+    context 'when successful update' do
+      let(:track) { create :track, local_filename: 'test', name: 'test', color: 'red' }
 
-      before { post :update, params: {rubric_id: track.rubric_id, id: track.id, track: {name: 'zozo'}} }
+      before { post :update, params: {rubric_id: track.rubric_id, id: track.id, track: {name: 'zozo', color: 'blue'}} }
 
       it do
         expect(response).to redirect_to(admin_rubric_tracks_path(track.rubric))
+
         expect(assigns(:track)).to eq(track)
-        expect(assigns(:track)).to have_attributes(name: 'zozo')
+        expect(assigns(:track)).to have_attributes(name: 'zozo', color: 'blue')
       end
     end
 

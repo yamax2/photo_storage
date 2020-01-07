@@ -11,10 +11,13 @@ RSpec.describe Track do
     it { is_expected.to have_db_column(:avg_speed).of_type(:decimal).with_options(null: false, default: 0.0) }
     it { is_expected.to have_db_column(:duration).of_type(:decimal).with_options(null: false, default: 0.0) }
     it { is_expected.to have_db_column(:distance).of_type(:decimal).with_options(null: false, default: 0.0) }
+    it { is_expected.to have_db_column(:started_at).of_type(:datetime) }
+    it { is_expected.to have_db_column(:bounds).of_type(:point).with_options(null: false, array: true, default: []) }
 
     it { is_expected.to have_db_column(:rubric_id).of_type(:integer).with_options(null: false, foreign_key: true) }
     it { is_expected.to have_db_index(:rubric_id) }
 
+    it { is_expected.to have_db_column(:color).of_type(:text).with_options(null: false, default: 'red') }
     it { is_expected.to have_db_column(:external_info).of_type(:text) }
   end
 
@@ -30,10 +33,76 @@ RSpec.describe Track do
 
     it { is_expected.to validate_presence_of(:distance) }
     it { is_expected.to validate_numericality_of(:distance).is_greater_than_or_equal_to(0) }
+
+    it { is_expected.to validate_presence_of(:color) }
+  end
+
+  describe 'bounds validation' do
+    context 'when track is unpublished' do
+      let(:track) { build :track, local_filename: 'test', bounds: [] }
+
+      it do
+        expect(track).to be_valid
+      end
+    end
+
+    context 'when track is published' do
+      let(:token) { create :'yandex/token' }
+      let(:track) { build :track, storage_filename: 'test', bounds: bounds, yandex_token: token }
+
+      context 'when empty bounds' do
+        let(:bounds) { [] }
+
+        it do
+          expect(track.bounds.size).to eq(0)
+          expect(track).not_to be_valid
+          expect(track.errors).to include(:bounds)
+        end
+      end
+
+      context 'when 1 item' do
+        let(:bounds) { [ActiveRecord::Point.new(1, 2)] }
+
+        it do
+          expect(track.bounds.size).to eq(1)
+          expect(track).not_to be_valid
+          expect(track.errors).to include(:bounds)
+        end
+      end
+
+      context 'when 2 items' do
+        let(:bounds) { [ActiveRecord::Point.new(1, 2), ActiveRecord::Point.new(1, 2)] }
+
+        it do
+          expect(track.bounds.size).to eq(2)
+          expect(track).to be_valid
+        end
+      end
+
+      context 'when 3 items' do
+        let(:bounds) { [ActiveRecord::Point.new(1, 2), ActiveRecord::Point.new(1, 2), ActiveRecord::Point.new(1, 2)] }
+
+        it do
+          expect(track.bounds.size).to eq(3)
+          expect(track).not_to be_valid
+          expect(track.errors).to include(:bounds)
+        end
+      end
+
+      context 'when wrong array items' do
+        let(:bounds) { [[1, 2], [3, 4]] }
+
+        it do
+          expect(track).not_to be_valid
+          expect(track.errors).to include(:bounds)
+        end
+      end
+    end
   end
 
   describe 'strip attributes' do
     it { is_expected.to strip_attribute(:name) }
+    it { is_expected.to strip_attribute(:color) }
   end
 
   describe 'associations' do
@@ -49,6 +118,15 @@ RSpec.describe Track do
       expect(Tracks::RemoveFileJob).to receive(:perform_async).with(token.id, 'zozo')
 
       expect { track.destroy }.not_to raise_error
+    end
+  end
+
+  describe '.available_colors' do
+    subject { described_class.available_colors }
+
+    it do
+      is_expected.to be_a(Array)
+      is_expected.to include('blue', 'red', 'green')
     end
   end
 end

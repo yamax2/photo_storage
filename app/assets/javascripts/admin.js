@@ -11,4 +11,5 @@
 //= require moment/ru
 //= require tempusdominus-bootstrap-4
 //= require leaflet
+//= require jquery.simplecolorpicker
 //= require_tree ./admin

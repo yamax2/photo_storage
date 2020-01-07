@@ -8,6 +8,8 @@ FactoryBot.define do
     sequence(:original_filename) { |n| "file #{n}" }
     rubric
 
+    bounds { [ActiveRecord::Point.new(1, 2), ActiveRecord::Point.new(3, 4)] }
+
     trait :real do
       md5 { nil }
       sha256 { nil }

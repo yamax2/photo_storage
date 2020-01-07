@@ -9,7 +9,7 @@ namespace :gpx do
     )
 
     SQL = <<~SQL
-      SELECT i.id, i.name, i.created_at, t.name track_name, t.code, i.data
+      SELECT i.id, i.name, i.created_at, t.name track_name, t.code, i.data, i.color
         FROM track_items i, tracks t
           WHERE t.code = i.track_code AND length(i.data::text) > 1000
             ORDER BY i.id
@@ -50,7 +50,8 @@ namespace :gpx do
       track = Track.new(
         rubric: rubric,
         external_info: row['id'],
-        name: "#{row['track_name']} - #{row['name']}".strip
+        name: "#{row['track_name']} - #{row['name']}".strip,
+        color: row['color']
       )
 
       ::Tracks::EnqueueProcessService.call!(model: track, uploaded_io: uploaded_io)

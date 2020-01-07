@@ -38,7 +38,7 @@ module Admin
     end
 
     def track_params
-      params.require(:track).permit(:name, :rubric_id)
+      params.require(:track).permit(:name, :color, :rubric_id)
     end
   end
 end

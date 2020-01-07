@@ -9,7 +9,7 @@ module Api
 
       def index
         @rubric = Rubric.find(params[:page_id])
-        @tracks = Track.uploaded.where(rubric: @rubric).includes(:yandex_token).order(id: :desc).decorate
+        @tracks = Track.uploaded.where(rubric: @rubric).includes(:yandex_token).order(:started_at).decorate
       end
 
       private

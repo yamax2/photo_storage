@@ -18,11 +18,13 @@ ru:
       track:
         avg_speed: Средняя скорость, км/ч
         content: gpx-файл (содержимое)
+        color: Цвет
         created_at: Загружено
         distance: Расстояние, км.
-        duration: Длительность, ч.
+        duration: Длительность
         name: Название
         size: Размер
+        started_at: Начало
         rubric: Рубрика
       yandex/token:
         active: Активность
@@ -40,6 +42,8 @@ ru:
               wrong_value: Один из файловых атрибутов должен быть заполнен
         track:
           attributes:
+            bounds:
+              wrong_value: Некорректное значение массива границ
             content:
               wrong_value: Допускаются только gpx-файлы
         yandex/token:

@@ -23,7 +23,12 @@ RSpec.describe Tracks::LoadInfoService do
 
       expect(track.avg_speed.round(2)).to eq(60.58)
       expect(track.distance.round(2)).to eq(103.53)
-      expect(track.duration).to eq(6152)
+
+      expect(track).to have_attributes(
+        duration: 6152,
+        started_at: Time.zone.local(2019, 3, 10, 11, 30, 5),
+        bounds: [ActiveRecord::Point.new(58.8514683, 56.8266267), ActiveRecord::Point.new(59.4318817, 57.670655)]
+      )
     end
   end
 
@@ -31,6 +36,8 @@ RSpec.describe Tracks::LoadInfoService do
     let(:track) { create :track, local_filename: 'test.gpx' }
 
     it do
+      expect { service_context }.not_to(change { track.bounds })
+
       expect(service_context).to be_a_success
       expect(track).to have_attributes(avg_speed: 0, distance: 0, duration: 0)
     end
@@ -41,6 +48,8 @@ RSpec.describe Tracks::LoadInfoService do
     let(:track) { create :track, storage_filename: 'test.gpx', yandex_token: token }
 
     it do
+      expect { service_context }.not_to(change { track.bounds })
+
       expect(service_context).to be_a_success
       expect(track).to have_attributes(avg_speed: 0, distance: 0, duration: 0)
     end
@@ -62,6 +71,12 @@ RSpec.describe Tracks::LoadInfoService do
       expect(track.avg_speed.round(2)).to eq(60.58)
       expect(track.distance.round(2)).to eq(103.53)
       expect(track.duration).to eq(6152)
+      expect(track.bounds).to eq(
+        [
+          ActiveRecord::Point.new(58.8514683, 56.8266267),
+          ActiveRecord::Point.new(59.4318817, 57.670655)
+        ]
+      )
     end
   end
 
@@ -77,6 +92,12 @@ RSpec.describe Tracks::LoadInfoService do
 
     it do
       expect(service_context).to be_a_success
+
+      expect(track).to have_attributes(
+        duration: 0.0,
+        bounds: [ActiveRecord::Point.new(56.762862, 54.274203), ActiveRecord::Point.new(59.906595, 60.5967165)],
+        started_at: Time.zone.local(2016, 1, 1, 12, 34, 33)
+      )
     end
   end
 end

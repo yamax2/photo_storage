@@ -40,7 +40,9 @@ RSpec.describe Api::V1::TracksController do
                        duration: 2.hours + 59.minutes,
                        distance: 200,
                        name: 'track2',
-                       original_filename: 'track2.gpx'
+                       original_filename: 'track2.gpx',
+                       started_at: 1.day.ago,
+                       color: 'red'
       end
 
       let!(:track3) do
@@ -51,7 +53,9 @@ RSpec.describe Api::V1::TracksController do
                        duration: 5.minutes,
                        distance: 300,
                        name: 'track3',
-                       original_filename: 'track3.gpx'
+                       original_filename: 'track3.gpx',
+                       started_at: 10.days.ago,
+                       color: 'blue'
       end
 
       let!(:track4) { create :track, storage_filename: 'test3.gpx', yandex_token: token }
@@ -73,13 +77,15 @@ RSpec.describe Api::V1::TracksController do
               'id' => track3.id,
               'name' => 'track3: 300.0 км, 05мин., ср. скорость 3.0 км/ч',
               'url' => 'http://proxy.photostorage.localhost/originals/other/test3.gpx' \
-                       "?fn=track3.gpx&id=#{token.id}&session=session"
+                       "?fn=track3.gpx&id=#{token.id}&session=session",
+              'color' => 'blue'
             },
             {
               'id' => track2.id,
               'name' => 'track2: 200.0 км, 2ч. 59мин., ср. скорость 2.0 км/ч',
               'url' => 'http://proxy.photostorage.localhost/originals/other/test2.gpx?fn=track2.gpx' \
-                       "&id=#{token.id}&session=session"
+                       "&id=#{token.id}&session=session",
+              'color' => 'red'
             }
           ]
         )

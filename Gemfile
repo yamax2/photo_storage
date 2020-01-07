@@ -20,6 +20,7 @@ gem 'bootstrap', '~> 4.3.1'
 gem 'bootstrap4-datetime-picker-rails'
 gem 'font-awesome-rails', '~> 4.7'
 gem 'jquery-rails'
+gem 'jquery-simplecolorpicker-rails'
 gem 'slim-rails', '>= 3.2'
 
 gem 'draper', '>= 3.1'
