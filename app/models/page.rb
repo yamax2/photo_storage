@@ -7,10 +7,7 @@ class Page
 
   PageStruct = Struct.new(:prev, :current, :next)
 
-  def initialize(rubric_id = nil, offset: nil, limit: nil, single_rubric_mode: false)
-    @offset = offset
-    @limit = limit
-
+  def initialize(rubric_id = nil, single_rubric_mode: false)
     return unless rubric_id
 
     rubric =
@@ -32,26 +29,25 @@ class Page
     PageStruct.new(photos[-1], photos.fetch(0), photos[1])
   end
 
-  # rubocop:disable Metrics/MethodLength
-  def photos # rubocop:disable Metrics/AbcSize
-    return @photos if defined?(@photos)
-    return @photos = Photo.none unless @rubric
-
+  # pagination:
+  #   * limit
+  #   * offset
+  #
+  # filters:
+  #   * only_with_geo_tags
+  def photos(options = {})
     scope =
-      if @offset && @limit
-        Photo.
-          select(Photo.arel_table[Arel.star], 'x.rn').
-          where("x.rn > #{@offset}").limit(@limit).
-          joins(<<~SQL)
-            join (#{photos_scope(true).to_sql}) x on x.id = #{quoted_table_name}.id
-          SQL
+      if @rubric
+        limited_scope(
+          limit: options[:limit], offset: options.fetch(:offset, 0),
+          only_with_geo_tags: options.fetch(:only_with_geo_tags, false)
+        ).preload(:yandex_token).order(:rn)
       else
-        photos_scope
+        Photo.none
       end
 
-    @photos = scope.preload(:yandex_token).order(:rn).decorate
+    scope.decorate
   end
-  # rubocop:enable Metrics/MethodLength
 
   def rubrics
     return @rubrics if defined?(@rubrics)
@@ -76,7 +72,7 @@ class Page
   def find_photos(photo_id)
     Photo.find_by_sql(<<~SQL).map(&:decorate).index_by(&:rn)
       WITH scope AS (
-        #{photos_scope(true).to_sql}
+        #{photos_scope(only_id: true).to_sql}
       ), current_photo AS (
         SELECT id, rn FROM scope WHERE id = #{photo_id}
       ), ids AS (
@@ -93,8 +89,24 @@ class Page
     SQL
   end
 
-  def photos_scope(only_id = false)
-    columns = Array.wrap(only_id ? Photo.arel_table[:id] : Photo.arel_table[Arel.star])
+  def limited_scope(limit:, offset:, only_with_geo_tags: false)
+    if limit&.positive? && offset
+      Photo.select(Photo.arel_table[Arel.star], 'x.rn').
+        where("x.rn > #{offset}").limit(limit).
+        joins(<<~SQL)
+          join (
+            #{photos_scope(only_id: true, only_with_geo_tags: only_with_geo_tags).to_sql}
+          ) x on x.id = #{quoted_table_name}.id
+        SQL
+    else
+      photos_scope(only_with_geo_tags: only_with_geo_tags)
+    end
+  end
+
+  def photos_scope(only_id: false, only_with_geo_tags: false)
+    table = Photo.arel_table
+
+    columns = [only_id ? table[:id] : table[Arel.star]]
     columns << <<~SQL
       ROW_NUMBER() OVER (
         ORDER BY #{quoted_table_name}.original_timestamp AT TIME ZONE #{quoted_table_name}.tz NULLS FIRST,
@@ -102,6 +114,9 @@ class Page
       ) rn
     SQL
 
-    @rubric.photos.uploaded.select(*columns)
+    scope = @rubric.photos.uploaded
+    scope.where!(table[:lat_long].not_eq(nil)) if only_with_geo_tags
+
+    scope.select(*columns)
   end
 end

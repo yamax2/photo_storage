@@ -1,10 +1,9 @@
 -# frozen_string_literal: true
 - size = photo.image_size
 - style = "width: #{size.first}px; height: #{size.last}px"
-- lat_long = photo.lat_long&.to_a
 
-= link_to page_photo_path(@page.rubric, photo), class: 'photo', style: style, data: {lat_long: lat_long} do
-  img*{style: style, data: {width: size.first, height: size.last, src: photo.url(:thumb)}}
+= link_to page_photo_path(@page.rubric, photo), class: 'photo', style: style do
+  img*{style: style, data: {src: photo.url(:thumb)}}
   .photo-name
     span
       = photo.name

@@ -4,7 +4,7 @@ module Rubrics
   class MapBoundsService
     include ::Interactor
 
-    delegate :rubric, to: :context
+    delegate :rubric_id, to: :context
 
     def call
       context.bounds = ActiveRecord::Base.connection.execute(<<~SQL).first.symbolize_keys!
@@ -19,8 +19,8 @@ module Rubrics
 
     def bounds_query
       [
-        rubric.photos.uploaded.where.not(lat_long: nil).select('lat_long[0] lat, lat_long[1] long'),
-        rubric.tracks.uploaded.joins(', unnest(bounds) points').select('points[0], points[1]')
+        Photo.where(rubric_id: rubric_id).uploaded.where.not(lat_long: nil).select('lat_long[0] lat, lat_long[1] long'),
+        Track.where(rubric_id: rubric_id).uploaded.joins(', unnest(bounds) points').select('points[0], points[1]')
       ].map(&:to_sql).join(' UNION ALL ')
     end
   end

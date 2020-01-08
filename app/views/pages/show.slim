@@ -1,4 +1,5 @@
 -# frozen_string_literal: true
+
 - if @page.rubric
   .photo-header
     ul
@@ -16,7 +17,9 @@
     = @page.rubric.description.to_s.html_safe
 
 - if @page.rubric
-  .page-map-content*{data: {url: api_v1_page_tracks_path(@page.rubric),
+  .page-map-content*{data: {url: summary_api_v1_page_path(@page.rubric),
+     photos_url: api_v1_page_path(@page.rubric, only_with_geo_tags: true),
+     tracks_url: api_v1_page_tracks_path(@page.rubric),
      center: Rails.application.config.default_map_center, tile_layer: Leaflet.tile_layer,
      attribution: Leaflet.attribution}}
     #map
@@ -26,4 +29,4 @@
     = render partial: 'rubric', collection: @page.rubrics
 
 .photos
-  = render partial: 'photo', collection: @page.photos, cached: true
+  = render partial: 'photo', collection: @photos, cached: true

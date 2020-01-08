@@ -30,7 +30,7 @@ append :linked_dirs, 'log', 'tmp'
 # Default value for local_user is ENV['USER']
 # set :local_user, -> { `git config user.name`.chomp }
 
-set :keep_releases, 5
+set :keep_releases, 1
 set :ssh_options, verify_host_key: :secure
 set :ssh_options, forward_agent: true, user: 'photos'
 

@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe Rubrics::MapBoundsService do
-  subject(:bounds) { described_class.call!(rubric: rubric).bounds }
+  subject(:bounds) { described_class.call!(rubric_id: rubric.id).bounds }
   let(:rubric) { create :rubric }
 
   context 'when rubric without uploaded tracks and photos' do

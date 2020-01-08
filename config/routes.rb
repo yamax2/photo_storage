@@ -45,6 +45,10 @@ Rails.application.routes.draw do
     namespace :v1 do
       resources :pages, only: :show do
         resources :tracks, only: :index
+
+        member do
+          get :summary
+        end
       end
 
       namespace :admin do

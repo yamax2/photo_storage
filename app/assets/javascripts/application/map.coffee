@@ -1,7 +1,6 @@
 $(document)
   .on 'turbolinks:load', ->
     $map = $('.page-map-content')
-
     return unless $map.length > 0
 
     $.get $map.data('url'), (response) ->
@@ -16,52 +15,51 @@ $(document)
       p2 = L.latLng(response.bounds.max_lat, response.bounds.max_long)
       map.fitBounds(L.latLngBounds(p1, p2))
 
-      markers = L.markerClusterGroup()
-      $('.photo[data-lat-long]').each ->
-        $this = $(this)
+      $.get $map.data('photos_url'), (response) ->
+        markers = L.markerClusterGroup()
 
-        $img = $('img', $this)
-        title = $('.photo-name', $this).text()
+        for photo in response
+          width = photo.image_size[0]
+          height = photo.image_size[1]
 
-        imgWidth = $img.data('width') * 200 / $img.data('height')
-        imgWidth = 200 if imgWidth > 200
-        imgHeight = $img.data('height') * imgWidth / $img.data('width')
+          imgWidth = width * 200 / height
+          imgWidth = 200 if imgWidth > 200
+          imgHeight = height * imgWidth / width
 
-        src = $img.data('src') || $img.attr('src')
+          marker = L.marker(
+            [photo.lat_long.x, photo.lat_long.y],
+            title: photo.name
+          ).bindPopup(
+            "<div class=\"photo-popup\"><h3>#{photo.name}</h3><a href=\"#{photo.url}\" target=\"_blank\">" +
+            "<img style=\"width: #{imgWidth}px; height: #{imgHeight}px\" src=\"#{photo.preview}\"></a></div>"
+          )
 
-        marker = L.marker(
-          $this.data('lat-long'),
-          title: title
-        ).bindPopup(
-          "<div class=\"photo-popup\"><h3>#{title}</h3><a href=\"#{$this.attr('href')}\" target=\"_blank\">" +
-          "<img style=\"width: #{imgWidth}px; height: #{imgHeight}px\" src=\"#{src}\"></a></div>"
-        )
+          markers.addLayer(marker)
 
-        markers.addLayer(marker)
+        map.addLayer(markers)
 
-      map.addLayer(markers)
+      $.get $map.data('tracks_url'), (response) ->
+        return unless response.length > 0
+        tracks = {}
 
-      return unless response.tracks.length > 0
+        for track in response
+          new L.GPX(
+            track.url,
+            async: true,
+            marker_options:
+              clickable: true
+              startIconUrl: 'https://raw.githubusercontent.com/mpetazzoni/leaflet-gpx/master/pin-icon-start.png',
+              endIconUrl: 'https://raw.githubusercontent.com/mpetazzoni/leaflet-gpx/master/pin-icon-end.png',
+              shadowUrl: 'https://raw.githubusercontent.com/mpetazzoni/leaflet-gpx/master/pin-shadow.png'
+            polyline_options:
+              color: track.color
+          ).on('loaded', ((e) ->
+              tracks[this.id] = e.target
 
-      tracks = {}
-      for track in response.tracks
-        new L.GPX(
-          track.url,
-          async: true,
-          marker_options:
-            clickable: true
-            startIconUrl: 'https://raw.githubusercontent.com/mpetazzoni/leaflet-gpx/master/pin-icon-start.png',
-            endIconUrl: 'https://raw.githubusercontent.com/mpetazzoni/leaflet-gpx/master/pin-icon-end.png',
-            shadowUrl: 'https://raw.githubusercontent.com/mpetazzoni/leaflet-gpx/master/pin-shadow.png'
-          polyline_options:
-            color: track.color
-        ).on('loaded', ((e) ->
-            tracks[this.id] = e.target
-
-            if Object.keys(tracks).length == response.tracks.length
-              control = L.control.layers(null, null).addTo(map)
-              for value in response.tracks
-                gpx = tracks[value.id]
-                control.addOverlay(gpx, value.name)
-          ).bind(track)
-        ).addTo(map)
+              if Object.keys(tracks).length == response.length
+                control = L.control.layers(null, null).addTo(map)
+                for value in response
+                  gpx = tracks[value.id]
+                  control.addOverlay(gpx, value.name)
+            ).bind(track)
+          ).addTo(map)

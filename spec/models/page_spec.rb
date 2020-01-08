@@ -4,7 +4,6 @@ require 'rails_helper'
 
 RSpec.describe Page do
   before { Timecop.freeze }
-
   after { Timecop.return }
 
   let!(:root_rubric1) { create :rubric }
@@ -63,7 +62,8 @@ RSpec.describe Page do
     create :photo, rubric: root_rubric1,
                    storage_filename: 'test',
                    yandex_token: token,
-                   original_timestamp: nil
+                   original_timestamp: nil,
+                   lat_long: [1, 2]
   end
 
   context 'when page is root' do
@@ -102,39 +102,59 @@ RSpec.describe Page do
       end
     end
 
+    context 'only_with_geo_tags opt' do
+      subject(:page) { described_class.new(root_rubric1.id) }
+
+      let(:photos) { page.photos(only_with_geo_tags: true) }
+
+      it do
+        expect(photos).to match_array([photo7])
+      end
+    end
+
     context 'when pagination' do
+      subject(:page) { described_class.new(root_rubric1.id) }
+
       context 'and first 2 photos' do
-        subject(:page) { described_class.new(root_rubric1.id, offset: 0, limit: 2) }
+        let(:photos) { page.photos(offset: 0, limit: 2) }
 
         it do
-          expect(page.photos.map(&:rn)).to eq([1, 2])
-          expect(page.photos.map(&:object)).to eq([photo6, photo7])
+          expect(photos.map(&:rn)).to eq([1, 2])
+          expect(photos.map(&:object)).to eq([photo6, photo7])
         end
       end
 
       context 'and last 2 photos' do
-        subject(:page) { described_class.new(root_rubric1.id, offset: 3, limit: 2) }
+        let(:photos) { page.photos(offset: 3, limit: 2) }
 
         it do
-          expect(page.photos.map(&:rn)).to eq([4, 5])
-          expect(page.photos.map(&:object)).to eq([photo2, photo5])
+          expect(photos.map(&:rn)).to eq([4, 5])
+          expect(photos.map(&:object)).to eq([photo2, photo5])
         end
       end
 
       context 'and 3 photos in the middle' do
-        subject(:page) { described_class.new(root_rubric1.id, offset: 1, limit: 3) }
+        let(:photos) { page.photos(offset: 1, limit: 3) }
 
         it do
-          expect(page.photos.map(&:rn)).to eq([2, 3, 4])
-          expect(page.photos.map(&:object)).to eq([photo7, photo3, photo2])
+          expect(photos.map(&:rn)).to eq([2, 3, 4])
+          expect(photos.map(&:object)).to eq([photo7, photo3, photo2])
         end
       end
 
       context 'and offset without limit' do
-        subject(:page) { described_class.new(root_rubric1.id, offset: 1) }
+        let(:photos) { page.photos(offset: 1) }
 
         it do
-          expect(page.photos.map(&:rn)).to eq([1, 2, 3, 4, 5])
+          expect(photos.map(&:rn)).to eq([1, 2, 3, 4, 5])
+        end
+      end
+
+      context 'and only_with_geo_tags' do
+        let(:photos) { page.photos(only_with_geo_tags: true, offset: 1, limit: 5) }
+
+        it do
+          expect(photos).to be_empty
         end
       end
     end

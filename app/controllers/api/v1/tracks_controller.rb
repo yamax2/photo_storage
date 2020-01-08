@@ -9,8 +9,7 @@ module Api
       before_action :find_rubric
 
       def index
-        @tracks = Track.uploaded.where(rubric: @rubric).includes(:yandex_token).order(:started_at).decorate
-        @bounds = Rubrics::MapBoundsService.call!(rubric: @rubric).bounds
+        @tracks = @rubric.tracks.uploaded.includes(:yandex_token).order(:started_at).decorate
       end
 
       private
