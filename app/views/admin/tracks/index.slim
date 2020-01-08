@@ -1,4 +1,5 @@
 -# frozen_string_literal: true
+
 - content_for :title, t('.title', name: @rubric.name)
 - breadcrumb :tracks, @rubric
 
@@ -39,3 +40,6 @@
                                                         class: 'btn btn-outline-danger btn-sm',
                                                         data: {confirm: t('.remove_confirm')} do
                       i.fa.fa-trash
+
+        - if @tracks.total_pages > 1
+          = paginate @tracks, views_prefix: 'admin'
