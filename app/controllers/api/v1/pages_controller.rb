@@ -6,7 +6,6 @@ module Api
       def show
         @page = Page.new(params.require(:id), single_rubric_mode: true)
 
-        # TODO: pagination with api
         @photos = @page.photos(
           offset: params[:offset].to_i,
           limit: params[:limit].to_i,

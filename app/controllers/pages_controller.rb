@@ -2,9 +2,9 @@
 
 class PagesController < ApplicationController
   def show
+    # FIXME: fix it
     @page = Page.new(params[:id])
-    @photos = @page.photos
 
-    redirect_to root_path if !@page.with_rubrics? && @photos.empty?
+    redirect_to root_path if !@page.with_rubrics? && @page.photos.empty?
   end
 end

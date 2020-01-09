@@ -28,5 +28,6 @@
   .rubrics
     = render partial: 'rubric', collection: @page.rubrics
 
-.photos
-  = render partial: 'photo', collection: @photos, cached: true
+- if @page.rubric
+  .photos*{data: {url: api_v1_page_path(@page.rubric)}}
+    #loader

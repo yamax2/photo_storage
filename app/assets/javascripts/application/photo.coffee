@@ -29,8 +29,6 @@ $(document)
     $('#mainimg').on 'load', ->
       $('.photo-right, .photo-left').show()
 
-    $('.photos .photo > img, .rubrics .rubric > img').lazy()
-
   .on 'keydown', (e) ->
     switch e.keyCode
       when 37 # left

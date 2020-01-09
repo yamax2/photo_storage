@@ -1,9 +1,0 @@
--# frozen_string_literal: true
-- size = photo.image_size
-- style = "width: #{size.first}px; height: #{size.last}px"
-
-= link_to page_photo_path(@page.rubric, photo), class: 'photo', style: style do
-  img*{style: style, data: {src: photo.url(:thumb)}}
-  .photo-name
-    span
-      = photo.name

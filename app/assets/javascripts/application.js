@@ -4,6 +4,6 @@
 //= require leaflet
 //= require leaflet.markercluster
 //= require gpx
-//= require jquery.lazy
 //= require js.cookie
+//= require ScrollMagic
 //= require_tree ./application
