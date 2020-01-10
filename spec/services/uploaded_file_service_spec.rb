@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe UploadFileService do
+RSpec.describe UploadedFileService do
   let(:gpx) { fixture_file_upload('spec/fixtures/test1.gpx', 'application/gpx+xml') }
   let(:dir) { Rails.root.join('tmp/files/test') }
 

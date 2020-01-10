@@ -19,7 +19,7 @@ module Api
       end
 
       def find_rubric
-        @rubric = Rubric.find(params[:page_id])
+        @rubric = Rubric.find(params[:rubric_id])
       end
     end
   end

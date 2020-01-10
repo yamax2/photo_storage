@@ -21,7 +21,7 @@ module Tracks
 
     def assign_attributes
       model.assign_attributes(
-        local_filename: UploadFileService.move(uploaded_io),
+        local_filename: UploadedFileService.move(uploaded_io),
         original_filename: uploaded_io.original_filename,
         size: uploaded_io.size
       )

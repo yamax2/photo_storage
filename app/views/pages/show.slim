@@ -1,33 +1,33 @@
 -# frozen_string_literal: true
 
-- if @page.rubric
+- if @rubric
   .photo-header
     ul
       li
         = link_to t('title'), root_path
-      - @page.rubrics_tree.reverse_each do |rubric|
+      - @rubric.rubrics_tree.reverse_each do |rubric|
         li
-          - if rubric == @page.rubric
+          - if rubric == @rubric
             = rubric.name
           - else
             = link_to rubric.name, page_path(rubric)
 
 .rubric-content
-  - if @page.rubric
-    = @page.rubric.description.to_s.html_safe
+  - if @rubric
+    = @rubric.description.to_s.html_safe
 
-- if @page.rubric
-  .page-map-content*{data: {url: summary_api_v1_page_path(@page.rubric),
-     photos_url: api_v1_page_path(@page.rubric, only_with_geo_tags: true),
-     tracks_url: api_v1_page_tracks_path(@page.rubric),
+- if @rubric
+  .page-map-content*{data: {url: summary_api_v1_rubric_path(@rubric),
+     photos_url: api_v1_rubric_path(@rubric, only_with_geo_tags: true),
+     tracks_url: api_v1_rubric_tracks_path(@rubric),
      center: Rails.application.config.default_map_center, tile_layer: Leaflet.tile_layer,
      attribution: Leaflet.attribution}}
     #map
 
-- if @page.with_rubrics?
+- if with_rubrics?
   .rubrics
-    = render partial: 'rubric', collection: @page.rubrics
+    = render partial: 'rubric', collection: @rubrics
 
-- if @page.rubric
-  .photos*{data: {url: api_v1_page_path(@page.rubric)}}
+- if @rubric
+  .photos*{data: {url: api_v1_rubric_path(@rubric)}}
     #loader

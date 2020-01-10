@@ -2,17 +2,18 @@
 
 require 'rails_helper'
 
-RSpec.describe Api::V1::PagesController do
+RSpec.describe Api::V1::RubricsController do
   render_views
 
   let(:json) { JSON.parse(response.body) }
 
   describe '#show' do
     context 'when wrong rubric' do
-      subject { get :show, params: {id: 1, offset: 1, limit: 5} }
+      before { get :show, params: {id: 1, offset: 1, limit: 5} }
 
       it do
-        expect { subject }.to raise_error(ActiveRecord::RecordNotFound)
+        expect(response).to have_http_status(:ok)
+        expect(json).to be_empty
       end
     end
 
@@ -39,10 +40,6 @@ RSpec.describe Api::V1::PagesController do
 
         it do
           expect(response).to have_http_status(:ok)
-
-          expect(assigns(:page).rubric).to eq(rubric)
-          expect(assigns(:page).rubric.association(:rubric)).not_to be_loaded
-
           expect(json).to match_array(
             [
               hash_including(

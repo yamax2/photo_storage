@@ -21,7 +21,7 @@ module Photos
         size: uploaded_io.size,
         content_type: uploaded_io.content_type,
         original_filename: uploaded_io.original_filename,
-        local_filename: UploadFileService.move(uploaded_io)
+        local_filename: UploadedFileService.move(uploaded_io)
       }
     end
   end

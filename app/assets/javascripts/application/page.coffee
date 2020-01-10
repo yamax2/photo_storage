@@ -1,6 +1,6 @@
 loadPhotos = ($photos) ->
   $loader = $('#loader')
-  return if $loader.is('.active')
+  return if $loader.length == 0 || $loader.is('.active')
 
   $loader.addClass('active')
 
@@ -15,7 +15,7 @@ loadPhotos = ($photos) ->
 
       for photo in response
         style = "width: #{photo.image_size[0]}px; height: #{photo.image_size[1]}px"
-        html += "<a class=\"photo\" style=\"#{style}\"><img src=\"#{photo.preview}\">" +
+        html += "<a class=\"photo\" style=\"#{style}\" href=\"#{photo.url}\"><img src=\"#{photo.preview}\">" +
                 "<div class=\"photo-name\"><span>#{photo.name}</span></div></a>"
 
       $(html).insertBefore($loader)

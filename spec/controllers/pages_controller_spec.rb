@@ -7,14 +7,36 @@ RSpec.describe PagesController do
 
   describe '#show' do
     let!(:rubric) { create :rubric }
+    let(:token) { create :'yandex/token' }
 
     context 'when root' do
-      before { get :show }
+      context 'and without rubrics' do
+        before { get :show }
 
-      it do
-        expect(response).to have_http_status(:ok)
-        expect(assigns(:page)).to be_a(Page)
-        expect(assigns(:page).rubric).to be_nil
+        it do
+          expect(response).to have_http_status(:ok)
+
+          expect(assigns(:rubric)).to be_nil
+          expect(assigns(:rubrics)).to be_empty
+        end
+      end
+
+      context 'and with published photos' do
+        before do
+          create :rubric
+          create :rubric, rubric: rubric
+
+          create(:photo, rubric: rubric, yandex_token: token, storage_filename: 'test')
+
+          get :show
+        end
+
+        it do
+          expect(response).to have_http_status(:ok)
+
+          expect(assigns(:rubric)).to be_nil
+          expect(assigns(:rubrics)).to match_array([rubric])
+        end
       end
     end
 
@@ -22,29 +44,30 @@ RSpec.describe PagesController do
       context 'and without photos and rubrics' do
         before do
           create :photo, local_filename: 'test', rubric: rubric
+
           get :show, params: {id: rubric.id}
         end
 
         it do
           expect(response).to redirect_to(root_path)
-          expect(assigns(:page)).to be_a(Page)
-          expect(assigns(:page).rubric).to eq(rubric)
+
+          expect(assigns(:rubric)).to eq(rubric)
+          expect(assigns(:rubrics)).to be_empty
         end
       end
 
       context 'and with published photos' do
-        let(:token) { create :'yandex/token' }
-
         before do
-          create :photo, storage_filename: 'test', rubric: rubric, yandex_token: token, width: 100, height: 100
+          create :photo, storage_filename: 'test', rubric: rubric, yandex_token: token
 
           get :show, params: {id: rubric.id}
         end
 
         it do
           expect(response).to have_http_status(:ok)
-          expect(assigns(:page)).to be_a(Page)
-          expect(assigns(:page).rubric).to eq(rubric)
+
+          expect(assigns(:rubric)).to eq(rubric)
+          expect(assigns(:rubrics)).to be_empty
         end
       end
 
@@ -57,23 +80,62 @@ RSpec.describe PagesController do
 
         it do
           expect(response).to redirect_to(root_path)
+
+          expect(assigns(:rubric)).to eq(rubric)
+          expect(assigns(:rubrics)).to be_empty
         end
       end
 
       context 'and with sub rubric with published photo' do
         let(:sub_rubric) { create :rubric, rubric: rubric }
-        let(:token) { create :'yandex/token' }
 
         before do
-          create :photo, storage_filename: 'test', rubric: rubric, yandex_token: token, width: 100, height: 100
+          create :photo, storage_filename: 'test', rubric: sub_rubric, yandex_token: token
 
           get :show, params: {id: rubric.id}
         end
 
         it do
           expect(response).to have_http_status(:ok)
-          expect(assigns(:page)).to be_a(Page)
-          expect(assigns(:page).rubric).to eq(rubric)
+
+          expect(assigns(:rubric)).to eq(rubric)
+          expect(assigns(:rubrics)).to match_array([sub_rubric])
+        end
+      end
+
+      context 'and with published photos but with zero photo counter' do
+        before do
+          create :photo, storage_filename: 'test', rubric: rubric, yandex_token: token
+
+          Rubric.where(id: rubric.id).update_all(photos_count: 0)
+
+          get :show, params: {id: rubric.id}
+        end
+
+        it do
+          expect(response).to redirect_to(root_path)
+
+          expect(assigns(:rubric)).to eq(rubric)
+          expect(assigns(:rubrics)).to be_empty
+        end
+      end
+
+      context 'and with sub rubric with published photo but with zero counter' do
+        let(:other_rubric) { create :rubric, rubric: rubric }
+
+        before do
+          create :photo, storage_filename: 'test', rubric: other_rubric, yandex_token: token
+
+          Rubric.where(id: rubric.id).update_all(rubrics_count: 0)
+
+          get :show, params: {id: rubric.id}
+        end
+
+        it do
+          expect(response).to redirect_to(root_path)
+
+          expect(assigns(:rubric)).to eq(rubric)
+          expect(assigns(:rubrics)).to match_array([other_rubric])
         end
       end
     end

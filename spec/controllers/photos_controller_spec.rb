@@ -17,8 +17,10 @@ RSpec.describe PhotosController do
 
       it do
         expect(response).to have_http_status(:ok)
-        expect(assigns(:page).rubric).to eq(rubric)
+
+        expect(assigns(:rubric)).to eq(rubric)
         expect(assigns(:photos).current).to eq(photo)
+
         expect(response.body).to match(/proxy.+1066/)
       end
     end
@@ -31,8 +33,10 @@ RSpec.describe PhotosController do
 
       it do
         expect(response).to have_http_status(:ok)
-        expect(assigns(:page).rubric).to eq(rubric)
+
+        expect(assigns(:rubric)).to eq(rubric)
         expect(assigns(:photos).current).to eq(photo)
+
         expect(response.body).to match(/proxy.+1280/)
       end
     end

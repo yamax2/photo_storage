@@ -10,14 +10,14 @@ RSpec.describe Api::V1::TracksController do
 
     context 'when wrong rubric' do
       it do
-        expect { get :index, params: {page_id: 1} }.to raise_error(ActiveRecord::RecordNotFound)
+        expect { get :index, params: {rubric_id: 1} }.to raise_error(ActiveRecord::RecordNotFound)
       end
     end
 
     context 'when rubric without tracks' do
       let(:rubric) { create :rubric }
 
-      before { get :index, params: {page_id: rubric.id} }
+      before { get :index, params: {rubric_id: rubric.id} }
 
       it do
         expect(response).to have_http_status(:ok)
@@ -64,7 +64,7 @@ RSpec.describe Api::V1::TracksController do
       before do
         request.cookies['proxy_session'] = 'session'
 
-        get :index, params: {page_id: rubric.id}
+        get :index, params: {rubric_id: rubric.id}
       end
 
       it do

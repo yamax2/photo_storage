@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # moves uploaded_io to tmp and returns filename
-class UploadFileService
+class UploadedFileService
   include Singleton
 
   def call(uploaded_io)
