@@ -4,7 +4,6 @@ source 'https://rubygems.org'
 
 git_source(:github) { |repo| "git@github.com:#{repo}.git" }
 
-gem 'mini_racer', platforms: :ruby
 gem 'pg'
 gem 'puma', '~> 4.3'
 gem 'rails', '~> 5.2.4'
@@ -71,4 +70,8 @@ group :development do
   gem 'capistrano', '>= 3.10', require: false
   gem 'capistrano-rails', '>= 1.4', require: false
   gem 'capistrano-rbenv', require: false
+end
+
+group :production do
+  gem 'mini_racer', platforms: :ruby
 end
