@@ -4,7 +4,7 @@ loadPhotos = ($photos) ->
 
   $loader.addClass('active')
 
-  offset = $loader.data('offset') || 0
+  offset = parseInt($loader.attr('data-offset') || 0)
   limit = $loader.data('limit') || 10
 
   url = "#{$photos.data('url')}?limit=#{limit}&offset=#{offset}"
@@ -15,18 +15,19 @@ loadPhotos = ($photos) ->
 
       for photo in response
         style = "width: #{photo.image_size[0]}px; height: #{photo.image_size[1]}px"
-        html += "<a class=\"photo\" style=\"#{style}\" href=\"#{photo.url}\"><img src=\"#{photo.preview}\">" +
+        html += "<a class=\"photo\" style=\"#{style}\" href=\"#{photo.url}\">" +
+                "<img src=\"#{photo.preview}\" style=\"#{style}\">" +
                 "<div class=\"photo-name\"><span>#{photo.name}</span></div></a>"
 
       $(html).insertBefore($loader)
-      $loader.data('offset', offset + response.length)
+      $loader.attr('data-offset', offset + response.length)
 
     hideLoader = response.length < limit
 
     $loader.hide() if hideLoader
     $loader.removeClass('active')
 
-    hasScroll = document.body.scrollHeight > document.body.clientHeight
+    hasScroll = document.body.scrollHeight - document.body.clientHeight > 360
 
     loadPhotos($photos) if !hasScroll && !hideLoader
 

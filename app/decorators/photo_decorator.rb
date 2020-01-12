@@ -31,14 +31,15 @@ class PhotoDecorator < ApplicationDecorator
 
   private
 
-  def thumb_width(size)
-    width = Rails.application.config.photo_sizes.fetch(size)
+  delegate :max_photo_width, :photo_sizes, to: 'Rails.application.config'
 
-    if width.respond_to?(:call)
-      width.call(self)
-    else
-      width
-    end
+  def thumb_width(size)
+    width = photo_sizes.fetch(size)
+
+    width = width.call(self) if width.respond_to?(:call)
+    width = max_photo_width if width > max_photo_width
+
+    width
   end
 
   def url_components(original)

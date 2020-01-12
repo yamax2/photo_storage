@@ -7,10 +7,13 @@ RSpec.describe PhotoDecorator do
 
   before do
     allow(Rails.application.routes).to receive(:default_url_options).and_return(host: 'test.org', protocol: 'https')
+
     allow(Rails.application.config).to receive(:photo_sizes).and_return(
       thumb: ->(photo) { photo.width / 2 },
       preview: 900
     )
+
+    allow(Rails.application.config).to receive(:max_photo_width).and_return(1_280)
   end
 
   describe '#current_views' do
@@ -31,10 +34,22 @@ RSpec.describe PhotoDecorator do
   end
 
   describe '#image_size' do
-    let(:photo) { create :photo, width: 1_000, height: 2_000, local_filename: 'test' }
+    context 'when simple photo' do
+      let(:photo) { create :photo, width: 1_000, height: 2_000, local_filename: 'test' }
 
-    it do
-      expect(subject.image_size).to eq([500, 1_000])
+      it do
+        expect(subject.image_size).to eq([500, 1_000])
+        expect(subject.image_size(:preview)).to eq([900, 1_800])
+      end
+    end
+
+    context 'when wide photo' do
+      let(:photo) { create :photo, width: 3_000, height: 300, local_filename: 'test' }
+
+      it do
+        expect(subject.image_size).to eq([1_280, 128])
+        expect(subject.image_size(:preview)).to eq([900, 90])
+      end
     end
   end
 

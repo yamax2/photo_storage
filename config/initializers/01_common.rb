@@ -16,6 +16,9 @@ Rails.application.configure do
     max: ->(photo) { photo.width * 960 / photo.height }
   }
 
+  # yandex max width
+  config.max_photo_width = 1280
+
   # allowed timezones
   config.photo_timezones = [
     Rails.application.config.time_zone,
