@@ -9,11 +9,11 @@ RSpec.describe PhotoDecorator do
     allow(Rails.application.routes).to receive(:default_url_options).and_return(host: 'test.org', protocol: 'https')
 
     allow(Rails.application.config).to receive(:photo_sizes).and_return(
-      thumb: ->(photo) { photo.width / 2 },
+      thumb: ->(photo) { photo.width * 360 / photo.height },
       preview: 900
     )
 
-    allow(Rails.application.config).to receive(:max_photo_width).and_return(1_280)
+    allow(Rails.application.config).to receive(:max_thumb_width).and_return(1_280)
   end
 
   describe '#current_views' do
@@ -38,7 +38,7 @@ RSpec.describe PhotoDecorator do
       let(:photo) { create :photo, width: 1_000, height: 2_000, local_filename: 'test' }
 
       it do
-        expect(subject.image_size).to eq([500, 1_000])
+        expect(subject.image_size).to eq([180, 360])
         expect(subject.image_size(:preview)).to eq([900, 1_800])
       end
     end
@@ -47,7 +47,7 @@ RSpec.describe PhotoDecorator do
       let(:photo) { create :photo, width: 3_000, height: 300, local_filename: 'test' }
 
       it do
-        expect(subject.image_size).to eq([1_280, 128])
+        expect(subject.image_size).to eq([1_280, 360])
         expect(subject.image_size(:preview)).to eq([900, 90])
       end
     end
@@ -66,6 +66,7 @@ RSpec.describe PhotoDecorator do
         create :photo, storage_filename: '001/002/test.jpg',
                        yandex_token: token,
                        width: 200,
+                       height: 400,
                        original_filename: 'test.jpg'
       end
 
@@ -79,7 +80,7 @@ RSpec.describe PhotoDecorator do
       context 'when thumb' do
         it do
           expect(subject.url(:thumb)).
-            to eq("https://proxy.test.org/photos/001/002/test.jpg?preview&size=100&id=#{token.id}")
+            to eq("https://proxy.test.org/photos/001/002/test.jpg?preview&size=180&id=#{token.id}")
         end
       end
 

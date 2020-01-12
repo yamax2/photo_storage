@@ -17,7 +17,7 @@ Rails.application.configure do
   }
 
   # yandex max width
-  config.max_photo_width = 1280
+  config.max_thumb_width = 1280
 
   # allowed timezones
   config.photo_timezones = [
@@ -27,5 +27,5 @@ Rails.application.configure do
   ]
 
   config.admin_emails = ENV.fetch('ADMIN_EMAILS', 'admin@photostorage.localhost').split(',').map(&:strip)
-  config.default_map_center = [56.809735, 60.623366]
+  config.default_map_center = [56.799631, 60.596571]
 end

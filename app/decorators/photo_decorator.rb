@@ -10,7 +10,10 @@ class PhotoDecorator < ApplicationDecorator
   def image_size(size = :thumb)
     thumb_width = thumb_width(size)
 
-    [thumb_width, height * thumb_width / width]
+    [
+      actual_width_for(thumb_width),
+      height * thumb_width / width
+    ]
   end
 
   def url(size = :original)
@@ -22,7 +25,7 @@ class PhotoDecorator < ApplicationDecorator
     url << if original
              "?fn=#{original_filename}"
            else
-             "?preview&size=#{thumb_width(size)}"
+             "?preview&size=#{actual_width_for(thumb_width(size))}"
            end
 
     url << "&id=#{yandex_token_id}"
@@ -31,15 +34,20 @@ class PhotoDecorator < ApplicationDecorator
 
   private
 
-  delegate :max_photo_width, :photo_sizes, to: 'Rails.application.config'
+  delegate :max_thumb_width, :photo_sizes, to: 'Rails.application.config'
+
+  def actual_width_for(width)
+    width > max_thumb_width ? max_thumb_width : width
+  end
 
   def thumb_width(size)
     width = photo_sizes.fetch(size)
 
-    width = width.call(self) if width.respond_to?(:call)
-    width = max_photo_width if width > max_photo_width
-
-    width
+    if width.respond_to?(:call)
+      width.call(self)
+    else
+      width
+    end
   end
 
   def url_components(original)
