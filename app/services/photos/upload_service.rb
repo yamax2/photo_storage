@@ -4,14 +4,14 @@ module Photos
   class UploadService
     include ::Interactor
 
-    delegate :photo, to: :context
+    delegate :photo, :storage_filename, to: :context
 
     def call
       return if photo.storage_filename.present?
 
       validate_upload
 
-      @storage_filename = StorageFilenameGenerator.new(photo).call
+      context.storage_filename ||= StorageFilenameGenerator.call(photo)
 
       create_remote_dirs
       upload_file
@@ -52,7 +52,7 @@ module Photos
     def remote_path
       return @remote_path if defined?(@remote_path)
 
-      @remote_path = token_for_upload.dir.split('/') + @storage_filename.split('/')
+      @remote_path = token_for_upload.dir.split('/') + storage_filename.split('/')
 
       @remote_path.pop
       @remote_path.delete_if(&:empty?)
@@ -75,7 +75,7 @@ module Photos
     def upload_file
       client.put(
         file: local_file,
-        name: "#{token_for_upload.dir}/#{@storage_filename}",
+        name: "#{token_for_upload.dir}/#{storage_filename}",
         size: photo.size,
         md5: photo.md5,
         sha256: photo.sha256
@@ -89,7 +89,7 @@ module Photos
 
     def update_photo
       photo.update!(
-        storage_filename: @storage_filename,
+        storage_filename: storage_filename,
         yandex_token: token_for_upload,
         local_filename: nil
       )

@@ -42,7 +42,8 @@ RSpec.describe Tracks::EnqueueProcessService do
 
       expect(File.exist?(track.tmp_local_filename)).to eq(true)
 
-      expect(Tracks::ProcessFileJob).to have_received(:perform_async).with(track.id)
+      expect(Tracks::ProcessFileJob).
+        to have_received(:perform_async).with(track.id, Regexp.new("^#{track.id}[a-z0-9]+\\.gpx$"))
     end
   end
 

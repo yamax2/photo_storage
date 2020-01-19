@@ -11,7 +11,10 @@ module Tracks
       validate_gpx
 
       if model.errors.empty? && model.save
-        ProcessFileJob.perform_async(model.id)
+        ProcessFileJob.perform_async(
+          model.id,
+          StorageFilenameGenerator.call(model, partition: false)
+        )
       else
         context.fail!
       end

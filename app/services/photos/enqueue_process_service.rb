@@ -11,7 +11,10 @@ module Photos
 
       context.fail! unless model.save
 
-      ProcessFileJob.perform_async(model.id)
+      ProcessFileJob.perform_async(
+        model.id,
+        StorageFilenameGenerator.call(model)
+      )
     end
 
     private

@@ -4,6 +4,7 @@ require 'rails_helper'
 
 RSpec.describe Photos::UploadService do
   let(:service_context) { described_class.call(photo: photo) }
+
   before { FileUtils.mkdir_p(Rails.root.join('tmp/files')) }
 
   context 'when file already uploaded' do
@@ -51,12 +52,12 @@ RSpec.describe Photos::UploadService do
     end
 
     context 'and to a new folder' do
-      subject do
+      subject(:upload!) do
         VCR.use_cassette('photo_upload_new_folder') { service_context }
       end
 
       it do
-        expect { subject }.
+        expect { upload! }.
           to change { photo.storage_filename }.from(nil).to(String).
           and change { photo.local_filename }.from(String).to(nil).
           and change { photo.yandex_token_id }.from(nil).to(yandex_token.id)
@@ -68,12 +69,12 @@ RSpec.describe Photos::UploadService do
     end
 
     context 'and to a new sub_folder' do
-      subject do
+      subject(:upload!) do
         VCR.use_cassette('photo_upload_new_sub_folder') { service_context }
       end
 
       it do
-        expect { subject }.
+        expect { upload! }.
           to change { photo.storage_filename }.from(nil).to(String).
           and change { photo.local_filename }.from(String).to(nil).
           and change { photo.yandex_token_id }.from(nil).to(yandex_token.id)
@@ -102,6 +103,17 @@ RSpec.describe Photos::UploadService do
 
       it do
         expect { service_context }.to raise_error(Net::OpenTimeout)
+      end
+    end
+
+    context 'and remote filename generated externally' do
+      let(:storage_filename) { 'new_filename' }
+      let(:service_context) { described_class.call(photo: photo, storage_filename: storage_filename) }
+
+      before { stub_request(:any, /webdav.yandex.ru/).to_return(body: '') }
+
+      it do
+        expect { service_context }.to change { photo.reload.storage_filename }.to(storage_filename)
       end
     end
   end

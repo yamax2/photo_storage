@@ -22,6 +22,10 @@ class StorageFilenameGenerator
     end
   end
 
+  def self.call(model, partition: true)
+    new(model, partition: partition).call
+  end
+
   private
 
   def new_filename

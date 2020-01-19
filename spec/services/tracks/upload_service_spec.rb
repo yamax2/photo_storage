@@ -76,5 +76,16 @@ RSpec.describe Tracks::UploadService do
         expect { service_context }.to raise_error(Net::OpenTimeout)
       end
     end
+
+    context 'and remote filename generated externally' do
+      let(:storage_filename) { 'new_filename' }
+      let(:service_context) { described_class.call(track: track, storage_filename: storage_filename) }
+
+      before { stub_request(:any, /webdav.yandex.ru/).to_return(body: '') }
+
+      it do
+        expect { service_context }.to change { track.reload.storage_filename }.to(storage_filename)
+      end
+    end
   end
 end
