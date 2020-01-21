@@ -1,3 +1,14 @@
+# https://codepen.io/pedrodj46/pen/BKBOaJ
+isScrolledIntoView = ($elem) ->
+  $window = $(window)
+
+  docViewTop = $window.scrollTop()
+  docViewBottom = docViewTop + $window.height()
+  elemTop = $elem.offset().top
+  elemBottom = elemTop + $elem.height()
+
+  elemBottom <= docViewBottom && elemTop >= docViewTop
+
 loadPhotos = ($photos) ->
   $loader = $('#loader')
   return if $loader.length == 0 || $loader.is('.active')
@@ -29,7 +40,7 @@ loadPhotos = ($photos) ->
 
     hasScroll = document.body.scrollHeight - document.body.clientHeight > 360
 
-    loadPhotos($photos) if !hasScroll && !hideLoader
+    loadPhotos($photos) if !hideLoader && (!hasScroll || isScrolledIntoView($loader))
 
 $(document)
   .on 'turbolinks:load', ->
