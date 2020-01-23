@@ -55,6 +55,10 @@ Rails.application.routes.draw do
         resources :uploads, only: :create
         resources :rubrics, only: %i[index update]
 
+        namespace :yandex do
+          resources :tokens, only: :index
+        end
+
         namespace :cart do
           resources :rubrics, only: :index
         end
