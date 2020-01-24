@@ -17,7 +17,7 @@ RSpec.describe Yandex::RefreshQuotaService do
   end
 
   context 'when api is unreachable' do
-    before { stub_request(:any, /webdav.yandex.ru/).to_timeout }
+    before { stub_request(:any, /cloud-api.yandex.net/).to_timeout }
 
     it do
       expect { service_context }.to raise_error(Net::OpenTimeout)

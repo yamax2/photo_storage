@@ -7,14 +7,11 @@ module Yandex
     delegate :token, to: :context
 
     def call
-      response = YandexClient::Dav::Client.
-        new(access_token: token.access_token).
-        propfind(name: '/', quota: true).
-        fetch('/')
+      response = YandexClient::Disk::Client.new(access_token: token.access_token).info
 
       token.update!(
-        used_space: response.fetch(:'quota-used-bytes'),
-        total_space: response.fetch(:'quota-available-bytes')
+        used_space: response.fetch(:used_space),
+        total_space: response.fetch(:total_space)
       )
     end
   end

@@ -43,7 +43,7 @@ gem 'sidekiq-throttled', '>= 0.10'
 gem 'exifr'
 gem 'gpx', github: 'yamax2/gpx'
 gem 'image_size'
-gem 'yandex_client'
+gem 'yandex_client', '>= 0.2'
 
 group :development, :test do
   gem 'byebug'
