@@ -14,6 +14,16 @@ module Api
               memo << resource.merge(type: :other) if token.other_present
             end
           end
+
+          # FIXME: move to a job
+          def show
+            @token = ::Yandex::Token.find(params[:id])
+
+            @resource = ::Yandex::BackupInfoService.new(
+              @token,
+              params.require(:resource)
+            ).call
+          end
         end
       end
     end

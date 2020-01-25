@@ -32,5 +32,7 @@ module PhotoStorage
     config.eager_load_paths += %W[
       #{config.root}/lib
     ]
+
+    config.action_dispatch.rescue_responses['Yandex::BackupInfoService::WrongResourceError'] = :bad_request
   end
 end

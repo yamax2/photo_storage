@@ -6,7 +6,7 @@ RSpec.describe Api::V1::Admin::Yandex::TokensController do
   render_views
 
   let(:json) { JSON.parse(response.body) }
-  let!(:token) { create :'yandex/token' }
+  let!(:token) { create :'yandex/token', dir: '/test', other_dir: '/other', access_token: API_ACCESS_TOKEN }
 
   describe '#index' do
     context 'when without resources' do
@@ -102,6 +102,42 @@ RSpec.describe Api::V1::Admin::Yandex::TokensController do
             }
           ]
         )
+      end
+    end
+  end
+
+  describe '#show' do
+    context 'when wrong resource' do
+      it do
+        expect { get :show, params: {id: token.id, resource: :wrong} }.
+          to raise_error(Yandex::BackupInfoService::WrongResourceError)
+      end
+    end
+
+    context 'when correct resource' do
+      before do
+        VCR.use_cassette('yandex_download_url_photos') do
+          get :show, params: {id: token.id, resource: :photos}
+        end
+      end
+
+      it do
+        expect(response).to have_http_status(:ok)
+
+        expect(json).to include('info', 'id' => token.id, 'login' => token.login)
+      end
+    end
+
+    context 'when wrong token' do
+      it do
+        expect { get :show, params: {id: token.id * 2, resource: :photos} }.
+          to raise_error(ActiveRecord::RecordNotFound)
+      end
+    end
+
+    context 'when without resource param' do
+      it do
+        expect { get :show, params: {id: token.id} }.to raise_error(ActionController::ParameterMissing)
       end
     end
   end

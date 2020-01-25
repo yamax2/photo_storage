@@ -1,0 +1,53 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://cloud-api.yandex.net/v1/disk/resources/download?path=/test
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Authorization:
+      - OAuth <TOKEN>
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Fri, 24 Jan 2020 21:19:56 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Content-Length:
+      - '283'
+      Connection:
+      - keep-alive
+      Vary:
+      - Accept-Encoding
+      Access-Control-Allow-Methods:
+      - GET, OPTIONS
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Yandex-Cloud-Request-Id:
+      - rest-4637705a8aacb6ee7b350817b30845ac-api12v
+      Cache-Control:
+      - no-cache
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Headers:
+      - Accept-Language, Accept, X-Uid, X-HTTP-Method, X-Requested-With, Content-Type,
+        Authorization
+    body:
+      encoding: UTF-8
+      string: '{"href":"https://downloader.disk.yandex.ru/zip/67be958ba3e5779028c3d6e31809ee0d2e17a6f2aacd4a31aeb6f05cecebafc1/5e2b5ff4/L2Rpc2svdGVzdA==?uid=1130000019982670&filename=test.zip&disposition=attachment&hash=&limit=0&owner_uid=1130000019982670&tknv=v2","method":"GET","templated":false}'
+    http_version: 
+  recorded_at: Fri, 24 Jan 2020 21:19:56 GMT
+recorded_with: VCR 5.0.0

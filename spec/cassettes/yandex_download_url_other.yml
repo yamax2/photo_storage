@@ -1,0 +1,53 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://cloud-api.yandex.net/v1/disk/resources/download?path=/other
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Authorization:
+      - OAuth <TOKEN>
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Fri, 24 Jan 2020 21:27:28 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Content-Length:
+      - '284'
+      Connection:
+      - keep-alive
+      Vary:
+      - Accept-Encoding
+      Access-Control-Allow-Methods:
+      - GET, OPTIONS
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Yandex-Cloud-Request-Id:
+      - rest-b1d5601e618673d067738ca4298016b6-api03v
+      Cache-Control:
+      - no-cache
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Headers:
+      - Accept-Language, Accept, X-Uid, X-HTTP-Method, X-Requested-With, Content-Type,
+        Authorization
+    body:
+      encoding: UTF-8
+      string: '{"href":"https://downloader.disk.yandex.ru/zip/c595697aa288e140d61b019097fc1d294391e1db33ffc7dd3091eb0633a9c9ff/5e2b61b7/L2Rpc2svb3RoZXI=?uid=1130000019982670&filename=other.zip&disposition=attachment&hash=&limit=0&owner_uid=1130000019982670&tknv=v2","method":"GET","templated":false}'
+    http_version: 
+  recorded_at: Fri, 24 Jan 2020 21:27:28 GMT
+recorded_with: VCR 5.0.0
