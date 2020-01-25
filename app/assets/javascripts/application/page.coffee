@@ -1,19 +1,8 @@
-# https://codepen.io/pedrodj46/pen/BKBOaJ
-isScrolledIntoView = ($elem) ->
-  $window = $(window)
-
-  docViewTop = $window.scrollTop()
-  docViewBottom = docViewTop + $window.height()
-  elemTop = $elem.offset().top
-  elemBottom = elemTop + $elem.height()
-
-  elemBottom <= docViewBottom && elemTop >= docViewTop
+renders = []
 
 loadPhotos = ($photos) ->
   $loader = $('#loader')
-  return if $loader.length == 0 || $loader.is('.active')
-
-  $loader.addClass('active')
+  return unless $loader.length > 0
 
   offset = parseInt($loader.attr('data-offset') || 0)
   limit = $loader.data('limit') || 10
@@ -33,17 +22,16 @@ loadPhotos = ($photos) ->
       $(html).insertBefore($loader)
       $loader.attr('data-offset', offset + response.length)
 
-    hideLoader = response.length < limit
-
-    $loader.hide() if hideLoader
-    $loader.removeClass('active')
-
-    hasScroll = document.body.scrollHeight - document.body.clientHeight > 360
-
-    loadPhotos($photos) if !hideLoader && (!hasScroll || isScrolledIntoView($loader))
+    if response.length < limit
+      $loader.hide()
+      renders.length = 0
+    else if renders.shift()
+      loadPhotos($photos)
 
 $(document)
   .on 'turbolinks:load', ->
+    renders.length = 0
+
     $photos = $('.photos[data-url]')
     return unless $photos.length > 0
 
@@ -54,4 +42,5 @@ $(document)
 
     scene.addTo(controller)
     scene.on 'enter', ->
-      loadPhotos($photos)
+      renders.push(true)
+      loadPhotos($photos) if renders.length == 1
