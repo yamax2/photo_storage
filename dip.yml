@@ -5,7 +5,7 @@ environment:
   DOCKER_RUBY_VERSION: 2.6.5
   POSTGRES_IMAGE_TAG: 12.1-alpine
   REDIS_IMAGE_TAG: 5-alpine
-  GO_IMAGE_TAG: 1.12.5
+  GO_IMAGE_TAG: 1.13.6
   POSTGRES_DB: photos
   POSTGRES_HOST: db
   RAILS_ENV: development
@@ -58,9 +58,12 @@ interaction:
     service: app
     command: rubocop
 
+  build_proxy:
+    service: proxy
+    command: go build -ldflags '-s -w' proxy_service/yandex_proxy.go
+
 provision:
   - docker volume create --name bundler_data
   - dip compose up -d db
   - dip bundle install
   - dip rails db:migrate
-  - dip go get -u github.com/lib/pq

@@ -1,0 +1,4 @@
+FROM golang:1.13.6-alpine
+
+RUN apk add git
+RUN go get -u github.com/lib/pq

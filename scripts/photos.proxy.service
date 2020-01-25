@@ -1,5 +1,5 @@
 [Unit]
-Description=Yandex Disk proxy for photos project
+Description=Yandex Disk proxy for PhotoStorage
 After=network.target
 
 [Service]

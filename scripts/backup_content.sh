@@ -1,5 +1,7 @@
 #!/bin/sh
 
+# backup script for content (NAS)
+
 host='http://www.photostorage.localhost'
 secret='very_secret'
 auth='admin:'
@@ -7,8 +9,8 @@ fn="$(date +"%Y_%m_%d")"
 
 curl -L -s -k -u "$auth" "$host/api/v1/admin/yandex/tokens" | jq  -r '.[] | [.id,.login,.type] | @csv' | while read -r line; do
   id=$(echo $line | cut -d',' -f1)
-  login=$(echo $line | cut -d',' -f2 | sed 's/^"\|"$//g')
-  resource=$(echo $line | cut -d',' -f3 | sed 's/^"\|"$//g')
+  login=$(echo $line | cut -d',' -f2 | sed -e 's/^"//' -e 's/"$//')
+  resource=$(echo $line | cut -d',' -f3 | sed -e 's/^"//' -e 's/"$//')
 
   info=$(curl -L -s -k -u "$auth" "$host/api/v1/admin/yandex/tokens/$id?resource=$resource" | jq -r '.info' | \
     openssl aes-256-cbc -a -d -K $(echo -n $secret | \

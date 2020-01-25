@@ -41,11 +41,13 @@ services:
       - redis
 
   proxy:
-    image: golang:$GO_IMAGE_TAG
+    build:
+      context: ../
+      dockerfile: ./docker/Dockerfile.proxy.${GO_IMAGE_TAG}
     working_dir: /app
     volumes:
       - .:/app
       - ../../go:/go
-    command: 'go run proxy_service/main.go -db_host=db -user=postgres -db=photos -listen=0.0.0.0'
+    command: 'go run proxy_service/yandex_proxy.go -db_host=db -user=postgres -db=photos -listen=0.0.0.0'
     expose:
       - '9000'
