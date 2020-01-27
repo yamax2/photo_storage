@@ -16,7 +16,7 @@ gem 'coffee-rails', '~> 4.2'
 gem 'jbuilder', '~> 2.5'
 gem 'turbolinks', '~> 5'
 
-gem 'bootstrap', '~> 4.3.1'
+gem 'bootstrap', '~> 4'
 gem 'bootstrap4-datetime-picker-rails'
 gem 'font-awesome-rails', '~> 4.7'
 gem 'jquery-rails'
