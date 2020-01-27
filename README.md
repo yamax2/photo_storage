@@ -25,15 +25,3 @@ proxy:
 backup_secret: ...
 secret_key_base: ...
 ```
-
-### TODO:
-* cart and mass edit / photo edit action
-* map in photo listing
-
-* unique jobs (?)
-* tracks
-* videos
-* clear tmp job
-* html editor for rubrics
-* cache
-* search
