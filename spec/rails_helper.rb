@@ -6,7 +6,7 @@ if RSpec.configuration.files_to_run.size > 1
   require 'simplecov'
 
   SimpleCov.start 'rails' do
-    minimum_coverage 90
+    minimum_coverage 95
 
     add_filter 'app/helpers/application_helper.rb'
     add_filter 'app/models/application_record.rb'

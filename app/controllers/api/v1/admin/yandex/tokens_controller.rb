@@ -15,14 +15,15 @@ module Api
             end
           end
 
-          # FIXME: move to a job
           def show
             @token = ::Yandex::Token.find(params[:id])
 
-            @resource = ::Yandex::BackupInfoService.new(
-              @token,
-              params.require(:resource)
-            ).call
+            @resource = ::Yandex::EnqueueBackupInfoService.call!(
+              token: @token,
+              resource: params.require(:resource)
+            ).info
+
+            head :accepted if @resource.blank?
           end
         end
       end

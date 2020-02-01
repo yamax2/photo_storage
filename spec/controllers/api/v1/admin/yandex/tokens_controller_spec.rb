@@ -107,6 +107,10 @@ RSpec.describe Api::V1::Admin::Yandex::TokensController do
   end
 
   describe '#show' do
+    around do |example|
+      Sidekiq::Testing.fake! { example.run }
+    end
+
     context 'when wrong resource' do
       it do
         expect { get :show, params: {id: token.id, resource: :wrong} }.
@@ -114,17 +118,37 @@ RSpec.describe Api::V1::Admin::Yandex::TokensController do
       end
     end
 
-    context 'when correct resource' do
-      before do
-        VCR.use_cassette('yandex_download_url_photos') do
-          get :show, params: {id: token.id, resource: :photos}
-        end
+    context 'when enqueue' do
+      it do
+        expect { get :show, params: {id: token.id, resource: :photos} }.
+          to change { Yandex::BackupInfoJob.jobs.size }.by(1)
+
+        expect(response).to have_http_status(:accepted)
+        expect(response.body).to be_empty
       end
+    end
+
+    context 'when job already enqueued' do
+      before { RedisClassy.redis.set("backup_info:#{token.id}:photos", nil) }
 
       it do
-        expect(response).to have_http_status(:ok)
+        expect { get :show, params: {id: token.id, resource: :photos} }.
+          not_to(change { Yandex::BackupInfoJob.jobs.size })
 
-        expect(json).to include('info', 'id' => token.id, 'login' => token.login)
+        expect(response).to have_http_status(:accepted)
+        expect(response.body).to be_empty
+      end
+    end
+
+    context 'when job finished' do
+      before { RedisClassy.redis.set("backup_info:#{token.id}:photos", 'value') }
+
+      it do
+        expect { get :show, params: {id: token.id, resource: :photos} }.
+          not_to(change { Yandex::BackupInfoJob.jobs.size })
+
+        expect(response).to have_http_status(:ok)
+        expect(json['info']).to eq('value')
       end
     end
 
@@ -137,8 +161,11 @@ RSpec.describe Api::V1::Admin::Yandex::TokensController do
 
     context 'when without resource param' do
       it do
-        expect { get :show, params: {id: token.id} }.to raise_error(ActionController::ParameterMissing)
+        expect { get :show, params: {id: token.id} }.
+          to raise_error(ActionController::ParameterMissing)
       end
     end
+
+    after { Sidekiq::Worker.clear_all }
   end
 end
