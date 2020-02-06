@@ -13,11 +13,11 @@ import(
 )
 
 type Env struct {
-        Tokens map[string]string;
+        Tokens map[string]string
 }
 
-func LoadTokens(connection_str string) *Env {
-        db, err := sql.Open("postgres", connection_str)
+func LoadTokens(connectionStr string) *Env {
+        db, err := sql.Open("postgres", connectionStr)
         if err != nil {
                 panic(err)
         }
@@ -45,16 +45,16 @@ func LoadTokens(connection_str string) *Env {
 }
 
 func main() {
-        db_host := flag.String("db_host", "localhost", "db host")
-        db_user := flag.String("user", "postgres", "db user")
-        db_name := flag.String("db", "photos", "database")
+        dbHost := flag.String("db_host", "localhost", "db host")
+        dbUser := flag.String("user", "postgres", "db user")
+        dbName := flag.String("db", "photos", "database")
 
-        listen_addr := flag.String("listen", "127.0.0.1", "listen_addr")
+        listenAddr := flag.String("listen", "127.0.0.1", "listen_addr")
         flag.Parse()
 
-        connection_str := fmt.Sprintf("host=%s user=%s dbname=%s sslmode=disable", *db_host, *db_user, *db_name)
-        log.Println(connection_str)
-        env := LoadTokens(connection_str)
+        connectionStr := fmt.Sprintf("host=%s user=%s dbname=%s sslmode=disable", *dbHost, *dbUser, *dbName)
+        log.Println(connectionStr)
+        env := LoadTokens(connectionStr)
 
         remote, err := url.Parse("https://webdav.yandex.ru")
         if err != nil {
@@ -65,7 +65,7 @@ func main() {
         http.Handle("/", &ProxyHandler{env, proxy, false})
         http.Handle("/originals/", &ProxyHandler{env, proxy, true})
 
-        err = http.ListenAndServe(fmt.Sprintf("%s:9000", *listen_addr), nil)
+        err = http.ListenAndServe(fmt.Sprintf("%s:9000", *listenAddr), nil)
         if err != nil {
                 panic(err)
         }
