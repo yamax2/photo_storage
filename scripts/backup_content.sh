@@ -6,7 +6,6 @@ exec 2>err.log
 
 PHOTO_HOST='http://www.photostorage.localhost'
 SECRET='very_secret'
-AUTH='admin:'
 
 TG_CHAT_ID='-...'
 TG_BOT_ID='...:...'
@@ -16,13 +15,36 @@ fn="$(date +"%Y_%m_%d")"
 
 tg_notify()
 {
-  curl -k "https://api.telegram.org/bot$TG_BOT_ID/sendMessage" -d "{\"chat_id\": $TG_CHAT_ID, \"text\": \"$1\"}" \
+  curl -fLsk "https://api.telegram.org/bot$TG_BOT_ID/sendMessage" -d "{\"chat_id\": $TG_CHAT_ID, \"text\": \"$1\"}" \
       -H 'Content-Type: application/json; charset=utf-8' -x "$TG_CURL_PROXY" > /dev/null
 }
 
 api_request()
 {
-  curl -fLsk -u "$AUTH" "$PHOTO_HOST$1" || tg_notify "⛔ fail to get api url $1"
+  AUTH='admin:'
+
+  attempt=0
+  while true; do
+    response=$(curl -fLsk -u "$AUTH" "$PHOTO_HOST$1")
+
+    if [ $? -ne 0 ]; then
+      tg_notify "⛔ fail to get api url $1"
+      break
+    fi
+
+    if [ -n "$response" ]; then
+      echo "$response"
+      break
+    fi
+
+    attempt=$((attempt+1))
+    if [ $attempt -ge 5 ]; then
+      tg_notify "⛔ fail to get api url $1"
+      break
+    fi
+
+    sleep 5
+  done
 }
 
 tg_notify '📂 backup started'
@@ -30,6 +52,12 @@ tg_notify '📂 backup started'
 api_request '/api/v1/admin/yandex/tokens' | \
   jq  -r '.[] | [.id,.login,.type] | @csv' | while read -r line; do
   id=$(echo "$line" | cut -d',' -f1)
+
+  if [ -f proccessed ] && grep -q "\b$id\b" proccessed
+  then
+    continue
+  fi
+
   login=$(echo "$line" | cut -d',' -f2 | sed -e 's/^"//' -e 's/"$//')
   resource=$(echo "$line" | cut -d',' -f3 | sed -e 's/^"//' -e 's/"$//')
 

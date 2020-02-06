@@ -27,3 +27,4 @@ coverage
 *.sql
 scripts/*.zip
 scripts/*.log
+scripts/proccessed
