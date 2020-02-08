@@ -1,3 +1,4 @@
-# my first go app
+# my first golang app
 
-* FIXME: token changes requires restart
+#### TODO:
+* tests

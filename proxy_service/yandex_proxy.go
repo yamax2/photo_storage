@@ -9,15 +9,25 @@ import(
         "net/http/httputil"
         "database/sql"
         "strings"
+        "sync"
         _ "github.com/lib/pq"
 )
 
-type Env struct {
+type TokenInfo struct {
+        mx sync.RWMutex
+        connectionStr string
         Tokens map[string]string
 }
 
-func LoadTokens(connectionStr string) *Env {
-        db, err := sql.Open("postgres", connectionStr)
+func (env *TokenInfo) Reload() {
+        env.mx.Lock()
+        defer env.mx.Unlock()
+
+        for id := range env.Tokens {
+                delete(env.Tokens, id)
+        }
+
+        db, err := sql.Open("postgres", env.connectionStr)
         if err != nil {
                 panic(err)
         }
@@ -29,7 +39,6 @@ func LoadTokens(connectionStr string) *Env {
         }
         defer rows.Close()
 
-        env := &Env{make(map[string]string)}
         for rows.Next() {
                 var id, token string
 
@@ -39,10 +48,70 @@ func LoadTokens(connectionStr string) *Env {
                 }
 
                 env.Tokens[id] = token
+                fmt.Println(id, "loaded")
+        }
+}
+
+func newTokenInfo(connectionStr string) *TokenInfo {
+        return &TokenInfo{
+                connectionStr: connectionStr,
+                Tokens: make(map[string]string),
+        }
+}
+
+func (env *TokenInfo) Get(id string) (string) {
+        env.mx.RLock()
+        defer env.mx.RUnlock()
+
+        val, _ := env.Tokens[id]
+        return val
+}
+
+// --------------------------------------------------------------------------
+
+type ProxyHandler struct {
+        tokens *TokenInfo
+        p *httputil.ReverseProxy
+        originals  bool
+}
+
+func (ph *ProxyHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+        fn := r.URL.Query().Get("fn")
+        if len(fn) != 0 {
+                w.Header().Add("Content-Disposition", "inline; filename=\"" + fn + "\"")
         }
 
-        return env
+        id := r.URL.Query().Get("id")
+        token := ph.tokens.Tokens[id]
+
+        if len(token) == 0 {
+                http.Error(w, "token not found", http.StatusBadRequest)
+                return
+        }
+
+        if ph.originals {
+                r.URL.Path = strings.Replace(r.URL.Path, "/originals", "", -1)
+                w.Header().Add("Access-Control-Allow-Origin", "*")
+        }
+
+        r.Header.Add("Authorization", "OAuth " + token)
+        ph.p.ServeHTTP(w, r)
 }
+
+// --------------------------------------------------------------------------
+
+type ReloadHandler struct {
+    tokens *TokenInfo
+}
+
+func (handler *ReloadHandler) ServeHTTP(w http.ResponseWriter, _r *http.Request) {
+        go handler.tokens.Reload()
+
+        w.WriteHeader(http.StatusAccepted)
+        w.Write([]byte("OK"))
+}
+
+// --------------------------------------------------------------------------
 
 func main() {
         dbHost := flag.String("db_host", "localhost", "db host")
@@ -54,7 +123,9 @@ func main() {
 
         connectionStr := fmt.Sprintf("host=%s user=%s dbname=%s sslmode=disable", *dbHost, *dbUser, *dbName)
         log.Println(connectionStr)
-        env := LoadTokens(connectionStr)
+
+        tokens := newTokenInfo(connectionStr)
+        tokens.Reload()
 
         remote, err := url.Parse("https://webdav.yandex.ru")
         if err != nil {
@@ -62,40 +133,12 @@ func main() {
         }
 
         proxy := httputil.NewSingleHostReverseProxy(remote)
-        http.Handle("/", &ProxyHandler{env, proxy, false})
-        http.Handle("/originals/", &ProxyHandler{env, proxy, true})
+        http.Handle("/reload", &ReloadHandler{tokens})
+        http.Handle("/", &ProxyHandler{tokens, proxy, false})
+        http.Handle("/originals/", &ProxyHandler{tokens, proxy, true})
 
         err = http.ListenAndServe(fmt.Sprintf("%s:9000", *listenAddr), nil)
         if err != nil {
                 panic(err)
         }
-}
-
-type ProxyHandler struct {
-        *Env
-        p *httputil.ReverseProxy
-        originals  bool
-}
-
-func (ph *ProxyHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-        fn := r.URL.Query().Get("fn")
-        if len(fn) != 0 {
-            w.Header().Add("Content-Disposition", "inline; filename=\"" + fn + "\"")
-        }
-
-        id := r.URL.Query().Get("id")
-        token := ph.Env.Tokens[id]
-
-        if len(token) == 0 {
-            http.Error(w, "token not found", http.StatusBadRequest)
-            return
-        }
-
-        if ph.originals {
-            r.URL.Path = strings.Replace(r.URL.Path, "/originals", "", -1)
-            w.Header().Add("Access-Control-Allow-Origin", "*")
-        }
-
-        r.Header.Add("Authorization", "OAuth " + token)
-        ph.p.ServeHTTP(w, r)
 }
