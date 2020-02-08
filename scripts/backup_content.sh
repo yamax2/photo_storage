@@ -53,7 +53,7 @@ api_request '/api/v1/admin/yandex/tokens' | \
   jq  -r '.[] | [.id,.login,.type] | @csv' | while read -r line; do
   id=$(echo "$line" | cut -d',' -f1)
 
-  if [ -f proccessed ] && grep -q "\b$id\b" proccessed
+  if [ -f processed ] && grep -q "\b$id\b" processed
   then
     continue
   fi
