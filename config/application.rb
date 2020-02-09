@@ -34,5 +34,9 @@ module PhotoStorage
     ]
 
     config.action_dispatch.rescue_responses['Yandex::BackupInfoService::WrongResourceError'] = :bad_request
+
+    def proxy_url
+      "#{routes.default_url_options[:protocol]}://#{config.proxy_domain}.#{routes.default_url_options[:host]}"
+    end
   end
 end

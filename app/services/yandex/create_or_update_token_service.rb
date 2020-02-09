@@ -13,7 +13,11 @@ module Yandex
       token.assign_attributes(passport_response.slice(:login))
       token.assign_attributes(token_response)
 
+      changed = token.changed?
+
       token.save!
+
+      TokenChangedNotifyJob.perform_async if changed
     end
 
     private

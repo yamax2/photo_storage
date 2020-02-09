@@ -12,10 +12,16 @@ module Yandex
       return unless token.valid_till - TOKEN_REFRESH_PERIOD < Time.current
 
       token.valid_till = Time.current + token_response.delete(:expires_in).seconds
-      token.update!(token_response)
+      token.assign_attributes(token_response)
+
+      save_token
     end
 
     private
+
+    def save_token
+      TokenChangedNotifyJob.perform_async if token.changed? && token.save!
+    end
 
     def token_response
       @token_response ||= YandexClient::Auth::Client.new.refresh_token(refresh_token: token.refresh_token)

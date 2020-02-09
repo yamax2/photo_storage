@@ -1,0 +1,38 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: http://proxy.photostorage.localhost/reload
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Cookie:
+      - aEziPK9LC2uGRpD2ETE+0pKaN86+Mp8RvJ0HRsKETHqR8K/Wqx5cpowBrgmdRH2l
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 202
+      message: Accepted
+    headers:
+      Server:
+      - nginx/1.14.0
+      Date:
+      - Sun, 09 Feb 2020 06:14:46 GMT
+      Content-Type:
+      - text/plain; charset=utf-8
+      Content-Length:
+      - '2'
+      Connection:
+      - keep-alive
+    body:
+      encoding: UTF-8
+      string: OK
+    http_version: null
+  recorded_at: Sun, 09 Feb 2020 06:14:46 GMT
+recorded_with: VCR 5.1.0
