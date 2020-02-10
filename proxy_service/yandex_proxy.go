@@ -82,7 +82,7 @@ func (ph *ProxyHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
         }
 
         id := r.URL.Query().Get("id")
-        token := ph.tokens.Tokens[id]
+        token := ph.tokens.Get(id)
 
         if len(token) == 0 {
                 http.Error(w, "token not found", http.StatusBadRequest)
