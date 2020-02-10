@@ -8,6 +8,10 @@ RSpec.describe Yandex::TokenChangedNotifyJob do
   let(:reload_url) { "#{Rails.application.proxy_url}/reload" }
 
   context 'when success' do
+    before do
+      allow_any_instance_of(ProxySessionService).to receive(:call).and_return('test')
+    end
+
     subject do
       VCR.use_cassette('yandex_token_changed') do
         described_class.perform_async
@@ -18,7 +22,7 @@ RSpec.describe Yandex::TokenChangedNotifyJob do
     it do
       expect { subject }.not_to raise_error
 
-      expect(WebMock).to have_requested(:get, reload_url) { |req| req.headers.include?('Cookie') }
+      expect(WebMock).to have_requested(:get, reload_url) { |req| req.headers['Cookie'] == 'proxy_session=test' }
     end
   end
 

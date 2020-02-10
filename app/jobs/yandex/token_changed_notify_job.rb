@@ -8,7 +8,7 @@ module Yandex
     def perform
       request = Net::HTTP::Get.new(
         request_uri.request_uri,
-        Cookie: ProxySessionService.new.call
+        Cookie: CGI::Cookie.new('proxy_session', ProxySessionService.new.call).to_s
       )
 
       response = http.start { |req| req.request(request) }
