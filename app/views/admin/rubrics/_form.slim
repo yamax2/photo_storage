@@ -19,6 +19,16 @@
 
           .row.form-group
             .col.col-md-3
+              = f.label :rubric
+            .col-12.col-md-9
+              .input-group
+                = f.text_field :rubric, class: 'form-control', readonly: true, value: @rubric.rubric&.name
+                .input-group-append
+                  button.btn.btn-outline-secondary.rubric-select type="button"
+                    = t('.rubric_select')
+
+          .row.form-group
+            .col.col-md-3
               = f.label :description
             .col-12.col-md-9
               = f.text_area :description, class: 'form-control', rows: 10
@@ -31,3 +41,25 @@
           = link_to admin_rubrics_path(id: @rubric.rubric_id), class: 'btn btn-danger btn-sm' do
             .fa.fa-ban
             = t('.cancel')
+
+.modal#rubric-modal
+  .modal-dialog.modal-xl
+    .modal-content
+      .modal-header
+        h5.modal-title
+          = Rubric.human_attribute_name(:rubric)
+        button.close*{type: 'button', data: {dismiss: 'modal'}}
+          span
+            | &times;
+      .modal-body
+        .form-group
+          = text_field_tag :rubric_name_search, nil,
+                                                class: 'form-control rubric_name_search',
+                                                placeholder: t('.rubric_search'),
+                                                data: {tree: '#rubric-rubric-selector'}
+        #rubric-rubric-selector.rubrics-tree
+      .modal-footer
+        button.btn.btn-secondary*{data: {dismiss: 'modal'}}
+          = t('.cancel')
+        button.btn.btn-primary.btn-photo-rubric-apply*{data: {id: '#rubric_rubric_id', name: '#rubric_rubric'}}
+          = t('.apply')

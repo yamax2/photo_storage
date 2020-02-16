@@ -14,6 +14,7 @@ ru:
         name: Название
         description: Описание (html)
         ord: Порядок в листинге
+        rubric: Рубрика
         rubrics_count: Подрубрики
       track:
         avg_speed: Средняя скорость, км/ч
@@ -95,6 +96,8 @@ ru:
       form:
         <<: *form_base
         title: Новая рубрика
+        rubric_select: Выбрать
+        rubric_search: Название рубрики
       index:
         actions: Управление
         content: Содержимое рубрики
