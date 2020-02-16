@@ -2,6 +2,13 @@ $(document)
   .on 'click', '.rubric-select', ->
     $('#rubric-modal').modal('show')
 
+  .on 'click', '.rubric-clear', ->
+    $this = $(this)
+
+    $this.closest('.input-group').find('input').val $this.data('text')
+    $($this.data('id')).val('')
+
+
   .on 'shown.bs.modal', '#rubric-modal', ->
     $('.rubric_name_search').focus()
 

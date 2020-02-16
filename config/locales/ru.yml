@@ -95,7 +95,9 @@ ru:
         title: Рубрика %{name}
       form:
         <<: *form_base
+        clear: Очистить
         title: Новая рубрика
+        root_rubric: <Корневая рубрика>
         rubric_select: Выбрать
         rubric_search: Название рубрики
       index:

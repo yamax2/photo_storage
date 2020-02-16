@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-lock '~> 3.11.0'
+lock '~> 3.12.0'
 
 set :application, 'photo_storage'
 set :repo_url, 'git@github.com:yamax2/photo_storage.git'

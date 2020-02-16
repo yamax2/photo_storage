@@ -22,10 +22,14 @@
               = f.label :rubric
             .col-12.col-md-9
               .input-group
-                = f.text_field :rubric, class: 'form-control', readonly: true, value: @rubric.rubric&.name
+                = f.text_field :rubric, class: 'form-control',
+                                        readonly: true,
+                                        value: @rubric.rubric&.name || t('.root_rubric')
                 .input-group-append
                   button.btn.btn-outline-secondary.rubric-select type="button"
                     = t('.rubric_select')
+                  button.btn.btn-outline-danger.rubric-clear*{type: :button, data: {text: t('.root_rubric'), id: '#rubric_rubric_id'}}
+                    = t('.clear')
 
           .row.form-group
             .col.col-md-3
