@@ -27,16 +27,16 @@ $(document)
 
   .on 'turbolinks:load', ->
     $('#mainimg').on 'load', ->
-      $('.photo-right, .photo-left').show()
+      $('.photo-arrow').show()
 
   .on 'keydown', (e) ->
     switch e.keyCode
       when 37 # left
-        $link = $('.photo-left')
+        $link = $('.photo-arrow-left')
         Turbolinks.visit $link.attr('href') if $link.length > 0
 
       when 39 # right
-        $link = $('.photo-right')
+        $link = $('.photo-arrow-right')
         Turbolinks.visit $link.attr('href') if $link.length > 0
 
       when 32 # space

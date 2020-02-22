@@ -28,6 +28,7 @@ services:
     image: postgres:${POSTGRES_IMAGE_TAG}
     environment:
       - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_HOST_AUTH_METHOD=trust
 
   redis:
     image: redis:$REDIS_IMAGE_TAG
