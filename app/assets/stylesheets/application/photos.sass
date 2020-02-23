@@ -1,7 +1,6 @@
-.splitter
-  flex: 0 0 auto
-  width: 0.5rem
-  cursor: col-resize
+.nav-stub
+  visibility: hidden
+  display: block
 
 .photo-mobile-header
   display: none
@@ -85,12 +84,14 @@
     max-width: 100%
     height: auto
 
+  a.photo-arrow
+    display: none
+
   .photo-arrow
     cursor: pointer
     z-index: 1
     border-top: 3rem solid transparent
     border-bottom: 3rem solid transparent
-    display: none
 
     &.photo-arrow-left
       border-right: 3rem solid rgba(0,0,0,0.1)
@@ -168,7 +169,7 @@
         padding: 0
 
         .photo-arrow
-          display: none
+          display: none !important
 
     .photo-mobile-header
       display: flex

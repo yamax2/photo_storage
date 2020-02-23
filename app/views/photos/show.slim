@@ -13,6 +13,8 @@
   - if @photos.prev.present?
     = link_to '', page_photo_path(@rubric, @photos.prev), class: 'photo-arrow photo-arrow-left',
                                                           title: @photos.prev.name
+  - else
+    span.nav-stub.photo-arrow.photo-arrow-left
 
   ul
     li
@@ -28,18 +30,25 @@
   - if @photos.next.present?
     = link_to '', page_photo_path(@rubric, @photos.next), class: 'photo-arrow photo-arrow-right',
                                                           title: @photos.next.name
+  - else
+    span.nav-stub.photo-arrow.photo-arrow-right
 
 .photo-page
   .photo-content
     - if @photos.prev.present?
       = link_to '', page_photo_path(@rubric, @photos.prev), class: 'photo-arrow photo-arrow-left',
                                                             title: @photos.prev.name
+    - else
+      span.nav-stub.photo-arrow.photo-arrow-left
 
     = image_tag current.url(preview_id), id: 'mainimg'
 
     - if @photos.next.present?
       = link_to '', page_photo_path(@rubric, @photos.next), class: 'photo-arrow photo-arrow-right',
                                                             title: @photos.next.name
+    - else
+      span.nav-stub.photo-arrow.photo-arrow-right
+
   .photo-sidebar
     - if current.lat_long.present?
       = map(center: {latlng: current.lat_long.to_a, zoom: Leaflet.max_zoom},
