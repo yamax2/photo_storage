@@ -4,7 +4,7 @@
 - size = photo&.image_size || [480, 360]
 - style = "width: #{size.first}px; height: #{size.last}px"
 
-= link_to page_path(rubric), class: 'rubric', style: style do
+= link_to page_path(rubric), class: 'photo rubric', style: style, title: rubric.rubric_name do
   - if photo.present?
     = image_tag photo.url(:thumb), style: style
   - else

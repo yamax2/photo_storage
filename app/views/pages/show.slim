@@ -1,15 +1,24 @@
 -# frozen_string_literal: true
 
+.photo-mobile-header.rubrics-list
+  = link_to root_path, class: 'photo-header-root' do
+    span
+
+  - if @rubric
+    span*{title: @rubric.name}
+      = @rubric.name
+
 - if @rubric
-  .photo-header
+  .photo-header.rubrics-list
     ul
       li
         = link_to t('title'), root_path
       - @rubric.rubrics_tree.reverse_each do |rubric|
-        li
-          - if rubric == @rubric
+        - if rubric == @rubric
+          li.photo-caption
             = rubric.name
-          - else
+        - else
+          li
             = link_to rubric.name, page_path(rubric)
 
 .rubric-content
@@ -24,10 +33,13 @@
      attribution: Leaflet.attribution}}
     #map
 
-- if with_rubrics?
-  .rubrics
-    = render partial: 'rubric', collection: @rubrics
-
 - if @rubric
   .photos*{data: {url: api_v1_rubric_path(@rubric)}}
+    - if with_rubrics?
+      = render partial: 'rubric', collection: @rubrics
+
     #loader
+
+- elsif with_rubrics?
+  .photos
+    = render partial: 'rubric', collection: @rubrics

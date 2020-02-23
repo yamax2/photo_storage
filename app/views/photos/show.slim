@@ -4,10 +4,9 @@
 - size = current.image_size(:preview)
 
 .photo-mobile-header
-  = link_to root_path, title: @rubric.name, class: 'photo-header-root' do
+  = link_to root_path, class: 'photo-header-root' do
     span
-  span*{title: @rubric.name}
-    = @rubric.name
+  = link_to @rubric.name, page_path(@rubric), title: @rubric.name
 
 .photo-header
   - if @photos.prev.present?
