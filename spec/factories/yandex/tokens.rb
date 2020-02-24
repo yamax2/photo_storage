@@ -11,5 +11,7 @@ FactoryBot.define do
 
     dir { '/test_photos' }
     other_dir { '/other_test_photos' }
+
+    total_space { 1.gigabyte }
   end
 end

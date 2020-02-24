@@ -24,7 +24,9 @@ module Tracks
     end
 
     def token_for_upload
-      @token_for_upload ||= Yandex::Token.active.first
+      @token_for_upload ||= Yandex::Token.where(
+        id: Yandex::TokenForUploadService.call!(resource_size: track.size).token_id
+      ).first
     end
 
     def upload_file

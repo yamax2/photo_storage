@@ -13,6 +13,8 @@ module Yandex
         used_space: response.fetch(:used_space),
         total_space: response.fetch(:total_space)
       )
+
+      RedisClassy.redis.hdel(TokenForUploadService::CACHE_REDIS_KEY, token.id)
     end
   end
 end
