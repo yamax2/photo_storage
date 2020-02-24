@@ -62,7 +62,7 @@ GEM
     autoprefixer-rails (9.7.4)
       execjs
     bindex (0.8.1)
-    bootsnap (1.4.5)
+    bootsnap (1.4.6)
       msgpack (~> 1.0)
     bootstrap (4.4.1)
       autoprefixer-rails (>= 9.1.0)
@@ -314,7 +314,7 @@ GEM
       concurrent-ruby
       redis-prescription
       sidekiq
-    simplecov (0.18.3)
+    simplecov (0.18.4)
       docile (~> 1.1)
       simplecov-html (~> 0.11)
     simplecov-html (0.12.1)
