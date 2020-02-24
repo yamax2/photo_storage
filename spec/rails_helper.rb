@@ -52,6 +52,7 @@ RSpec.configure do |config|
 
   config.after do
     RedisClassy.redis.flushdb
+    RedisClassy.redis.script(:flush)
   end
 end
 
