@@ -49,6 +49,10 @@ RSpec.configure do |config|
 
   # Filter lines from Rails gems in backtraces.
   config.filter_rails_from_backtrace!
+
+  config.after do
+    RedisClassy.redis.flushdb
+  end
 end
 
 Shoulda::Matchers.configure do |config|
@@ -85,5 +89,4 @@ YandexClient.configure do |config|
   config.api_secret = API_APPLICATION_SECRET
 end
 
-RedisClassy.redis = MockRedis.new
 Sidekiq::Testing.inline!

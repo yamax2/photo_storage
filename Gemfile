@@ -53,7 +53,6 @@ end
 
 group :test do
   gem 'factory_bot_rails'
-  gem 'mock_redis'
   gem 'rails-controller-testing'
   gem 'rspec-rails'
   gem 'shoulda-matchers'

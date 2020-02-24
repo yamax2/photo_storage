@@ -1,9 +1,12 @@
 default: &default
   db: 1
+  url: redis://redis
 
 development:
   <<: *default
-  url: redis://redis
+
+test:
+  <<: *default
 
 production:
   <<: *default
