@@ -1,7 +1,7 @@
-version: '2'
+version: '3.3'
 
 services:
-  app:
+  app: &app
     volumes:
       - ..:/app
       - ../../gems:/localgems
@@ -10,31 +10,20 @@ services:
     networks:
       - default
       - frontend
-    dns: $DIP_DNS
-    depends_on:
-      - db
-      - redis
     environment:
       - EDITOR=nano
+      - BROWSER=/bin/cat
 
   web:
+    <<: *app
     stdin_open: true
     tty: true
-    volumes:
-      - ..:/app
-      - ../../gems:/localgems
-      - ssh-data:/ssh:ro
-      - bundler-data:/bundle
-    networks:
-      - default
-      - frontend
-    dns: $DIP_DNS
-    depends_on:
-      - db
-      - redis
     environment:
       - VIRTUAL_HOST=*.photostorage.$DOCKER_TLD
       - VIRTUAL_PATH=/
+
+  sidekiq:
+    <<: *app
 
   db:
     volumes:
@@ -44,19 +33,6 @@ services:
   redis:
     volumes:
       - redis-data:/data
-
-  sidekiq:
-    volumes:
-      - ..:/app
-      - ../../gems:/localgems
-      - ssh-data:/ssh:ro
-      - bundler-data:/bundle
-    networks:
-      - default
-      - frontend
-    dns: $DIP_DNS
-    environment:
-      - BROWSER=/bin/cat
 
   proxy:
     volumes:

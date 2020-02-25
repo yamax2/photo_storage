@@ -1,28 +1,28 @@
-version: '2'
+version: '3.3'
 
 services:
-  app:
+  app: &app
     build:
       context: ../
       dockerfile: ./docker/Dockerfile.${DOCKER_RUBY_VERSION}
     environment:
       - BUNDLE_PATH=/bundle/${DOCKER_RUBY_VERSION}
       - SSH_AUTH_SOCK=/ssh/auth/sock
-      - TEST_DB_HOST=${POSTGRES_HOST}
-      - TEST_DB_NAME=${POSTGRES_DB}
-      - TEST_DB_USERNAME=postgres
       - RAILS_ENV=$RAILS_ENV
-    command: sh
-
-  web:
-    extends:
-      service: app
-    command: 'sh -c "rm -f /var/run/rails.pid && bundle exec rails s -p 80 -b 0.0.0.0 --pid /var/run/rails.pid"'
     depends_on:
       - db
       - redis
+    command: sh
+
+  web:
+    <<: *app
+    command: 'sh -c "rm -f /var/run/rails.pid && bundle exec rails s -p 80 -b 0.0.0.0 --pid /var/run/rails.pid"'
     expose:
       - "80"
+
+  sidekiq:
+    <<: *app
+    command: 'bundle exec sidekiq -C config/sidekiq.yml'
 
   db:
     image: postgres:${POSTGRES_IMAGE_TAG}
@@ -33,19 +33,13 @@ services:
   redis:
     image: redis:$REDIS_IMAGE_TAG
 
-  sidekiq:
-    extends:
-      service: app
-    command: 'bundle exec sidekiq -C config/sidekiq.yml'
-    depends_on:
-      - db
-      - redis
-
   proxy:
     build:
       context: ../
       dockerfile: ./docker/Dockerfile.proxy.${GO_IMAGE_TAG}
     working_dir: /app
+    depends_on:
+      - db
     volumes:
       - .:/app
       - ../../go:/go
