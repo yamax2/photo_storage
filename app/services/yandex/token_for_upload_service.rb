@@ -33,12 +33,14 @@ module Yandex
     def call
       return if actual_tokens.empty?
 
-      context.token_id = RedisScriptService.
+      token_id = RedisScriptService.
         new(FIND_SCRIPT).
         call(
           keys: CACHE_REDIS_KEY,
           argv: [actual_tokens.to_json, resource_size]
-        ).to_i
+        )
+
+      context.token_id = token_id.to_i if token_id
     end
 
     private
