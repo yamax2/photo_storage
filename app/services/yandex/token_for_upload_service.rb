@@ -16,7 +16,7 @@ module Yandex
       for id, space in pairs(info) do
         local current_space = cache[id] or 0
         current_space = current_space + ARGV[2]
-        if current_space < info[id] then
+        if current_space < space then
           table.insert(result, id)
         end
       end
