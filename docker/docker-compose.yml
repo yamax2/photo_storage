@@ -9,9 +9,20 @@ services:
       - BUNDLE_PATH=/bundle/${DOCKER_RUBY_VERSION}
       - SSH_AUTH_SOCK=/ssh/auth/sock
       - RAILS_ENV=$RAILS_ENV
+      - EDITOR=nano
+      - BROWSER=/bin/cat
     depends_on:
       - db
       - redis
+    dns: $DIP_DNS
+    volumes:
+      - ..:/app
+      - ../../gems:/localgems
+      - ssh-data:/ssh:ro
+      - bundler-data:/bundle
+    networks:
+      - default
+      - frontend
     command: sh
 
   web:
@@ -19,6 +30,15 @@ services:
     command: 'sh -c "rm -f /var/run/rails.pid && bundle exec rails s -p 80 -b 0.0.0.0 --pid /var/run/rails.pid"'
     expose:
       - "80"
+    stdin_open: true
+    tty: true
+    depends_on:
+      - db
+      - redis
+      - proxy
+    environment:
+      - VIRTUAL_HOST=*.photostorage.$DOCKER_TLD
+      - VIRTUAL_PATH=/
 
   sidekiq:
     <<: *app
@@ -29,9 +49,14 @@ services:
     environment:
       - POSTGRES_DB=${POSTGRES_DB}
       - POSTGRES_HOST_AUTH_METHOD=trust
+    volumes:
+      - pg-data:/var/lib/postgresql/data
+      - ./configs/dumps/$RAILS_ENV/pg:/docker-entrypoint-initdb.d:ro
 
   redis:
     image: redis:$REDIS_IMAGE_TAG
+    volumes:
+      - redis-data:/data
 
   proxy:
     build:
@@ -46,3 +71,30 @@ services:
     command: 'go run proxy_service/yandex_proxy.go -db_host=db -user=postgres -db=photos -listen=0.0.0.0'
     expose:
       - '9000'
+    networks:
+      - default
+      - frontend
+    dns: $DIP_DNS
+    environment:
+      - VIRTUAL_HOST=proxy.photostorage.$DOCKER_TLD
+      - VIRTUAL_PATH=/
+
+volumes:
+  bundler-data:
+    external:
+      name: bundler_data
+
+  ssh-data:
+    external:
+      name: ssh_data
+
+  pg-data:
+    driver: local
+
+  redis-data:
+    driver: local
+
+networks:
+  frontend:
+    external:
+      name: frontend
