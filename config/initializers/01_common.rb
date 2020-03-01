@@ -22,10 +22,9 @@ Rails.application.configure do
   # allowed timezones
   config.photo_timezones = [
     Rails.application.config.time_zone,
-    'Europe/Moscow',
-    'Europe/Samara'
-  ]
+    *ENV.fetch('PHOTOSTORAGE_ADDITIONAL_TIMEZONES', 'Europe/Moscow,Europe/Samara').split(',').map(&:strip)
+  ].uniq
 
-  config.admin_emails = ENV.fetch('ADMIN_EMAILS', 'admin@photostorage.localhost').split(',').map(&:strip)
+  config.admin_emails = ENV.fetch('PHOTOSTORAGE_ADMIN_EMAILS', 'admin@photostorage.localhost').split(',').map(&:strip)
   config.default_map_center = [56.799631, 60.596571]
 end

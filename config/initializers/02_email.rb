@@ -17,9 +17,9 @@ Rails.application.configure do
   config.action_mailer.smtp_settings = {
     address: 'smtp.yandex.ru',
     port: 465,
-    domain: Rails.application.credentials.email[:domain],
-    user_name: Rails.application.credentials.email[:login],
-    password: Rails.application.credentials.email[:password],
+    domain: ENV.fetch('PHOTOSTORAGE_SMTP_DOMAIN', Rails.application.credentials.email.try(:[], :domain)),
+    user_name: ENV.fetch('PHOTOSTORAGE_SMTP_USER', Rails.application.credentials.email.try(:[], :login)),
+    password: ENV.fetch('PHOTOSTORAGE_SMTP_USER', Rails.application.credentials.email.try(:[], :password)),
     authentication: :plain,
     enable_starttls_auto: true,
     tls: true

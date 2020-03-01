@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class ApplicationMailer < ActionMailer::Base
-  default from: Rails.application.credentials.email[:login]
+  default from: Rails.application.config.action_mailer.smtp_settings[:user_name]
 
   layout 'mailer'
 
