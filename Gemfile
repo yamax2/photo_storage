@@ -40,7 +40,7 @@ gem 'sidekiq-failures', '>= 1'
 gem 'sidekiq-throttled', '>= 0.10'
 
 gem 'exifr'
-gem 'gpx', github: 'yamax2/gpx'
+gem 'gpx'
 gem 'image_size'
 gem 'yandex_client', '>= 0.2'
 

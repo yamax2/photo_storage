@@ -18,6 +18,10 @@ services:
     <<: *app
     stdin_open: true
     tty: true
+    depends_on:
+      - db
+      - redis
+      - proxy
     environment:
       - VIRTUAL_HOST=*.photostorage.$DOCKER_TLD
       - VIRTUAL_PATH=/

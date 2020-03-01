@@ -91,13 +91,7 @@ RSpec.describe Tracks::LoadInfoService do
     let(:track) { create :track, local_filename: 'test.gpx' }
 
     it do
-      expect(service_context).to be_a_success
-
-      expect(track).to have_attributes(
-        duration: 0.0,
-        bounds: [ActiveRecord::Point.new(56.762862, 54.274203), ActiveRecord::Point.new(59.906595, 60.5967165)],
-        started_at: Time.zone.local(2016, 1, 1, 12, 34, 33)
-      )
+      expect { service_context }.to raise_error(ArgumentError)
     end
   end
 end
