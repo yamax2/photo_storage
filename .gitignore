@@ -28,3 +28,6 @@ coverage
 scripts/*.zip
 scripts/*.log
 scripts/processed
+
+docker/photostorage/*.env
+docker/photostorage/configs

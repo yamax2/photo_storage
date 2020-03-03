@@ -37,6 +37,11 @@ services:
       - redis
       - proxy
     environment:
+      - BUNDLE_PATH=/bundle/${DOCKER_RUBY_VERSION}
+      - SSH_AUTH_SOCK=/ssh/auth/sock
+      - RAILS_ENV=$RAILS_ENV
+      - EDITOR=nano
+      - BROWSER=/bin/cat
       - VIRTUAL_HOST=*.photostorage.$DOCKER_TLD
       - VIRTUAL_PATH=/
 
@@ -66,7 +71,7 @@ services:
     depends_on:
       - db
     volumes:
-      - .:/app
+      - ..:/app
       - ../../go:/go
     command: 'go run proxy_service/yandex_proxy.go -db_host=db -user=postgres -db=photos -listen=0.0.0.0'
     expose:
