@@ -1,4 +1,5 @@
-FROM ruby:2.6.5-alpine AS base
+ARG DOCKER_RUBY_VERSION=2.6.5
+FROM ruby:${DOCKER_RUBY_VERSION}-alpine AS base
 
 RUN apk add --update --no-cache tzdata libexif-dev xz-dev libpq less postgresql-dev nodejs
 RUN gem install 'bundler:2.1.4'
@@ -37,5 +38,5 @@ RUN mkdir -p /photostorage/log
 ENV RAILS_LOG_TO_STDOUT true
 RUN bundle exec rails assets:precompile
 
-EXPOSE 8080
-ENTRYPOINT bundle exec rails db:create && bundle exec rails db:migrate && bundle exec rails s -p 8080 -b 0.0.0.0
+EXPOSE 3000
+ENTRYPOINT bundle exec rails db:create && bundle exec rails db:migrate && bundle exec rails s -p 3000 -b 0.0.0.0

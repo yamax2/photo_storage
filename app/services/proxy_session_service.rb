@@ -22,7 +22,7 @@ class ProxySessionService
 
   private
 
-  delegate :proxy, to: 'Rails.application.credentials'
+  delegate :proxy, to: 'Rails.application.config'
 
   def cipher(operation)
     OpenSSL::Cipher::AES256.new(:CBC).public_send(operation).tap do |cipher|

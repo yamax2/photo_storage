@@ -1,0 +1,122 @@
+upstream photos {
+  server   ${RAILS_HOST}:3000;
+}
+
+server {
+    listen       8080;
+    server_name  www.$HOST $HOST;
+
+    # access_log          /var/log/nginx/photos.log;
+    # error_log           /var/log/nginx/photos_error.log;
+
+    # auth_basic "Private";
+    # auth_basic_user_file /etc/nginx/.htpasswd;
+
+    root                /home/photos/public;
+    location / {
+        try_files         $uri @photos;
+        gzip_static       on;
+        expires           max;
+        add_header        Cache-Control public;
+    }
+
+    # if ($request_uri ~ ^/admin|^/api/v1/admin) {
+    #   set $adm "1";
+    # }
+
+    # if ($remote_user != "admin") {
+    #    set $adm "${adm}2";
+    # }
+
+    # if ($adm = "12") {
+    #   return 403;
+    # }
+
+    location @photos {
+        proxy_pass         http://photos;
+
+        proxy_set_header   X-Real-IP  $remote_addr;
+        proxy_set_header   X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header   X-Forwarded-Proto http;
+
+        # proxy_set_header   X-Forwarded-Ssl on;
+        # proxy_set_header   X-Forwarded-Port 443;
+        proxy_set_header   X-Forwarded-Host $http_host;
+
+        proxy_set_header    Host $http_host;
+        proxy_redirect      off;
+        proxy_next_upstream error timeout invalid_header http_502;
+    }
+
+    location /assets/ {
+      gzip              on;
+      gzip_proxied      any;
+      expires           max;
+      add_header        Cache-Control public;
+
+      gzip_types
+        text/css
+        text/javascript
+        text/xml
+        text/plain
+        application/javascript
+        application/x-javascript
+        application/json;
+    }
+}
+
+server {
+    listen 80;
+    server_name $PROXY_SUBDOMAIN.$HOST;
+
+    # access_log          /var/log/nginx/proxy.log;
+    # error_log           /var/log/nginx/proxy_error.log;
+
+    encrypted_session_key '$PHOTOSTORAGE_PROXY_SECRET_MD5'; # md5 of rails secret
+    encrypted_session_iv  '$PHOTOSTORAGE_PROXY_SECRET_IV';
+
+    if ($arg_session) {
+      set_unescape_uri    $session $arg_session;
+    }
+
+    if ($session = "") {
+      set_unescape_uri    $session $cookie_proxy_session;
+    }
+
+    set_decode_base64   $session;
+    set_decrypt_session $raw $session;
+
+    location / {
+       proxy_pass  http://$PROXY_HOST:9000;
+       proxy_cache_valid 90d;
+
+       add_header X-GG-Cache-Status $upstream_cache_status;
+       add_header X-GG-Cache-Date $upstream_http_date;
+
+       proxy_ignore_headers "X-Accel-Expires" "Expires" "Cache-Control";
+
+       proxy_hide_header "Yandex-Cloud-Request-Id";
+       proxy_hide_header "Yandex-Uid";
+       proxy_hide_header "Set-Cookie";
+
+       proxy_cache photos;
+
+       if ($raw = '') {
+         return 403;
+       }
+    }
+
+    location /originals/ {
+       proxy_pass  http://$PROXY_HOST:9000;
+
+       proxy_ignore_headers "X-Accel-Expires" "Expires" "Cache-Control";
+
+       proxy_hide_header "Yandex-Cloud-Request-Id";
+       proxy_hide_header "Yandex-Uid";
+       proxy_hide_header "Set-Cookie";
+
+       if ($raw = '') {
+         return 403;
+       }
+    }
+}

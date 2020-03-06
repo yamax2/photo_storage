@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe ProxySessionService do
   context 'when without proxy session settings' do
     before do
-      allow(Rails.application.credentials).to receive(:proxy).and_return(nil)
+      allow(Rails.application.config).to receive(:proxy).and_return(nil)
     end
 
     it do
@@ -15,7 +15,7 @@ RSpec.describe ProxySessionService do
 
   context 'when proxy secrets unassigned' do
     before do
-      allow(Rails.application.credentials).to receive(:proxy).and_return({})
+      allow(Rails.application.config).to receive(:proxy).and_return({})
     end
 
     it do
@@ -27,7 +27,7 @@ RSpec.describe ProxySessionService do
     subject { described_class.new(current_session).call }
 
     before do
-      allow(Rails.application.credentials).to receive(:proxy).and_return(secret: 'secret', iv: '389ed464a551f644')
+      allow(Rails.application.config).to receive(:proxy).and_return(secret: 'secret', iv: '389ed464a551f644')
       Timecop.freeze
     end
 

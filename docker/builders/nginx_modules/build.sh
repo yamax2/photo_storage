@@ -1,6 +1,6 @@
 #!/bin/sh
 
-NGINX_VERSION=1.17.7
+NGINX_VERSION=1.17.9
 
 set -e
 rm -rf docker-nginx-with-modules

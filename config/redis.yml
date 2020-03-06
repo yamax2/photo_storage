@@ -10,4 +10,4 @@ test:
 
 production:
   <<: *default
-  url: unix:/var/run/redis/redis.sock
+  # url: unix:/var/run/redis/redis.sock

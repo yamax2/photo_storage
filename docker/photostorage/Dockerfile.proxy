@@ -1,0 +1,17 @@
+ARG GO_VERSION=1.13.7
+
+FROM golang:${GO_VERSION}-alpine as builder
+
+RUN apk add git
+RUN go get -u github.com/lib/pq
+
+COPY proxy_service /proxy
+WORKDIR /proxy
+RUN go build -ldflags '-s -w' yandex_proxy.go
+
+FROM alpine
+COPY --from=builder /proxy/yandex_proxy /proxy/
+
+WORKDIR /proxy
+EXPOSE 9000
+CMD ./yandex_proxy -db_host=db -user=postgres -db=photos -listen=0.0.0.0

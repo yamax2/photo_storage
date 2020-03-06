@@ -27,4 +27,9 @@ Rails.application.configure do
 
   config.admin_emails = ENV.fetch('PHOTOSTORAGE_ADMIN_EMAILS', 'admin@photostorage.localhost').split(',').map(&:strip)
   config.default_map_center = [56.799631, 60.596571]
+
+  config.proxy = Rails.application.credentials.proxy || {
+    secret: ENV.fetch('PHOTOSTORAGE_PROXY_SECRET', 'very_secret'),
+    iv: ENV['PHOTOSTORAGE_PROXY_SECRET_IV']
+  }
 end
