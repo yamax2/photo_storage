@@ -48,6 +48,7 @@ RSpec.describe Photos::UploadService do
       it do
         expect(service_context).to be_a_failure
         expect(service_context.message).to eq('active token not found')
+        expect(File.exist?(tmp_file)).to eq(true)
       end
     end
 

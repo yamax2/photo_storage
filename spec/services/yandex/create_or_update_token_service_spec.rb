@@ -6,20 +6,18 @@ RSpec.describe Yandex::CreateOrUpdateTokenService do
   let(:code) { '5851358' }
   let(:service_context) { described_class.call!(code: code) }
 
-  before do
-    allow(Yandex::TokenChangedNotifyJob).to receive(:perform_async)
-  end
-
   context 'when token does not exist' do
     subject do
       VCR.use_cassette('create_new_token') { service_context }
     end
 
     it do
+      expect(Yandex::TokenChangedNotifyJob).to receive(:perform_async)
+      expect(Yandex::RefreshTokenJob).to receive(:perform_async).with(Integer)
+
       expect { subject }.to change { Yandex::Token.count }.by(1)
 
       expect(service_context.token).to have_attributes(active: false, user_id: String)
-      expect(Yandex::TokenChangedNotifyJob).to have_received(:perform_async)
     end
   end
 
@@ -31,9 +29,10 @@ RSpec.describe Yandex::CreateOrUpdateTokenService do
     end
 
     it do
-      expect { subject }.to change { Yandex::Token.count }.by(0).and(change { token.reload.access_token })
+      expect(Yandex::TokenChangedNotifyJob).to receive(:perform_async)
+      expect(Yandex::RefreshTokenJob).to receive(:perform_async).with(token.id)
 
-      expect(Yandex::TokenChangedNotifyJob).to have_received(:perform_async)
+      expect { subject }.to change { Yandex::Token.count }.by(0).and(change { token.reload.access_token })
     end
   end
 
@@ -72,9 +71,10 @@ RSpec.describe Yandex::CreateOrUpdateTokenService do
     after { Timecop.return }
 
     it do
-      expect { service_context }.not_to(change { token.reload })
+      expect(Yandex::TokenChangedNotifyJob).not_to receive(:perform_async)
+      expect(Yandex::RefreshTokenJob).not_to receive(:perform_async)
 
-      expect(Yandex::TokenChangedNotifyJob).not_to have_received(:perform_async)
+      expect { service_context }.not_to(change { token.reload })
     end
   end
 
@@ -82,9 +82,10 @@ RSpec.describe Yandex::CreateOrUpdateTokenService do
     before { stub_request(:any, /oauth.yandex.ru/).to_timeout }
 
     it do
-      expect { service_context }.to raise_error(Net::OpenTimeout)
+      expect(Yandex::TokenChangedNotifyJob).not_to receive(:perform_async)
+      expect(Yandex::RefreshTokenJob).not_to receive(:perform_async)
 
-      expect(Yandex::TokenChangedNotifyJob).not_to have_received(:perform_async)
+      expect { service_context }.to raise_error(Net::OpenTimeout)
     end
   end
 end

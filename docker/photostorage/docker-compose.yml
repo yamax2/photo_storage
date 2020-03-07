@@ -23,6 +23,7 @@ services:
       - proxy
     volumes:
       - static-files:/photostorage/public
+      - upload:/photostorage/tmp/files
 
   sidekiq:
     build:
@@ -36,6 +37,8 @@ services:
       - redis
       - web
     command: bundle exec sidekiq -C config/sidekiq.yml
+    volumes:
+      - upload:/photostorage/tmp/files
     external_links:
       - nginx
 
@@ -98,4 +101,7 @@ volumes:
     driver: local
 
   cache:
+    driver: local
+
+  upload:
     driver: local

@@ -17,7 +17,7 @@ module Yandex
 
       token.save!
 
-      TokenChangedNotifyJob.perform_async if changed
+      perform_refresh if changed
     end
 
     private
@@ -31,6 +31,11 @@ module Yandex
     def passport_response
       @passport_response ||=
         YandexClient::Passport::Client.new(access_token: token_response.fetch(:access_token)).info
+    end
+
+    def perform_refresh
+      TokenChangedNotifyJob.perform_async
+      RefreshTokenJob.perform_async(token.id)
     end
 
     def token_response
