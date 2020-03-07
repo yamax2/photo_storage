@@ -4,7 +4,7 @@ upstream photos {
 
 server {
     listen       8080;
-    server_name  www.$HOST $HOST;
+    server_name  www.$FRONT_HOST $FRONT_HOST;
 
     # access_log          /var/log/nginx/photos.log;
     # error_log           /var/log/nginx/photos_error.log;
@@ -66,8 +66,8 @@ server {
 }
 
 server {
-    listen 80;
-    server_name $PROXY_SUBDOMAIN.$HOST;
+    listen 8080;
+    server_name $PROXY_SUBDOMAIN.$FRONT_HOST;
 
     # access_log          /var/log/nginx/proxy.log;
     # error_log           /var/log/nginx/proxy_error.log;

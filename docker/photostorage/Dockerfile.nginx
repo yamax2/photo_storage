@@ -42,7 +42,8 @@ COPY templates/nginx.conf /etc/nginx/
 COPY templates/default.conf.template /etc/nginx/conf.d/
 
 EXPOSE 8080
-CMD PHOTOSTORAGE_PROXY_SECRET_MD5=$(echo -n $PHOTOSTORAGE_PROXY_SECRET | md5sum | awk '{ print $1 }') envsubst \
-  '$$RAILS_HOST $$HOST $$PHOTOSTORAGE_PROXY_SECRET_IV $$PHOTOSTORAGE_PROXY_SECRET_MD5 $$PROXY_HOST $$PROXY_SUBDOMAIN' \
-  < /etc/nginx/conf.d/default.conf.template > \
-  /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'
+CMD FRONT_HOST=$(echo -n $HOST | sed -r 's/\:[0-9]+$//') \
+  PHOTOSTORAGE_PROXY_SECRET_MD5=$(echo -n $PHOTOSTORAGE_PROXY_SECRET | md5sum | awk '{ print $1 }') \
+  envsubst \
+  '$$RAILS_HOST $$FRONT_HOST $$PHOTOSTORAGE_PROXY_SECRET_IV $$PHOTOSTORAGE_PROXY_SECRET_MD5 $$PROXY_HOST $$PROXY_SUBDOMAIN' \
+  < /etc/nginx/conf.d/default.conf.template > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'
