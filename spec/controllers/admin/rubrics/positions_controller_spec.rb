@@ -99,7 +99,7 @@ RSpec.describe Admin::Rubrics::PositionsController do
         before { get :index }
 
         it do
-          expect(response).to redirect_to(admin_rubrics_positions_path)
+          expect(response).to redirect_to(admin_rubrics_path)
         end
       end
 
@@ -109,7 +109,7 @@ RSpec.describe Admin::Rubrics::PositionsController do
         before { get :index }
 
         it do
-          expect(response).to redirect_to(admin_rubrics_positions_path)
+          expect(response).to redirect_to(admin_rubrics_path)
           expect(assigns(:rubric)).to be_nil
           expect(assigns(:rubrics)).to match_array([rubric])
         end
@@ -137,7 +137,7 @@ RSpec.describe Admin::Rubrics::PositionsController do
         before { get :index, params: {id: rubric.id} }
 
         it do
-          expect(response).to redirect_to(admin_rubrics_positions_path)
+          expect(response).to redirect_to(admin_rubrics_path(rubric.id))
           expect(assigns(:rubric)).to eq(rubric)
           expect(assigns(:rubrics)).to be_empty
         end
@@ -149,7 +149,7 @@ RSpec.describe Admin::Rubrics::PositionsController do
         before { get :index, params: {id: rubric.id} }
 
         it do
-          expect(response).to redirect_to(admin_rubrics_positions_path)
+          expect(response).to redirect_to(admin_rubrics_path(rubric.id))
           expect(assigns(:rubric)).to eq(rubric)
           expect(assigns(:rubrics)).to match_array([rubric1])
         end

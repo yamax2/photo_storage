@@ -26,7 +26,7 @@ module Admin
             @rubrics.default_order
           end
 
-        redirect_to admin_rubrics_positions_path unless @rubrics.count > 1
+        redirect_to admin_rubrics_path(@rubric) unless @rubrics.count > 1
       end
 
       private
