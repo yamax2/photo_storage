@@ -10,8 +10,12 @@ WORKDIR /proxy
 RUN go build -ldflags '-s -w' yandex_proxy.go
 
 FROM alpine
+
+RUN apk add --update --no-cache postgresql-client
 COPY --from=builder /proxy/yandex_proxy /proxy/
+COPY docker/photostorage/templates/wait_for_pg.sh /proxy/
 
 WORKDIR /proxy
 EXPOSE 9000
-CMD ./yandex_proxy -db_host=db -user=postgres -db=photos -listen=0.0.0.0
+
+CMD ./wait_for_pg.sh && ./yandex_proxy -db_host=db -user=postgres -db=photos -listen=0.0.0.0
