@@ -33,6 +33,7 @@ module Counters
         redis.expire(key, LOADED_COUNTER_TTL)
       end.first
 
+      # when db fails?
       model.update_column(:views, model.views + value.to_i) if value.present?
     end
 

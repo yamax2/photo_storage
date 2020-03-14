@@ -3,7 +3,7 @@
 require 'openssl'
 require 'oj'
 
-# just for fun
+# FIXME: just for fun, remove it later
 class ProxySessionService
   SESSION_TTL = 90.days
   MD5_LENGTH = 16
