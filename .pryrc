@@ -1,1 +1,1 @@
-Pry.config.history.file = "#{File.dirname(__FILE__)}/.irb-save-history"
+Pry.config.history_file = "#{File.dirname(__FILE__)}/.irb-save-history"
