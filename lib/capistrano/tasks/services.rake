@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-# rubocop:disable Rails/RakeEnvironment
 namespace :deploy do
   desc 'Restart Puma'
   task :restart_puma do
@@ -19,4 +18,3 @@ namespace :deploy do
   after :finishing, :restart_puma
   after :finishing, :restart_sidekiq
 end
-# rubocop:enable Rails/RakeEnvironment
