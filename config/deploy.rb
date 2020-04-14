@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-lock '~> 3.12.0'
+lock '~> 3.13.0'
 
 set :application, 'photo_storage'
 set :repo_url, 'git@github.com:yamax2/photo_storage.git'
@@ -35,5 +35,5 @@ set :ssh_options, verify_host_key: :secure
 set :ssh_options, forward_agent: true, user: 'photos'
 
 set :rbenv_type, :user
-set :rbenv_ruby, '2.6.5'
+set :rbenv_ruby, '2.6.6'
 set :default_env, {disable_binstubs: '1'}
