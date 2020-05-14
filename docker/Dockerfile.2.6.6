@@ -3,6 +3,7 @@ FROM ruby:2.6.6-alpine
 RUN apk add --update --no-cache tzdata nano libexif-dev openssh-client xz-dev libpq nodejs build-base less git postgresql-dev
 RUN cp /usr/share/zoneinfo/Asia/Yekaterinburg /etc/localtime && echo 'Asia/Yekaterinburg' > /etc/timezone
 
+RUN gem update --system
 RUN gem install 'bundler:2.1.4' rubocop rubocop-rails
 RUN ssh-keyscan -H github.com >> /etc/ssh/ssh_known_hosts
 
