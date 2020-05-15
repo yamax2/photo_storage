@@ -1,7 +1,8 @@
-ARG DOCKER_RUBY_VERSION=2.6.5
+ARG DOCKER_RUBY_VERSION=2.6.6
 FROM ruby:${DOCKER_RUBY_VERSION}-alpine AS base
 
 RUN apk add --update --no-cache tzdata libexif-dev xz-dev libpq less postgresql-dev nodejs
+RUN gem update --system
 RUN gem install 'bundler:2.1.4'
 RUN mkdir /photostorage
 

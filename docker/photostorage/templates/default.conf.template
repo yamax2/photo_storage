@@ -63,31 +63,19 @@ server {
         application/x-javascript
         application/json;
     }
-}
 
-server {
-    listen 8080;
-    server_name $PROXY_SUBDOMAIN.$FRONT_HOST;
+    location /proxy/ {
+       proxy_pass http://$PROXY_HOST:9000;
 
-    # access_log          /var/log/nginx/proxy.log;
-    # error_log           /var/log/nginx/proxy_error.log;
+       proxy_ignore_headers "X-Accel-Expires" "Expires" "Cache-Control";
 
-    encrypted_session_key '$PHOTOSTORAGE_PROXY_SECRET_MD5'; # md5 of rails secret
-    encrypted_session_iv  '$PHOTOSTORAGE_PROXY_SECRET_IV';
-
-    if ($arg_session) {
-      set_unescape_uri    $session $arg_session;
+       proxy_hide_header "Yandex-Cloud-Request-Id";
+       proxy_hide_header "Yandex-Uid";
+       proxy_hide_header "Set-Cookie";
     }
 
-    if ($session = "") {
-      set_unescape_uri    $session $cookie_proxy_session;
-    }
-
-    set_decode_base64   $session;
-    set_decrypt_session $raw $session;
-
-    location / {
-       proxy_pass  http://$PROXY_HOST:9000;
+    location /proxy/previews/ {
+       proxy_pass http://$PROXY_HOST:9000;
        proxy_cache_valid 90d;
 
        add_header X-GG-Cache-Status $upstream_cache_status;
@@ -100,23 +88,5 @@ server {
        proxy_hide_header "Set-Cookie";
 
        proxy_cache photos;
-
-       if ($raw = '') {
-         return 403;
-       }
-    }
-
-    location /originals/ {
-       proxy_pass  http://$PROXY_HOST:9000;
-
-       proxy_ignore_headers "X-Accel-Expires" "Expires" "Cache-Control";
-
-       proxy_hide_header "Yandex-Cloud-Request-Id";
-       proxy_hide_header "Yandex-Uid";
-       proxy_hide_header "Set-Cookie";
-
-       if ($raw = '') {
-         return 403;
-       }
     }
 }
