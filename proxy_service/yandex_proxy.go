@@ -98,7 +98,12 @@ func (ph *ProxyHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
                 w.Header().Add("Access-Control-Allow-Origin", "*")
         }
 
+        for k := range r.Header {
+            delete(r.Header, k)
+        }
+
         r.Header.Add("Authorization", "OAuth " + token)
+
         ph.p.ServeHTTP(w, r)
 }
 
