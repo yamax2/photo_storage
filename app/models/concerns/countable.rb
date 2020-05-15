@@ -4,10 +4,9 @@ module Countable
   def inc_counter
     return unless persisted?
 
-    redis = RedisClassy.redis
     key = "counters:#{self.class.to_s.underscore}:#{id}"
 
-    redis.multi do
+    RedisClassy.redis.multi do |redis|
       redis.persist(key)
       redis.incr(key)
     end.last.to_i

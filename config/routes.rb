@@ -10,6 +10,12 @@ Rails.application.routes.draw do
     resources :photos, only: :show
   end
 
+  namespace :proxy do
+    get '*storage_path' => 'dev#null', as: :object
+    get 'previews/*storage_path' => 'dev#null', as: :object_preview
+    get 'reload' => 'dev#null', as: :reload
+  end
+
   namespace :admin do
     mount Sidekiq::Web => '/sidekiq'
 
@@ -27,10 +33,6 @@ Rails.application.routes.draw do
 
     resources :rubrics, except: :show do
       resources :tracks, except: %i[create new]
-
-      member do
-        get :warm_up
-      end
     end
 
     namespace :rubrics do

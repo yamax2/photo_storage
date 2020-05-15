@@ -42,7 +42,7 @@ services:
       - RAILS_ENV=$RAILS_ENV
       - EDITOR=nano
       - BROWSER=/bin/cat
-      - VIRTUAL_HOST=*.photostorage.$DOCKER_TLD
+      - VIRTUAL_HOST=photostorage.$DOCKER_TLD
       - VIRTUAL_PATH=/
 
   sidekiq:
@@ -81,8 +81,8 @@ services:
       - frontend
     dns: $DIP_DNS
     environment:
-      - VIRTUAL_HOST=proxy.photostorage.$DOCKER_TLD
-      - VIRTUAL_PATH=/
+      - VIRTUAL_HOST=photostorage.$DOCKER_TLD
+      - VIRTUAL_PATH=/proxy/
 
 volumes:
   bundler-data:

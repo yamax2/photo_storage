@@ -72,7 +72,7 @@ func (env *TokenInfo) Get(id string) (string) {
 type ProxyHandler struct {
         tokens *TokenInfo
         p *httputil.ReverseProxy
-        originals  bool
+        previews bool
 }
 
 func (ph *ProxyHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
@@ -89,8 +89,12 @@ func (ph *ProxyHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
                 return
         }
 
-        if ph.originals {
-                r.URL.Path = strings.Replace(r.URL.Path, "/originals", "", -1)
+        r.URL.Path = strings.Replace(r.URL.Path, "/proxy", "", -1)
+
+        if ph.previews {
+                r.URL.Path = strings.Replace(r.URL.Path, "/previews", "", -1)
+                r.URL.RawQuery = "preview&" + r.URL.Query().Encode()
+        } else {
                 w.Header().Add("Access-Control-Allow-Origin", "*")
         }
 
@@ -133,9 +137,9 @@ func main() {
         }
 
         proxy := httputil.NewSingleHostReverseProxy(remote)
-        http.Handle("/reload", &ReloadHandler{tokens})
-        http.Handle("/", &ProxyHandler{tokens, proxy, false})
-        http.Handle("/originals/", &ProxyHandler{tokens, proxy, true})
+        http.Handle("/proxy/reload", &ReloadHandler{tokens})
+        http.Handle("/proxy/", &ProxyHandler{tokens, proxy, false})
+        http.Handle("/proxy/previews/", &ProxyHandler{tokens, proxy, true})
 
         err = http.ListenAndServe(fmt.Sprintf("%s:9000", *listenAddr), nil)
         if err != nil {

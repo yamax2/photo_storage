@@ -73,11 +73,6 @@
                                                 data: {confirm: t('.remove_confirm')} do
                       i.fa.fa-trash
 
-                    - (Rails.application.config.photo_sizes.keys - [:thumb]).each do |size|
-                      = link_to [:warm_up, :admin, rubric, {size: size}], titie: t('.warm_up', size: size),
-                                                                          class: 'btn btn-outline-primary btn-sm' do
-                        i.fa.fa-refresh
-
                     - if rubric.rubrics_count > 1
                       = link_to admin_rubrics_positions_path(id: rubric.id), title: t('.positions'),
                                                                              class: 'btn btn-outline-success btn-sm' do

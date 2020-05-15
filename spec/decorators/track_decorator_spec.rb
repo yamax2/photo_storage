@@ -58,14 +58,6 @@ RSpec.describe TrackDecorator do
     end
   end
 
-  describe '#proxy_url' do
-    let(:track) { create(:track, local_filename: 'test').decorate }
-
-    it do
-      expect(track.proxy_url).to eq('http://proxy.photostorage.localhost')
-    end
-  end
-
   describe '#url' do
     subject { track.decorate.url }
 
@@ -80,7 +72,7 @@ RSpec.describe TrackDecorator do
       let(:track) { create :track, storage_filename: 'test.gpx', yandex_token: token, original_filename: 'my.gpx' }
 
       it do
-        is_expected.to eq("http://proxy.photostorage.localhost/originals/other/test.gpx?fn=my.gpx&id=#{token.id}")
+        is_expected.to eq("/proxy/other/test.gpx?fn=my.gpx&id=#{token.id}")
       end
     end
   end

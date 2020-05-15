@@ -6,8 +6,6 @@ RSpec.describe PhotoDecorator do
   subject { photo.decorate }
 
   before do
-    allow(Rails.application.routes).to receive(:default_url_options).and_return(host: 'test.org', protocol: 'https')
-
     allow(Rails.application.config).to receive(:photo_sizes).and_return(
       thumb: ->(photo) { photo.width * 360 / photo.height },
       preview: 900
@@ -72,22 +70,21 @@ RSpec.describe PhotoDecorator do
 
       context 'when original size' do
         it do
-          expect(subject.url).
-            to eq("https://proxy.test.org/originals/photos/001/002/test.jpg?fn=test.jpg&id=#{token.id}")
+          expect(subject.url).to eq("/proxy/photos/001/002/test.jpg?fn=test.jpg&id=#{token.id}")
         end
       end
 
       context 'when thumb' do
         it do
           expect(subject.url(:thumb)).
-            to eq("https://proxy.test.org/photos/001/002/test.jpg?preview&size=180&id=#{token.id}")
+            to eq("/proxy/previews/photos/001/002/test.jpg?id=#{token.id}&size=180")
         end
       end
 
       context 'when preview' do
         it do
           expect(subject.url(:preview)).
-            to eq("https://proxy.test.org/photos/001/002/test.jpg?preview&size=900&id=#{token.id}")
+            to eq("/proxy/previews/photos/001/002/test.jpg?id=#{token.id}&size=900")
         end
       end
 

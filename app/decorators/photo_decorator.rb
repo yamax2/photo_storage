@@ -16,20 +16,14 @@ class PhotoDecorator < ApplicationDecorator
     ]
   end
 
+  # FIXME: url??
   def url(size = :original)
     return if storage_filename.blank?
 
-    original = size == :original
-    url = url_components(original).join('/')
+    path = "#{yandex_token.dir.sub(%r{^/}, '')}/#{storage_filename}"
+    method = size == :original ? :proxy_object_path : :proxy_object_preview_path
 
-    url << if original
-             "?fn=#{original_filename}"
-           else
-             "?preview&size=#{actual_width_for(thumb_width(size))}"
-           end
-
-    url << "&id=#{yandex_token_id}"
-    url
+    Rails.application.routes.url_helpers.public_send(method, path, params_for_size(size))
   end
 
   private
@@ -40,6 +34,16 @@ class PhotoDecorator < ApplicationDecorator
     width > max_thumb_width ? max_thumb_width : width
   end
 
+  def params_for_size(size)
+    {id: yandex_token_id}.tap do |params|
+      if size == :original
+        params[:fn] = original_filename
+      else
+        params[:size] = actual_width_for(thumb_width(size))
+      end
+    end
+  end
+
   def thumb_width(size)
     width = photo_sizes.fetch(size)
 
@@ -47,15 +51,6 @@ class PhotoDecorator < ApplicationDecorator
       width.call(self)
     else
       width
-    end
-  end
-
-  def url_components(original)
-    [proxy_url].tap do |components|
-      components << 'originals' if original
-
-      components << yandex_token.dir.sub(%r{^/}, '')
-      components << storage_filename
     end
   end
 end

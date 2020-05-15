@@ -7,8 +7,6 @@ Rails.application.routes.default_url_options[:host] = ENV.fetch('HOST', 'photost
 Rails.application.routes.default_url_options[:protocol] = ENV.fetch('PROTOCOL', 'http')
 
 Rails.application.configure do
-  config.proxy_domain = ENV.fetch('PROXY_SUBDOMAIN', 'proxy').freeze
-
   # widths
   config.photo_sizes = {
     thumb: ->(photo) { photo.width * 360 / photo.height },
@@ -27,9 +25,4 @@ Rails.application.configure do
 
   config.admin_emails = ENV.fetch('PHOTOSTORAGE_ADMIN_EMAILS', 'admin@photostorage.localhost').split(',').map(&:strip)
   config.default_map_center = [56.799631, 60.596571]
-
-  config.proxy = Rails.application.credentials.proxy || {
-    secret: ENV.fetch('PHOTOSTORAGE_PROXY_SECRET', 'very_secret'),
-    iv: ENV['PHOTOSTORAGE_PROXY_SECRET_IV']
-  }
 end

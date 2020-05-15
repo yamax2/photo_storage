@@ -5,7 +5,6 @@ module Api
     class TracksController < BaseController
       include ActionController::Cookies
 
-      helper_method :current_session
       before_action :find_rubric
 
       def index
@@ -13,10 +12,6 @@ module Api
       end
 
       private
-
-      def current_session
-        CGI.escape(cookies[:proxy_session])
-      end
 
       def find_rubric
         @rubric = Rubric.find(params[:rubric_id])

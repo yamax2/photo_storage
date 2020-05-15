@@ -23,15 +23,13 @@ class TrackDecorator < ApplicationDecorator
   def url
     return if storage_filename.blank?
 
-    [
-      proxy_url,
-      'originals',
-      yandex_token.other_dir.sub(%r{^/}, ''),
-      storage_filename
-    ].join('/').tap do |url|
-      url << "?fn=#{original_filename}"
-      url << "&id=#{yandex_token_id}"
-    end
+    Rails.application.routes.url_helpers.proxy_object_path(
+      "#{yandex_token.other_dir.sub(%r{^/}, '')}/#{storage_filename}",
+      {
+        id: yandex_token_id,
+        fn: original_filename
+      }
+    )
   end
 
   private

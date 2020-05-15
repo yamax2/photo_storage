@@ -5,13 +5,9 @@ require 'rails_helper'
 RSpec.describe Yandex::TokenChangedNotifyJob do
   around { |example| Sidekiq::Testing.inline! { example.run } }
 
-  let(:reload_url) { "#{Rails.application.proxy_url}/reload" }
+  let(:reload_url) { Rails.application.routes.url_helpers.proxy_reload_url }
 
   context 'when success' do
-    before do
-      allow_any_instance_of(ProxySessionService).to receive(:call).and_return('test')
-    end
-
     subject do
       VCR.use_cassette('yandex_token_changed') do
         described_class.perform_async
@@ -22,7 +18,7 @@ RSpec.describe Yandex::TokenChangedNotifyJob do
     it do
       expect { subject }.not_to raise_error
 
-      expect(WebMock).to have_requested(:get, reload_url) { |req| req.headers['Cookie'] == 'proxy_session=test' }
+      expect(WebMock).to have_requested(:get, reload_url)
     end
   end
 

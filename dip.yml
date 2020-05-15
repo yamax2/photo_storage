@@ -5,7 +5,7 @@ environment:
   DOCKER_RUBY_VERSION: 2.6.6
   POSTGRES_IMAGE_TAG: 12.2-alpine
   REDIS_IMAGE_TAG: 5-alpine
-  GO_IMAGE_TAG: 1.13.7
+  GO_IMAGE_TAG: 1.14.2
   POSTGRES_DB: photos
   POSTGRES_HOST: db
   RAILS_ENV: development

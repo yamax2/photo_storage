@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: get
-    uri: http://proxy.photostorage.localhost/reload
+    uri: http://photostorage.localhost/proxy/reload
     body:
       encoding: US-ASCII
       string: ''
