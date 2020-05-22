@@ -3,7 +3,13 @@
 require 'rails_helper'
 
 RSpec.describe Rubrics::PhotosFinder do
-  before { Timecop.freeze }
+  before do
+    Timecop.freeze
+
+    # photo1
+    create :photo, rubric: root_rubric1, local_filename: 'test', original_timestamp: 1.day.ago
+  end
+
   after { Timecop.return }
 
   let!(:root_rubric1) { create :rubric }
@@ -17,8 +23,6 @@ RSpec.describe Rubrics::PhotosFinder do
   # photo3
   # photo2
   # photo5
-
-  let!(:photo1) { create :photo, rubric: root_rubric1, local_filename: 'test', original_timestamp: 1.day.ago }
 
   let!(:photo2) do
     create :photo, rubric: root_rubric1,

@@ -9,55 +9,49 @@ RSpec.describe Admin::Rubrics::PositionsController do
     let(:rubric) { create :rubric }
 
     context 'when bad request (without data param)' do
-      subject { post :create, params: {positions: {id: rubric.id}} }
+      subject(:request) { post :create, params: {positions: {id: rubric.id}} }
 
       it do
         expect(::Rubrics::ApplyOrderService).not_to receive(:call!)
-        expect { subject }.to raise_error(ActionController::ParameterMissing).with_message(/data/)
+        expect { request }.to raise_error(ActionController::ParameterMissing).with_message(/data/)
       end
     end
 
     context 'when correct params' do
-      subject { post :create, params: {id: rubric.id, data: '1,2,5'} }
-
       it do
         expect(::Rubrics::ApplyOrderService).to receive(:call!).with(data: [1, 2, 5], id: rubric.id)
 
-        subject
+        post :create, params: {id: rubric.id, data: '1,2,5'}
 
         expect(response).to redirect_to(admin_rubrics_positions_path(id: rubric.id))
       end
     end
 
     context 'when wrong parent rubric' do
-      subject { post :create, params: {id: rubric.id * 2, data: '1,2,5'} }
+      subject(:request) { post :create, params: {id: rubric.id * 2, data: '1,2,5'} }
 
       it do
         expect(::Rubrics::ApplyOrderService).not_to receive(:call!)
 
-        expect { subject }.to raise_error(ActiveRecord::RecordNotFound)
+        expect { request }.to raise_error(ActiveRecord::RecordNotFound)
       end
     end
 
     context 'when empty string as parent value' do
-      subject { post :create, params: {id: '', data: '1,2,5'} }
-
       it do
         expect(::Rubrics::ApplyOrderService).to receive(:call!).with(data: [1, 2, 5], id: nil)
 
-        subject
+        post :create, params: {id: '', data: '1,2,5'}
 
         expect(response).to redirect_to(admin_rubrics_positions_path)
       end
     end
 
     context 'when root' do
-      subject { post :create, params: {data: '1,2,5'} }
-
       it do
         expect(::Rubrics::ApplyOrderService).to receive(:call!).with(data: [1, 2, 5], id: nil)
 
-        subject
+        post :create, params: {data: '1,2,5'}
 
         expect(response).to redirect_to(admin_rubrics_positions_path)
       end
@@ -69,9 +63,7 @@ RSpec.describe Admin::Rubrics::PositionsController do
       let!(:rubric1) { create :rubric }
       let!(:rubric2) { create :rubric }
 
-      let!(:photo) do
-        create :photo, rubric: rubric1, exif: {}, original_timestamp: Date.yesterday, local_filename: 'test'
-      end
+      before { create :photo, rubric: rubric1, exif: {}, original_timestamp: Date.yesterday, local_filename: 'test' }
 
       context 'when by first photo' do
         before { get :index, params: {ord: 'first_photo'} }

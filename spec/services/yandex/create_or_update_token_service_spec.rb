@@ -7,7 +7,7 @@ RSpec.describe Yandex::CreateOrUpdateTokenService do
   let(:service_context) { described_class.call!(code: code) }
 
   context 'when token does not exist' do
-    subject do
+    subject(:update!) do
       VCR.use_cassette('create_new_token') { service_context }
     end
 
@@ -15,24 +15,24 @@ RSpec.describe Yandex::CreateOrUpdateTokenService do
       expect(Yandex::TokenChangedNotifyJob).to receive(:perform_async)
       expect(Yandex::RefreshTokenJob).to receive(:perform_async).with(Integer)
 
-      expect { subject }.to change { Yandex::Token.count }.by(1)
+      expect { update! }.to change(Yandex::Token, :count).by(1)
 
       expect(service_context.token).to have_attributes(active: false, user_id: String)
     end
   end
 
   context 'when token for client already exists' do
-    let!(:token) { create :'yandex/token', user_id: '1130000019982670' }
-
-    subject do
+    subject(:update!) do
       VCR.use_cassette('create_new_token') { service_context }
     end
+
+    let!(:token) { create :'yandex/token', user_id: '1130000019982670' }
 
     it do
       expect(Yandex::TokenChangedNotifyJob).to receive(:perform_async)
       expect(Yandex::RefreshTokenJob).to receive(:perform_async).with(token.id)
 
-      expect { subject }.to change { Yandex::Token.count }.by(0).and(change { token.reload.access_token })
+      expect { update! }.to change(Yandex::Token, :count).by(0).and(change { token.reload.access_token })
     end
   end
 
@@ -74,7 +74,7 @@ RSpec.describe Yandex::CreateOrUpdateTokenService do
       expect(Yandex::TokenChangedNotifyJob).not_to receive(:perform_async)
       expect(Yandex::RefreshTokenJob).not_to receive(:perform_async)
 
-      expect { service_context }.not_to(change { token.reload })
+      expect { service_context }.not_to change(token, :reload)
     end
   end
 

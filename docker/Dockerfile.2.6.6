@@ -4,7 +4,7 @@ RUN apk add --update --no-cache tzdata nano libexif-dev openssh-client xz-dev li
 RUN cp /usr/share/zoneinfo/Asia/Yekaterinburg /etc/localtime && echo 'Asia/Yekaterinburg' > /etc/timezone
 
 RUN gem update --system
-RUN gem install 'bundler:2.1.4' rubocop rubocop-rails
+RUN gem install 'bundler:2.1.4'
 RUN ssh-keyscan -H github.com >> /etc/ssh/ssh_known_hosts
 
 ENV BUNDLE_APP_CONFIG /app/.bundle

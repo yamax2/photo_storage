@@ -50,10 +50,10 @@ RSpec.describe PhotosController do
     end
 
     context 'when non-existent photo' do
-      subject { get :show, params: {page_id: rubric.id, id: photo.id * 2} }
+      subject(:request!) { get :show, params: {page_id: rubric.id, id: photo.id * 2} }
 
       it do
-        expect { subject }.to raise_error(ActiveRecord::RecordNotFound)
+        expect { request! }.to raise_error(ActiveRecord::RecordNotFound)
       end
     end
   end

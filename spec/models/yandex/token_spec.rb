@@ -56,7 +56,8 @@ RSpec.describe Yandex::Token do
   describe 'scopes' do
     let!(:token1) { create :'yandex/token', active: true }
     let!(:token2) { create :'yandex/token', active: true }
-    let!(:token3) { create :'yandex/token', active: false }
+
+    before { create :'yandex/token', active: false }
 
     it do
       expect(described_class.active).to eq([token1, token2])

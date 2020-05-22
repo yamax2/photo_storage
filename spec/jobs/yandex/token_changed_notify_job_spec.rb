@@ -8,7 +8,7 @@ RSpec.describe Yandex::TokenChangedNotifyJob do
   let(:reload_url) { Rails.application.routes.url_helpers.proxy_reload_url }
 
   context 'when success' do
-    subject do
+    subject(:request) do
       VCR.use_cassette('yandex_token_changed') do
         described_class.perform_async
         described_class.drain
@@ -16,22 +16,22 @@ RSpec.describe Yandex::TokenChangedNotifyJob do
     end
 
     it do
-      expect { subject }.not_to raise_error
+      expect { request }.not_to raise_error
 
       expect(WebMock).to have_requested(:get, reload_url)
     end
   end
 
   context 'when failed' do
-    before { stub_request(:get, reload_url).to_timeout }
-
-    subject do
+    subject(:request) do
       described_class.perform_async
       described_class.drain
     end
 
+    before { stub_request(:get, reload_url).to_timeout }
+
     it do
-      expect { subject }.to raise_error(Net::OpenTimeout)
+      expect { request }.to raise_error(Net::OpenTimeout)
     end
   end
 end

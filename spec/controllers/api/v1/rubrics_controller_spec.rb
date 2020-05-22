@@ -41,15 +41,7 @@ RSpec.describe Api::V1::RubricsController do
         it do
           expect(response).to have_http_status(:ok)
           expect(json).to match_array(
-            [
-              hash_including(
-                'url',
-                'image_size',
-                'preview',
-                'id' => photo2.id,
-                'rn' => 2
-              )
-            ]
+            [hash_including('url', 'image_size', 'preview', 'id' => photo2.id, 'rn' => 2)]
           )
         end
       end
@@ -94,25 +86,20 @@ RSpec.describe Api::V1::RubricsController do
       let(:rubric) { create :rubric }
       let(:token) { create :'yandex/token' }
 
-      let!(:photo1) do
+      before do
         create :photo, rubric: rubric, storage_filename: 'test.jpg', lat_long: [1, 2], yandex_token: token
+        create :track, rubric: rubric, storage_filename: 'test.gpx', yandex_token: token
+
+        get :summary, params: {id: rubric.id}
       end
 
-      let!(:track1) { create :track, rubric: rubric, storage_filename: 'test.gpx', yandex_token: token }
-
-      before { get :summary, params: {id: rubric.id} }
-
-      it do
-        expect(json['bounds']).not_to be_empty
-      end
+      it { expect(json['bounds']).not_to be_empty }
     end
 
     context 'when without bounds' do
       before { get :summary, params: {id: 1} }
 
-      it do
-        expect(json['bounds']).to be_nil
-      end
+      it { expect(json['bounds']).to be_nil }
     end
   end
 end

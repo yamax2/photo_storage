@@ -7,20 +7,20 @@ RSpec.describe Admin::PhotosController do
 
   describe '#edit' do
     context 'when wrong photo' do
-      subject { get :edit, params: {id: 1} }
+      subject(:request) { get :edit, params: {id: 1} }
 
       it do
-        expect { subject }.to raise_error(ActiveRecord::RecordNotFound)
+        expect { request }.to raise_error(ActiveRecord::RecordNotFound)
       end
     end
 
     context 'when unpublished photo' do
+      subject(:request) { get :edit, params: {id: photo.id} }
+
       let!(:photo) { create :photo, local_filename: 'test' }
 
-      subject { get :edit, params: {id: photo.id} }
-
       it do
-        expect { subject }.to raise_error(ActiveRecord::RecordNotFound)
+        expect { request }.to raise_error(ActiveRecord::RecordNotFound)
       end
     end
 
@@ -40,31 +40,31 @@ RSpec.describe Admin::PhotosController do
 
   describe '#update' do
     context 'when wrong photo' do
-      subject { put :update, params: {id: 1, photo: {name: 'test'}} }
+      subject(:request) { put :update, params: {id: 1, photo: {name: 'test'}} }
 
       it do
-        expect { subject }.to raise_error(ActiveRecord::RecordNotFound)
+        expect { request }.to raise_error(ActiveRecord::RecordNotFound)
       end
     end
 
     context 'when unpublished photo' do
+      subject(:request) { put :update, params: {id: photo.id, photo: {name: 'test'}} }
+
       let!(:photo) { create :photo, local_filename: 'test' }
 
-      subject { put :update, params: {id: photo.id, photo: {name: 'test'}} }
-
       it do
-        expect { subject }.to raise_error(ActiveRecord::RecordNotFound)
+        expect { request }.to raise_error(ActiveRecord::RecordNotFound)
       end
     end
 
     context 'when without photo param' do
+      subject(:request) { put :update, params: {id: photo.id, photo1: {name: 'test'}} }
+
       let(:token) { create :'yandex/token' }
       let!(:photo) { create :photo, storage_filename: 'test', yandex_token: token }
 
-      subject { put :update, params: {id: photo.id, photo1: {name: 'test'}} }
-
       it do
-        expect { subject }.to raise_error(ActionController::ParameterMissing)
+        expect { request }.to raise_error(ActionController::ParameterMissing)
       end
     end
 

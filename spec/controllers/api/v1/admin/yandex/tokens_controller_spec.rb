@@ -48,28 +48,48 @@ RSpec.describe Api::V1::Admin::Yandex::TokensController do
         get :index
       end
 
+      let(:response_tokens) do
+        [
+          {
+            'id' => token.id,
+            'login' => token.login,
+            'type' => 'photos'
+          },
+          {
+            'id' => token.id,
+            'login' => token.login,
+            'type' => 'other'
+          }
+        ]
+      end
+
       it do
         expect(response).to have_http_status(:ok)
-
-        expect(json).to match_array(
-          [
-            {
-              'id' => token.id,
-              'login' => token.login,
-              'type' => 'photos'
-            },
-            {
-              'id' => token.id,
-              'login' => token.login,
-              'type' => 'other'
-            }
-          ]
-        )
+        expect(json).to match_array(response_tokens)
       end
     end
 
     context 'when multiple tokens' do
       let!(:another_token) { create :'yandex/token' }
+      let(:response_tokens) do
+        [
+          {
+            'id' => token.id,
+            'login' => token.login,
+            'type' => 'photos'
+          },
+          {
+            'id' => token.id,
+            'login' => token.login,
+            'type' => 'other'
+          },
+          {
+            'id' => another_token.id,
+            'login' => another_token.login,
+            'type' => 'photos'
+          }
+        ]
+      end
 
       before do
         create :photo, yandex_token: token, storage_filename: 'test'
@@ -82,26 +102,7 @@ RSpec.describe Api::V1::Admin::Yandex::TokensController do
 
       it do
         expect(response).to have_http_status(:ok)
-
-        expect(json).to match_array(
-          [
-            {
-              'id' => token.id,
-              'login' => token.login,
-              'type' => 'photos'
-            },
-            {
-              'id' => token.id,
-              'login' => token.login,
-              'type' => 'other'
-            },
-            {
-              'id' => another_token.id,
-              'login' => another_token.login,
-              'type' => 'photos'
-            }
-          ]
-        )
+        expect(json).to match_array(response_tokens)
       end
     end
   end
@@ -110,6 +111,8 @@ RSpec.describe Api::V1::Admin::Yandex::TokensController do
     around do |example|
       Sidekiq::Testing.fake! { example.run }
     end
+
+    after { Sidekiq::Worker.clear_all }
 
     context 'when wrong resource' do
       it do
@@ -165,7 +168,5 @@ RSpec.describe Api::V1::Admin::Yandex::TokensController do
           to raise_error(ActionController::ParameterMissing)
       end
     end
-
-    after { Sidekiq::Worker.clear_all }
   end
 end

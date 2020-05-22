@@ -12,14 +12,14 @@ RSpec.describe Yandex::RefreshQuotaService do
   end
 
   context 'regular call' do
-    subject do
+    subject(:refresh!) do
       VCR.use_cassette('refresh_quota') { service_context }
     end
 
     it do
-      expect { subject }.to(
+      expect { refresh! }.to(
         change { token.reload.used_space }.
-        and(change { token.total_space }).
+        and(change(token, :total_space)).
         and(change { redis.hgetall('yandex_tokens_usage') }.from(token.id.to_s => 100.megabytes.to_s).to({}))
       )
     end
@@ -36,7 +36,7 @@ RSpec.describe Yandex::RefreshQuotaService do
   end
 
   context 'when db transaction fails' do
-    subject do
+    subject(:refresh!) do
       VCR.use_cassette('refresh_quota') { service_context }
     end
 
@@ -45,7 +45,7 @@ RSpec.describe Yandex::RefreshQuotaService do
     end
 
     it do
-      expect { subject }.
+      expect { refresh! }.
         to raise_error('boom!').
         and change { redis.hgetall('yandex_tokens_usage').size }.by(0)
     end

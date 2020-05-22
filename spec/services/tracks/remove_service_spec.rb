@@ -12,22 +12,18 @@ RSpec.describe Tracks::RemoveService do
   end
 
   context 'when file exists' do
-    subject do
-      VCR.use_cassette('track_remove_success') { service_context }
-    end
+    subject(:remove!) { VCR.use_cassette('track_remove_success') { service_context } }
 
     it do
-      expect { subject }.not_to raise_error
+      expect { remove! }.not_to raise_error
     end
   end
 
   context 'when file does not exist' do
-    subject do
-      VCR.use_cassette('track_remove_404') { service_context }
-    end
+    subject(:remove!) { VCR.use_cassette('track_remove_404') { service_context } }
 
     it do
-      expect { subject }.not_to raise_error
+      expect { remove! }.not_to raise_error
     end
   end
 

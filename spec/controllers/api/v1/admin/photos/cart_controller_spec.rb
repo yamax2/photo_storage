@@ -11,17 +11,17 @@ RSpec.describe Api::V1::Admin::Photos::CartController do
 
   describe '#create' do
     context 'when wrong photo' do
-      subject { post :create, params: {photo_id: 1} }
+      subject(:request) { post :create, params: {photo_id: 1} }
 
       it do
-        expect { subject }.to raise_error(ActiveRecord::RecordNotFound)
+        expect { request }.to raise_error(ActiveRecord::RecordNotFound)
       end
     end
 
     context 'when correct photo' do
-      let(:photo) { create :photo, local_filename: 'test' }
+      subject(:request) { post :create, params: {photo_id: photo.id} }
 
-      subject { post :create, params: {photo_id: photo.id} }
+      let(:photo) { create :photo, local_filename: 'test' }
 
       context 'and photo already in cart' do
         before { redis.sadd(key, photo.id) }
@@ -29,14 +29,14 @@ RSpec.describe Api::V1::Admin::Photos::CartController do
         it do
           expect(photo.rubric).not_to be_nil
           expect(redis.smembers(key)).to match_array([photo.id.to_s])
-          expect { subject }.not_to(change { redis.smembers(key) })
+          expect { request }.not_to(change { redis.smembers(key) })
         end
       end
 
       context 'and photo not in cart' do
         it do
           expect(photo.rubric).not_to be_nil
-          expect { subject }.to change { redis.smembers(key) }.from([]).to([photo.id.to_s])
+          expect { request }.to change { redis.smembers(key) }.from([]).to([photo.id.to_s])
         end
       end
     end
@@ -44,24 +44,24 @@ RSpec.describe Api::V1::Admin::Photos::CartController do
 
   describe '#destroy' do
     context 'when wrong photo' do
-      subject { delete :destroy, params: {photo_id: 1} }
+      subject(:request) { delete :destroy, params: {photo_id: 1} }
 
       it do
-        expect { subject }.to raise_error(ActiveRecord::RecordNotFound)
+        expect { request }.to raise_error(ActiveRecord::RecordNotFound)
       end
     end
 
     context 'when correct photo' do
-      let(:photo) { create :photo, local_filename: 'test' }
+      subject(:request) { delete :destroy, params: {photo_id: photo.id} }
 
-      subject { delete :destroy, params: {photo_id: photo.id} }
+      let(:photo) { create :photo, local_filename: 'test' }
 
       context 'and photo in cart' do
         before { redis.sadd(key, photo.id) }
 
         it do
           expect(photo.rubric).not_to be_nil
-          expect { subject }.to change { redis.smembers(key) }.from([photo.id.to_s]).to([])
+          expect { request }.to change { redis.smembers(key) }.from([photo.id.to_s]).to([])
         end
       end
 
@@ -69,7 +69,7 @@ RSpec.describe Api::V1::Admin::Photos::CartController do
         it do
           expect(photo.rubric).not_to be_nil
           expect(redis.smembers(key)).to be_empty
-          expect { subject }.not_to(change { redis.smembers(key) })
+          expect { request }.not_to(change { redis.smembers(key) })
         end
       end
     end

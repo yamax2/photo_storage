@@ -7,6 +7,8 @@ RSpec.describe Photo do
   it_behaves_like 'model with counter', :photo
 
   describe 'structure' do
+    let(:tz) { Rails.application.config.time_zone }
+
     it { is_expected.to have_db_column(:name).of_type(:string).with_options(null: false, limit: 512) }
     it { is_expected.to have_db_column(:description).of_type(:text) }
     it { is_expected.to have_db_column(:rubric_id).of_type(:integer).with_options(null: false, foreign_key: true) }
@@ -20,13 +22,7 @@ RSpec.describe Photo do
     it { is_expected.to have_db_column(:views).of_type(:integer).with_options(null: false, default: 0) }
     it { is_expected.to have_db_column(:external_info).of_type(:text) }
 
-    it do
-      is_expected.to have_db_column(:tz).of_type(:string).with_options(
-        null: false,
-        default: Rails.application.config.time_zone,
-        limit: 50
-      )
-    end
+    it { is_expected.to have_db_column(:tz).of_type(:string).with_options(null: false, limit: 50, default: tz) }
 
     it { is_expected.to have_db_index(:rubric_id) }
   end
@@ -140,24 +136,24 @@ RSpec.describe Photo do
 
       it do
         expect { photo.update!(rubric: new_rubric) }.
-          to change { photo.rubric }.from(old_rubric).to(new_rubric).
+          to change(photo, :rubric).from(old_rubric).to(new_rubric).
           and change { old_rubric.reload.main_photo }.from(photo).to(nil).
           and change { new_rubric.reload.main_photo }.from(nil).to(photo)
       end
     end
 
     context 'when photo is not persisted' do
-      let(:photo) { build :photo, local_filename: 'test', rubric: old_rubric }
-
-      subject do
+      subject(:change!) do
         photo.rubric = new_rubric
         photo.save!
       end
 
+      let(:photo) { build :photo, local_filename: 'test', rubric: old_rubric }
+
       it do
         expect(::Photos::ChangeMainPhoto).not_to receive(:call!)
 
-        expect { subject }.to change { photo.rubric }.from(old_rubric).to(new_rubric)
+        expect { change! }.to change(photo, :rubric).from(old_rubric).to(new_rubric)
       end
     end
 

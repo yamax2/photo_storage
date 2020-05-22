@@ -27,7 +27,7 @@ RSpec.describe Photos::UploadService do
     let(:photo) { build :photo, local_filename: 'cats.jpg' }
     let!(:tmp_file) { photo.tmp_local_filename }
 
-    let!(:yandex_token) do
+    let(:yandex_token) do
       create :'yandex/token', access_token: API_ACCESS_TOKEN,
                               active: true,
                               dir: '/test_photos',
@@ -35,15 +35,17 @@ RSpec.describe Photos::UploadService do
     end
 
     before do
-      allow_any_instance_of(StorageFilenameGenerator).
+      allow(StorageFilenameGenerator).
         to receive(:call).and_return('000/000/36894942206a2a4eeb5015938089a066720bd919f27')
+
+      yandex_token
 
       FileUtils.cp('spec/fixtures/cats.jpg', photo.tmp_local_filename)
       photo.save!
     end
 
     context 'and active token does not exist' do
-      let!(:yandex_token) { nil }
+      let(:yandex_token) { nil }
 
       it do
         expect(service_context).to be_a_failure
@@ -59,9 +61,9 @@ RSpec.describe Photos::UploadService do
 
       it do
         expect { upload! }.
-          to change { photo.storage_filename }.from(nil).to(String).
-          and change { photo.local_filename }.from(String).to(nil).
-          and change { photo.yandex_token_id }.from(nil).to(yandex_token.id)
+          to change(photo, :storage_filename).from(nil).to(String).
+          and change(photo, :local_filename).from(String).to(nil).
+          and change(photo, :yandex_token_id).from(nil).to(yandex_token.id)
 
         expect(service_context).to be_a_success
         expect(File.exist?(tmp_file)).to eq(false)
@@ -76,9 +78,9 @@ RSpec.describe Photos::UploadService do
 
       it do
         expect { upload! }.
-          to change { photo.storage_filename }.from(nil).to(String).
-          and change { photo.local_filename }.from(String).to(nil).
-          and change { photo.yandex_token_id }.from(nil).to(yandex_token.id)
+          to change(photo, :storage_filename).from(nil).to(String).
+          and change(photo, :local_filename).from(String).to(nil).
+          and change(photo, :yandex_token_id).from(nil).to(yandex_token.id)
 
         expect(service_context).to be_a_success
         expect(File.exist?(tmp_file)).to eq(false)
@@ -100,6 +102,7 @@ RSpec.describe Photos::UploadService do
 
     context 'and api is unreachable' do
       before { stub_request(:any, /webdav.yandex.ru/).to_timeout }
+
       after { FileUtils.rm_f(tmp_file) }
 
       it do

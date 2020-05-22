@@ -4,15 +4,13 @@ require 'rails_helper'
 
 RSpec.describe RubricDecorator do
   describe '#main_photo' do
-    subject { rubric.decorate.main_photo }
+    subject(:result) { rubric.decorate.main_photo }
 
     context 'when rubric with main_photo' do
       let(:main_photo) { create :photo, local_filename: 'test' }
       let(:rubric) { create :rubric, main_photo: main_photo }
 
-      it do
-        expect(subject.object).to eq(main_photo)
-      end
+      it { expect(result.object).to eq(main_photo) }
     end
 
     context 'when rubric without main_photo' do
@@ -51,14 +49,12 @@ RSpec.describe RubricDecorator do
   end
 
   describe '#rubrics_tree' do
+    subject(:decorated_rubric) { rubric3.decorate }
+
     let(:rubric1) { create :rubric }
     let(:rubric2) { create :rubric, rubric: rubric1 }
     let(:rubric3) { create :rubric, rubric: rubric2 }
 
-    subject { rubric3.decorate }
-
-    it do
-      expect(subject.rubrics_tree).to eq([rubric3, rubric2, rubric1])
-    end
+    it { expect(decorated_rubric.rubrics_tree).to eq([rubric3, rubric2, rubric1]) }
   end
 end

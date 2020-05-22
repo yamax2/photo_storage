@@ -14,8 +14,10 @@ RSpec.describe Cart::ProcessPhotosService do
   end
 
   context 'when call for empty cart' do
-    let!(:photo1) { create :photo, local_filename: 'test', rubric: rubric }
-    let!(:photo2) { create :photo, local_filename: 'test', rubric: rubric }
+    before do
+      create :photo, local_filename: 'test', rubric: rubric
+      create :photo, local_filename: 'test', rubric: rubric
+    end
 
     let(:service_call) { described_class.call(rubric.id, &:save!) }
 

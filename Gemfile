@@ -55,6 +55,9 @@ group :test do
   gem 'factory_bot_rails'
   gem 'rails-controller-testing'
   gem 'rspec-rails'
+  gem 'rubocop'
+  gem 'rubocop-rails'
+  gem 'rubocop-rspec'
   gem 'shoulda-matchers'
   gem 'simplecov', require: false
   gem 'timecop'

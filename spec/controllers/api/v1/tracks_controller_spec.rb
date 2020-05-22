@@ -29,7 +29,6 @@ RSpec.describe Api::V1::TracksController do
 
     context 'when some tracks in rubric' do
       let(:rubric) { create :rubric }
-      let!(:track1) { create :track, local_filename: 'test', rubric: rubric }
 
       let(:token) { create :'yandex/token', other_dir: '/other' }
 
@@ -59,9 +58,27 @@ RSpec.describe Api::V1::TracksController do
                        color: 'blue'
       end
 
-      let!(:track4) { create :track, storage_filename: 'test3.gpx', yandex_token: token }
+      let(:actual_response) do
+        [
+          {
+            'id' => track3.id,
+            'name' => 'track3: 300.0 км, 05мин., ср. скорость 3.0 км/ч',
+            'url' => "/proxy/other/test3.gpx?fn=track3.gpx&id=#{token.id}",
+            'color' => 'blue'
+          },
+          {
+            'id' => track2.id,
+            'name' => 'track2: 200.0 км, 2ч. 59мин., ср. скорость 2.0 км/ч',
+            'url' => "/proxy/other/test2.gpx?fn=track2.gpx&id=#{token.id}",
+            'color' => 'red'
+          }
+        ]
+      end
 
       before do
+        create :track, local_filename: 'test', rubric: rubric # track1
+        create :track, storage_filename: 'test3.gpx', yandex_token: token # track4
+
         get :index, params: {rubric_id: rubric.id}
       end
 
@@ -70,22 +87,7 @@ RSpec.describe Api::V1::TracksController do
         expect(assigns(:rubric)).to eq(rubric)
         expect(assigns(:tracks)).to eq([track3, track2])
 
-        expect(json).to eq(
-          [
-            {
-              'id' => track3.id,
-              'name' => 'track3: 300.0 км, 05мин., ср. скорость 3.0 км/ч',
-              'url' => "/proxy/other/test3.gpx?fn=track3.gpx&id=#{token.id}",
-              'color' => 'blue'
-            },
-            {
-              'id' => track2.id,
-              'name' => 'track2: 200.0 км, 2ч. 59мин., ср. скорость 2.0 км/ч',
-              'url' => "/proxy/other/test2.gpx?fn=track2.gpx&id=#{token.id}",
-              'color' => 'red'
-            }
-          ]
-        )
+        expect(json).to eq(actual_response)
       end
     end
   end

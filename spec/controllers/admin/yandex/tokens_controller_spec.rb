@@ -6,7 +6,9 @@ RSpec.describe Admin::Yandex::TokensController do
   render_views
 
   describe '#index' do
-    let!(:tokens) { create_list :'yandex/token', 30 }
+    let(:tokens) { create_list :'yandex/token', 30 }
+
+    before { tokens }
 
     context 'when first page' do
       before { get :index }
@@ -45,7 +47,7 @@ RSpec.describe Admin::Yandex::TokensController do
     end
 
     context 'when without tokens' do
-      let!(:tokens) { nil }
+      let(:tokens) { nil }
 
       before { get :index }
 

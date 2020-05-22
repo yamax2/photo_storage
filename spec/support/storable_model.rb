@@ -42,53 +42,54 @@ RSpec.shared_context 'storable model' do |factory|
 
     context 'when uploaded' do
       context 'and token is not assigned' do
-        subject { build factory, storage_filename: 'test', yandex_token: nil }
+        subject(:model) { build factory, storage_filename: 'test', yandex_token: nil }
 
         it do
-          is_expected.not_to be_valid
-          expect(subject.errors).to include(:yandex_token)
+          expect(model).not_to be_valid
+          expect(model.errors).to include(:yandex_token)
         end
       end
 
       context 'and token is assigned' do
-        let(:token) { create :'yandex/token' }
-        subject { build factory, storage_filename: 'test', yandex_token: token }
+        subject(:model) { build factory, storage_filename: 'test', yandex_token: token }
 
-        it { is_expected.to be_valid }
+        let(:token) { create :'yandex/token' }
+
+        it { expect(model).to be_valid }
       end
     end
   end
 
   describe 'upload status validation' do
     context 'when both attributes present' do
-      subject { build factory, storage_filename: 'zozo', local_filename: 'test' }
+      subject(:model) { build factory, storage_filename: 'zozo', local_filename: 'test' }
 
       it do
-        is_expected.not_to be_valid
-        expect(subject.errors).to include(:local_filename)
+        expect(model).not_to be_valid
+        expect(model.errors).to include(:local_filename)
       end
     end
 
     context 'when storage_filename presents' do
+      subject(:model) { build factory, storage_filename: 'zozo', local_filename: nil, yandex_token: token }
+
       let(:token) { create :'yandex/token' }
 
-      subject { build factory, storage_filename: 'zozo', local_filename: nil, yandex_token: token }
-
-      it { is_expected.to be_valid }
+      it { expect(model).to be_valid }
     end
 
     context 'when local_filename presents' do
-      subject { build factory, storage_filename: nil, local_filename: 'test' }
+      subject(:model) { build factory, storage_filename: nil, local_filename: 'test' }
 
-      it { is_expected.to be_valid }
+      it { expect(model).to be_valid }
     end
 
     context 'when both attributes empty' do
-      subject { build factory, storage_filename: nil, local_filename: nil }
+      subject(:model) { build factory, storage_filename: nil, local_filename: nil }
 
       it do
-        is_expected.not_to be_valid
-        expect(subject.errors).to include(:local_filename)
+        expect(model).not_to be_valid
+        expect(model.errors).to include(:local_filename)
       end
     end
   end
@@ -167,10 +168,10 @@ RSpec.shared_context 'storable model' do |factory|
     end
 
     context 'when destroy' do
-      subject { model.destroy }
+      subject(:action!) { model.destroy }
 
       context 'and local_file is not empty' do
-        before { subject }
+        before { action! }
 
         it do
           expect(File.exist?(tmp_file)).to eq(false)
@@ -181,7 +182,7 @@ RSpec.shared_context 'storable model' do |factory|
         let(:model) { create factory, local_filename: 'cats1.jpg' }
 
         it do
-          expect { subject }.not_to raise_error
+          expect { action! }.not_to raise_error
         end
       end
     end
@@ -203,8 +204,8 @@ RSpec.shared_context 'storable model' do |factory|
 
       it do
         expect { model.save! }.
-          to change { model.md5 }.from(nil).to(String).
-          and change { model.sha256 }.from(nil).to(String)
+          to change(model, :md5).from(nil).to(String).
+          and change(model, :sha256).from(nil).to(String)
       end
     end
 
@@ -244,7 +245,7 @@ RSpec.shared_context 'storable model' do |factory|
         let(:model) { build factory, local_filename: 'test.txt', size: 0 }
 
         it do
-          expect { model.save! }.to change { model.size }.from(0).to(File.size(tmp_file))
+          expect { model.save! }.to change(model, :size).from(0).to(File.size(tmp_file))
         end
       end
 
@@ -252,7 +253,7 @@ RSpec.shared_context 'storable model' do |factory|
         let(:model) { build factory, local_filename: 'test.txt', size: 10 }
 
         it do
-          expect { model.save! }.not_to(change { model.size })
+          expect { model.save! }.not_to change(model, :size)
         end
       end
     end
@@ -262,7 +263,7 @@ RSpec.shared_context 'storable model' do |factory|
       let(:model) { build factory, storage_filename: 'test.txt', yandex_token: token, size: 0 }
 
       it do
-        expect { model.save! }.not_to(change { model.size })
+        expect { model.save! }.not_to change(model, :size)
       end
     end
   end

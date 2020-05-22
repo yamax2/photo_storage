@@ -3,6 +3,8 @@
 require 'rails_helper'
 
 RSpec.describe Counters::DumpService do
+  subject(:dump!) { described_class.call!(model_klass: Photo) }
+
   before do
     stub_const("#{described_class}::BATCH_SIZE", 1)
     RedisClassy.flushdb
@@ -11,16 +13,13 @@ RSpec.describe Counters::DumpService do
   after { RedisClassy.flushdb }
 
   let(:redis) { RedisClassy.redis }
-
-  subject { described_class.call!(model_klass: Photo) }
-
   let!(:photo_without_views) { create :photo, local_filename: 'test', views: 0 }
   let!(:photo_with_views) { create :photo, local_filename: 'test', views: 1_000 }
   let!(:wrong_photo) { create :photo, local_filename: 'test', views: 2_000 }
 
   context 'when no counters in redis' do
     it do
-      expect { subject }.
+      expect { dump! }.
         to change { photo_without_views.reload.views }.by(0).
         and change { photo_with_views.reload.views }.by(0).
         and change { wrong_photo.reload.views }.by(0)
@@ -35,8 +34,8 @@ RSpec.describe Counters::DumpService do
     end
 
     context 'when regular call' do
-      it do
-        expect { subject }.
+      it do # rubocop:disable RSpec/ExampleLength
+        expect { dump! }.
           to change { photo_without_views.reload.views }.by(100).
           and change { photo_with_views.reload.views }.by(10).
           and change { wrong_photo.reload.views }.by(0)

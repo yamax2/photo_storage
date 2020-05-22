@@ -40,7 +40,7 @@ RSpec.describe Rubrics::ApplyOrderService do
   end
 
   context 'when large amount of rubrics' do
-    let!(:rubrics) { create_list :rubric, 1_000 }
+    before { create_list :rubric, 1_000 }
 
     it do
       expect { described_class.call!(data: Rubric.pluck(:id).shuffle) }.
@@ -91,33 +91,31 @@ RSpec.describe Rubrics::ApplyOrderService do
   describe 'errors' do
     let!(:rubric) { create :rubric }
 
-    context 'when wrong id param' do
-      context 'and id is 0' do
-        it do
-          expect { described_class.call(data: [rubric.id, rubric.id], id: 0) }.
-            to change { rubric.reload.ord }.from(nil).to(1)
-        end
+    context 'and id is 0' do
+      it do
+        expect { described_class.call(data: [rubric.id, rubric.id], id: 0) }.
+          to change { rubric.reload.ord }.from(nil).to(1)
       end
+    end
 
-      context 'and id is negative' do
-        it do
-          expect { described_class.call(data: [rubric.id, rubric.id], id: -1) }.
-            to change { rubric.reload.ord }.from(nil).to(1)
-        end
+    context 'and id is negative' do
+      it do
+        expect { described_class.call(data: [rubric.id, rubric.id], id: -1) }.
+          to change { rubric.reload.ord }.from(nil).to(1)
       end
+    end
 
-      context 'and id is non-existing' do
-        it do
-          expect { described_class.call(data: [rubric.id, rubric.id], id: rubric.id * 2) }.
-            not_to(change { rubric.reload.ord })
-        end
+    context 'and id is non-existing' do
+      it do
+        expect { described_class.call(data: [rubric.id, rubric.id], id: rubric.id * 2) }.
+          not_to(change { rubric.reload.ord })
       end
+    end
 
-      context 'and id is a string' do
-        it do
-          expect { described_class.call(data: [rubric.id, rubric.id], id: rubric.id.to_s) }.
-            not_to(change { rubric.reload.ord })
-        end
+    context 'and id is a string' do
+      it do
+        expect { described_class.call(data: [rubric.id, rubric.id], id: rubric.id.to_s) }.
+          not_to(change { rubric.reload.ord })
       end
     end
 

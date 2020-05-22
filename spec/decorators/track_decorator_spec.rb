@@ -17,9 +17,9 @@ RSpec.describe TrackDecorator do
   end
 
   describe '#duration' do
-    let(:track) { build(:track, duration: duration, local_filename: 'test').decorate }
-
     subject { track.duration }
+
+    let(:track) { build(:track, duration: duration, local_filename: 'test').decorate }
 
     context 'when without hours' do
       let(:duration) { 59.minutes + 29.seconds }
@@ -71,9 +71,7 @@ RSpec.describe TrackDecorator do
       let(:token) { create :'yandex/token', other_dir: '/other' }
       let(:track) { create :track, storage_filename: 'test.gpx', yandex_token: token, original_filename: 'my.gpx' }
 
-      it do
-        is_expected.to eq("/proxy/other/test.gpx?fn=my.gpx&id=#{token.id}")
-      end
+      it { is_expected.to eq("/proxy/other/test.gpx?fn=my.gpx&id=#{token.id}") }
     end
   end
 end

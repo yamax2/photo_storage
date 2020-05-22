@@ -6,17 +6,15 @@ RSpec.describe Yandex::ReviseDirService do
   let(:dir) { '000/013/' }
   let(:token) { create :'yandex/token', dir: '/test', access_token: API_ACCESS_TOKEN }
 
-  let!(:unpublished_photo) { create :photo, local_filename: 'test' }
+  before do
+    create :photo, local_filename: 'test'
 
-  let!(:photo1) do
     create :photo, storage_filename: '000/013/651499c8340faf3e270de72ffe652df55855697eed5b.jpg',
                    size: 2_227_965,
                    md5: '7a9fcf31e891422947b3f67b9d15208f',
                    content_type: 'image/jpeg',
                    yandex_token: token
-  end
 
-  let!(:photo2) do
     create :photo, storage_filename: '000/013/65156d3a0a5428ca01a374c72c3488db6a9b95b77c2f.jpg',
                    size: 6_651_603,
                    md5: '98d63be6348659f5d3623246a55fcb39',
@@ -25,21 +23,21 @@ RSpec.describe Yandex::ReviseDirService do
   end
 
   context 'when dir exists' do
-    subject do
+    subject(:service_context) do
       VCR.use_cassette('yandex_revise_dir') { described_class.call!(dir: dir, token: token) }
     end
 
     context 'when photo does not exist in database' do
       it do
-        is_expected.to be_a_success
+        expect(service_context).to be_a_success
 
-        expect(subject.errors.keys).to eq([nil])
-        expect(subject.errors[nil]).to eq(['000/013/6516fdedf98ba516916be55f04faeec88d14718325dc.jpg'])
+        expect(service_context.errors.keys).to eq([nil])
+        expect(service_context.errors[nil]).to eq(['000/013/6516fdedf98ba516916be55f04faeec88d14718325dc.jpg'])
       end
     end
 
     context 'when photo does not exist on remote storage' do
-      let!(:photo3) do
+      before do
         create :photo, storage_filename: '000/013/6516fdedf98ba516916be55f04faeec88d14718325dc.jpg',
                        size: 5_795_643,
                        md5: '635d4505b9dfd1b49ab346c8209e09f7',
@@ -50,10 +48,10 @@ RSpec.describe Yandex::ReviseDirService do
       let!(:photo4) { create :photo, storage_filename: '000/013/zzz.jpg', yandex_token: token }
 
       it do
-        is_expected.to be_a_success
+        expect(service_context).to be_a_success
 
-        expect(subject.errors.keys).to eq([photo4.id])
-        expect(subject.errors[photo4.id]).to eq(['not found on remote storage'])
+        expect(service_context.errors.keys).to eq([photo4.id])
+        expect(service_context.errors[photo4.id]).to eq(['not found on remote storage'])
       end
     end
 
@@ -67,21 +65,17 @@ RSpec.describe Yandex::ReviseDirService do
       end
 
       it do
-        is_expected.to be_a_success
+        expect(service_context).to be_a_success
 
-        expect(subject.errors.keys).to eq([photo3.id])
-        expect(subject.errors[photo3.id]).to match_array(
-          [
-            'size mismatch',
-            'content type mismatch',
-            'etag mismatch'
-          ]
+        expect(service_context.errors.keys).to eq([photo3.id])
+        expect(service_context.errors[photo3.id]).to match_array(
+          ['size mismatch', 'content type mismatch', 'etag mismatch']
         )
       end
     end
 
     context 'when without errors' do
-      let!(:photo3) do
+      before do
         create :photo, storage_filename: '000/013/6516fdedf98ba516916be55f04faeec88d14718325dc.jpg',
                        size: 5_795_643,
                        md5: '635d4505b9dfd1b49ab346c8209e09f7',
@@ -90,24 +84,24 @@ RSpec.describe Yandex::ReviseDirService do
       end
 
       it do
-        is_expected.to be_a_success
-        expect(subject.errors).to be_empty
+        expect(service_context).to be_a_success
+        expect(service_context.errors).to be_empty
       end
     end
   end
 
   context 'when dir does not exist' do
-    let(:dir) { '011/013/' }
-
-    subject do
+    subject(:service_context) do
       VCR.use_cassette('yandex_revise_wrong_dir') { described_class.call!(dir: dir, token: token) }
     end
 
-    it do
-      is_expected.to be_a_success
+    let(:dir) { '011/013/' }
 
-      expect(subject.errors.keys).to eq([nil])
-      expect(subject.errors[nil]).to eq(['dir /test/011/013/ not found on remote storage'])
+    it do
+      expect(service_context).to be_a_success
+
+      expect(service_context.errors.keys).to eq([nil])
+      expect(service_context.errors[nil]).to eq(['dir /test/011/013/ not found on remote storage'])
     end
   end
 end

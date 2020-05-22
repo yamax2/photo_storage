@@ -3,12 +3,11 @@
 require 'rails_helper'
 
 RSpec.describe Yandex::BackupInfoService do
-  let(:backup_secret) { 'very_secret' }
-
   before do
     allow(Rails.application.credentials).to receive(:backup_secret).and_return(backup_secret)
   end
 
+  let(:backup_secret) { 'very_secret' }
   let(:token) do
     create :'yandex/token', dir: '/test',
                             other_dir: '/other',

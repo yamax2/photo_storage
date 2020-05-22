@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe Rubrics::FilterFinder do
-  subject { described_class.call(name_part: name_part) }
+  subject(:result) { described_class.call(name_part: name_part) }
 
   let!(:rubric1) { create :rubric, name: 'my first root rubric' }
   let!(:rubric2) { create :rubric, name: 'my second root rubric' }
@@ -13,40 +13,40 @@ RSpec.describe Rubrics::FilterFinder do
   context 'when nil argument' do
     let(:name_part) { nil }
 
-    it { is_expected.to match_array(Rubric.all) }
+    it { expect(result).to match_array(Rubric.all) }
   end
 
   context 'when empty argument' do
     let(:name_part) { '' }
 
-    it { is_expected.to match_array(Rubric.all) }
+    it { expect(result).to match_array(Rubric.all) }
   end
 
   context 'when search for root rubrics' do
     let(:name_part) { 'root' }
 
-    it { is_expected.to match_array([rubric1, rubric2]) }
+    it { expect(result).to match_array([rubric1, rubric2]) }
   end
 
   context 'when search for sub_rubric' do
     let(:name_part) { 'sub_rubric' }
 
-    it { is_expected.to match_array([rubric1, sub_rubric]) }
+    it { expect(result).to match_array([rubric1, sub_rubric]) }
   end
 
   context 'when search for deep sub_rubric' do
     let(:name_part) { 'deep' }
 
-    it { is_expected.to match_array([rubric1, sub_rubric, deep_sub_rubric]) }
+    it { expect(result).to match_array([rubric1, sub_rubric, deep_sub_rubric]) }
 
-    it { expect(subject.where(rubric_id: rubric1.id)).to match_array([sub_rubric]) }
+    it { expect(result.where(rubric_id: rubric1.id)).to match_array([sub_rubric]) }
   end
 
   context 'when dangerous param value' do
     let(:name_part) { "$('#tree').jstree(true).settings.core.data = newJsonData;" }
 
     it do
-      expect { subject.to_a }.not_to raise_error
+      expect { result.to_a }.not_to raise_error
     end
   end
 
@@ -54,6 +54,6 @@ RSpec.describe Rubrics::FilterFinder do
     let!(:deep_sub_rubric) { create :rubric, rubric: sub_rubric, name: 'my deep sub_rubric' }
     let(:name_part) { 'sub_rubric' }
 
-    it { is_expected.to match_array([rubric1, sub_rubric, deep_sub_rubric]) }
+    it { expect(result).to match_array([rubric1, sub_rubric, deep_sub_rubric]) }
   end
 end

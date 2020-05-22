@@ -17,9 +17,19 @@ RSpec.describe Photos::EnqueueProcessService do
 
   context 'when correct file' do
     let(:image) { fixture_file_upload('spec/fixtures/test2.jpg', 'image/jpeg') }
+    let(:correct_attributes) do
+      {
+        size: 2_236_570,
+        content_type: 'image/jpeg',
+        original_filename: 'test2.jpg',
+        name: 'test',
+        rubric_id: rubric.id,
+        local_filename: 'test'
+      }
+    end
 
     it do
-      expect { service_context }.to change { photo.persisted? }.from(false).to(true)
+      expect { service_context }.to change(photo, :persisted?).from(false).to(true)
 
       expect(File.exist?(photo.tmp_local_filename)).to eq(true)
       expect(service_context).to be_a_success
@@ -27,14 +37,7 @@ RSpec.describe Photos::EnqueueProcessService do
       expect(photo).to be_valid
       expect(photo).to be_persisted
 
-      expect(photo).to have_attributes(
-        size: 2_236_570,
-        content_type: 'image/jpeg',
-        original_filename: 'test2.jpg',
-        name: 'test',
-        rubric_id: rubric.id,
-        local_filename: 'test'
-      )
+      expect(photo).to have_attributes(correct_attributes)
 
       expect(Photos::ProcessFileJob).to have_received(:perform_async).with(photo.id, /test\.jpg/)
     end

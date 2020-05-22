@@ -25,14 +25,20 @@ RSpec.describe Api::V1::Admin::Cart::RubricsController do
     end
 
     context 'when some rubrics selected' do
-      let!(:photo1) { create :photo, yandex_token: token, storage_filename: 'test', rubric: rubric1 }
-      let!(:photo2) { create :photo, yandex_token: token, storage_filename: 'test', rubric: sub_rubric1 }
+      let(:photo1) { create :photo, yandex_token: token, storage_filename: 'test', rubric: rubric1 }
+      let(:photo2) { create :photo, yandex_token: token, storage_filename: 'test', rubric: sub_rubric1 }
 
-      let!(:photo3) { create :photo, yandex_token: token, storage_filename: 'test', rubric: rubric2 }
-      let!(:photo4) { create :photo, yandex_token: token, storage_filename: 'test', rubric: rubric1 }
-      let!(:photo5) { create :photo, yandex_token: token, storage_filename: 'test', rubric: sub_rubric2 }
+      let(:photo3) { create :photo, yandex_token: token, storage_filename: 'test', rubric: rubric2 }
+      let(:photo4) { create :photo, yandex_token: token, storage_filename: 'test', rubric: rubric1 }
+      let(:photo5) { create :photo, yandex_token: token, storage_filename: 'test', rubric: sub_rubric2 }
 
       before do
+        photo1
+        photo2
+        photo3
+        photo4
+        photo5
+
         ::Cart::PhotoService.call!(photo: photo1)
         ::Cart::PhotoService.call!(photo: photo2)
       end

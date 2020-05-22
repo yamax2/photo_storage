@@ -3,13 +3,13 @@
 require 'rails_helper'
 
 RSpec.describe RubricFinder do
-  let(:rubric_id) { 111 }
+  subject(:result) { described_class.call(rubric_id) }
 
-  subject { described_class.call(rubric_id) }
+  let(:rubric_id) { 111 }
 
   context 'when wrong rubric' do
     it do
-      expect { subject }.to raise_error(ActiveRecord::RecordNotFound)
+      expect { result }.to raise_error(ActiveRecord::RecordNotFound)
     end
   end
 
@@ -18,8 +18,8 @@ RSpec.describe RubricFinder do
     let(:rubric_id) { rubric.id }
 
     it do
-      is_expected.to eq(rubric)
-      expect(subject.rubric).to be_nil
+      expect(result).to eq(rubric)
+      expect(result.rubric).to be_nil
     end
   end
 
@@ -31,13 +31,13 @@ RSpec.describe RubricFinder do
     let(:rubric_id) { rubric3.id }
 
     it do
-      is_expected.to eq(rubric3)
+      expect(result).to eq(rubric3)
 
-      expect(subject.rubric).to eq(rubric2)
-      expect(subject.association(:rubric)).to be_loaded
+      expect(result.rubric).to eq(rubric2)
+      expect(result.association(:rubric)).to be_loaded
 
-      expect(subject.rubric.rubric).to eq(rubric1)
-      expect(subject.rubric.association(:rubric)).to be_loaded
+      expect(result.rubric.rubric).to eq(rubric1)
+      expect(result.rubric.association(:rubric)).to be_loaded
     end
   end
 end

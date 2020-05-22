@@ -80,7 +80,8 @@ RSpec.describe Admin::TracksController do
 
     context 'when correct rubric' do
       let(:rubric) { create :rubric }
-      let!(:tracks) { create_list :track, 30, rubric: rubric, local_filename: 'test' }
+
+      before { create_list :track, 30, rubric: rubric, local_filename: 'test' }
 
       context 'and first page' do
         before { get :index, params: {rubric_id: rubric.id} }

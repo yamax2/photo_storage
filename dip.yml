@@ -57,7 +57,7 @@ interaction:
     service: app
     environment:
       RAILS_ENV: test
-    command: rubocop
+    command: bundle exec ./rubocop
 
   build_proxy:
     service: proxy

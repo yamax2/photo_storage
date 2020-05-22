@@ -122,11 +122,11 @@ RSpec.describe Track do
   end
 
   describe '.available_colors' do
-    subject { described_class.available_colors }
+    subject(:colors) { described_class.available_colors }
 
     it do
-      is_expected.to be_a(Array)
-      is_expected.to include('blue', 'red', 'green')
+      expect(colors).to be_a(Array)
+      expect(colors).to include('blue', 'red', 'green')
     end
   end
 end

@@ -7,14 +7,14 @@ RSpec.describe Yandex::BackupInfoJob do
   let(:token) { create :'yandex/token', dir: '/test', other_dir: '/other', access_token: API_ACCESS_TOKEN }
 
   context 'when correct resource' do
-    subject do
+    subject(:request) do
       VCR.use_cassette('yandex_download_url_photos') do
         described_class.perform_async(token.id, :photos, 'test')
       end
     end
 
     it do
-      expect { subject }.
+      expect { request }.
         to change { redis.get('test') }.from(nil).to(String)
 
       expect(redis.ttl('test')).to eq(described_class::INFO_KEY_TTL)
@@ -22,10 +22,10 @@ RSpec.describe Yandex::BackupInfoJob do
   end
 
   context 'when wrong resource' do
-    subject { described_class.perform_async(token.id, :wrong, 'test') }
+    subject(:request) { described_class.perform_async(token.id, :wrong, 'test') }
 
     it do
-      expect { subject }.to raise_error(Yandex::BackupInfoService::WrongResourceError)
+      expect { request }.to raise_error(Yandex::BackupInfoService::WrongResourceError)
     end
   end
 end

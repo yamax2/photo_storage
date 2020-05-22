@@ -2,22 +2,23 @@
 
 RSpec.shared_context 'model with counter' do |factory|
   describe '#inc_counter' do
+    subject(:action!) { model.inc_counter }
+
     before { RedisClassy.flushdb }
+
     after { RedisClassy.flushdb }
 
     let(:redis) { RedisClassy.redis }
-
-    subject { model.inc_counter }
 
     context 'when persisted' do
       let(:model) { create factory, local_filename: 'test' }
 
       context 'and first view' do
         it do
-          expect { subject }.
+          expect { action! }.
             to change { redis.get("counters:#{model.class.to_s.underscore}:#{model.id}") }.from(nil).to('1')
 
-          is_expected.to eq(1)
+          expect(action!).to eq(1)
         end
       end
 
@@ -25,10 +26,10 @@ RSpec.shared_context 'model with counter' do |factory|
         before { model.inc_counter }
 
         it do
-          expect { subject }.
+          expect { action! }.
             to change { redis.get("counters:#{model.class.to_s.underscore}:#{model.id}") }.from('1').to('2')
 
-          is_expected.to eq(2)
+          expect(action!).to eq(2)
         end
       end
 
@@ -42,9 +43,9 @@ RSpec.shared_context 'model with counter' do |factory|
 
         it do
           expect(redis.ttl(key)).to be_positive
-          expect { subject }.to change { redis.ttl(key) }.to(-1)
+          expect { action! }.to change { redis.ttl(key) }.to(-1)
 
-          is_expected.to eq(1)
+          expect(action!).to eq(1)
         end
       end
     end
@@ -53,9 +54,9 @@ RSpec.shared_context 'model with counter' do |factory|
       let(:model) { build factory }
 
       it do
-        expect { subject }.not_to(change { RedisClassy.redis.keys('counters:*') })
+        expect { action! }.not_to(change { RedisClassy.redis.keys('counters:*') })
 
-        is_expected.to be_nil
+        expect(action!).to be_nil
       end
     end
   end

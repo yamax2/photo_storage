@@ -10,19 +10,18 @@ RSpec.describe Yandex::RefreshTokenService do
 
   let(:valid_till) { 1.day.from_now }
   let(:token) { create :'yandex/token', refresh_token: API_REFRESH_TOKEN, valid_till: valid_till }
+  let(:service_context) { described_class.call!(token: token) }
 
   after { Timecop.return }
 
-  let(:service_context) { described_class.call!(token: token) }
-
   context 'when requires refresh' do
     context 'regular call' do
-      subject do
+      subject(:refresh!) do
         VCR.use_cassette('refresh_token') { service_context }
       end
 
       it do
-        expect { subject }.to change { token.reload.refresh_token }.and(change { token.valid_till })
+        expect { refresh! }.to change { token.reload.refresh_token }.and change(token, :valid_till)
 
         expect(Yandex::TokenChangedNotifyJob).to have_received(:perform_async)
       end
@@ -43,7 +42,7 @@ RSpec.describe Yandex::RefreshTokenService do
       end
 
       it do
-        expect { service_context }.not_to(change { token.reload })
+        expect { service_context }.not_to change(token, :reload)
 
         expect(Yandex::TokenChangedNotifyJob).not_to have_received(:perform_async)
       end
@@ -64,7 +63,7 @@ RSpec.describe Yandex::RefreshTokenService do
     let(:valid_till) { 5.days.from_now }
 
     it do
-      expect { subject }.not_to(change { token.reload })
+      expect { service_context }.not_to change(token, :reload)
 
       expect(Yandex::TokenChangedNotifyJob).not_to have_received(:perform_async)
     end

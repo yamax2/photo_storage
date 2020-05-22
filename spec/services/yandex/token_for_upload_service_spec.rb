@@ -13,19 +13,20 @@ RSpec.describe Yandex::TokenForUploadService do
   end
 
   context 'when without active tokens' do
-    let!(:token) { create :'yandex/token', total_space: 150.megabytes, used_space: 10.megabytes, active: false }
+    before { create :'yandex/token', total_space: 150.megabytes, used_space: 10.megabytes, active: false }
 
     it { expect(token_id).to be_nil }
   end
 
   context 'when without actual tokens' do
-    let!(:token) { create :'yandex/token', total_space: 150.megabytes, used_space: 130.megabytes, active: true }
+    before { create :'yandex/token', total_space: 150.megabytes, used_space: 130.megabytes, active: true }
 
     it { expect(token_id).to be_nil }
   end
 
   context 'when some tokens exist' do
-    let!(:token1) { create :'yandex/token', total_space: 150.megabytes, used_space: 0, active: false }
+    before { create :'yandex/token', total_space: 150.megabytes, used_space: 0, active: false }
+
     let!(:token2) { create :'yandex/token', total_space: 150.megabytes, used_space: 30.megabytes, active: true }
     let!(:token3) { create :'yandex/token', total_space: 150.megabytes, used_space: 30.megabytes, active: true }
 
@@ -41,24 +42,28 @@ RSpec.describe Yandex::TokenForUploadService do
   end
 
   context 'when no free space on first token' do
-    let!(:token1) { create :'yandex/token', total_space: 150.megabytes, used_space: 130.megabytes, active: true }
+    before { create :'yandex/token', total_space: 150.megabytes, used_space: 130.megabytes, active: true }
+
     let!(:token2) { create :'yandex/token', total_space: 150.megabytes, used_space: 30.megabytes, active: true }
 
     it { expect(token_id).to eq(token2.id) }
   end
 
   context 'when no free space' do
-    let!(:token1) { create :'yandex/token', total_space: 150.megabytes, used_space: 130.megabytes, active: true }
-    let!(:token2) { create :'yandex/token', total_space: 150.megabytes, used_space: 140.megabytes, active: true }
+    before do
+      create :'yandex/token', total_space: 150.megabytes, used_space: 130.megabytes, active: true
+      create :'yandex/token', total_space: 150.megabytes, used_space: 140.megabytes, active: true
+    end
 
     it { expect(token_id).to be_nil }
   end
 
   context 'when no free space (redis counter)' do
-    let!(:token1) { create :'yandex/token', total_space: 150.megabytes, used_space: 130.megabytes, active: true }
-    let!(:token2) { create :'yandex/token', total_space: 150.megabytes, used_space: 40.megabytes, active: true }
+    let(:token2) { create :'yandex/token', total_space: 150.megabytes, used_space: 40.megabytes, active: true }
 
     before do
+      create :'yandex/token', total_space: 150.megabytes, used_space: 130.megabytes, active: true
+
       redis.hset('yandex_tokens_usage', token2.id, 100.megabytes)
     end
 
@@ -66,10 +71,11 @@ RSpec.describe Yandex::TokenForUploadService do
   end
 
   context 'when wrong token_id in redis' do
-    let!(:token1) { create :'yandex/token', total_space: 150.megabytes, used_space: 130.megabytes, active: true }
     let!(:token2) { create :'yandex/token', total_space: 150.megabytes, used_space: 40.megabytes, active: true }
 
     before do
+      create :'yandex/token', total_space: 150.megabytes, used_space: 130.megabytes, active: true
+
       redis.hset('yandex_tokens_usage', 0, 100.megabytes)
     end
 
