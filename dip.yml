@@ -3,7 +3,7 @@ version: '3.3'
 environment:
   DOCKER_TLD: localhost
   DOCKER_RUBY_VERSION: 2.6.6
-  POSTGRES_IMAGE_TAG: 12.2-alpine
+  POSTGRES_IMAGE_TAG: 12.3-alpine
   REDIS_IMAGE_TAG: 5-alpine
   GO_IMAGE_TAG: 1.14.2
   POSTGRES_DB: photos

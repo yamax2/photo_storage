@@ -49,8 +49,7 @@ server {
     }
 
     location /assets/ {
-      gzip              on;
-      gzip_proxied      any;
+      gzip_static       on;
       expires           max;
       add_header        Cache-Control public;
 
@@ -74,10 +73,11 @@ server {
        proxy_hide_header "Set-Cookie";
     }
 
-    location /proxy/previews/ {
+    location ~ ^/proxy/(previews/|.+.gpx$) {
        proxy_pass http://$PROXY_HOST:9000;
        proxy_cache_valid 90d;
 
+       add_header Cache-Control public;
        add_header X-GG-Cache-Status $upstream_cache_status;
        add_header X-GG-Cache-Date $upstream_http_date;
 
@@ -88,5 +88,11 @@ server {
        proxy_hide_header "Set-Cookie";
 
        proxy_cache photos;
+
+       gzip              on;
+       gzip_proxied      any;
+       expires           max;
+
+       gzip_types text/xml text/plain;
     }
 }
