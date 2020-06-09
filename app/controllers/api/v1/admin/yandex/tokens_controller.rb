@@ -20,7 +20,8 @@ module Api
 
             @resource = ::Yandex::EnqueueBackupInfoService.call!(
               token: @token,
-              resource: params.require(:resource)
+              resource: params.require(:resource),
+              backup_secret: Rails.application.credentials.backup_secret
             ).info
 
             head :accepted if @resource.blank?

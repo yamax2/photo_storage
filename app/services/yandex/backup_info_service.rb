@@ -14,7 +14,7 @@ module Yandex
       other: :other_dir
     }.with_indifferent_access.freeze
 
-    delegate :token, :resource, :info, to: :context
+    delegate :token, :resource, :info, :backup_secret, to: :context
 
     def call
       validate
@@ -28,8 +28,6 @@ module Yandex
     end
 
     private
-
-    delegate :backup_secret, to: 'Rails.application.credentials'
 
     def download_url
       YandexClient::Disk::Client.

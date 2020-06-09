@@ -14,7 +14,6 @@ class Track < ApplicationRecord
 
   belongs_to :rubric, inverse_of: :tracks
   belongs_to :yandex_token, class_name: 'Yandex::Token',
-                            foreign_key: :yandex_token_id,
                             inverse_of: :tracks,
                             optional: true
 

@@ -16,7 +16,6 @@ class Photo < ApplicationRecord
   belongs_to :rubric, inverse_of: :photos, counter_cache: true
   belongs_to :yandex_token, class_name: 'Yandex::Token',
                             inverse_of: :photos,
-                            foreign_key: :yandex_token_id,
                             optional: true
 
   validates :name, presence: true, length: {maximum: 512}

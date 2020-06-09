@@ -9,7 +9,11 @@ module Yandex
 
     def perform(token_id, resource, redis_key)
       token = Yandex::Token.find(token_id)
-      info = BackupInfoService.call!(token: token, resource: resource).info
+      info = BackupInfoService.call!(
+        token: token,
+        resource: resource,
+        backup_secret: Rails.application.credentials.backup_secret
+      ).info
 
       RedisClassy.redis.set(redis_key, info, ex: INFO_KEY_TTL)
     end
