@@ -29,15 +29,16 @@ RUN bundle config set without 'development test production'
 FROM base AS builder
 RUN apk add --update --no-cache build-base
 RUN bundle install
+RUN bundle exec rails assets:precompile
 
 FROM base
 
 COPY --from=builder /photostorage/vendor/bundle /photostorage/vendor/bundle
 COPY --from=builder /usr/local/bundle/config /usr/local/bundle/config
+COPY --from=builder /photostorage/public/assets /photostorage/public/assets
 RUN mkdir -p /photostorage/log
 
 ENV RAILS_LOG_TO_STDOUT true
-RUN bundle exec rails assets:precompile
 
 EXPOSE 3000
 CMD bundle exec rails db:create && bundle exec rails db:migrate && bundle exec rails s -p 3000 -b 0.0.0.0
