@@ -48,9 +48,9 @@ $(document)
             async: true,
             marker_options:
               clickable: true
-              startIconUrl: 'https://raw.githubusercontent.com/mpetazzoni/leaflet-gpx/master/pin-icon-start.png',
-              endIconUrl: 'https://raw.githubusercontent.com/mpetazzoni/leaflet-gpx/master/pin-icon-end.png',
-              shadowUrl: 'https://raw.githubusercontent.com/mpetazzoni/leaflet-gpx/master/pin-shadow.png'
+              startIconUrl: '<%= image_url('pin-icon-start.png') %>'
+              endIconUrl: '<%= image_url('pin-icon-end.png') %>'
+              shadowUrl: '<%= image_url('pin-shadow.png') %>'
             polyline_options:
               color: track.color
           ).on('loaded', ((e) ->
