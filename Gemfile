@@ -35,10 +35,10 @@ gem 'russian'
 gem 'strip_attributes', '>= 1.8'
 
 # waiting for https://github.com/sensortower/sidekiq-throttled/pull/85
-gem 'sidekiq', '>= 6', '< 6.1'
+gem 'sidekiq', '>= 6'
 gem 'sidekiq-cron', '>= 1.1'
 gem 'sidekiq-failures', '>= 1'
-gem 'sidekiq-throttled', '>= 0.10'
+gem 'sidekiq-throttled', '>= 0.13'
 
 gem 'exifr'
 gem 'gpx'
