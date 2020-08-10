@@ -28,3 +28,5 @@ coverage
 scripts/*.zip
 scripts/*.log
 scripts/processed
+
+/config/credentials/production.key

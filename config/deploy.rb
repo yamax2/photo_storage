@@ -21,7 +21,7 @@ set :deploy_to, '/home/photos/photos'
 # Default value for :pty is false
 # set :pty, true
 
-append :linked_files, 'config/database.yml', 'config/redis.yml', 'config/master.key', 'config/credentials.yml.enc'
+append :linked_files, 'config/database.yml', 'config/redis.yml', 'config/credentials/production.key'
 append :linked_dirs, 'log', 'tmp'
 
 # Default value for default_env is {}
@@ -35,5 +35,5 @@ set :ssh_options, verify_host_key: :secure
 set :ssh_options, forward_agent: true, user: 'photos'
 
 set :rbenv_type, :user
-set :rbenv_ruby, '2.6.6'
+set :rbenv_ruby, '2.7.1'
 set :default_env, {disable_binstubs: '1'}
