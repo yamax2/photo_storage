@@ -35,7 +35,6 @@ gem 'redis-mutex', '>= 4'
 gem 'russian'
 gem 'strip_attributes', '>= 1.8'
 
-# waiting for https://github.com/sensortower/sidekiq-throttled/pull/85
 gem 'sidekiq', '>= 6'
 gem 'sidekiq-cron', '>= 1.1'
 gem 'sidekiq-failures', '>= 1'

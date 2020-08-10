@@ -1,0 +1,17 @@
+development: &default
+  smtp:
+    address: smtp.yandex.ru
+    port: 465
+    domain: <%= ENV.fetch('PHOTOSTORAGE_SMTP_DOMAIN', Rails.application.credentials.email.try(:[], :domain)) %>
+    user_name: <%= ENV.fetch('PHOTOSTORAGE_SMTP_USER', Rails.application.credentials.email.try(:[], :login)) %>
+    password: <%= ENV.fetch('PHOTOSTORAGE_SMTP_USER', Rails.application.credentials.email.try(:[], :password)) %>
+    authentication: :plain
+    enable_starttls_auto: true
+    tls: true
+  default_from: <%= ENV.fetch('PHOTOSTORAGE_SMTP_USER', Rails.application.credentials.email.try(:[], :login)) %>
+
+test:
+  <<: *default
+
+production:
+  <<: *default

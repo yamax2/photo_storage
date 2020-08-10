@@ -21,7 +21,7 @@ set :deploy_to, '/home/photos/photos'
 # Default value for :pty is false
 # set :pty, true
 
-append :linked_files, 'config/database.yml', 'config/redis.yml', 'config/credentials/production.key'
+append :linked_files, 'config/database.yml', 'config/redis.yml', 'config/credentials/production.key', 'config/email.yml'
 append :linked_dirs, 'log', 'tmp'
 
 # Default value for default_env is {}
