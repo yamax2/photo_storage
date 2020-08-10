@@ -25,10 +25,10 @@ class Photo < ApplicationRecord
   validates :tz, presence: true, inclusion: Rails.application.config.photo_timezones
 
   strip_attributes only: %i[name description content_type]
-  after_commit :remove_from_cart
 
   before_save { @rubric_changed = rubric_id_changed? if persisted? }
-  after_save :change_rubric, on: :update
+  after_update :change_rubric
+  after_commit :remove_from_cart
 
   private
 

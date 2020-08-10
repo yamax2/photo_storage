@@ -73,7 +73,7 @@ RSpec.describe Photo do
 
     context 'when try to change name' do
       before do
-        photo.name = photo.name + 'test'
+        photo.name = "#{photo.name}test"
         photo.save!
       end
 

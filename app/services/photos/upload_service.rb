@@ -61,7 +61,7 @@ module Photos
     end
 
     def remote_path_exists?
-      client.propfind(name: '/' + remote_path.join('/'))
+      client.propfind(name: "/#{remote_path.join('/')}")
 
       true
     rescue ::YandexClient::NotFoundError

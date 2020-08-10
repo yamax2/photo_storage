@@ -1,4 +1,4 @@
-ARG DOCKER_RUBY_VERSION=2.6.6
+ARG DOCKER_RUBY_VERSION=2.7.1
 FROM ruby:${DOCKER_RUBY_VERSION}-alpine AS base
 
 RUN apk add --update --no-cache tzdata libexif-dev xz-dev libpq less postgresql-dev nodejs

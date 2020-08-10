@@ -43,7 +43,7 @@ module Yandex
     end
 
     def new_cipher
-      OpenSSL::Cipher::AES256.new(:CBC).encrypt.tap do |cipher|
+      OpenSSL::Cipher.new('aes-256-cbc').encrypt.tap do |cipher|
         cipher.key = Digest::SHA256.digest(backup_secret)
         cipher.iv = Digest::MD5.digest(token.login)
       end

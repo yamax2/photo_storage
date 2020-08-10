@@ -4,16 +4,17 @@ source 'https://rubygems.org'
 
 git_source(:github) { |repo| "git@github.com:#{repo}.git" }
 
+gem 'irb', require: false
 gem 'pg'
-gem 'puma', '~> 4.3'
-gem 'rails', '~> 5.2.4'
-gem 'sass-rails', '~> 5.0'
+gem 'puma', '>= 4.3'
+gem 'rails', '~> 6.0'
+gem 'sass-rails', '>= 5.0'
 gem 'uglifier', '>= 1.3.0'
 
 gem 'bootsnap', '>= 1.1.0', require: false
-gem 'coffee-rails', '~> 4.2'
-gem 'jbuilder', '~> 2.5'
-gem 'turbolinks', '~> 5'
+gem 'coffee-rails', '>= 4.2'
+gem 'jbuilder', '>= 2.5'
+gem 'turbolinks', '>= 5'
 
 gem 'bootstrap', '~> 4'
 gem 'bootstrap4-datetime-picker-rails'

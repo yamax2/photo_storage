@@ -14,7 +14,7 @@ RSpec.describe Yandex::BackupInfoService do
   let(:decoded_string) do
     src = Base64.decode64(encoded_string)
 
-    decryptor = OpenSSL::Cipher::AES256.new(:CBC).decrypt.tap do |cipher|
+    decryptor = OpenSSL::Cipher.new('aes-256-cbc').decrypt.tap do |cipher|
       cipher.key = Digest::SHA256.digest(backup_secret)
       cipher.iv = Digest::MD5.digest(token.login)
     end
