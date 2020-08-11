@@ -12,10 +12,12 @@ module Rubrics
     end
 
     def call
-      photos_scope.tap do |scope|
-        scope.limit!(@limit) if @limit.positive?
-        scope.offset!(@offset) if @offset.positive?
-      end.preload(:yandex_token).order(:rn)
+      scope = photos_scope.tap do |s|
+        s.limit!(@limit) if @limit.positive?
+        s.offset!(@offset) if @offset.positive?
+      end
+
+      scope.preload(:yandex_token).order(:rn)
     end
 
     def self.call(rubric_id, opts = {})
