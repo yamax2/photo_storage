@@ -68,7 +68,7 @@ GEM
     autoprefixer-rails (9.8.6.1)
       execjs
     bindex (0.8.1)
-    bootsnap (1.4.7)
+    bootsnap (1.4.8)
       msgpack (~> 1.0)
     bootstrap (4.5.2)
       autoprefixer-rails (>= 9.1.0)
@@ -135,8 +135,8 @@ GEM
     gpx (1.0.0)
       nokogiri (~> 1.7)
       rake
-    gretel (3.0.9)
-      rails (>= 3.1.0)
+    gretel (4.0.0)
+      rails (>= 5.1)
     hashdiff (1.0.1)
     i18n (1.8.5)
       concurrent-ruby (~> 1.0)

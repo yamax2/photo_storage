@@ -32,7 +32,7 @@ module Cart
     def each_photo(&block)
       Photo.
         where(id: ids, rubric_id: @rubric_id).
-        each_instance(with_lock: true, &block)
+        each_instance(with_hold: true, &block)
     end
 
     def ids

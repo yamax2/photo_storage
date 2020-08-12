@@ -12,7 +12,7 @@ module Photos
         Rubric.
           where(main_photo: photo).
           where.not(id: current_rubric_with_parent_ids).
-          each_instance(with_lock: true) do |rubric|
+          each_instance(with_hold: true) do |rubric|
           rubric.update!(main_photo_id: first_photo_id(rubric))
         end
       end

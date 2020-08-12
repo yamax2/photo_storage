@@ -6,7 +6,7 @@ module Yandex
     sidekiq_options queue: :tokens
 
     def perform
-      Token.order(:id).select(:id).each_row(with_lock: true, symbolize_keys: true) do |row|
+      Token.order(:id).select(:id).each_row(with_hold: true, symbolize_keys: true) do |row|
         RefreshTokenJob.perform_async(row[:id].to_i)
       end
     end
