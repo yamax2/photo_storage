@@ -2,7 +2,7 @@ version: '3.3'
 
 # DOCKER_RUBY_VERSION: 2.7.1
 # POSTGRES_VERSION: 12.4
-# REDIS_VERSION: 5
+# REDIS_VERSION: 6
 # NGINX_VERSION=1.19.1
 # POSTGRES_DB: photos
 # GO_VERSION=1.14.2
@@ -51,7 +51,7 @@ services:
       - ./configs/dumps/pg:/docker-entrypoint-initdb.d:ro
 
   redis:
-    image: redis:${REDIS_VERSION:-5}-alpine
+    image: redis:${REDIS_VERSION:-6}-alpine
     volumes:
       - redis-data:/data
 
