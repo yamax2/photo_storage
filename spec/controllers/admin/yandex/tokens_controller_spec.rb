@@ -2,16 +2,14 @@
 
 require 'rails_helper'
 
-RSpec.describe Admin::Yandex::TokensController do
-  render_views
-
+RSpec.describe Admin::Yandex::TokensController, type: :request do
   describe '#index' do
     let(:tokens) { create_list :'yandex/token', 30 }
 
     before { tokens }
 
     context 'when first page' do
-      before { get :index }
+      before { get admin_yandex_tokens_url }
 
       it do
         expect(response).to have_http_status(:ok)
@@ -23,7 +21,7 @@ RSpec.describe Admin::Yandex::TokensController do
     end
 
     context 'when second page' do
-      before { get :index, params: {page: 2} }
+      before { get admin_yandex_tokens_url(page: 2) }
 
       it do
         expect(response).to have_http_status(:ok)
@@ -35,7 +33,7 @@ RSpec.describe Admin::Yandex::TokensController do
     end
 
     context 'when wrong page' do
-      before { get :index, params: {page: 3} }
+      before { get admin_yandex_tokens_url(page: 3) }
 
       it do
         expect(response).to have_http_status(:ok)
@@ -49,7 +47,7 @@ RSpec.describe Admin::Yandex::TokensController do
     context 'when without tokens' do
       let(:tokens) { nil }
 
-      before { get :index }
+      before { get admin_yandex_tokens_url }
 
       it do
         expect(response).to have_http_status(:ok)
@@ -69,7 +67,7 @@ RSpec.describe Admin::Yandex::TokensController do
     context 'when token exists' do
       let!(:token) { create :'yandex/token' }
 
-      before { get :refresh, params: {id: token.id} }
+      before { get refresh_admin_yandex_token_url(id: token.id) }
 
       it do
         expect(assigns(:token)).to eq(token)
@@ -80,7 +78,7 @@ RSpec.describe Admin::Yandex::TokensController do
     end
 
     context 'when wrong token' do
-      let(:request) { get :refresh, params: {id: 1} }
+      let(:request) { get refresh_admin_yandex_token_url(id: 1) }
 
       it do
         expect { request }.to raise_error(ActiveRecord::RecordNotFound)
@@ -92,7 +90,7 @@ RSpec.describe Admin::Yandex::TokensController do
     context 'when token exists' do
       let!(:token) { create :'yandex/token' }
 
-      before { delete :destroy, params: {id: token.id} }
+      before { delete admin_yandex_token_url(id: token.id) }
 
       it do
         expect(assigns(:token)).to eq(token)
@@ -103,7 +101,7 @@ RSpec.describe Admin::Yandex::TokensController do
     end
 
     context 'when wrong token' do
-      let(:request) { delete :destroy, params: {id: 1} }
+      let(:request) { delete admin_yandex_token_url(id: 1) }
 
       it do
         expect { request }.to raise_error(ActiveRecord::RecordNotFound)
@@ -116,7 +114,7 @@ RSpec.describe Admin::Yandex::TokensController do
       let!(:token) { create :'yandex/token' }
 
       before do
-        post :update, params: {id: token.id, yandex_token: {dir: '/my_dir', other_dir: '/other_dir', active: true}}
+        put admin_yandex_token_url(id: token.id, yandex_token: {dir: '/my_dir', other_dir: '/other_dir', active: true})
       end
 
       it do
@@ -130,7 +128,7 @@ RSpec.describe Admin::Yandex::TokensController do
       let!(:token) { create :'yandex/token' }
 
       before do
-        post :update, params: {id: token.id, yandex_token: {dir: '', other_dir: '', active: true}}
+        put admin_yandex_token_url(id: token.id, yandex_token: {dir: '', other_dir: '', active: true})
       end
 
       it do
@@ -144,7 +142,7 @@ RSpec.describe Admin::Yandex::TokensController do
       let!(:token) { create :'yandex/token' }
 
       let(:request) do
-        post :update, params: {id: token.id, yandex_token1: {dir: '', other_dir: '', active: true}}
+        put admin_yandex_token_url(id: token.id, yandex_token1: {dir: '', other_dir: '', active: true})
       end
 
       it do
@@ -153,10 +151,32 @@ RSpec.describe Admin::Yandex::TokensController do
     end
 
     context 'when wrong token' do
-      let(:request) { post :update, params: {id: 1} }
+      let(:request) { put admin_yandex_token_url(id: 1) }
 
       it do
         expect { request }.to raise_error(ActiveRecord::RecordNotFound)
+      end
+    end
+  end
+
+  describe '#edit' do
+    context 'when wrong token' do
+      subject(:request!) { get edit_admin_yandex_token_url(id: 1) }
+
+      it do
+        expect { request! }.to raise_error(ActiveRecord::RecordNotFound)
+      end
+    end
+
+    context 'when correct token' do
+      let(:token) { create :'yandex/token' }
+
+      before { get edit_admin_yandex_token_url(id: token.id) }
+
+      it do
+        expect(response).to have_http_status(:ok)
+        expect(assigns(:token)).to eq(token)
+        expect(response).to render_template(:edit)
       end
     end
   end

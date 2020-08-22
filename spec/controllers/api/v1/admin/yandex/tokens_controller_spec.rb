@@ -2,15 +2,13 @@
 
 require 'rails_helper'
 
-RSpec.describe Api::V1::Admin::Yandex::TokensController do
-  render_views
-
+RSpec.describe Api::V1::Admin::Yandex::TokensController, type: :request do
   let(:json) { JSON.parse(response.body) }
   let!(:token) { create :'yandex/token', dir: '/test', other_dir: '/other', access_token: API_ACCESS_TOKEN }
 
   describe '#index' do
     context 'when without resources' do
-      before { get :index }
+      before { get api_v1_admin_yandex_tokens_url }
 
       it do
         expect(response).to have_http_status(:ok)
@@ -22,7 +20,7 @@ RSpec.describe Api::V1::Admin::Yandex::TokensController do
       before do
         create :photo, yandex_token: token, storage_filename: 'test'
 
-        get :index
+        get api_v1_admin_yandex_tokens_url
       end
 
       it do
@@ -45,7 +43,7 @@ RSpec.describe Api::V1::Admin::Yandex::TokensController do
         create :photo, yandex_token: token, storage_filename: 'test'
         create :track, yandex_token: token, storage_filename: 'test'
 
-        get :index
+        get api_v1_admin_yandex_tokens_url
       end
 
       let(:response_tokens) do
@@ -97,7 +95,7 @@ RSpec.describe Api::V1::Admin::Yandex::TokensController do
 
         create :track, yandex_token: token, storage_filename: 'test'
 
-        get :index
+        get api_v1_admin_yandex_tokens_url
       end
 
       it do
@@ -116,14 +114,14 @@ RSpec.describe Api::V1::Admin::Yandex::TokensController do
 
     context 'when wrong resource' do
       it do
-        expect { get :show, params: {id: token.id, resource: :wrong} }.
+        expect { get api_v1_admin_yandex_token_url(id: token.id, resource: :wrong) }.
           to raise_error(Yandex::BackupInfoService::WrongResourceError)
       end
     end
 
     context 'when enqueue' do
       it do
-        expect { get :show, params: {id: token.id, resource: :photos} }.
+        expect { get api_v1_admin_yandex_token_url(id: token.id, resource: :photos) }.
           to change { Yandex::BackupInfoJob.jobs.size }.by(1)
 
         expect(response).to have_http_status(:accepted)
@@ -135,7 +133,7 @@ RSpec.describe Api::V1::Admin::Yandex::TokensController do
       before { RedisClassy.redis.set("backup_info:#{token.id}:photos", nil) }
 
       it do
-        expect { get :show, params: {id: token.id, resource: :photos} }.
+        expect { get api_v1_admin_yandex_token_url(id: token.id, resource: :photos) }.
           not_to(change { Yandex::BackupInfoJob.jobs.size })
 
         expect(response).to have_http_status(:accepted)
@@ -147,7 +145,7 @@ RSpec.describe Api::V1::Admin::Yandex::TokensController do
       before { RedisClassy.redis.set("backup_info:#{token.id}:photos", 'value') }
 
       it do
-        expect { get :show, params: {id: token.id, resource: :photos} }.
+        expect { get api_v1_admin_yandex_token_url(id: token.id, resource: :photos) }.
           not_to(change { Yandex::BackupInfoJob.jobs.size })
 
         expect(response).to have_http_status(:ok)
@@ -157,14 +155,14 @@ RSpec.describe Api::V1::Admin::Yandex::TokensController do
 
     context 'when wrong token' do
       it do
-        expect { get :show, params: {id: token.id * 2, resource: :photos} }.
+        expect { get api_v1_admin_yandex_token_url(id: token.id * 2, resource: :photos) }.
           to raise_error(ActiveRecord::RecordNotFound)
       end
     end
 
     context 'when without resource param' do
       it do
-        expect { get :show, params: {id: token.id} }.
+        expect { get api_v1_admin_yandex_token_url(id: token.id) }.
           to raise_error(ActionController::ParameterMissing)
       end
     end

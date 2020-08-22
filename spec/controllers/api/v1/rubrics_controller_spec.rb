@@ -2,14 +2,12 @@
 
 require 'rails_helper'
 
-RSpec.describe Api::V1::RubricsController do
-  render_views
-
+RSpec.describe Api::V1::RubricsController, type: :request do
   let(:json) { JSON.parse(response.body) }
 
   describe '#show' do
     context 'when wrong rubric' do
-      before { get :show, params: {id: 1, offset: 1, limit: 5} }
+      before { get api_v1_rubric_url(id: 1, offset: 1, limit: 5) }
 
       it do
         expect(response).to have_http_status(:ok)
@@ -36,7 +34,7 @@ RSpec.describe Api::V1::RubricsController do
       end
 
       context 'and with limit' do
-        before { get :show, params: {id: rubric.id, offset: 1, limit: 1} }
+        before { get api_v1_rubric_url(id: rubric.id, offset: 1, limit: 1) }
 
         it do
           expect(response).to have_http_status(:ok)
@@ -47,7 +45,7 @@ RSpec.describe Api::V1::RubricsController do
       end
 
       context 'when without limits' do
-        before { get :show, params: {id: rubric.id} }
+        before { get api_v1_rubric_url(id: rubric.id) }
 
         it do
           expect(response).to have_http_status(:ok)
@@ -62,7 +60,7 @@ RSpec.describe Api::V1::RubricsController do
       end
 
       context 'when only_with_geo_tags' do
-        before { get :show, params: {id: rubric.id, only_with_geo_tags: true} }
+        before { get api_v1_rubric_url(id: rubric.id, only_with_geo_tags: true) }
 
         it do
           expect(response).to have_http_status(:ok)
@@ -71,7 +69,7 @@ RSpec.describe Api::V1::RubricsController do
       end
 
       context 'when limit and only_with_geo_tags' do
-        before { get :show, params: {id: rubric.id, only_with_geo_tags: true, offset: 1, limit: 5} }
+        before { get api_v1_rubric_url(id: rubric.id, only_with_geo_tags: true, offset: 1, limit: 5) }
 
         it do
           expect(response).to have_http_status(:ok)
@@ -90,14 +88,14 @@ RSpec.describe Api::V1::RubricsController do
         create :photo, rubric: rubric, storage_filename: 'test.jpg', lat_long: [1, 2], yandex_token: token
         create :track, rubric: rubric, storage_filename: 'test.gpx', yandex_token: token
 
-        get :summary, params: {id: rubric.id}
+        get summary_api_v1_rubric_url(id: rubric.id)
       end
 
       it { expect(json['bounds']).not_to be_empty }
     end
 
     context 'when without bounds' do
-      before { get :summary, params: {id: 1} }
+      before { get summary_api_v1_rubric_url(id: 1) }
 
       it { expect(json['bounds']).to be_nil }
     end

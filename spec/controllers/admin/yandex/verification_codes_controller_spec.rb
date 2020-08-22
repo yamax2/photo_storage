@@ -2,16 +2,14 @@
 
 require 'rails_helper'
 
-RSpec.describe Admin::Yandex::VerificationCodesController do
-  render_views
-
+RSpec.describe Admin::Yandex::VerificationCodesController, type: :request do
   describe '#show' do
     before do
       allow(::Yandex::CreateOrUpdateTokenJob).to receive(:perform_async)
     end
 
     context 'when code presents' do
-      before { get :show, params: {code: '999'} }
+      before { get admin_yandex_verification_code_url(code: '999') }
 
       it do
         expect(::Yandex::CreateOrUpdateTokenJob).to have_received(:perform_async)
@@ -21,7 +19,7 @@ RSpec.describe Admin::Yandex::VerificationCodesController do
     end
 
     context 'when without code' do
-      let(:request) { get :show, params: {code1: '999'} }
+      let(:request) { get admin_yandex_verification_code_url(code1: '999') }
 
       it do
         expect { request }.to raise_error(ActionController::ParameterMissing)

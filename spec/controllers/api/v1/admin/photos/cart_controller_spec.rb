@@ -2,16 +2,14 @@
 
 require 'rails_helper'
 
-RSpec.describe Api::V1::Admin::Photos::CartController do
-  render_views
-
+RSpec.describe Api::V1::Admin::Photos::CartController, type: :request do
   let(:json) { JSON.parse(response.body) }
   let(:redis) { RedisClassy.redis }
   let(:key) { "cart:photos:#{photo.rubric_id}" }
 
   describe '#create' do
     context 'when wrong photo' do
-      subject(:request) { post :create, params: {photo_id: 1} }
+      subject(:request) { post api_v1_admin_photos_cart_url(photo_id: 1) }
 
       it do
         expect { request }.to raise_error(ActiveRecord::RecordNotFound)
@@ -19,7 +17,7 @@ RSpec.describe Api::V1::Admin::Photos::CartController do
     end
 
     context 'when correct photo' do
-      subject(:request) { post :create, params: {photo_id: photo.id} }
+      subject(:request) { post api_v1_admin_photos_cart_url(photo_id: photo.id) }
 
       let(:photo) { create :photo, local_filename: 'test' }
 
@@ -44,7 +42,7 @@ RSpec.describe Api::V1::Admin::Photos::CartController do
 
   describe '#destroy' do
     context 'when wrong photo' do
-      subject(:request) { delete :destroy, params: {photo_id: 1} }
+      subject(:request) { delete api_v1_admin_photos_cart_url(photo_id: 1) }
 
       it do
         expect { request }.to raise_error(ActiveRecord::RecordNotFound)
@@ -52,7 +50,7 @@ RSpec.describe Api::V1::Admin::Photos::CartController do
     end
 
     context 'when correct photo' do
-      subject(:request) { delete :destroy, params: {photo_id: photo.id} }
+      subject(:request) { delete api_v1_admin_photos_cart_url(photo_id: photo.id) }
 
       let(:photo) { create :photo, local_filename: 'test' }
 

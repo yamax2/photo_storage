@@ -2,9 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Api::V1::Admin::Cart::RubricsController do
-  render_views
-
+RSpec.describe Api::V1::Admin::Cart::RubricsController, type: :request do
   let!(:rubric1) { create :rubric, name: 'first' }
   let!(:rubric2) { create :rubric }
   let!(:sub_rubric1) { create :rubric, rubric: rubric1, name: 'sub 1' }
@@ -15,7 +13,7 @@ RSpec.describe Api::V1::Admin::Cart::RubricsController do
 
   describe '#index' do
     context 'when empty cart' do
-      before { get :index }
+      before { get api_v1_admin_cart_rubrics_url }
 
       it do
         expect(response).to have_http_status(:ok)
@@ -44,7 +42,7 @@ RSpec.describe Api::V1::Admin::Cart::RubricsController do
       end
 
       context 'and first level' do
-        before { get :index }
+        before { get api_v1_admin_cart_rubrics_url }
 
         it do
           expect(response).to have_http_status(:ok)
@@ -57,7 +55,7 @@ RSpec.describe Api::V1::Admin::Cart::RubricsController do
       end
 
       context 'and second level' do
-        before { get :index, params: {id: rubric1.id} }
+        before { get api_v1_admin_cart_rubrics_url(id: rubric1.id) }
 
         it do
           expect(response).to have_http_status(:ok)

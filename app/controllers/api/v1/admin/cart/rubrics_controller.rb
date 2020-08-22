@@ -25,6 +25,7 @@ module Api
           end
 
           def selected_rubric_ids
+            # FIXME: wft????
             @selected_rubric_ids ||= redis.
               scan_each(match: 'cart:photos:*', count: 1_000).
               each_with_object({}) { |key, memo| memo[key.gsub(/[^\d]+/, '').to_i] = redis.scard(key) }

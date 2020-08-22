@@ -2,12 +2,10 @@
 
 require 'rails_helper'
 
-RSpec.describe Admin::PhotosController do
-  render_views
-
+RSpec.describe Admin::PhotosController, type: :request do
   describe '#edit' do
     context 'when wrong photo' do
-      subject(:request) { get :edit, params: {id: 1} }
+      subject(:request) { get edit_admin_photo_url(id: 1) }
 
       it do
         expect { request }.to raise_error(ActiveRecord::RecordNotFound)
@@ -15,7 +13,7 @@ RSpec.describe Admin::PhotosController do
     end
 
     context 'when unpublished photo' do
-      subject(:request) { get :edit, params: {id: photo.id} }
+      subject(:request) { get edit_admin_photo_url(id: photo.id) }
 
       let!(:photo) { create :photo, local_filename: 'test' }
 
@@ -28,7 +26,7 @@ RSpec.describe Admin::PhotosController do
       let(:token) { create :'yandex/token' }
       let!(:photo) { create :photo, storage_filename: 'test', yandex_token: token }
 
-      before { get :edit, params: {id: photo.id} }
+      before { get edit_admin_photo_url(id: photo.id) }
 
       it do
         expect(assigns(:photo)).to eq(photo)
@@ -40,7 +38,7 @@ RSpec.describe Admin::PhotosController do
 
   describe '#update' do
     context 'when wrong photo' do
-      subject(:request) { put :update, params: {id: 1, photo: {name: 'test'}} }
+      subject(:request) { put admin_photo_url(id: 1, photo: {name: 'test'}) }
 
       it do
         expect { request }.to raise_error(ActiveRecord::RecordNotFound)
@@ -48,7 +46,7 @@ RSpec.describe Admin::PhotosController do
     end
 
     context 'when unpublished photo' do
-      subject(:request) { put :update, params: {id: photo.id, photo: {name: 'test'}} }
+      subject(:request) { put admin_photo_url(id: photo.id, photo: {name: 'test'}) }
 
       let!(:photo) { create :photo, local_filename: 'test' }
 
@@ -58,7 +56,7 @@ RSpec.describe Admin::PhotosController do
     end
 
     context 'when without photo param' do
-      subject(:request) { put :update, params: {id: photo.id, photo1: {name: 'test'}} }
+      subject(:request) { put admin_photo_url(id: photo.id, photo1: {name: 'test'}) }
 
       let(:token) { create :'yandex/token' }
       let!(:photo) { create :photo, storage_filename: 'test', yandex_token: token }
@@ -72,7 +70,7 @@ RSpec.describe Admin::PhotosController do
       let(:token) { create :'yandex/token' }
       let!(:photo) { create :photo, storage_filename: 'test', yandex_token: token }
 
-      before { put :update, params: {id: photo.id, photo: {name: ''}} }
+      before { put admin_photo_url(id: photo.id, photo: {name: ''}) }
 
       it do
         expect(assigns(:photo)).to eq(photo)
@@ -86,7 +84,7 @@ RSpec.describe Admin::PhotosController do
       let(:token) { create :'yandex/token' }
       let!(:photo) { create :photo, storage_filename: 'test', yandex_token: token, name: 'my' }
 
-      before { put :update, params: {id: photo.id, photo: {name: 'test'}} }
+      before { put admin_photo_url(id: photo.id, photo: {name: 'test'}) }
 
       it do
         expect(assigns(:photo)).to eq(photo)
@@ -100,7 +98,7 @@ RSpec.describe Admin::PhotosController do
       let(:token) { create :'yandex/token' }
       let!(:photo) { create :photo, storage_filename: 'test', yandex_token: token, name: 'my', lat_long: [1, 2] }
 
-      before { put :update, params: {id: photo.id, photo: {lat_long: ['', '']}} }
+      before { put admin_photo_url(id: photo.id, photo: {lat_long: ['', '']}) }
 
       it do
         expect(assigns(:photo)).to eq(photo)

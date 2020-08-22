@@ -2,22 +2,20 @@
 
 require 'rails_helper'
 
-RSpec.describe Api::V1::TracksController do
-  render_views
-
+RSpec.describe Api::V1::TracksController, type: :request do
   describe '#index' do
     let(:json) { JSON.parse(response.body) }
 
     context 'when wrong rubric' do
       it do
-        expect { get :index, params: {rubric_id: 1} }.to raise_error(ActiveRecord::RecordNotFound)
+        expect { get api_v1_rubric_tracks_url(rubric_id: 1) }.to raise_error(ActiveRecord::RecordNotFound)
       end
     end
 
     context 'when rubric without tracks' do
       let(:rubric) { create :rubric }
 
-      before { get :index, params: {rubric_id: rubric.id} }
+      before { get api_v1_rubric_tracks_url(rubric_id: rubric.id) }
 
       it do
         expect(response).to have_http_status(:ok)
@@ -79,7 +77,7 @@ RSpec.describe Api::V1::TracksController do
         create :track, local_filename: 'test', rubric: rubric # track1
         create :track, storage_filename: 'test3.gpx', yandex_token: token # track4
 
-        get :index, params: {rubric_id: rubric.id}
+        get api_v1_rubric_tracks_url(rubric_id: rubric.id)
       end
 
       it do

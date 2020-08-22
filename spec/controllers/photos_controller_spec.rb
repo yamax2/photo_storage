@@ -2,9 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe PhotosController do
-  render_views
-
+RSpec.describe PhotosController, type: :request do
   describe '#show' do
     let(:rubric) { create :rubric }
     let(:token) { create :'yandex/token' }
@@ -13,7 +11,7 @@ RSpec.describe PhotosController do
     end
 
     context 'when preview selected' do
-      before { get :show, params: {page_id: rubric.id, id: photo.id} }
+      before { get page_photo_url(page_id: rubric.id, id: photo.id) }
 
       it do
         expect(response).to have_http_status(:ok)
@@ -27,8 +25,7 @@ RSpec.describe PhotosController do
 
     context 'when large preview selected' do
       before do
-        cookies[:preview_id] = 'max'
-        get :show, params: {page_id: rubric.id, id: photo.id}
+        get page_photo_url(page_id: rubric.id, id: photo.id), headers: {Cookie: 'preview_id=max'}
       end
 
       it do
@@ -42,7 +39,7 @@ RSpec.describe PhotosController do
     end
 
     context 'when wrong rubric in params' do
-      before { get :show, params: {page_id: rubric.id * 2, id: photo.id} }
+      before { get page_photo_url(page_id: rubric.id * 2, id: photo.id) }
 
       it do
         expect(response).to redirect_to(page_photo_path(rubric.id, photo.id))
@@ -50,7 +47,7 @@ RSpec.describe PhotosController do
     end
 
     context 'when non-existent photo' do
-      subject(:request!) { get :show, params: {page_id: rubric.id, id: photo.id * 2} }
+      subject(:request!) { get page_photo_url(page_id: rubric.id, id: photo.id * 2) }
 
       it do
         expect { request! }.to raise_error(ActiveRecord::RecordNotFound)

@@ -2,16 +2,14 @@
 
 require 'rails_helper'
 
-RSpec.describe PagesController do
-  render_views
-
+RSpec.describe PagesController, type: :request do
   describe '#show' do
     let!(:rubric) { create :rubric }
     let(:token) { create :'yandex/token' }
 
     context 'when root' do
       context 'and without rubrics' do
-        before { get :show }
+        before { get root_url }
 
         it do
           expect(response).to have_http_status(:ok)
@@ -28,7 +26,7 @@ RSpec.describe PagesController do
 
           create(:photo, rubric: rubric, yandex_token: token, storage_filename: 'test')
 
-          get :show
+          get root_url
         end
 
         it do
@@ -45,7 +43,7 @@ RSpec.describe PagesController do
         before do
           create :photo, local_filename: 'test', rubric: rubric
 
-          get :show, params: {id: rubric.id}
+          get page_url(id: rubric.id)
         end
 
         it do
@@ -60,7 +58,7 @@ RSpec.describe PagesController do
         before do
           create :photo, storage_filename: 'test', rubric: rubric, yandex_token: token
 
-          get :show, params: {id: rubric.id}
+          get page_url(id: rubric.id)
         end
 
         it do
@@ -75,7 +73,7 @@ RSpec.describe PagesController do
         before do
           create :rubric, rubric: rubric
 
-          get :show, params: {id: rubric.id}
+          get page_url(id: rubric.id)
         end
 
         it do
@@ -92,7 +90,7 @@ RSpec.describe PagesController do
         before do
           create :photo, storage_filename: 'test', rubric: sub_rubric, yandex_token: token
 
-          get :show, params: {id: rubric.id}
+          get page_url(id: rubric.id)
         end
 
         it do
@@ -109,7 +107,7 @@ RSpec.describe PagesController do
 
           Rubric.where(id: rubric.id).update_all(photos_count: 0)
 
-          get :show, params: {id: rubric.id}
+          get page_url(id: rubric.id)
         end
 
         it do
@@ -128,7 +126,7 @@ RSpec.describe PagesController do
 
           Rubric.where(id: rubric.id).update_all(rubrics_count: 0)
 
-          get :show, params: {id: rubric.id}
+          get page_url(id: rubric.id)
         end
 
         it do

@@ -2,14 +2,12 @@
 
 require 'rails_helper'
 
-RSpec.describe Admin::Rubrics::PositionsController do
-  render_views
-
+RSpec.describe Admin::Rubrics::PositionsController, type: :request do
   describe '#create' do
     let(:rubric) { create :rubric }
 
     context 'when bad request (without data param)' do
-      subject(:request) { post :create, params: {positions: {id: rubric.id}} }
+      subject(:request) { post admin_rubrics_positions_url(positions: {id: rubric.id}) }
 
       it do
         expect(::Rubrics::ApplyOrderService).not_to receive(:call!)
@@ -21,14 +19,14 @@ RSpec.describe Admin::Rubrics::PositionsController do
       it do
         expect(::Rubrics::ApplyOrderService).to receive(:call!).with(data: [1, 2, 5], id: rubric.id)
 
-        post :create, params: {id: rubric.id, data: '1,2,5'}
+        post admin_rubrics_positions_url(id: rubric.id, data: '1,2,5')
 
         expect(response).to redirect_to(admin_rubrics_positions_path(id: rubric.id))
       end
     end
 
     context 'when wrong parent rubric' do
-      subject(:request) { post :create, params: {id: rubric.id * 2, data: '1,2,5'} }
+      subject(:request) { post admin_rubrics_positions_url(id: rubric.id * 2, data: '1,2,5') }
 
       it do
         expect(::Rubrics::ApplyOrderService).not_to receive(:call!)
@@ -41,7 +39,7 @@ RSpec.describe Admin::Rubrics::PositionsController do
       it do
         expect(::Rubrics::ApplyOrderService).to receive(:call!).with(data: [1, 2, 5], id: nil)
 
-        post :create, params: {id: '', data: '1,2,5'}
+        post admin_rubrics_positions_url(id: '', data: '1,2,5')
 
         expect(response).to redirect_to(admin_rubrics_positions_path)
       end
@@ -51,7 +49,7 @@ RSpec.describe Admin::Rubrics::PositionsController do
       it do
         expect(::Rubrics::ApplyOrderService).to receive(:call!).with(data: [1, 2, 5], id: nil)
 
-        post :create, params: {data: '1,2,5'}
+        post admin_rubrics_positions_url(data: '1,2,5')
 
         expect(response).to redirect_to(admin_rubrics_positions_path)
       end
@@ -66,7 +64,7 @@ RSpec.describe Admin::Rubrics::PositionsController do
       before { create :photo, rubric: rubric1, exif: {}, original_timestamp: Date.yesterday, local_filename: 'test' }
 
       context 'when by first photo' do
-        before { get :index, params: {ord: 'first_photo'} }
+        before { get admin_rubrics_positions_url(ord: 'first_photo') }
 
         it do
           expect(response).to have_http_status(:ok)
@@ -76,7 +74,7 @@ RSpec.describe Admin::Rubrics::PositionsController do
       end
 
       context 'when default' do
-        before { get :index }
+        before { get admin_rubrics_positions_url }
 
         it do
           expect(response).to have_http_status(:ok)
@@ -88,7 +86,7 @@ RSpec.describe Admin::Rubrics::PositionsController do
 
     context 'when root rubric' do
       context 'and without rubrics' do
-        before { get :index }
+        before { get admin_rubrics_positions_url }
 
         it do
           expect(response).to redirect_to(admin_rubrics_path)
@@ -98,7 +96,7 @@ RSpec.describe Admin::Rubrics::PositionsController do
       context 'and one rubric exists' do
         let!(:rubric) { create :rubric }
 
-        before { get :index }
+        before { get admin_rubrics_positions_url }
 
         it do
           expect(response).to redirect_to(admin_rubrics_path)
@@ -111,7 +109,7 @@ RSpec.describe Admin::Rubrics::PositionsController do
         let!(:rubric1) { create :rubric }
         let!(:rubric2) { create :rubric }
 
-        before { get :index }
+        before { get admin_rubrics_positions_url }
 
         it do
           expect(response).to have_http_status(:ok)
@@ -126,7 +124,7 @@ RSpec.describe Admin::Rubrics::PositionsController do
       let!(:rubric) { create :rubric }
 
       context 'and without rubrics' do
-        before { get :index, params: {id: rubric.id} }
+        before { get admin_rubrics_positions_url(id: rubric.id) }
 
         it do
           expect(response).to redirect_to(admin_rubrics_path(rubric.id))
@@ -138,7 +136,7 @@ RSpec.describe Admin::Rubrics::PositionsController do
       context 'and one rubric exists' do
         let!(:rubric1) { create :rubric, rubric: rubric }
 
-        before { get :index, params: {id: rubric.id} }
+        before { get admin_rubrics_positions_url(id: rubric.id) }
 
         it do
           expect(response).to redirect_to(admin_rubrics_path(rubric.id))
@@ -151,7 +149,7 @@ RSpec.describe Admin::Rubrics::PositionsController do
         let!(:rubric1) { create :rubric, rubric: rubric, ord: 1 }
         let!(:rubric2) { create :rubric, rubric: rubric, ord: 2 }
 
-        before { get :index, params: {id: rubric.id} }
+        before { get admin_rubrics_positions_url(id: rubric.id) }
 
         it do
           expect(response).to have_http_status(:ok)

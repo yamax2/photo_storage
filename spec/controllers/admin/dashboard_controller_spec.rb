@@ -2,11 +2,9 @@
 
 require 'rails_helper'
 
-RSpec.describe Admin::DashboardController do
-  render_views
-
+RSpec.describe Admin::DashboardController, type: :request do
   describe '#index' do
-    before { get :index }
+    before { get admin_root_url }
 
     it do
       expect(response).to have_http_status(:ok)

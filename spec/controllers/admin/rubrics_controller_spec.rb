@@ -2,14 +2,12 @@
 
 require 'rails_helper'
 
-RSpec.describe Admin::RubricsController do
-  render_views
-
+RSpec.describe Admin::RubricsController, type: :request do
   describe '#create' do
     context 'when valid' do
       context 'and without parent rubric' do
         before do
-          post :create, params: {rubric: {name: 'test', description: 'text'}}
+          post admin_rubrics_url(rubric: {name: 'test', description: 'text'})
         end
 
         it do
@@ -22,7 +20,7 @@ RSpec.describe Admin::RubricsController do
         let!(:parent_rubric) { create :rubric }
 
         before do
-          post :create, params: {rubric: {name: 'test', description: 'text', rubric_id: parent_rubric.id}}
+          post admin_rubrics_url(rubric: {name: 'test', description: 'text', rubric_id: parent_rubric.id})
         end
 
         it do
@@ -34,7 +32,7 @@ RSpec.describe Admin::RubricsController do
 
     context 'when invalid' do
       before do
-        post :create, params: {rubric: {name: '', description: 'text'}}
+        post admin_rubrics_url(rubric: {name: '', description: 'text'})
       end
 
       it do
@@ -45,7 +43,7 @@ RSpec.describe Admin::RubricsController do
 
     context 'when without required params' do
       let(:request) do
-        post :create, params: {rubric1: {name: 'zozo', description: 'text'}}
+        post admin_rubrics_url(rubric1: {name: 'zozo', description: 'text'})
       end
 
       it do
@@ -60,7 +58,7 @@ RSpec.describe Admin::RubricsController do
       let!(:rubric) { create :rubric, rubric: parent_rubric }
 
       context 'when single destroy' do
-        before { delete :destroy, params: {id: rubric.id} }
+        before { delete admin_rubric_url(id: rubric.id) }
 
         it do
           expect(response).to redirect_to(admin_rubrics_path(id: parent_rubric.id))
@@ -72,7 +70,7 @@ RSpec.describe Admin::RubricsController do
       end
 
       context 'when rubric with sub_rubrics' do
-        before { delete :destroy, params: {id: parent_rubric.id} }
+        before { delete admin_rubric_url(id: parent_rubric.id) }
 
         it do
           expect(response).to redirect_to(admin_rubrics_path)
@@ -87,7 +85,7 @@ RSpec.describe Admin::RubricsController do
 
     context 'when wrong id' do
       it do
-        expect { delete :destroy, params: {id: 2} }.to raise_error(ActiveRecord::RecordNotFound)
+        expect { delete admin_rubric_url(id: 2) }.to raise_error(ActiveRecord::RecordNotFound)
       end
     end
   end
@@ -99,7 +97,7 @@ RSpec.describe Admin::RubricsController do
 
     context 'when root rubrics' do
       context 'when first page' do
-        before { get :index }
+        before { get admin_rubrics_url }
 
         it do
           expect(response).to render_template(:index)
@@ -109,7 +107,7 @@ RSpec.describe Admin::RubricsController do
       end
 
       context 'when second page' do
-        before { get :index, params: {page: 2} }
+        before { get admin_rubrics_url(page: 2) }
 
         it do
           expect(response).to render_template(:index)
@@ -119,7 +117,7 @@ RSpec.describe Admin::RubricsController do
       end
 
       context 'when wrong page' do
-        before { get :index, params: {page: 3} }
+        before { get admin_rubrics_url(page: 3) }
 
         it do
           expect(response).to render_template(:index)
@@ -131,7 +129,7 @@ RSpec.describe Admin::RubricsController do
       context 'when filter' do
         let!(:my_rubric) { create :rubric, name: 'zozo' }
 
-        before { get :index, params: {q: {name_cont: 'zo'}} }
+        before { get admin_rubrics_url(q: {name_cont: 'zo'}) }
 
         it do
           expect(response).to render_template(:index)
@@ -142,7 +140,7 @@ RSpec.describe Admin::RubricsController do
     end
 
     context 'when sub_rubrics' do
-      before { get :index, params: {id: main_rubric.id} }
+      before { get admin_rubrics_url(id: main_rubric.id) }
 
       it do
         expect(response).to render_template(:index)
@@ -152,7 +150,7 @@ RSpec.describe Admin::RubricsController do
     end
 
     context 'when wrong parent rubric_id' do
-      let(:request) { get :index, params: {id: 0} }
+      let(:request) { get admin_rubrics_url(id: 0) }
 
       it do
         expect { request }.to raise_error(ActiveRecord::RecordNotFound)
@@ -162,7 +160,7 @@ RSpec.describe Admin::RubricsController do
 
   describe '#new' do
     context 'when without parent rubric_id' do
-      before { get :new }
+      before { get new_admin_rubric_url }
 
       it do
         expect(response).to render_template(:new)
@@ -174,7 +172,7 @@ RSpec.describe Admin::RubricsController do
     context 'when parent rubric_id presents' do
       let!(:parent_rubric) { create :rubric }
 
-      before { get :new, params: {id: parent_rubric.id} }
+      before { get new_admin_rubric_url(id: parent_rubric.id) }
 
       it do
         expect(response).to render_template(:new)
@@ -184,7 +182,7 @@ RSpec.describe Admin::RubricsController do
     end
 
     context 'when wrong parent rubric_id' do
-      let(:request) { get :new, params: {id: 1} }
+      let(:request) { get new_admin_rubric_url(id: 1) }
 
       it do
         expect { request }.to raise_error(ActiveRecord::RecordNotFound)
@@ -196,7 +194,7 @@ RSpec.describe Admin::RubricsController do
     let!(:rubric) { create :rubric }
 
     context 'when without parent rubric_id' do
-      before { post :update, params: {id: rubric.id, rubric: {name: 'text 1', description: 'zozo'}} }
+      before { put admin_rubric_url(id: rubric.id, rubric: {name: 'text 1', description: 'zozo'}) }
 
       it do
         expect(response).to redirect_to(admin_rubrics_path)
@@ -209,10 +207,10 @@ RSpec.describe Admin::RubricsController do
       let!(:parent_rubric) { create :rubric }
 
       before do
-        post :update, params: {
+        put admin_rubric_url(
           id: rubric.id,
           rubric: {name: 'text 1', description: 'zozo', rubric_id: parent_rubric.id}
-        }
+        )
       end
 
       it do
@@ -223,7 +221,7 @@ RSpec.describe Admin::RubricsController do
     end
 
     context 'when record invalid' do
-      before { post :update, params: {id: rubric.id, rubric: {name: ''}} }
+      before { put admin_rubric_url(id: rubric.id, rubric: {name: ''}) }
 
       it do
         expect(response).to render_template(:edit)
@@ -233,7 +231,7 @@ RSpec.describe Admin::RubricsController do
     end
 
     context 'when without required params' do
-      let(:request) { post :update, params: {id: rubric.id, rubric1: {name: 'zozo'}} }
+      let(:request) { put admin_rubric_url(id: rubric.id, rubric1: {name: 'zozo'}) }
 
       it do
         expect { request }.to raise_error(ActionController::ParameterMissing)
@@ -241,7 +239,7 @@ RSpec.describe Admin::RubricsController do
     end
 
     context 'when wrong rubric id' do
-      let(:request) { post :update, params: {id: 0, rubric: {name: 'zozo'}} }
+      let(:request) { put admin_rubric_url(id: 0, rubric: {name: 'zozo'}) }
 
       it do
         expect { request }.to raise_error(ActiveRecord::RecordNotFound)
@@ -253,7 +251,7 @@ RSpec.describe Admin::RubricsController do
     context 'when correct id' do
       let(:rubric) { create :rubric }
 
-      before { get :edit, params: {id: rubric.id} }
+      before { get edit_admin_rubric_url(id: rubric.id) }
 
       it do
         expect(response).to render_template(:edit)
@@ -264,7 +262,7 @@ RSpec.describe Admin::RubricsController do
 
     context 'when wrong id' do
       it do
-        expect { get :edit, params: {id: 1} }.to raise_error(ActiveRecord::RecordNotFound)
+        expect { get edit_admin_rubric_url(id: 1) }.to raise_error(ActiveRecord::RecordNotFound)
       end
     end
   end

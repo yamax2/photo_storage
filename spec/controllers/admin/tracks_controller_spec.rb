@@ -2,15 +2,13 @@
 
 require 'rails_helper'
 
-RSpec.describe Admin::TracksController do
-  render_views
-
+RSpec.describe Admin::TracksController, type: :request do
   describe '#destroy' do
     context 'when wrong rubric' do
       let(:track) { create :track, local_filename: 'test' }
 
       it do
-        expect { delete :destroy, params: {rubric_id: track.rubric_id * 2, id: track.id} }.
+        expect { delete admin_rubric_track_url(rubric_id: track.rubric_id * 2, id: track.id) }.
           to raise_error(ActiveRecord::RecordNotFound)
       end
     end
@@ -19,7 +17,7 @@ RSpec.describe Admin::TracksController do
       let(:rubric) { create :rubric }
 
       it do
-        expect { delete :destroy, params: {rubric_id: rubric.id, id: 1} }.
+        expect { delete admin_rubric_track_url(rubric_id: rubric.id, id: 1) }.
           to raise_error(ActiveRecord::RecordNotFound)
       end
     end
@@ -27,7 +25,7 @@ RSpec.describe Admin::TracksController do
     context 'when correct params' do
       let(:track) { create :track, local_filename: 'test' }
 
-      before { delete :destroy, params: {rubric_id: track.rubric_id, id: track.id} }
+      before { delete admin_rubric_track_url(rubric_id: track.rubric_id, id: track.id) }
 
       it do
         expect(response).to redirect_to(admin_rubric_tracks_path(track.rubric))
@@ -43,7 +41,7 @@ RSpec.describe Admin::TracksController do
     context 'when correct id' do
       let(:track) { create :track, local_filename: 'test' }
 
-      before { get :edit, params: {rubric_id: track.rubric_id, id: track.id} }
+      before { get edit_admin_rubric_track_url(rubric_id: track.rubric_id, id: track.id) }
 
       it do
         expect(response).to render_template(:edit)
@@ -56,7 +54,7 @@ RSpec.describe Admin::TracksController do
       let(:rubric) { create :rubric }
 
       it do
-        expect { get :edit, params: {rubric_id: rubric.id, id: 1} }.
+        expect { get edit_admin_rubric_track_url(rubric_id: rubric.id, id: 1) }.
           to raise_error(ActiveRecord::RecordNotFound)
       end
     end
@@ -65,7 +63,7 @@ RSpec.describe Admin::TracksController do
       let(:track) { create :track, local_filename: 'test' }
 
       it do
-        expect { get :edit, params: {rubric_id: track.rubric_id * 2, id: track.id} }.
+        expect { get edit_admin_rubric_track_url(rubric_id: track.rubric_id * 2, id: track.id) }.
           to raise_error(ActiveRecord::RecordNotFound)
       end
     end
@@ -74,7 +72,7 @@ RSpec.describe Admin::TracksController do
   describe '#index' do
     context 'when wrong rubric_id' do
       it do
-        expect { get :index, params: {rubric_id: 2} }.to raise_error(ActiveRecord::RecordNotFound)
+        expect { get admin_rubric_tracks_url(rubric_id: 2) }.to raise_error(ActiveRecord::RecordNotFound)
       end
     end
 
@@ -84,7 +82,7 @@ RSpec.describe Admin::TracksController do
       before { create_list :track, 30, rubric: rubric, local_filename: 'test' }
 
       context 'and first page' do
-        before { get :index, params: {rubric_id: rubric.id} }
+        before { get admin_rubric_tracks_url(rubric_id: rubric.id) }
 
         it do
           expect(response).to render_template(:index)
@@ -94,7 +92,7 @@ RSpec.describe Admin::TracksController do
       end
 
       context 'when second page' do
-        before { get :index, params: {rubric_id: rubric.id, page: 2} }
+        before { get admin_rubric_tracks_url(rubric_id: rubric.id, page: 2) }
 
         it do
           expect(response).to render_template(:index)
@@ -104,7 +102,7 @@ RSpec.describe Admin::TracksController do
       end
 
       context 'when wrong page' do
-        before { get :index, params: {rubric_id: rubric.id, page: 5} }
+        before { get admin_rubric_tracks_url(rubric_id: rubric.id, page: 5) }
 
         it do
           expect(response).to render_template(:index)
@@ -116,7 +114,7 @@ RSpec.describe Admin::TracksController do
       context 'when filter' do
         let!(:my_track) { create :track, name: 'zozo', rubric: rubric, local_filename: 'test' }
 
-        before { get :index, params: {rubric_id: rubric.id, q: {name_cont: 'zo'}} }
+        before { get admin_rubric_tracks_url(rubric_id: rubric.id, q: {name_cont: 'zo'}) }
 
         it do
           expect(response).to render_template(:index)
@@ -132,7 +130,7 @@ RSpec.describe Admin::TracksController do
       let(:track) { create :track, local_filename: 'test' }
 
       it do
-        expect { post :update, params: {rubric_id: track.rubric_id * 2, id: track.id, track: {name: 'test'}} }.
+        expect { put admin_rubric_track_url(rubric_id: track.rubric_id * 2, id: track.id, track: {name: 'test'}) }.
           to raise_error(ActiveRecord::RecordNotFound)
       end
     end
@@ -141,7 +139,7 @@ RSpec.describe Admin::TracksController do
       let(:rubric) { create :rubric }
 
       it do
-        expect { post :update, params: {rubric_id: rubric.id, id: 1, track: {name: 'test'}} }.
+        expect { put admin_rubric_track_url(rubric_id: rubric.id, id: 1, track: {name: 'test'}) }.
           to raise_error(ActiveRecord::RecordNotFound)
       end
     end
@@ -149,7 +147,7 @@ RSpec.describe Admin::TracksController do
     context 'when record invalid' do
       let(:track) { create :track, local_filename: 'test', name: 'test' }
 
-      before { post :update, params: {rubric_id: track.rubric_id, id: track.id, track: {name: ''}} }
+      before { put admin_rubric_track_url(rubric_id: track.rubric_id, id: track.id, track: {name: ''}) }
 
       it do
         expect(response).to render_template(:edit)
@@ -162,7 +160,7 @@ RSpec.describe Admin::TracksController do
       let(:track) { create :track, local_filename: 'test', name: 'zozo' }
 
       it do
-        expect { post :update, params: {rubric_id: track.rubric_id, id: track.id, track1: {name: 'test'}} }.
+        expect { put admin_rubric_track_url(rubric_id: track.rubric_id, id: track.id, track1: {name: 'test'}) }.
           to raise_error(ActionController::ParameterMissing)
       end
     end
@@ -170,7 +168,9 @@ RSpec.describe Admin::TracksController do
     context 'when successful update' do
       let(:track) { create :track, local_filename: 'test', name: 'test', color: 'red' }
 
-      before { post :update, params: {rubric_id: track.rubric_id, id: track.id, track: {name: 'zozo', color: 'blue'}} }
+      before do
+        put admin_rubric_track_url(rubric_id: track.rubric_id, id: track.id, track: {name: 'zozo', color: 'blue'})
+      end
 
       it do
         expect(response).to redirect_to(admin_rubric_tracks_path(track.rubric))
@@ -185,11 +185,11 @@ RSpec.describe Admin::TracksController do
       let(:track) { create :track, local_filename: 'test', name: 'test' }
 
       before do
-        post :update, params: {
+        put admin_rubric_track_url(
           rubric_id: track.rubric_id,
           id: track.id,
           track: {name: 'zozo', rubric_id: new_rubric.id}
-        }
+        )
       end
 
       it do
