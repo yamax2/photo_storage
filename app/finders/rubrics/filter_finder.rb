@@ -16,7 +16,7 @@ module Rubrics
 
       table_name = Rubric.quoted_table_name
 
-      Rubric.joins(<<~SQL)
+      Rubric.joins(<<~SQL.squish)
         JOIN (
           WITH RECURSIVE filtered AS (
             SELECT id, rubric_id FROM #{table_name}

@@ -1,7 +1,7 @@
 ARG DOCKER_RUBY_VERSION=2.7.1
 FROM ruby:${DOCKER_RUBY_VERSION}-alpine AS base
 
-RUN apk add --update --no-cache tzdata libexif-dev xz-dev libpq less postgresql-dev postgresql-client nodejs
+RUN apk add --update --no-cache tzdata libexif-dev xz-dev libpq less postgresql-client nodejs
 RUN gem update --system
 RUN gem install 'bundler:2.1.4'
 RUN mkdir /photostorage
@@ -22,12 +22,15 @@ COPY vendor /photostorage/vendor
 COPY config.ru /photostorage/config.ru
 COPY Rakefile /photostorage/Rakefile
 
-RUN bundle config set deployment 'true'
+RUN bundle config set deployment true
+RUN bundle config set no-cache true
+RUN bundle config set clean true
+RUN bundle config set frozen true
 # production env is only for ubuntu
 RUN bundle config set without 'development test production'
 
 FROM base AS builder
-RUN apk add --update --no-cache build-base
+RUN apk add --update --no-cache build-base postgresql-dev
 RUN bundle install
 RUN bundle exec rails assets:precompile
 

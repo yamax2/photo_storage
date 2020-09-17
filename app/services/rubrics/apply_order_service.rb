@@ -10,7 +10,7 @@ module Rubrics
     def call
       table_name = Rubric.quoted_table_name
 
-      Rubric.connection.execute(<<~SQL)
+      Rubric.connection.execute(<<~SQL.squish)
         WITH ord as (#{build_ord_table}), result as (
           SELECT rubrics.id, ROW_NUMBER() OVER (ORDER BY ord.rn) rn
             FROM ord, #{table_name} rubrics

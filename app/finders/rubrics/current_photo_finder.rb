@@ -24,7 +24,7 @@ module Rubrics
     private
 
     def find_photos
-      Photo.find_by_sql(<<~SQL).index_by(&:rn)
+      Photo.find_by_sql(<<~SQL.squish).index_by(&:rn)
         WITH scope AS (
           #{PhotosFinder.call(@rubric_id).to_sql}
         ), current_photo AS (

@@ -21,7 +21,6 @@ require File.expand_path('../config/environment', __dir__)
 abort('The Rails environment is running in production mode!') if Rails.env.production?
 
 require 'rspec/rails'
-require 'strip_attributes/matchers'
 require 'timecop'
 require 'webmock/rspec'
 require 'vcr'

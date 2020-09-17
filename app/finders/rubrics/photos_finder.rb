@@ -34,7 +34,7 @@ module Rubrics
 
       scope.select(
         Photo.arel_table[Arel.star],
-        <<~SQL
+        <<~SQL.squish
           ROW_NUMBER() OVER (
             ORDER BY #{quoted_table_name}.original_timestamp AT TIME ZONE #{quoted_table_name}.tz NULLS FIRST,
                      #{quoted_table_name}.id

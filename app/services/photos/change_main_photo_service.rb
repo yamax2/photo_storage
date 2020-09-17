@@ -25,7 +25,7 @@ module Photos
     end
 
     def first_photo_id(rubric)
-      Photo.connection.execute(<<~SQL).first&.fetch('id')
+      Photo.connection.execute(<<~SQL.squish).first&.fetch('id')
         WITH RECURSIVE tt AS (
           SELECT id, rubric_id, 0 lv
             FROM #{Rubric.quoted_table_name} rubrics

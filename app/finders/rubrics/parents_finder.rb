@@ -10,7 +10,7 @@ module Rubrics
     def call
       table_name = Rubric.quoted_table_name
 
-      Rubric.joins(<<~SQL).order(:lv)
+      Rubric.joins(<<~SQL.squish).order(:lv)
         JOIN (
           WITH RECURSIVE tt AS (
             SELECT id, rubric_id, 0 lv FROM #{table_name}

@@ -7,7 +7,7 @@ module Rubrics
     delegate :rubric_id, to: :context
 
     def call
-      context.bounds = ActiveRecord::Base.connection.execute(<<~SQL).first.symbolize_keys!
+      context.bounds = ActiveRecord::Base.connection.execute(<<~SQL.squish).first.symbolize_keys!
         SELECT MIN(lat) min_lat, MIN(long) min_long, MAX(lat) max_lat, MAX(long) max_long
           FROM (#{bounds_query}) info
       SQL
