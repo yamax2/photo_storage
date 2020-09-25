@@ -30,6 +30,7 @@ module Rubrics
 
     def photos_scope
       scope = Photo.where(rubric_id: @rubric_id).uploaded
+
       scope.where!(Photo.arel_table[:lat_long].not_eq(nil)) if @only_with_geo_tags
 
       scope.select(
