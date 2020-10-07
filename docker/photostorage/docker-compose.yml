@@ -1,6 +1,6 @@
 version: '3.3'
 
-# DOCKER_RUBY_VERSION: 2.7.1
+# DOCKER_RUBY_VERSION: 2.7
 # POSTGRES_VERSION: 12.4
 # REDIS_VERSION: 6
 # NGINX_VERSION=1.19.1
@@ -13,7 +13,7 @@ services:
       context: ../../
       dockerfile: docker/photostorage/Dockerfile
       args:
-        DOCKER_RUBY_VERSION: ${DOCKER_RUBY_VERSION:-2.7.1}
+        DOCKER_RUBY_VERSION: ${DOCKER_RUBY_VERSION:-2.7}
     env_file: .env
     stdin_open: true
     tty: true
@@ -29,7 +29,7 @@ services:
       context: ../../
       dockerfile: docker/photostorage/Dockerfile
       args:
-        DOCKER_RUBY_VERSION: ${DOCKER_RUBY_VERSION:-2.7.1}
+        DOCKER_RUBY_VERSION: ${DOCKER_RUBY_VERSION:-2.7}
     env_file: .env
     depends_on:
       - db
