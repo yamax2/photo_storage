@@ -24,6 +24,9 @@ services:
     volumes:
       - static-files:/photostorage/public
       - upload:/photostorage/tmp/files
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "localhost:3000/api/v1/readiness"]
+      timeout: 10s
 
   sidekiq:
     build:
