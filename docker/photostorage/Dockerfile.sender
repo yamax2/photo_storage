@@ -1,0 +1,17 @@
+ARG GO_VERSION=1.14.2
+FROM golang:${GO_VERSION}-alpine as builder
+
+RUN mkdir /app
+WORKDIR /app
+RUN apk --update --no-cache add git openssh
+RUN ssh-keyscan -H github.com >> /etc/ssh/ssh_known_hosts
+RUN git clone https://github.com/yamax2/smtp_tg.git
+RUN cd /app/smtp_tg && CGO_ENABLED=0 GOOS=linux go build -ldflags "-s -w" -a -o smtp_tg
+
+FROM alpine
+
+COPY --from=builder /app/smtp_tg/smtp_tg /
+ENV ST_SMTP_LISTEN "0.0.0.0:2525"
+EXPOSE 2525
+
+CMD /smtp_tg

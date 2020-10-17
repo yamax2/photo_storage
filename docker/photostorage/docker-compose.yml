@@ -20,6 +20,7 @@ services:
     depends_on:
       - db
       - redis
+      - sender
     volumes:
       - static-files:/photostorage/public
       - upload:/photostorage/tmp/files
@@ -64,6 +65,14 @@ services:
     depends_on:
       - db
       - web
+
+  sender:
+    build:
+      context: .
+      dockerfile: Dockerfile.sender
+      args:
+        GO_VERSION: ${GO_VERSION:-1.14.2}
+    env_file: .env
 
   nginx:
     image: nginx:${NGINX_VERSION:-1.19.3}-alpine

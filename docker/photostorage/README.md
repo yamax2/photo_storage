@@ -15,11 +15,6 @@ PHOTOSTORAGE_SMTP_DOMAIN=...   # заполняется в случае почт
 ```
 
 Регистрация приложения на https://oauth.yandex.ru/, получаем id и secret приложения
-```ruby
-PHOTOSTORAGE_YANDEX_API_KEY=...    # id приложения
-PHOTOSTORAGE_YANDEX_API_SECRET=... # секрет
-```
-
 права следующие:
 ```
 Яндекс.Диск REST API
@@ -36,7 +31,7 @@ API Яндекс.Паспорта
 Прочие настройки:
 ```ruby
 TZ=Asia/Yekaterinburg # тайм-зона по умолчанию
-PHOTOSTORAGE_ADMIN_EMAILS=max@tretyakov-ma.ru,max@mytm.tk  # почты для служебных уведомления через запятую
+PHOTOSTORAGE_ADMIN_EMAILS=max@tretyakov-ma.ru,maximtr@yandex.ru  # почты для служебных уведомления через запятую
 PHOTOSTORAGE_ADDITIONAL_TIMEZONES # добавочные тайм-зоны для фотографий
 ```
 

@@ -14,4 +14,7 @@ test:
   <<: *default
 
 production:
-  <<: *default
+  default_from: auto@tretyakov-ma.ru
+  smtp:
+    address: sender
+    port: 2525

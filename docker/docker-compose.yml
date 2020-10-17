@@ -9,8 +9,6 @@ services:
       - BUNDLE_PATH=/bundle/${DOCKER_RUBY_VERSION}
       - SSH_AUTH_SOCK=/ssh/auth/sock
       - RAILS_ENV=$RAILS_ENV
-      - EDITOR=nano
-      - BROWSER=/bin/cat
     depends_on:
       - db
       - redis
@@ -40,8 +38,6 @@ services:
       - BUNDLE_PATH=/bundle/${DOCKER_RUBY_VERSION}
       - SSH_AUTH_SOCK=/ssh/auth/sock
       - RAILS_ENV=$RAILS_ENV
-      - EDITOR=nano
-      - BROWSER=/bin/cat
       - VIRTUAL_HOST=photostorage.$DOCKER_TLD
       - VIRTUAL_PATH=/
 
