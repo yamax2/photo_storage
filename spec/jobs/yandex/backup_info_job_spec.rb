@@ -9,7 +9,7 @@ RSpec.describe Yandex::BackupInfoJob do
   context 'when correct resource' do
     subject(:request) do
       VCR.use_cassette('yandex_download_url_photos') do
-        described_class.perform_async(token.id, :photos, 'test')
+        described_class.perform_async(token.id, :photo, 'test')
       end
     end
 

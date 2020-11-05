@@ -5,6 +5,7 @@ module Yandex
     include ::Interactor
 
     INFO_KEY_TTL = 5.minutes
+    private_constant :INFO_KEY_TTL
 
     delegate :token, :resource, :info, to: :context
 

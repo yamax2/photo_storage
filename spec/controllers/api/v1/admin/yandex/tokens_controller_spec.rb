@@ -31,7 +31,7 @@ RSpec.describe Api::V1::Admin::Yandex::TokensController, type: :request do
             {
               'id' => token.id,
               'login' => token.login,
-              'type' => 'photos'
+              'type' => 'photo'
             }
           ]
         )
@@ -51,12 +51,12 @@ RSpec.describe Api::V1::Admin::Yandex::TokensController, type: :request do
           {
             'id' => token.id,
             'login' => token.login,
-            'type' => 'photos'
+            'type' => 'photo'
           },
           {
             'id' => token.id,
             'login' => token.login,
-            'type' => 'other'
+            'type' => 'track'
           }
         ]
       end
@@ -74,17 +74,17 @@ RSpec.describe Api::V1::Admin::Yandex::TokensController, type: :request do
           {
             'id' => token.id,
             'login' => token.login,
-            'type' => 'photos'
+            'type' => 'photo'
           },
           {
             'id' => token.id,
             'login' => token.login,
-            'type' => 'other'
+            'type' => 'track'
           },
           {
             'id' => another_token.id,
             'login' => another_token.login,
-            'type' => 'photos'
+            'type' => 'photo'
           }
         ]
       end
@@ -113,6 +113,10 @@ RSpec.describe Api::V1::Admin::Yandex::TokensController, type: :request do
     after { Sidekiq::Worker.clear_all }
 
     context 'when wrong resource' do
+      before do
+        create :photo, yandex_token: token, storage_filename: 'test.jpg', size: 12
+      end
+
       it do
         expect { get api_v1_admin_yandex_token_url(id: token.id, resource: :wrong) }.
           to raise_error(Yandex::BackupInfoService::WrongResourceError)
@@ -120,8 +124,12 @@ RSpec.describe Api::V1::Admin::Yandex::TokensController, type: :request do
     end
 
     context 'when enqueue' do
+      before do
+        create :photo, yandex_token: token, storage_filename: 'test.jpg', size: 12
+      end
+
       it do
-        expect { get api_v1_admin_yandex_token_url(id: token.id, resource: :photos) }.
+        expect { get api_v1_admin_yandex_token_url(id: token.id, resource: :photo) }.
           to change { Yandex::BackupInfoJob.jobs.size }.by(1)
 
         expect(response).to have_http_status(:accepted)
@@ -130,10 +138,14 @@ RSpec.describe Api::V1::Admin::Yandex::TokensController, type: :request do
     end
 
     context 'when job already enqueued' do
-      before { RedisClassy.redis.set("backup_info:#{token.id}:photos", nil) }
+      before do
+        RedisClassy.redis.set("backup_info:#{token.id}:photo", nil)
+
+        create :photo, yandex_token: token, storage_filename: 'test.jpg', size: 12
+      end
 
       it do
-        expect { get api_v1_admin_yandex_token_url(id: token.id, resource: :photos) }.
+        expect { get api_v1_admin_yandex_token_url(id: token.id, resource: :photo) }.
           not_to(change { Yandex::BackupInfoJob.jobs.size })
 
         expect(response).to have_http_status(:accepted)
@@ -141,21 +153,47 @@ RSpec.describe Api::V1::Admin::Yandex::TokensController, type: :request do
       end
     end
 
-    context 'when job finished' do
-      before { RedisClassy.redis.set("backup_info:#{token.id}:photos", 'value') }
+    context 'when job finished for photo' do
+      before do
+        RedisClassy.redis.set("backup_info:#{token.id}:photo", 'value')
+
+        create :photo, yandex_token: token, storage_filename: 'test.jpg', size: 12
+      end
 
       it do
-        expect { get api_v1_admin_yandex_token_url(id: token.id, resource: :photos) }.
+        expect { get api_v1_admin_yandex_token_url(id: token.id, resource: :photo) }.
           not_to(change { Yandex::BackupInfoJob.jobs.size })
 
         expect(response).to have_http_status(:ok)
+
         expect(json['info']).to eq('value')
+        expect(json['size']).to eq(12)
+        expect(json['count']).to eq(1)
+      end
+    end
+
+    context 'when job finished for track' do
+      before do
+        RedisClassy.redis.set("backup_info:#{token.id}:track", 'value')
+
+        create :track, yandex_token: token, storage_filename: 'test.gpx', size: 12
+      end
+
+      it do
+        expect { get api_v1_admin_yandex_token_url(id: token.id, resource: :track) }.
+          not_to(change { Yandex::BackupInfoJob.jobs.size })
+
+        expect(response).to have_http_status(:ok)
+
+        expect(json['info']).to eq('value')
+        expect(json['size']).to eq(12)
+        expect(json['count']).to eq(1)
       end
     end
 
     context 'when wrong token' do
       it do
-        expect { get api_v1_admin_yandex_token_url(id: token.id * 2, resource: :photos) }.
+        expect { get api_v1_admin_yandex_token_url(id: token.id * 2, resource: :photo) }.
           to raise_error(ActiveRecord::RecordNotFound)
       end
     end
@@ -164,6 +202,13 @@ RSpec.describe Api::V1::Admin::Yandex::TokensController, type: :request do
       it do
         expect { get api_v1_admin_yandex_token_url(id: token.id) }.
           to raise_error(ActionController::ParameterMissing)
+      end
+    end
+
+    context 'when token without resources' do
+      it do
+        expect { get api_v1_admin_yandex_token_url(id: token.id, resource: :photo) }.
+          to raise_error(ActiveRecord::RecordNotFound)
       end
     end
   end

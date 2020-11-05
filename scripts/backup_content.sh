@@ -10,12 +10,13 @@ SECRET='very_secret'
 TG_CHAT_ID='-...'
 TG_BOT_ID='...:...'
 TG_CURL_PROXY='socks5h://user:passs@host:port'
+CURL_PROXY=
 
 fn="$(date +"%Y_%m_%d")"
 
 tg_notify()
 {
-  curl -fLsk "https://api.telegram.org/bot$TG_BOT_ID/sendMessage" -d "{\"chat_id\": $TG_CHAT_ID, \"text\": \"$1\"}" \
+  curl -Lsk "https://api.telegram.org/bot$TG_BOT_ID/sendMessage" -d "{\"chat_id\": $TG_CHAT_ID, \"text\": \"$1\"}" \
       -H 'Content-Type: application/json; charset=utf-8' -x "$TG_CURL_PROXY" > /dev/null
 }
 
@@ -25,7 +26,7 @@ api_request()
 
   attempt=0
   while true; do
-    response=$(curl -fLsk -u "$AUTH" "$PHOTO_HOST$1")
+    response=$(curl -Lsk -u "$AUTH" -x "$CURL_PROXY" "$PHOTO_HOST$1")
 
     if [ $? -ne 0 ]; then
       tg_notify "⛔ fail to get api url $1"
@@ -74,7 +75,7 @@ api_request '/api/v1/admin/yandex/tokens' | \
   url=$(echo "$info" | awk '{ print $1 }')
   token=$(echo "$info" | awk '{ print $2  }')
 
-  if curl -fLsk -o "$filename" -H "Authorization: OAuth $token" "$url" ; then
+  if curl -Lsk -x "$CURL_PROXY" -o "$filename" -H "Authorization: OAuth $token" "$url" ; then
     tg_notify "✅ $filename has been downloaded"
 
     # "find -not" is not supported

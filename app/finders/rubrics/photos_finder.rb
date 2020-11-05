@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Rubrics
-  # finds photos for rubric
+  # finds photos for the rubric
   class PhotosFinder
     def initialize(rubric_id, opts = {})
       @rubric_id = rubric_id
