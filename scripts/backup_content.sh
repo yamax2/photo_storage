@@ -64,8 +64,9 @@ api_request '/api/v1/admin/yandex/tokens' | \
 
   key=$(echo -n $SECRET | sha256sum | awk '{ print $1 }')
   iv=$(echo -n $login | md5sum | awk '{ print $1 }')
-  info=$(api_request "/api/v1/admin/yandex/tokens/$id?resource=$resource" | jq -r '.info' | \
-    openssl aes-256-cbc -a -d -K "$key" -iv "$iv")
+
+  token_data=$(api_request "/api/v1/admin/yandex/tokens/$id?resource=$resource")
+  info=$(echo "$token_data" | jq -r '.info' | openssl aes-256-cbc -a -d -K "$key" -iv "$iv")
 
   if [ -z "$info" ]; then
     continue
@@ -77,6 +78,19 @@ api_request '/api/v1/admin/yandex/tokens' | \
 
   if curl -Lsk -x "$CURL_PROXY" -o "$filename" -H "Authorization: OAuth $token" "$url" ; then
     tg_notify "✅ $filename has been downloaded"
+
+    actual_data=$(unzip -l "$filename" | tail -n 1 | awk '{print $1":"$2}')
+    files_size=$(echo "$token_data" | jq -r '.size')
+    files_count=$(echo $token_data | jq -r '.count')
+    files_data="$files_size:$files_count"
+
+    if [ "$actual_data" = "$files_data" ]; then
+      tg_notify "✅ $filename validation passed $files_data"
+    else
+      tg_notify "⛔ $filename validation fails: downloaded $actual_data instead of $files_data"
+
+      continue
+    fi
 
     # "find -not" is not supported
     files_to_remove=$(find . -type f -name "$id-$resource*.zip" | grep -v "$fn")
