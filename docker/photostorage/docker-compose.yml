@@ -1,7 +1,7 @@
 version: '3.3'
 
 # DOCKER_RUBY_VERSION: 2.7
-# POSTGRES_VERSION: 13.0
+# POSTGRES_VERSION: 13.1
 # REDIS_VERSION: 6
 # NGINX_VERSION=1.19.3
 # POSTGRES_DB: photos
@@ -46,7 +46,7 @@ services:
       - nginx
 
   db:
-    image: postgres:${POSTGRES_VERSION:-13.0}-alpine
+    image: postgres:${POSTGRES_VERSION:-13.1}-alpine
     environment:
       - POSTGRES_DB=${POSTGRES_DB:-photos}
       - POSTGRES_HOST_AUTH_METHOD=trust

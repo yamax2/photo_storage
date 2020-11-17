@@ -48,6 +48,14 @@ api_request()
   done
 }
 
+zip_info()
+{
+  count=$(unzip -Z "$1" | sed -e '1,2d' | sed '$ d' | awk '{print $4}' | grep -v '^0$' | wc -l)
+  size=$(unzip -Zt "$1" | tail -n 1 | awk '{print $3}')
+
+  echo "$size:$count"
+}
+
 tg_notify '📂 backup started'
 
 api_request '/api/v1/admin/yandex/tokens' | \
@@ -79,7 +87,8 @@ api_request '/api/v1/admin/yandex/tokens' | \
   if curl -Lsk -x "$CURL_PROXY" -o "$filename" -H "Authorization: OAuth $token" "$url" ; then
     tg_notify "✅ $filename has been downloaded"
 
-    actual_data=$(unzip -l "$filename" | tail -n 1 | awk '{print $1":"$2}')
+    actual_data=$(zip_info "$filename")
+
     files_size=$(echo "$token_data" | jq -r '.size')
     files_count=$(echo $token_data | jq -r '.count')
     files_data="$files_size:$files_count"
