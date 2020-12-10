@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'rails_helper'
-
 RSpec.describe Photo do
   it_behaves_like 'storable model', :photo
   it_behaves_like 'model with counter', :photo

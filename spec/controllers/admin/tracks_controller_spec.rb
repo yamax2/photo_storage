@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'rails_helper'
-
 RSpec.describe Admin::TracksController, type: :request do
   describe '#destroy' do
     context 'when wrong rubric' do

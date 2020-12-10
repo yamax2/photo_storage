@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'rails_helper'
-
 RSpec.describe Photos::DumpViewsJob do
   before do
     allow(Counters::DumpService).to receive(:call!)

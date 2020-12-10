@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'rails_helper'
-
 RSpec.describe PhotosController, type: :request do
   describe '#show' do
     let(:rubric) { create :rubric }

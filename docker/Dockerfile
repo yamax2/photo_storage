@@ -1,4 +1,5 @@
-FROM ruby:2.7-alpine
+ARG DOCKER_RUBY_VERSION
+FROM ruby:${DOCKER_RUBY_VERSION}-alpine
 
 RUN apk add --update --no-cache \
     tzdata libexif-dev openssh-client xz-dev libpq nodejs build-base less git postgresql-dev postgresql-client mc

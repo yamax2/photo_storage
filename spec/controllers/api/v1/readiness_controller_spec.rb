@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'rails_helper'
-
 RSpec.describe Api::V1::ReadinessController, type: :request do
   context 'when everything is ok' do
     before { get api_v1_readiness_url }

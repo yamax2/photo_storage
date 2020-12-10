@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'rails_helper'
-
 RSpec.describe Yandex::RefreshQuotaService do
   let(:redis) { RedisClassy.redis }
   let(:token) { create :'yandex/token', access_token: API_ACCESS_TOKEN }

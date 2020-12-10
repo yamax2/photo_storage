@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'rails_helper'
-
 RSpec.describe Rubrics::PhotosFinder do
   before do
     Timecop.freeze

@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'rails_helper'
-
 RSpec.describe Yandex::BackupInfoService do
   let(:backup_secret) { 'very_secret' }
   let(:token) do

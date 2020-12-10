@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'rails_helper'
-
 RSpec.describe Photos::LoadInfoService do
   let(:photo) { build :photo, local_filename: filename }
 

@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'rails_helper'
-
 RSpec.describe Rubrics::FilterFinder do
   subject(:result) { described_class.call(name_part: name_part) }
 

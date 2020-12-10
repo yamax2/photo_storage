@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'rails_helper'
-
 RSpec.describe ReviseMailer do
   describe '#failed' do
     subject(:mail) { described_class.failed('000/013/', 10, info).deliver_now }

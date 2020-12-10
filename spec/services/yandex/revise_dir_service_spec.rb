@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'rails_helper'
-
 RSpec.describe Yandex::ReviseDirService do
   let(:dir) { '000/013/' }
   let(:token) { create :'yandex/token', dir: '/test', access_token: API_ACCESS_TOKEN }

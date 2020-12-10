@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'rails_helper'
-
 RSpec.describe RedisScriptService do
   let(:script) { 'return redis.call("GETSET", KEYS[1], ARGV[1])' }
   let(:redis) { RedisClassy.redis }

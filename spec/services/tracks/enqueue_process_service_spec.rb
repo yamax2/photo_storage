@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'rails_helper'
-
 RSpec.describe Tracks::EnqueueProcessService do
   let(:track) { build :track }
   let(:service_context) { described_class.call(model: track, uploaded_io: gpx) }

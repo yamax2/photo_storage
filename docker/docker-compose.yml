@@ -1,10 +1,14 @@
-version: '3.3'
+version: '3.7'
 
 services:
   app: &app
     build:
       context: ../
-      dockerfile: ./docker/Dockerfile.${DOCKER_RUBY_VERSION}
+      dockerfile: ./docker/Dockerfile
+      args:
+        DOCKER_RUBY_VERSION: $DOCKER_RUBY_VERSION
+      labels:
+        com.photo-storage.ruby.version: $DOCKER_RUBY_VERSION
     environment:
       - BUNDLE_PATH=/bundle/${DOCKER_RUBY_VERSION}
       - SSH_AUTH_SOCK=/ssh/auth/sock
@@ -62,7 +66,11 @@ services:
   proxy:
     build:
       context: ../
-      dockerfile: ./docker/Dockerfile.proxy.${GO_IMAGE_TAG}
+      dockerfile: ./docker/Dockerfile.proxy
+      args:
+        DOCKER_GO_VERSION: $DOCKER_GO_VERSION
+      labels:
+        com.photo-storage.go.version: $DOCKER_GO_VERSION
     working_dir: /app
     depends_on:
       - db

@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'rails_helper'
-
 RSpec.describe Admin::Rubrics::PositionsController, type: :request do
   describe '#create' do
     let(:rubric) { create :rubric }

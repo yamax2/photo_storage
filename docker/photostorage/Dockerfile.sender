@@ -1,5 +1,5 @@
-ARG GO_VERSION=1.15.5
-FROM golang:${GO_VERSION}-alpine as builder
+ARG DOCKER_GO_VERSION
+FROM golang:${DOCKER_GO_VERSION}-alpine as builder
 
 RUN mkdir /app
 WORKDIR /app

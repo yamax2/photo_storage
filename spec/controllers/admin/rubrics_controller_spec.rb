@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'rails_helper'
-
 RSpec.describe Admin::RubricsController, type: :request do
   describe '#create' do
     context 'when valid' do

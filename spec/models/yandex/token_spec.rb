@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'rails_helper'
-
 RSpec.describe Yandex::Token do
   describe 'structure' do
     it { is_expected.to have_db_column(:user_id).of_type(:string).with_options(null: false, limit: 20) }

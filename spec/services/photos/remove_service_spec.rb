@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'rails_helper'
-
 RSpec.describe Photos::RemoveService do
   let(:token) { create :'yandex/token', access_token: API_ACCESS_TOKEN, dir: '/test' }
   let(:service_context) { described_class.call!(storage_filename: 'IMG_20190501_142011.jpg', yandex_token: token) }

@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'rails_helper'
-
 RSpec.describe Yandex::RefreshTokenJob do
   before do
     allow(Yandex::RefreshTokenService).to receive(:call!)

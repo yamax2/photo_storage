@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'rails_helper'
-
 RSpec.describe PhotosHelper do
   describe '#photo_size_selector_opts' do
     it do

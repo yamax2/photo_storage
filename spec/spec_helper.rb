@@ -1,33 +1,79 @@
 # frozen_string_literal: true
 
-RSpec.configure do |config|
-  # rspec-expectations config goes here. You can use an alternate
-  # assertion/expectation library such as wrong or the stdlib/minitest
-  # assertions if you prefer.
-  config.expect_with :rspec do |expectations|
-    # This option will default to `true` in RSpec 4. It makes the `description`
-    # and `failure_message` of custom matchers include text for helper methods
-    # defined using `chain`, e.g.:
-    #     be_bigger_than(2).and_smaller_than(4).description
-    #     # => "be bigger than 2 and smaller than 4"
-    # ...rather than:
-    #     # => "be bigger than 2"
-    expectations.include_chain_clauses_in_custom_matcher_descriptions = true
-  end
+require 'simplecov' if RSpec.configuration.files_to_run.size > 1
+require 'strip_attributes/matchers'
 
-  # rspec-mocks config goes here. You can use an alternate test double
-  # library (such as bogus or mocha) by changing the `mock_with` option here.
-  config.mock_with :rspec do |mocks|
-    # Prevents you from mocking or stubbing a method that does not exist on
-    # a real object. This is generally recommended, and will default to
-    # `true` in RSpec 4.
-    mocks.verify_partial_doubles = true
-  end
+ENV['RAILS_ENV'] ||= 'test'
+require File.expand_path('../config/environment', __dir__)
+# Prevent database truncation if the environment is production
+abort('The Rails environment is running in production mode!') if Rails.env.production?
 
-  # This option will default to `:apply_to_host_groups` in RSpec 4 (and will
-  # have no way to turn it off -- the option exists only for backwards
-  # compatibility in RSpec 3). It causes shared context metadata to be
-  # inherited by the metadata hash of host groups and examples, rather than
-  # triggering implicit auto-inclusion in groups with matching metadata.
-  config.shared_context_metadata_behavior = :apply_to_host_groups
+require 'rspec/rails'
+require 'timecop'
+require 'webmock/rspec'
+require 'vcr'
+require 'sidekiq/testing'
+
+Dir[Rails.root.join('spec/support/**/*.rb')].sort.each { |file| require(file) }
+
+begin
+  ActiveRecord::Migration.maintain_test_schema!
+rescue ActiveRecord::PendingMigrationError => e
+  puts e.to_s.strip
+  exit 1
 end
+
+RSpec.configure do |config|
+  config.include FactoryBot::Syntax::Methods
+  config.include StripAttributes::Matchers
+
+  config.use_transactional_fixtures = true
+
+  # The different available types are documented in the features, such as in
+  # https://relishapp.com/rspec/rspec-rails/docs
+  config.infer_spec_type_from_file_location!
+
+  # Filter lines from Rails gems in backtraces.
+  config.filter_rails_from_backtrace!
+
+  config.after do
+    RedisClassy.redis.flushdb
+    RedisClassy.redis.script(:flush)
+  end
+end
+
+Shoulda::Matchers.configure do |config|
+  config.integrate do |with|
+    with.test_framework :rspec
+    with.library :rails
+  end
+end
+
+API_APPLICATION_KEY = 'key'
+API_APPLICATION_SECRET = 'secret'
+
+API_ACCESS_TOKEN = 'access'
+API_REFRESH_TOKEN = 'refresh'
+
+VCR.configure do |c|
+  c.ignore_localhost = true
+  c.cassette_library_dir = 'spec/cassettes'
+  c.hook_into :webmock
+
+  c.filter_sensitive_data('<API_SECRET_KEY>') { API_APPLICATION_SECRET }
+  c.filter_sensitive_data('<TOKEN>') { API_ACCESS_TOKEN }
+  c.filter_sensitive_data('<REFRESH_TOKEN>') { API_REFRESH_TOKEN }
+
+  c.configure_rspec_metadata!
+  c.preserve_exact_body_bytes do |http_message|
+    http_message.body.encoding.name == 'ASCII-8BIT' ||
+      !http_message.body.valid_encoding?
+  end
+end
+
+YandexClient.configure do |config|
+  config.api_key = API_APPLICATION_KEY
+  config.api_secret = API_APPLICATION_SECRET
+end
+
+Sidekiq::Testing.inline!

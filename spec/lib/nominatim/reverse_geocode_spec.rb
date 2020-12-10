@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'rails_helper'
-
 RSpec.describe Nominatim::ReverseGeocode do
   context 'when successful request' do
     subject(:response) do

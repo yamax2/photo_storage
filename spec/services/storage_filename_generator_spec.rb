@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'rails_helper'
-
 RSpec.describe StorageFilenameGenerator do
   before do
     allow(SecureRandom).to receive(:hex).and_return('test')

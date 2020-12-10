@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'rails_helper'
-
 RSpec.describe Tracks::ProcessFileJob do
   context 'when track exists' do
     let(:track) { create :track, local_filename: 'zozo' }

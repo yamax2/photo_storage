@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'rails_helper'
-
 RSpec.describe Counters::DumpService do
   subject(:dump!) { described_class.call!(model_klass: Photo) }
 

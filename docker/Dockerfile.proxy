@@ -1,0 +1,5 @@
+ARG DOCKER_GO_VERSION
+FROM golang:${DOCKER_GO_VERSION}-alpine
+
+RUN apk add git
+RUN go get -u github.com/lib/pq

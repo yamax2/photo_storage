@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'rails_helper'
-
 RSpec.describe Photos::EnqueueProcessService do
   let(:rubric) { create :rubric }
   let(:photo) { build :photo, :real, name: 'test', rubric: rubric }

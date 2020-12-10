@@ -1,4 +1,4 @@
-ARG DOCKER_RUBY_VERSION=2.7
+ARG DOCKER_RUBY_VERSION
 FROM ruby:${DOCKER_RUBY_VERSION}-alpine AS base
 
 RUN apk add --update --no-cache tzdata libexif-dev xz-dev libpq less postgresql-client nodejs curl jq unzip openssl
@@ -9,8 +9,7 @@ RUN mkdir /photostorage
 ENV RAILS_ENV production
 WORKDIR /photostorage
 
-COPY Gemfile /photostorage/Gemfile
-COPY Gemfile.lock /photostorage/Gemfile.lock
+COPY Gemfile Gemfile.lock ./
 
 COPY app /photostorage/app
 COPY bin /photostorage/bin
@@ -31,7 +30,7 @@ RUN bundle config set without 'development test production'
 
 FROM base AS builder
 RUN apk add --update --no-cache build-base postgresql-dev
-RUN bundle install
+RUN bundle install --jobs `grep -c ^processor /proc/cpuinfo`
 RUN bundle exec rails assets:precompile
 
 FROM base

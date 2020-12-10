@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'rails_helper'
-
 RSpec.describe Api::V1::Admin::Cart::RubricsController, type: :request do
   let!(:rubric1) { create :rubric, name: 'first' }
   let!(:rubric2) { create :rubric }

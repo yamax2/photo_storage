@@ -1,11 +1,11 @@
-version: '3.3'
+version: '3.7'
 
 environment:
   DOCKER_TLD: localhost
-  DOCKER_RUBY_VERSION: 2.7
   POSTGRES_IMAGE_TAG: 13.1-alpine
   REDIS_IMAGE_TAG: 6-alpine
-  GO_IMAGE_TAG: 1.15.5
+  DOCKER_RUBY_VERSION: 2.7
+  DOCKER_GO_VERSION: 1.15.6
   POSTGRES_DB: photos
   POSTGRES_HOST: db
   RAILS_ENV: development
@@ -64,7 +64,8 @@ interaction:
     command: go build -ldflags '-s -w' proxy_service/yandex_proxy.go
 
 provision:
+  - ./docker/prepare_env.sh
   - docker volume create --name bundler_data
   - dip compose up -d db
-  - dip bundle install
+  - dip bundle install --jobs `grep -c ^processor /proc/cpuinfo`
   - dip rails db:migrate

@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'rails_helper'
-
 RSpec.describe Photos::ProcessFileJob do
   context 'when photo exists' do
     let(:photo) { create :photo, local_filename: 'zozo' }

@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'rails_helper'
-
 RSpec.describe Yandex::ReviseJob do
   around do |example|
     Sidekiq::Testing.fake! { example.run }

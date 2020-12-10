@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'rails_helper'
-
 RSpec.describe Photos::ChangeMainPhotoService do
   subject(:change!) do
     Photo.where(id: photo.id).update_all(rubric_id: new_rubric.id)

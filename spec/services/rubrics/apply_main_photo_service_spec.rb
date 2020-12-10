@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'rails_helper'
-
 RSpec.describe Rubrics::ApplyMainPhotoService do
   let(:service_context) { described_class.call(photo: photo, rubric: rubric) }
 

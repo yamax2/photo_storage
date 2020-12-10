@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'rails_helper'
-
 RSpec.describe RubricDecorator do
   describe '#main_photo' do
     subject(:result) { rubric.decorate.main_photo }

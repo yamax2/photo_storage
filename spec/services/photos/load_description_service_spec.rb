@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'rails_helper'
-
 RSpec.describe Photos::LoadDescriptionService do
   context 'when photo with lat_long' do
     context 'and description is not loaded' do

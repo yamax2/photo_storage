@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'rails_helper'
-
 RSpec.describe Photos::RemoveFileJob do
   context 'when token exists' do
     let(:token) { create :'yandex/token' }

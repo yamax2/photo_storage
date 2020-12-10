@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'rails_helper'
-
 RSpec.describe Api::V1::Admin::Yandex::TokensController, type: :request do
   let(:json) { JSON.parse(response.body) }
   let!(:token) { create :'yandex/token', dir: '/test', other_dir: '/other', access_token: API_ACCESS_TOKEN }

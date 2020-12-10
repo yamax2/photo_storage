@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'rails_helper'
-
 RSpec.describe Tracks::RemoveService do
   let(:token) { create :'yandex/token', access_token: API_ACCESS_TOKEN, other_dir: '/other' }
   let(:service_context) do

@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'rails_helper'
-
 RSpec.describe Photos::LoadDescriptionJob do
   let(:photo) { create :photo, local_filename: 'test' }
 

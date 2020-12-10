@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'rails_helper'
-
 RSpec.describe Yandex::CreateOrUpdateTokenService do
   let(:code) { '5851358' }
   let(:service_context) { described_class.call!(code: code) }

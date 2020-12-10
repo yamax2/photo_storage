@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'rails_helper'
-
 RSpec.describe RubricFinder do
   subject(:result) { described_class.call(rubric_id) }
 

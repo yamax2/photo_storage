@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'rails_helper'
-
 RSpec.describe Photos::EnqueueLoadDescriptionService do
   before do
     allow(Photos::LoadDescriptionJob).to receive(:perform_async)
