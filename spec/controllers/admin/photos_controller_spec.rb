@@ -82,12 +82,13 @@ RSpec.describe Admin::PhotosController, type: :request do
       let(:token) { create :'yandex/token' }
       let!(:photo) { create :photo, storage_filename: 'test', yandex_token: token, name: 'my' }
 
-      before { put admin_photo_url(id: photo.id, photo: {name: 'test'}) }
+      before { put admin_photo_url(id: photo.id, photo: {name: 'test', rotated: 1}) }
 
       it do
         expect(assigns(:photo)).to eq(photo)
         expect(assigns(:photo)).to be_valid
-        expect(assigns(:photo).name).to eq('test')
+        expect(assigns(:photo)).to have_attributes(name: 'test', rotated: 1)
+
         expect(response).to redirect_to(edit_admin_photo_path(photo))
       end
     end
@@ -102,6 +103,22 @@ RSpec.describe Admin::PhotosController, type: :request do
         expect(assigns(:photo)).to eq(photo)
         expect(assigns(:photo)).to be_valid
         expect(assigns(:photo).lat_long).to be_nil
+
+        expect(response).to redirect_to(edit_admin_photo_path(photo))
+      end
+    end
+
+    context 'when try to clear rotated attr' do
+      let(:token) { create :'yandex/token' }
+      let!(:photo) { create :photo, storage_filename: 'test', yandex_token: token, rotated: 3 }
+
+      before { put admin_photo_url(id: photo.id, photo: {rotated: ''}) }
+
+      it do
+        expect(assigns(:photo)).to eq(photo)
+        expect(assigns(:photo)).to be_valid
+        expect(assigns(:photo).rotated).to be_nil
+
         expect(response).to redirect_to(edit_admin_photo_path(photo))
       end
     end

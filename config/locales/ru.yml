@@ -9,6 +9,7 @@ ru:
         original_timestamp: Дата съёмки
         rubric: Рубрика
         tz: Часовой пояс
+        rotated: Поворот изображения
       rubric:
         created_at: Создано
         name: Название

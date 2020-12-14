@@ -56,14 +56,16 @@ group :test do
   gem 'factory_bot_rails'
   gem 'rails-controller-testing'
   gem 'rspec-rails'
-  gem 'rubocop', require: false
-  gem 'rubocop-rails', require: false
-  gem 'rubocop-rspec', require: false
   gem 'shoulda-matchers'
   gem 'simplecov', require: false
   gem 'timecop'
   gem 'vcr'
   gem 'webmock'
+
+  gem 'rubocop', require: false
+  gem 'rubocop-performance', require: false
+  gem 'rubocop-rails', require: false
+  gem 'rubocop-rspec', require: false
 end
 
 group :development do

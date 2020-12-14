@@ -1,12 +1,18 @@
 -# frozen_string_literal: true
 
 - photo = rubric.main_photo
-- size = photo&.image_size || [480, 360]
+- size = photo&.image_size(apply_rotation: true) || [480, 360]
 - style = "width: #{size.first}px; height: #{size.last}px; min-height: #{size.last}px"
 
+-# FIXME: deprecated
 = link_to page_path(rubric), class: 'photo rubric', style: style, title: rubric.rubric_name do
   - if photo.present?
-    = image_tag photo.url(:thumb), style: style
+    - img_size = photo.image_size
+    - img_style = "width: #{img_size.first}px; height: #{img_size.last}px; min-height: #{img_size.last}px"
+    - if photo.rotated
+      - img_style = "#{img_style}; transform: rotate(#{photo.rotated_deg}deg)"
+
+    = image_tag photo.url(:thumb), style: img_style
   - else
     .no-image
 

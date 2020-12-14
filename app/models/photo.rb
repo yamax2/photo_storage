@@ -18,11 +18,13 @@ class Photo < ApplicationRecord
                             inverse_of: :photos,
                             optional: true
 
+  store_accessor :props, :rotated
+
   validates :name, presence: true, length: {maximum: 512}
   validates :width, :height, presence: true, numericality: {only_integer: true, greater_than_or_equal_to: 0}
   validates :content_type, presence: true, inclusion: ALLOWED_CONTENT_TYPES
-
   validates :tz, presence: true, inclusion: Rails.application.config.photo_timezones
+  validates :rotated, numericality: {only_integer: true}, allow_blank: true, inclusion: [1, 2, 3] # 90, 180, 270
 
   strip_attributes only: %i[name description content_type]
 

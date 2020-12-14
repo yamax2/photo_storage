@@ -1,6 +1,7 @@
 require:
   - rubocop-rails
   - rubocop-rspec
+  - rubocop-performance
 
 AllCops:
   TargetRubyVersion: 2.7
@@ -61,7 +62,7 @@ RSpec/ContextWording:
   Enabled: false
 
 RSpec/ExampleLength:
-  Max: 15
+  Max: 30
 
 RSpec/NestedGroups:
   Max: 4

@@ -5,4 +5,9 @@ json.array!(@photos) do |photo|
 
   json.url page_photo_path(photo.rubric_id, photo)
   json.preview photo.url(:thumb)
+
+  json.properties do
+    json.rotated_deg photo.rotated_deg
+    json.actual_image_size photo.image_size(apply_rotation: true)
+  end
 end

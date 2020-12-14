@@ -19,8 +19,8 @@ RSpec.describe Photo do
     it { is_expected.to have_db_column(:height).of_type(:integer).with_options(null: false, default: 0) }
     it { is_expected.to have_db_column(:views).of_type(:integer).with_options(null: false, default: 0) }
     it { is_expected.to have_db_column(:external_info).of_type(:text) }
-
     it { is_expected.to have_db_column(:tz).of_type(:string).with_options(null: false, limit: 50, default: tz) }
+    it { is_expected.to have_db_column(:props).of_type(:jsonb).with_options(null: false, default: {}) }
 
     it { is_expected.to have_db_index(:rubric_id) }
   end
@@ -44,6 +44,9 @@ RSpec.describe Photo do
     it { is_expected.to validate_inclusion_of(:content_type).in_array(described_class::ALLOWED_CONTENT_TYPES) }
 
     it { is_expected.to validate_inclusion_of(:tz).in_array(Rails.application.config.photo_timezones) }
+
+    it { is_expected.to validate_inclusion_of(:rotated).in_array([1, 2, 3]).allow_blank }
+    it { is_expected.to validate_numericality_of(:rotated).only_integer }
   end
 
   describe 'strip attributes' do

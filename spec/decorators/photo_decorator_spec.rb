@@ -44,9 +44,42 @@ RSpec.describe PhotoDecorator do
       let(:photo) { create :photo, width: 3_000, height: 300, local_filename: 'test' }
 
       it do
-        expect(decorated_photo.image_size).to eq([1_280, 360])
+        expect(decorated_photo.image_size).to eq([1_280, 128])
         expect(decorated_photo.image_size(:preview)).to eq([900, 90])
       end
+    end
+
+    context 'when tiny photo' do
+      let(:photo) { create :photo, width: 337, height: 225, local_filename: 'test' }
+
+      it do
+        expect(decorated_photo.image_size).to eq([539, 359])
+        expect(decorated_photo.image_size(:preview)).to eq([337, 225])
+      end
+    end
+
+    context 'when rotated 90 deg' do
+      let(:photo) { create :photo, width: 5_152, height: 3_864, local_filename: 'test', rotated: 1 }
+
+      it { expect(decorated_photo.image_size).to eq([360, 270]) }
+    end
+
+    context 'when rotated 180 deg' do
+      let(:photo) { create :photo, width: 5_152, height: 3_864, local_filename: 'test', rotated: 2 }
+
+      it { expect(decorated_photo.image_size).to eq([480, 360]) }
+    end
+
+    context 'when apply_rotation for 90 deg rotation' do
+      let(:photo) { create :photo, width: 5_152, height: 3_864, local_filename: 'test', rotated: 1 }
+
+      it { expect(decorated_photo.image_size(apply_rotation: true)).to eq([270, 360]) }
+    end
+
+    context 'when apply_rotation for 180 deg rotation' do
+      let(:photo) { create :photo, width: 5_152, height: 3_864, local_filename: 'test', rotated: 2 }
+
+      it { expect(decorated_photo.image_size(apply_rotation: true)).to eq([480, 360]) }
     end
   end
 
@@ -59,12 +92,14 @@ RSpec.describe PhotoDecorator do
 
     context 'sizes' do
       let(:token) { create :'yandex/token', dir: '/photos' }
+      let(:rotated) { nil }
       let(:photo) do
         create :photo, storage_filename: '001/002/test.jpg',
                        yandex_token: token,
-                       width: 200,
-                       height: 400,
-                       original_filename: 'test.jpg'
+                       width: 5_152,
+                       height: 3_864,
+                       original_filename: 'test.jpg',
+                       rotated: rotated
       end
 
       context 'when original size' do
@@ -76,7 +111,7 @@ RSpec.describe PhotoDecorator do
       context 'when thumb' do
         it do
           expect(decorated_photo.url(:thumb)).
-            to eq("/proxy/previews/photos/001/002/test.jpg?id=#{token.id}&size=180")
+            to eq("/proxy/previews/photos/001/002/test.jpg?id=#{token.id}&size=480")
         end
       end
 
@@ -87,10 +122,56 @@ RSpec.describe PhotoDecorator do
         end
       end
 
+      context 'when thumb and rotated 90 deg' do
+        let(:rotated) { 1 }
+
+        it do
+          expect(decorated_photo.url(:thumb)).
+            to eq("/proxy/previews/photos/001/002/test.jpg?id=#{token.id}&size=360")
+        end
+      end
+
+      context 'when thumb and rotated 180 deg' do
+        let(:rotated) { 2 }
+
+        it do
+          expect(decorated_photo.url(:thumb)).
+            to eq("/proxy/previews/photos/001/002/test.jpg?id=#{token.id}&size=480")
+        end
+      end
+
       context 'when wrong size type' do
         it do
           expect { decorated_photo.url(:wrong) }.to raise_error(KeyError)
         end
+      end
+    end
+  end
+
+  describe '#rotated_deg' do
+    let(:photo) { build :photo, width: 1_000, height: 2_000, local_filename: 'test', rotated: rotated }
+
+    context 'when photo is not rotated' do
+      let(:rotated) { nil }
+
+      it { expect(decorated_photo.rotated_deg).to be_nil }
+    end
+
+    shared_examples 'rotated_deg for rotated photo' do |value, deg|
+      let(:rotated) { value }
+
+      it { expect(decorated_photo.rotated_deg).to eq(deg) }
+    end
+
+    it_behaves_like 'rotated_deg for rotated photo', 1, 90
+    it_behaves_like 'rotated_deg for rotated photo', 2, 180
+    it_behaves_like 'rotated_deg for rotated photo', 3, 270
+
+    context 'when wrong value for rotated' do
+      let(:rotated) { 4 }
+
+      it do
+        expect { decorated_photo.rotated_deg }.to raise_error(KeyError)
       end
     end
   end

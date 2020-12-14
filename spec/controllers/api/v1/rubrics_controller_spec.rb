@@ -19,15 +19,20 @@ RSpec.describe Api::V1::RubricsController, type: :request do
       let(:token) { create :'yandex/token' }
 
       let!(:photo1) do
-        create :photo, rubric: rubric, yandex_token: token, storage_filename: 'test', width: 100, height: 100
+        create :photo, rubric: rubric,
+                       yandex_token: token,
+                       storage_filename: 'test',
+                       width: 3_000,
+                       height: 1_000,
+                       rotated: 1
       end
 
       let!(:photo2) do
         create :photo, rubric: rubric,
                        yandex_token: token,
                        storage_filename: 'test',
-                       width: 100,
-                       height: 100,
+                       width: 1_000,
+                       height: 2_000,
                        lat_long: [1, 2]
       end
 
@@ -37,7 +42,16 @@ RSpec.describe Api::V1::RubricsController, type: :request do
         it do
           expect(response).to have_http_status(:ok)
           expect(json).to match_array(
-            [hash_including('url', 'image_size', 'preview', 'id' => photo2.id, 'rn' => 2)]
+            [
+              hash_including(
+                'url',
+                'image_size',
+                'preview',
+                'id' => photo2.id,
+                'rn' => 2,
+                'properties' => hash_including('actual_image_size' => [180, 360], 'rotated_deg' => nil)
+              )
+            ]
           )
         end
       end
@@ -50,8 +64,23 @@ RSpec.describe Api::V1::RubricsController, type: :request do
 
           expect(json).to match_array(
             [
-              hash_including('id' => photo1.id),
-              hash_including('id' => photo2.id)
+              hash_including(
+                'id' => photo1.id,
+                'image_size' => [360, 120],
+                'properties' => hash_including(
+                  'rotated_deg' => 90,
+                  'actual_image_size' => [120, 360]
+                )
+              ),
+
+              hash_including(
+                'id' => photo2.id,
+                'image_size' => [180, 360],
+                'properties' => hash_including(
+                  'rotated_deg' => nil,
+                  'actual_image_size' => [180, 360]
+                )
+              )
             ]
           )
         end

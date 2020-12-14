@@ -55,6 +55,12 @@
 
           .row.form-group
             .col.col-md-3
+              = f.label :rotated
+            .col-12.col-md-9
+              = f.select :rotated, [['90deg', 1], ['180deg', 2], ['270deg', 3]], {include_blank: true}, class: 'form-control'
+
+          .row.form-group
+            .col.col-md-3
               = f.label :lat_long
 
             .col-5.col-md-3

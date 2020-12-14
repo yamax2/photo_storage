@@ -76,7 +76,7 @@ services:
       - db
     volumes:
       - ..:/app
-      - ../../go:/go
+      # - ../../go:/go
     command: 'go run proxy_service/yandex_proxy.go -db_host=db -user=postgres -db=photos -listen=0.0.0.0'
     expose:
       - '9000'

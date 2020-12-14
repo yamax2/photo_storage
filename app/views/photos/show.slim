@@ -1,7 +1,7 @@
 -# frozen_string_literal: true
 
 - current = @photos.current.decorate
-- size = current.image_size(:preview)
+- size = current.image_size(preview_id, apply_rotation: true)
 
 .photo-mobile-header
   = link_to root_path, class: 'photo-header-root' do
@@ -40,7 +40,8 @@
     - else
       span.nav-stub.photo-arrow.photo-arrow-left
 
-    = image_tag current.url(preview_id), id: 'mainimg'
+    = image_tag current.url(preview_id), id: 'mainimg',
+                                         style: [current.rotated ? "transform: rotate(#{current.rotated_deg}deg)" : nil, "height: #{size.last}px"].compact.join(';')
 
     - if @photos.next.present?
       = link_to '', page_photo_path(@rubric, @photos.next), class: 'photo-arrow photo-arrow-right',

@@ -3,17 +3,30 @@
 class PhotoDecorator < ApplicationDecorator
   delegate_all
 
+  ROTATED_DEG = {
+    1 => 90,
+    2 => 180,
+    3 => 270
+  }.freeze
+  private_constant :ROTATED_DEG
+
   def current_views
     views + inc_counter
   end
 
-  def image_size(size = :thumb)
-    thumb_width = thumb_width(size)
+  def image_size(size = :thumb, apply_rotation: false)
+    reversed = rotated&.odd?
+    actual_size = (@image_size ||= {})[size] ||= calc_image_size(size, reversed)
 
-    [
-      actual_width_for(thumb_width),
-      height * thumb_width / width
-    ]
+    if reversed && apply_rotation
+      actual_size.reverse
+    else
+      actual_size
+    end
+  end
+
+  def rotated_deg
+    ROTATED_DEG.fetch(rotated) if rotated
   end
 
   # FIXME: url??
@@ -30,8 +43,19 @@ class PhotoDecorator < ApplicationDecorator
 
   delegate :max_thumb_width, :photo_sizes, to: 'Rails.application.config'
 
-  def actual_width_for(width)
-    width > max_thumb_width ? max_thumb_width : width
+  def calc_image_size(size, reversed)
+    thumb_width = thumb_width(size)
+
+    [
+      thumb_width,
+      height * thumb_width / width
+    ].tap do |result|
+      if reversed
+        result.reverse!
+
+        result[1] = result.first**2 / result.last
+      end
+    end
   end
 
   def params_for_size(size)
@@ -39,18 +63,18 @@ class PhotoDecorator < ApplicationDecorator
       if size == :original
         params[:fn] = original_filename
       else
-        params[:size] = actual_width_for(thumb_width(size))
+        params[:size] = image_size(size).first
       end
     end
   end
 
   def thumb_width(size)
-    width = photo_sizes.fetch(size)
+    result = photo_sizes.fetch(size)
 
-    if width.respond_to?(:call)
-      width.call(self)
-    else
-      width
-    end
+    result = result.call(self) if result.respond_to?(:call)
+    result = width if size != :thumb && result > width
+    result = max_thumb_width if result > max_thumb_width
+
+    result
   end
 end

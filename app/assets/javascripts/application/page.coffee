@@ -15,11 +15,17 @@ loadPhotos = ($photos) ->
       html = ''
 
       for photo in response
-        style = "width: #{photo.image_size[0]}px; height: #{photo.image_size[1]}px; " +
-                "min-height: #{photo.image_size[1]}px"
+        actual_size = photo.properties.actual_image_size
+
+        style = "width: #{actual_size[0]}px; height: #{actual_size[1]}px; min-height: #{actual_size[1]}px"
+
+        img_style = "width: #{photo.image_size[0]}px; height: #{photo.image_size[1]}px; " +
+                    "min-height: #{photo.image_size[1]}px"
+
+        img_style += "; transform: rotate(#{photo.properties.rotated_deg}deg)" if photo.properties.rotated_deg?
 
         html += "<a class=\"photo\" style=\"#{style}\" href=\"#{photo.url}\">" +
-                "<img src=\"#{photo.preview}\" style=\"#{style}\">" +
+                "<img src=\"#{photo.preview}\" style=\"#{img_style}\">" +
                 "<div class=\"photo-name\"><span>#{photo.name}</span></div></a>"
 
       $(html).insertBefore($loader)

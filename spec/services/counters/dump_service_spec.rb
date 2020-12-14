@@ -32,7 +32,7 @@ RSpec.describe Counters::DumpService do
     end
 
     context 'when regular call' do
-      it do # rubocop:disable RSpec/ExampleLength
+      it do
         expect { dump! }.
           to change { photo_without_views.reload.views }.by(100).
           and change { photo_with_views.reload.views }.by(10).
