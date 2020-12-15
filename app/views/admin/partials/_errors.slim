@@ -4,8 +4,8 @@
     button.close type="button" data-dismiss="alert" aria-hidden="true"
       | ×
     ul
-      - model.errors.each do |attr, text|
+      - model.errors.each do |error|
         li
           strong
-            = model.class.human_attribute_name(attr)
-          = ": #{text}"
+            = model.class.human_attribute_name(error.attribute)
+          = ": #{error.message}"

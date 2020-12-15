@@ -7,7 +7,7 @@ git_source(:github) { |repo| "git@github.com:#{repo}.git" }
 gem 'irb', require: false
 gem 'pg'
 gem 'puma', '>= 4.3'
-gem 'rails', '~> 6.0'
+gem 'rails', '~> 6.1'
 gem 'sass-rails', '>= 5.0'
 gem 'uglifier', '>= 1.3.0'
 
@@ -18,7 +18,7 @@ gem 'turbolinks', '>= 5'
 
 gem 'bootstrap', '~> 4'
 gem 'bootstrap4-datetime-picker-rails'
-gem 'font-awesome-rails', '~> 4.7'
+gem 'font-awesome-rails', git: 'git@github.com:bokmann/font-awesome-rails.git'
 gem 'jquery-rails'
 gem 'jquery-simplecolorpicker-rails'
 gem 'leaflet-rails'
@@ -55,7 +55,6 @@ end
 group :test do
   gem 'factory_bot_rails'
   gem 'rails-controller-testing'
-  gem 'rspec-rails'
   gem 'shoulda-matchers'
   gem 'simplecov', require: false
   gem 'timecop'
@@ -66,6 +65,13 @@ group :test do
   gem 'rubocop-performance', require: false
   gem 'rubocop-rails', require: false
   gem 'rubocop-rspec', require: false
+
+  # FIXME: remove all lines except rspec-rails after release
+  gem 'rspec-core', git: 'git@github.com:rspec/rspec-core.git', branch: 'main'
+  gem 'rspec-expectations', git: 'git@github.com:rspec/rspec-expectations.git', branch: 'main'
+  gem 'rspec-mocks', git: 'git@github.com:rspec/rspec-mocks.git', branch: 'main'
+  gem 'rspec-rails', git: 'git@github.com:rspec/rspec-rails.git', branch: 'rails-6-1-dev'
+  gem 'rspec-support', git: 'git@github.com:rspec/rspec-support.git', branch: 'main'
 end
 
 group :development do

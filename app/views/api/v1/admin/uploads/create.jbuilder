@@ -3,7 +3,7 @@
 if @success
   json.id @model.id
 else
-  @model.errors.each do |attr, value|
-    json.set! attr, value
+  @model.errors.each do |error|
+    json.set! error.attribute, error.message
   end
 end
