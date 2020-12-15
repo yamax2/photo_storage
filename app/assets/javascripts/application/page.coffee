@@ -25,7 +25,7 @@ loadPhotos = ($photos) ->
         img_style += "; transform: rotate(#{photo.properties.rotated_deg}deg)" if photo.properties.rotated_deg?
 
         html += "<a class=\"photo\" style=\"#{style}\" href=\"#{photo.url}\">" +
-                "<img src=\"#{photo.preview}\" style=\"#{img_style}\">" +
+                "<img src=\"#{photo.preview}\" style=\"#{img_style}\" onload=\"$(this).parent().addClass('loaded')\">" +
                 "<div class=\"photo-name\"><span>#{photo.name}</span></div></a>"
 
       $(html).insertBefore($loader)

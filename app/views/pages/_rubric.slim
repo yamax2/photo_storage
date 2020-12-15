@@ -12,7 +12,7 @@
     - if photo.rotated
       - img_style = "#{img_style}; transform: rotate(#{photo.rotated_deg}deg)"
 
-    = image_tag photo.url(:thumb), style: img_style
+    = image_tag photo.url(:thumb), style: img_style, onload: "$(this).parent().addClass('loaded')"
   - else
     .no-image
 

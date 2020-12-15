@@ -22,8 +22,13 @@
     overflow: hidden
     margin: 0 0.15rem 0.25rem 0.15rem
     display: flex
+    opacity: 0
     align-items: center
     justify-content: center
+
+    &.loaded
+      opacity: 1
+      transition: opacity .3s
 
     img
       object-fit: cover
