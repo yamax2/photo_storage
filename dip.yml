@@ -67,5 +67,5 @@ provision:
   - ./docker/prepare_env.sh
   - docker volume create --name bundler_data
   - dip compose up -d db
-  - dip bundle install --jobs `grep -c ^processor /proc/cpuinfo`
+  - dip bundle install
   - dip rails db:migrate

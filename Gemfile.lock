@@ -1,11 +1,4 @@
 GIT
-  remote: git@github.com:bokmann/font-awesome-rails.git
-  revision: d4a2e506be0318e35d05ad22d36531b7da393615
-  specs:
-    font-awesome-rails (4.7.0.5)
-      railties (>= 3.2, < 6.2)
-
-GIT
   remote: git@github.com:rspec/rspec-core.git
   revision: a9c7b9ce50e3e4199effae99b4f9bb0266df8a61
   branch: main
@@ -51,6 +44,13 @@ GIT
   branch: main
   specs:
     rspec-support (3.11.0.pre)
+
+GIT
+  remote: https://github.com/bokmann/font-awesome-rails.git
+  revision: d4a2e506be0318e35d05ad22d36531b7da393615
+  specs:
+    font-awesome-rails (4.7.0.5)
+      railties (>= 3.2, < 6.2)
 
 GEM
   remote: https://rubygems.org/
