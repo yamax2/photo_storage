@@ -18,7 +18,6 @@ RSpec.describe Photo do
     it { is_expected.to have_db_column(:width).of_type(:integer).with_options(null: false, default: 0) }
     it { is_expected.to have_db_column(:height).of_type(:integer).with_options(null: false, default: 0) }
     it { is_expected.to have_db_column(:views).of_type(:integer).with_options(null: false, default: 0) }
-    it { is_expected.to have_db_column(:external_info).of_type(:text) }
     it { is_expected.to have_db_column(:tz).of_type(:string).with_options(null: false, limit: 50, default: tz) }
     it { is_expected.to have_db_column(:props).of_type(:jsonb).with_options(null: false, default: {}) }
 

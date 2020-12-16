@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_13_223533) do
+ActiveRecord::Schema.define(version: 2020_12_16_092406) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -36,7 +36,6 @@ ActiveRecord::Schema.define(version: 2020_12_13_223533) do
     t.string "sha256", limit: 64, null: false
     t.bigint "views", default: 0, null: false
     t.string "tz", limit: 50, default: "Asia/Yekaterinburg", null: false
-    t.text "external_info"
     t.jsonb "props", default: {}, null: false
     t.index ["md5", "sha256"], name: "uq_photos", unique: true
     t.index ["rubric_id"], name: "index_photos_on_rubric_id"

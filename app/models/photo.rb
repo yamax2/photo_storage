@@ -18,7 +18,7 @@ class Photo < ApplicationRecord
                             inverse_of: :photos,
                             optional: true
 
-  store_accessor :props, :rotated
+  store_accessor :props, :rotated, :external_info
 
   validates :name, presence: true, length: {maximum: 512}
   validates :width, :height, presence: true, numericality: {only_integer: true, greater_than_or_equal_to: 0}
