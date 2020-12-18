@@ -40,8 +40,18 @@
     - else
       span.nav-stub.photo-arrow.photo-arrow-left
 
-    = image_tag current.url(preview_id), id: 'mainimg',
-                                         style: [current.rotated ? "transform: rotate(#{current.rotated_deg}deg)" : nil, "height: #{size.last}px"].compact.join(';')
+    - if current.rotated
+      css:
+        @media (max-width: 992px) {
+          #photo_#{current.id} {
+              height: #{100.0 * size.last / size.first}vw !important;
+          }
+        }
+
+    .photo-content-image*{style: "width: #{size.first}px; height: #{size.last}px", class: current.rotated ? 'rotated' : nil, id: "photo_#{current.id}"}
+      = image_tag current.url(preview_id),
+                  id: 'mainimg',
+                  style: current.rotated ? "transform: rotate(#{current.rotated_deg}deg)" : nil
 
     - if @photos.next.present?
       = link_to '', page_photo_path(@rubric, @photos.next), class: 'photo-arrow photo-arrow-right',

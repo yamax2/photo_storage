@@ -85,9 +85,13 @@
 
   img
     object-fit: scale-down
-    max-width: 100%
-    height: auto
+
+  .photo-content-image
     align-self: flex-start
+
+    display: flex
+    align-items: center
+    justify-content: center
 
   a.photo-arrow
     display: none
@@ -175,6 +179,19 @@
 
         .photo-arrow
           display: none !important
+
+        .photo-content-image
+          &:not(.rotated)
+            height: auto !important
+
+            img
+              max-width: 100%
+
+          &.rotated
+            width: 100% !important
+
+            img
+              max-height: 100vw
 
     .photo-mobile-header
       display: flex
