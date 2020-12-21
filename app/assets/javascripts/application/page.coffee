@@ -22,10 +22,16 @@ loadPhotos = ($photos) ->
         img_style = "width: #{photo.image_size[0]}px; height: #{photo.image_size[1]}px; " +
                     "min-height: #{photo.image_size[1]}px"
 
-        img_style += "; transform: rotate(#{photo.properties.rotated_deg}deg)" if photo.properties.rotated_deg?
+        if photo.properties.rotated_deg?
+          img_style += "; transform: rotate(#{photo.properties.rotated_deg}deg)"
 
-        html += "<a class=\"photo\" style=\"#{style}\" href=\"#{photo.url}\">" +
-                "<img src=\"#{photo.preview}\" style=\"#{img_style}\" onload=\"$(this).parent().addClass('loaded')\">" +
+          value = 100 * actual_size[1] / actual_size[0]
+          html += "<style>@media (max-width: 992px) { #lphoto_#{photo.id} { min-width: #{value}vw !important; }" +
+                  " #llink_#{photo.id} { height: #{value}vw !important; } }</style>"
+
+        html += "<a class=\"photo\" style=\"#{style}\" href=\"#{photo.url}\" id=\"llink_#{photo.id}\">" +
+                "<img id=\"lphoto_#{photo.id}\" src=\"#{photo.preview}\" style=\"#{img_style}\"" +
+                " onload=\"$(this).parent().addClass('loaded')\">" +
                 "<div class=\"photo-name\"><span>#{photo.name}</span></div></a>"
 
       $(html).insertBefore($loader)

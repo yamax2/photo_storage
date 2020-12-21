@@ -47,9 +47,9 @@ GIT
 
 GIT
   remote: https://github.com/bokmann/font-awesome-rails.git
-  revision: d4a2e506be0318e35d05ad22d36531b7da393615
+  revision: 87ce085ec38d9ca29fdbfd9df9e704e0a640a187
   specs:
-    font-awesome-rails (4.7.0.5)
+    font-awesome-rails (4.7.0.6)
       railties (>= 3.2, < 6.2)
 
 GEM
@@ -181,7 +181,7 @@ GEM
     factory_bot_rails (6.1.0)
       factory_bot (~> 6.1.0)
       railties (>= 5.0.0)
-    ffi (1.13.1)
+    ffi (1.14.1)
     fugit (1.4.1)
       et-orbi (~> 1.1, >= 1.1.8)
       raabro (~> 1.4)
@@ -199,7 +199,7 @@ GEM
     image_size (2.1.0)
     interactor (3.1.2)
     io-console (0.5.6)
-    irb (1.2.7)
+    irb (1.2.8)
       reline (>= 0.1.5)
     jbuilder (2.10.1)
       activesupport (>= 5.0.0)
@@ -309,7 +309,7 @@ GEM
       rake (>= 0.8.7)
       thor (~> 1.0)
     rainbow (3.0.0)
-    rake (13.0.1)
+    rake (13.0.3)
     ransack (2.4.0)
       activerecord (>= 5.2.4)
       activesupport (>= 5.2.4)
@@ -325,8 +325,8 @@ GEM
     redis-namespace (1.8.0)
       redis (>= 3.0.4)
     redis-prescription (1.0.0)
-    regexp_parser (2.0.0)
-    reline (0.1.9)
+    regexp_parser (2.0.1)
+    reline (0.1.10)
       io-console (~> 0.5)
     request_store (1.5.0)
       rack (>= 1.4)

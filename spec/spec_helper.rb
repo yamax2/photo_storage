@@ -37,7 +37,8 @@ RSpec.configure do |config|
   config.filter_rails_from_backtrace!
 
   config.after do
-    RedisClassy.redis.flushall
+    RedisClassy.redis.script(:flush)
+    RedisClassy.redis.flushdb
   end
 end
 
