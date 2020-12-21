@@ -13,18 +13,25 @@ class Photo < ApplicationRecord
     PNG_IMAGE
   ].freeze
 
+  ALLOWED_EFFECTS = [
+    /^scaleX\((-?)\d+\)$/,
+    /^scaleY\((-?)\d+\)$/
+  ].freeze
+
   belongs_to :rubric, inverse_of: :photos, counter_cache: true
   belongs_to :yandex_token, class_name: 'Yandex::Token',
                             inverse_of: :photos,
                             optional: true
 
-  store_accessor :props, :rotated, :external_info
+  store_accessor :props, :rotated, :external_info, :effects
 
   validates :name, presence: true, length: {maximum: 512}
   validates :width, :height, presence: true, numericality: {only_integer: true, greater_than_or_equal_to: 0}
   validates :content_type, presence: true, inclusion: ALLOWED_CONTENT_TYPES
   validates :tz, presence: true, inclusion: Rails.application.config.photo_timezones
+
   validates :rotated, numericality: {only_integer: true}, allow_blank: true, inclusion: [1, 2, 3] # 90, 180, 270
+  validate :validate_effects
 
   strip_attributes only: %i[name description content_type]
 
@@ -55,5 +62,14 @@ class Photo < ApplicationRecord
       yandex_token_id,
       storage_filename
     )
+  end
+
+  def validate_effects
+    return if effects.nil?
+
+    valid = effects.is_a?(Array) && \
+      effects.all? { |value| Photo::ALLOWED_EFFECTS.any? { |regex| value =~ regex } }
+
+    errors.add(:effects, :invalid) unless valid
   end
 end

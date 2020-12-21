@@ -15,7 +15,7 @@ class PhotoDecorator < ApplicationDecorator
   end
 
   def image_size(size = :thumb, apply_rotation: false)
-    reversed = rotated&.odd?
+    reversed = turned?
     actual_size = (@image_size ||= {})[size] ||= calc_image_size(size, reversed)
 
     if reversed && apply_rotation
@@ -25,8 +25,17 @@ class PhotoDecorator < ApplicationDecorator
     end
   end
 
-  def rotated_deg
-    ROTATED_DEG.fetch(rotated) if rotated
+  def css_transform
+    transforms = []
+
+    transforms += Array.wrap(effects)
+    transforms << "rotate(#{ROTATED_DEG.fetch(rotated)}deg)" if rotated
+
+    transforms.join(' ').presence
+  end
+
+  def turned?
+    rotated.to_i.odd?
   end
 
   # FIXME: url??

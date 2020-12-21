@@ -22,10 +22,12 @@ loadPhotos = ($photos) ->
         img_style = "width: #{photo.image_size[0]}px; height: #{photo.image_size[1]}px; " +
                     "min-height: #{photo.image_size[1]}px"
 
-        if photo.properties.rotated_deg?
-          img_style += "; transform: rotate(#{photo.properties.rotated_deg}deg)"
+        if photo.properties.css_transform
+          img_style += "; transform: #{photo.properties.css_transform}"
 
+        if photo.properties.turned
           value = 100 * actual_size[1] / actual_size[0]
+
           html += "<style>@media (max-width: 992px) { #lphoto_#{photo.id} { min-width: #{value}vw !important; }" +
                   " #llink_#{photo.id} { height: #{value}vw !important; } }</style>"
 

@@ -49,7 +49,11 @@ RSpec.describe Api::V1::RubricsController, type: :request do
                 'preview',
                 'id' => photo2.id,
                 'rn' => 2,
-                'properties' => hash_including('actual_image_size' => [180, 360], 'rotated_deg' => nil)
+                'properties' => hash_including(
+                  'actual_image_size' => [180, 360],
+                  'turned' => false,
+                  'css_transform' => nil
+                )
               )
             ]
           )
@@ -68,8 +72,9 @@ RSpec.describe Api::V1::RubricsController, type: :request do
                 'id' => photo1.id,
                 'image_size' => [360, 120],
                 'properties' => hash_including(
-                  'rotated_deg' => 90,
-                  'actual_image_size' => [120, 360]
+                  'turned' => true,
+                  'actual_image_size' => [120, 360],
+                  'css_transform' => 'rotate(90deg)'
                 )
               ),
 
@@ -77,8 +82,9 @@ RSpec.describe Api::V1::RubricsController, type: :request do
                 'id' => photo2.id,
                 'image_size' => [180, 360],
                 'properties' => hash_including(
-                  'rotated_deg' => nil,
-                  'actual_image_size' => [180, 360]
+                  'turned' => false,
+                  'actual_image_size' => [180, 360],
+                  'css_transform' => nil
                 )
               )
             ]

@@ -148,19 +148,22 @@ RSpec.describe PhotoDecorator do
     end
   end
 
-  describe '#rotated_deg' do
-    let(:photo) { build :photo, width: 1_000, height: 2_000, local_filename: 'test', rotated: rotated }
+  describe '#css_transform' do
+    let(:effects) { nil }
+    let(:photo) do
+      build :photo, width: 1_000, height: 2_000, local_filename: 'test', rotated: rotated, effects: effects
+    end
 
-    context 'when photo is not rotated' do
+    context 'when photo is not rotated and without effects' do
       let(:rotated) { nil }
 
-      it { expect(decorated_photo.rotated_deg).to be_nil }
+      it { expect(decorated_photo.css_transform).to be_nil }
     end
 
     shared_examples 'rotated_deg for rotated photo' do |value, deg|
       let(:rotated) { value }
 
-      it { expect(decorated_photo.rotated_deg).to eq(deg) }
+      it { expect(decorated_photo.css_transform).to eq("rotate(#{deg}deg)") }
     end
 
     it_behaves_like 'rotated_deg for rotated photo', 1, 90
@@ -171,8 +174,33 @@ RSpec.describe PhotoDecorator do
       let(:rotated) { 4 }
 
       it do
-        expect { decorated_photo.rotated_deg }.to raise_error(KeyError)
+        expect { decorated_photo.css_transform }.to raise_error(KeyError)
       end
     end
+
+    context 'when photo with effects and rotated' do
+      let(:rotated) { 1 }
+      let(:effects) { %w[scaleX(-1) scaleY(1)] }
+
+      it do
+        expect(decorated_photo.css_transform).
+          to include('rotate(90deg)', 'scaleX(-1)', 'scaleY(1)')
+      end
+    end
+  end
+
+  describe '#turned?' do
+    let(:photo) { build :photo, width: 1_000, height: 2_000, local_filename: 'test', rotated: rotated }
+
+    shared_examples 'turned? for photo' do |value, turned|
+      let(:rotated) { value }
+
+      it { expect(decorated_photo.turned?).to eq(turned) }
+    end
+
+    it_behaves_like 'turned? for photo', nil, false
+    it_behaves_like 'turned? for photo', 1, true
+    it_behaves_like 'turned? for photo', 2, false
+    it_behaves_like 'turned? for photo', 3, true
   end
 end

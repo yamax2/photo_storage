@@ -40,7 +40,7 @@
     - else
       span.nav-stub.photo-arrow.photo-arrow-left
 
-    - if current.rotated
+    - if current.turned?
       css:
         @media (max-width: 992px) {
           #photo_#{current.id} {
@@ -48,10 +48,11 @@
           }
         }
 
-    .photo-content-image*{style: "width: #{size.first}px; height: #{size.last}px", class: current.rotated ? 'rotated' : nil, id: "photo_#{current.id}"}
+    .photo-content-image class=('rotated' if current.turned?) *{style: "width: #{size.first}px; height: #{size.last}px", id: "photo_#{current.id}"}
+      - transform = current.css_transform
       = image_tag current.url(preview_id),
                   id: 'mainimg',
-                  style: current.rotated ? "transform: rotate(#{current.rotated_deg}deg)" : nil
+                  style: transform ? "transform: #{transform}" : nil
 
     - if @photos.next.present?
       = link_to '', page_photo_path(@rubric, @photos.next), class: 'photo-arrow photo-arrow-right',

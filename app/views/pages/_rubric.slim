@@ -8,9 +8,12 @@
 = link_to page_path(rubric), class: 'photo rubric', style: style, title: rubric.rubric_name, id: "rlink_#{rubric.id}" do
   - if photo.present?
     - img_size = photo.image_size
-    - img_style = "width: #{img_size.first}px; height: #{img_size.last}px; min-height: #{img_size.last}px"
-    - if photo.rotated
-      - img_style = "#{img_style}; transform: rotate(#{photo.rotated_deg}deg)"
+    - img_style = ["width: #{img_size.first}px", "height: #{img_size.last}px",  "min-height: #{img_size.last}px"]
+
+    - if (css_transform = photo.css_transform).present?
+      - img_style << "transform: #{photo.css_transform}"
+
+    - if photo.turned?
       - value = 100.0 * size.last / size.first
 
       css:
@@ -25,7 +28,7 @@
         }
 
     = image_tag photo.url(:thumb),
-                style: img_style,
+                style: img_style.join(';'),
                 onload: "$(this).parent().addClass('loaded')",
                 id: "rimg_#{rubric.id}"
   - else

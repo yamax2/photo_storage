@@ -48,6 +48,40 @@ RSpec.describe Photo do
     it { is_expected.to validate_numericality_of(:rotated).only_integer }
   end
 
+  describe 'effects validation' do
+    subject(:photo) { build :photo, effects: effects, local_filename: '1.jpg' }
+
+    context 'when value is not an array' do
+      let(:effects) { '   ' }
+
+      it do
+        expect(photo).not_to be_valid
+        expect(photo.errors).to include(:effects)
+      end
+    end
+
+    context 'when nil value' do
+      let(:effects) { nil }
+
+      it { is_expected.to be_valid }
+    end
+
+    context 'when correct value' do
+      let(:effects) { %w[scaleX(-1) scaleY(100)] }
+
+      it { is_expected.to be_valid }
+    end
+
+    context 'when one item is incorrect' do
+      let(:effects) { %w[scaleX(-1a) scaleY(100)] }
+
+      it do
+        expect(photo).not_to be_valid
+        expect(photo.errors).to include(:effects)
+      end
+    end
+  end
+
   describe 'strip attributes' do
     it { is_expected.to strip_attribute(:name) }
     it { is_expected.to strip_attribute(:description) }

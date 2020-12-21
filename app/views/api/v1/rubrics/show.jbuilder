@@ -7,7 +7,8 @@ json.array!(@photos) do |photo|
   json.preview photo.url(:thumb)
 
   json.properties do
-    json.rotated_deg photo.rotated_deg
+    json.turned photo.turned?
+    json.css_transform photo.css_transform
     json.actual_image_size photo.image_size(apply_rotation: true)
   end
 end
