@@ -13,10 +13,6 @@ RSpec.describe PhotoDecorator do
   end
 
   describe '#current_views' do
-    before { RedisClassy.flushdb }
-
-    after { RedisClassy.flushdb }
-
     let(:photo) { create :photo, views: 1_000, local_filename: 'test' }
 
     context 'when first call' do
@@ -44,7 +40,7 @@ RSpec.describe PhotoDecorator do
       let(:photo) { create :photo, width: 3_000, height: 300, local_filename: 'test' }
 
       it do
-        expect(decorated_photo.image_size).to eq([1_280, 128])
+        expect(decorated_photo.image_size).to eq([1_280, 360])
         expect(decorated_photo.image_size(:preview)).to eq([900, 90])
       end
     end

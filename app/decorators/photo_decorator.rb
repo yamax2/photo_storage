@@ -8,10 +8,9 @@ class PhotoDecorator < ApplicationDecorator
   end
 
   def image_size(size = :thumb, apply_rotation: false)
-    reversed = turned?
-    actual_size = (@image_size ||= {})[size] ||= calc_image_size(size, reversed)
+    actual_size = (@image_size ||= {})[size] ||= calc_image_size(size)
 
-    if reversed && apply_rotation
+    if turned? && apply_rotation
       actual_size.reverse
     else
       actual_size
@@ -45,14 +44,18 @@ class PhotoDecorator < ApplicationDecorator
 
   delegate :max_thumb_width, :photo_sizes, to: 'Rails.application.config'
 
-  def calc_image_size(size, reversed)
+  def actual_width_for(width)
+    width > max_thumb_width ? max_thumb_width : width
+  end
+
+  def calc_image_size(size)
     thumb_width = thumb_width(size)
 
     [
-      thumb_width,
+      actual_width_for(thumb_width),
       height * thumb_width / width
     ].tap do |result|
-      if reversed
+      if turned?
         result.reverse!
 
         result[1] = result.first**2 / result.last
@@ -72,10 +75,13 @@ class PhotoDecorator < ApplicationDecorator
 
   def thumb_width(size)
     result = photo_sizes.fetch(size)
-
     result = result.call(self) if result.respond_to?(:call)
-    result = width if size != :thumb && result > width
-    result = max_thumb_width if result > max_thumb_width
+
+    # we can scale up only thumbs
+    if size != :thumb
+      result = width if result > width
+      result = actual_width_for(result)
+    end
 
     result
   end

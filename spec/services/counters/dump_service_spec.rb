@@ -5,10 +5,7 @@ RSpec.describe Counters::DumpService do
 
   before do
     stub_const("#{described_class}::BATCH_SIZE", 1)
-    RedisClassy.flushdb
   end
-
-  after { RedisClassy.flushdb }
 
   let(:redis) { RedisClassy.redis }
   let!(:photo_without_views) { create :photo, local_filename: 'test', views: 0 }

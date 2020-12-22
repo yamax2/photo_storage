@@ -4,10 +4,6 @@ RSpec.shared_context 'model with counter' do |factory|
   describe '#inc_counter' do
     subject(:action!) { model.inc_counter }
 
-    before { RedisClassy.flushdb }
-
-    after { RedisClassy.flushdb }
-
     let(:redis) { RedisClassy.redis }
 
     context 'when persisted' do

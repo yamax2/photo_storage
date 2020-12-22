@@ -67,7 +67,7 @@ class Photo < ApplicationRecord
   def validate_effects
     return if effects.nil?
 
-    valid = effects.is_a?(Array) && effects.all? { |value| Photo::ALLOWED_EFFECTS.any? { |regex| value =~ regex } }
+    valid = effects.is_a?(Array) && effects.all? { |value| ALLOWED_EFFECTS.any? { |regex| value =~ regex } }
 
     errors.add(:effects, :invalid) unless valid
   end
