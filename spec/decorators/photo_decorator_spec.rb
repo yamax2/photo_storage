@@ -170,14 +170,6 @@ RSpec.describe PhotoDecorator do
     it_behaves_like 'rotated_deg for rotated photo', 2, 180
     it_behaves_like 'rotated_deg for rotated photo', 3, 270
 
-    context 'when wrong value for rotated' do
-      let(:rotated) { 4 }
-
-      it do
-        expect { decorated_photo.css_transform }.to raise_error(KeyError)
-      end
-    end
-
     context 'when photo with effects and rotated' do
       let(:rotated) { 1 }
       let(:effects) { %w[scaleX(-1) scaleY(1)] }

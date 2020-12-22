@@ -9,7 +9,8 @@ ru:
         original_timestamp: Дата съёмки
         rubric: Рубрика
         tz: Часовой пояс
-        rotated: Поворот изображения
+        rotated: Поворот изображения/эффекты
+        effects: Эффекты
       rubric:
         created_at: Создано
         name: Название
@@ -89,6 +90,12 @@ ru:
         clear: Очистить
         rubric_search: Название рубрики
         rubric_select: Выбрать
+        effects:
+          - type: scaleX(-1)
+            name: Отразить горизонтально
+          - type: scaleY(-1)
+            name: Отразить вертикально
+        rotated_deg: "%{deg} градусов"
     rubrics:
       destroy:
         success: Рубрика %{name} была успешно удалена

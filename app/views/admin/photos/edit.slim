@@ -56,8 +56,16 @@
           .row.form-group
             .col.col-md-3
               = f.label :rotated
-            .col-12.col-md-9
-              = f.select :rotated, [['90deg', 1], ['180deg', 2], ['270deg', 3]], {include_blank: true}, class: 'form-control'
+            .col-12.col-md-4
+              = f.select :rotated, [1, 2, 3].map! { |value| [t('.rotated_deg', deg: value * 90) , value] },
+                                   {include_blank: true},
+                                   class: 'form-control'
+            .col-12.col-md-5
+              = f.select :effects, t('.effects').map { |line| [line[:name], line[:type]] },
+                                   {},
+                                   class: 'form-control selectpicker',
+                                   multiple: true,
+                                   data: {'live-search' => true}
 
           .row.form-group
             .col.col-md-3

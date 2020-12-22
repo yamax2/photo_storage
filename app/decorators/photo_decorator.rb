@@ -3,13 +3,6 @@
 class PhotoDecorator < ApplicationDecorator
   delegate_all
 
-  ROTATED_DEG = {
-    1 => 90,
-    2 => 180,
-    3 => 270
-  }.freeze
-  private_constant :ROTATED_DEG
-
   def current_views
     views + inc_counter
   end
@@ -29,7 +22,7 @@ class PhotoDecorator < ApplicationDecorator
     transforms = []
 
     transforms += Array.wrap(effects)
-    transforms << "rotate(#{ROTATED_DEG.fetch(rotated)}deg)" if rotated
+    transforms << "rotate(#{rotated * 90}deg)" if rotated
 
     transforms.join(' ').presence
   end

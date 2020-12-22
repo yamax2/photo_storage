@@ -122,5 +122,20 @@ RSpec.describe Admin::PhotosController, type: :request do
         expect(response).to redirect_to(edit_admin_photo_path(photo))
       end
     end
+
+    context 'when assign effects' do
+      let(:token) { create :'yandex/token' }
+      let!(:photo) { create :photo, storage_filename: 'test', yandex_token: token, effects: nil }
+
+      before { put admin_photo_url(id: photo.id, photo: {effects: ['', 'scaleX(-1)', 'scaleY(-1)']}) }
+
+      it do
+        expect(assigns(:photo)).to eq(photo)
+        expect(assigns(:photo)).to be_valid
+        expect(assigns(:photo).effects).to match_array(%w[scaleX(-1) scaleY(-1)])
+
+        expect(response).to redirect_to(edit_admin_photo_path(photo))
+      end
+    end
   end
 end
