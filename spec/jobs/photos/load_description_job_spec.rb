@@ -5,7 +5,8 @@ RSpec.describe Photos::LoadDescriptionJob do
 
   before do
     allow(Photos::LoadDescriptionService).to receive(:call!)
-    described_class.perform_async(photo.id)
+
+    described_class.new.perform(photo.id)
   end
 
   it do

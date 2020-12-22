@@ -3,7 +3,8 @@
 RSpec.describe Photos::DumpViewsJob do
   before do
     allow(Counters::DumpService).to receive(:call!)
-    described_class.perform_async
+
+    described_class.new.perform
   end
 
   it do

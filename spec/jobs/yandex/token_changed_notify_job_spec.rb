@@ -1,16 +1,11 @@
 # frozen_string_literal: true
 
 RSpec.describe Yandex::TokenChangedNotifyJob do
-  around { |example| Sidekiq::Testing.inline! { example.run } }
-
   let(:reload_url) { Rails.application.routes.url_helpers.proxy_reload_url }
 
   context 'when success' do
     subject(:request) do
-      VCR.use_cassette('yandex_token_changed') do
-        described_class.perform_async
-        described_class.drain
-      end
+      VCR.use_cassette('yandex_token_changed') { described_class.new.perform }
     end
 
     it do
@@ -21,10 +16,7 @@ RSpec.describe Yandex::TokenChangedNotifyJob do
   end
 
   context 'when failed' do
-    subject(:request) do
-      described_class.perform_async
-      described_class.drain
-    end
+    subject(:request) { described_class.new.perform }
 
     before { stub_request(:get, reload_url).to_timeout }
 

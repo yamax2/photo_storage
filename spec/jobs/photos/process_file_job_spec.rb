@@ -7,7 +7,7 @@ RSpec.describe Photos::ProcessFileJob do
     it do
       expect(Photos::Process).to receive(:call!).with(photo: photo, storage_filename: 'test')
 
-      expect { described_class.perform_async(photo.id, 'test') }.not_to raise_error
+      expect { described_class.new.perform(photo.id, 'test') }.not_to raise_error
     end
   end
 
@@ -15,7 +15,7 @@ RSpec.describe Photos::ProcessFileJob do
     it do
       expect(Photos::Process).not_to receive(:call!)
 
-      expect { described_class.perform_async(2, 'test') }.to raise_error(ActiveRecord::RecordNotFound)
+      expect { described_class.new.perform(2, 'test') }.to raise_error(ActiveRecord::RecordNotFound)
     end
   end
 end

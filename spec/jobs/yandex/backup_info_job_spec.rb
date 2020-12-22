@@ -7,7 +7,7 @@ RSpec.describe Yandex::BackupInfoJob do
   context 'when correct resource' do
     subject(:request) do
       VCR.use_cassette('yandex_download_url_photos') do
-        described_class.perform_async(token.id, :photo, 'test')
+        described_class.new.perform(token.id, :photo, 'test')
       end
     end
 
@@ -20,7 +20,7 @@ RSpec.describe Yandex::BackupInfoJob do
   end
 
   context 'when wrong resource' do
-    subject(:request) { described_class.perform_async(token.id, :wrong, 'test') }
+    subject(:request) { described_class.new.perform(token.id, :wrong, 'test') }
 
     it do
       expect { request }.to raise_error(Yandex::BackupInfoService::WrongResourceError)

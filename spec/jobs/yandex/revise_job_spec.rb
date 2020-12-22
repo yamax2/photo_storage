@@ -1,16 +1,7 @@
 # frozen_string_literal: true
 
 RSpec.describe Yandex::ReviseJob do
-  around do |example|
-    Sidekiq::Testing.fake! { example.run }
-  end
-
-  let(:run_job) do
-    described_class.perform_async
-    described_class.drain
-  end
-
-  after { Sidekiq::Worker.clear_all }
+  subject(:run_job!) { described_class.new.perform }
 
   context 'when photos and tracks exist' do
     let(:token1) { create :'yandex/token', dir: '/test1' }
@@ -28,23 +19,22 @@ RSpec.describe Yandex::ReviseJob do
     end
 
     it do
-      expect { run_job }.
-        to change { Yandex::ReviseDirJob.jobs.size }.by(3).
-        and change { Yandex::ReviseOtherDirJob.jobs.size }.by(1)
+      expect { run_job! }.
+        to change { enqueued_jobs(klass: Yandex::ReviseDirJob).size }.by(3).
+        and change { enqueued_jobs(klass: Yandex::ReviseOtherDirJob).size }.by(1)
 
-      expect(Yandex::ReviseDirJob.jobs.map { |x| x['args'] }).to match_array(
+      expect(enqueued_jobs(klass: Yandex::ReviseDirJob).map { |x| x['args'] }).to match_array(
         [['000/013/', token1.id], ['000/014/', token1.id], ['000/013/', token2.id]]
       )
 
-      expect(Yandex::ReviseOtherDirJob.jobs.map { |x| x['args'] }).to match_array([[token2.id]])
+      expect(enqueued_jobs(klass: Yandex::ReviseOtherDirJob).map { |x| x['args'] }).
+        to match_array([[token2.id]])
     end
   end
 
   context 'when without photos and tracks' do
     it do
-      expect { run_job }.
-        to change { Yandex::ReviseDirJob.jobs.size }.by(0).
-        and change { Yandex::ReviseOtherDirJob.jobs.size }.by(0)
+      expect { run_job! }.not_to change(enqueued_jobs, :size)
     end
   end
 
@@ -54,9 +44,9 @@ RSpec.describe Yandex::ReviseJob do
     before { create :track, yandex_token: token1, storage_filename: '112.gpx' }
 
     it do
-      expect { run_job }.
-        to change { Yandex::ReviseDirJob.jobs.size }.by(0).
-        and change { Yandex::ReviseOtherDirJob.jobs.size }.by(1)
+      expect { run_job! }.
+        to change { enqueued_jobs(klass: Yandex::ReviseDirJob).size }.by(0).
+        and change { enqueued_jobs(klass: Yandex::ReviseOtherDirJob).size }.by(1)
     end
   end
 end

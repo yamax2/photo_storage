@@ -12,9 +12,9 @@ require 'rspec/rails'
 require 'timecop'
 require 'webmock/rspec'
 require 'vcr'
-require 'sidekiq/testing'
 
-Dir[Rails.root.join('spec/support/**/*.rb')].sort.each { |file| require(file) }
+Dir[Rails.root.join('spec/support/**/*.rb')].sort.each { require _1 }
+Dir[Rails.root.join('spec/rspec_helpers/**/*.rb')].sort.each { require _1 }
 
 begin
   ActiveRecord::Migration.maintain_test_schema!
@@ -26,6 +26,7 @@ end
 RSpec.configure do |config|
   config.include FactoryBot::Syntax::Methods
   config.include StripAttributes::Matchers
+  config.include RSpecHelpers::Sidekiq
 
   config.use_transactional_fixtures = true
 
@@ -76,5 +77,3 @@ YandexClient.configure do |config|
   config.api_key = API_APPLICATION_KEY
   config.api_secret = API_APPLICATION_SECRET
 end
-
-Sidekiq::Testing.inline!

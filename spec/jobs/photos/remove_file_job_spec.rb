@@ -7,7 +7,7 @@ RSpec.describe Photos::RemoveFileJob do
     it do
       expect(Photos::RemoveService).to receive(:call!).with(yandex_token: token, storage_filename: 'test')
 
-      expect { described_class.perform_async(token.id, 'test') }.not_to raise_error
+      expect { described_class.new.perform(token.id, 'test') }.not_to raise_error
     end
   end
 
@@ -15,7 +15,7 @@ RSpec.describe Photos::RemoveFileJob do
     it do
       expect(Photos::RemoveService).not_to receive(:call!)
 
-      expect { described_class.perform_async(5, 'test') }.to raise_error(ActiveRecord::RecordNotFound)
+      expect { described_class.new.perform(5, 'test') }.to raise_error(ActiveRecord::RecordNotFound)
     end
   end
 end

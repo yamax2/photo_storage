@@ -104,12 +104,6 @@ RSpec.describe Api::V1::Admin::Yandex::TokensController, type: :request do
   end
 
   describe '#show' do
-    around do |example|
-      Sidekiq::Testing.fake! { example.run }
-    end
-
-    after { Sidekiq::Worker.clear_all }
-
     context 'when wrong resource' do
       before do
         create :photo, yandex_token: token, storage_filename: 'test.jpg', size: 12
@@ -128,7 +122,7 @@ RSpec.describe Api::V1::Admin::Yandex::TokensController, type: :request do
 
       it do
         expect { get api_v1_admin_yandex_token_url(id: token.id, resource: :photo) }.
-          to change { Yandex::BackupInfoJob.jobs.size }.by(1)
+          to change { enqueued_jobs('tokens', klass: Yandex::BackupInfoJob).size }.by(1)
 
         expect(response).to have_http_status(:accepted)
         expect(response.body).to be_empty
@@ -144,7 +138,7 @@ RSpec.describe Api::V1::Admin::Yandex::TokensController, type: :request do
 
       it do
         expect { get api_v1_admin_yandex_token_url(id: token.id, resource: :photo) }.
-          not_to(change { Yandex::BackupInfoJob.jobs.size })
+          not_to(change { enqueued_jobs('tokens').size })
 
         expect(response).to have_http_status(:accepted)
         expect(response.body).to be_empty
@@ -160,7 +154,7 @@ RSpec.describe Api::V1::Admin::Yandex::TokensController, type: :request do
 
       it do
         expect { get api_v1_admin_yandex_token_url(id: token.id, resource: :photo) }.
-          not_to(change { Yandex::BackupInfoJob.jobs.size })
+          not_to(change { enqueued_jobs('tokens').size })
 
         expect(response).to have_http_status(:ok)
 
@@ -179,7 +173,7 @@ RSpec.describe Api::V1::Admin::Yandex::TokensController, type: :request do
 
       it do
         expect { get api_v1_admin_yandex_token_url(id: token.id, resource: :track) }.
-          not_to(change { Yandex::BackupInfoJob.jobs.size })
+          not_to(change { enqueued_jobs('tokens').size })
 
         expect(response).to have_http_status(:ok)
 

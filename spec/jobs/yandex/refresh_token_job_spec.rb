@@ -11,7 +11,7 @@ RSpec.describe Yandex::RefreshTokenJob do
   context 'when token exists' do
     let(:token) { create :'yandex/token' }
 
-    before { described_class.perform_async(token.id) }
+    before { described_class.new.perform(token.id) }
 
     it do
       expect(Yandex::RefreshTokenService).to have_received(:call!)
@@ -23,7 +23,7 @@ RSpec.describe Yandex::RefreshTokenJob do
     let(:token) { Struct.new(:id).new(id: 1) }
 
     it do
-      expect { described_class.perform_async(token.id) }.to raise_error(ActiveRecord::RecordNotFound)
+      expect { described_class.new.perform(token.id) }.to raise_error(ActiveRecord::RecordNotFound)
     end
   end
 end

@@ -1,27 +1,16 @@
 # frozen_string_literal: true
 
 RSpec.describe Yandex::ReviseDirJob do
-  around do |example|
-    Sidekiq::Testing.fake! { example.run }
-  end
+  subject(:run_job!) { described_class.new.perform('000/013/', token.id) }
 
   let!(:token) { create :'yandex/token', dir: '/test' }
 
-  let(:run_job) do
-    described_class.perform_async('000/013/', token.id)
-    described_class.drain
-  end
-
-  after { Sidekiq::Worker.clear_all }
-
   context 'when errors' do
-    subject(:request) do
-      VCR.use_cassette('yandex_revise_dir') { run_job }
-    end
+    subject(:request) { VCR.use_cassette('yandex_revise_dir') { run_job! } }
 
     it do
       expect { request }.
-        to change { Sidekiq::Extensions::DelayedMailer.jobs.size }.by(1)
+        to change { enqueued_jobs(klass: Sidekiq::Extensions::DelayedMailer).size }.by(1)
     end
   end
 
@@ -31,7 +20,8 @@ RSpec.describe Yandex::ReviseDirJob do
     end
 
     it do
-      expect { run_job }.not_to(change { Sidekiq::Extensions::DelayedMailer.jobs.size })
+      expect { run_job! }.
+        not_to(change { enqueued_jobs(klass: Sidekiq::Extensions::DelayedMailer).size })
     end
   end
 end
