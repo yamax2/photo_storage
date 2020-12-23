@@ -9,7 +9,7 @@ html
 
     title
       - if (title = content_for(:title)).present?
-        = title
+        = "#{title} [#{t('title')}]"
       - else
         = t('title')
 

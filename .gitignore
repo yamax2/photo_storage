@@ -30,3 +30,4 @@ scripts/*.log
 scripts/processed
 
 /config/credentials/production.key
+db.sh

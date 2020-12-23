@@ -1,5 +1,8 @@
 -# frozen_string_literal: true
 
+- if @rubric
+  - content_for :title, @rubric.name
+
 .photo-mobile-header.rubrics-list
   = link_to root_path, class: 'photo-header-root' do
     span

@@ -2,6 +2,7 @@
 
 - current = @photos.current.decorate
 - size = current.image_size(preview_id, apply_rotation: true)
+- content_for :title, current.name
 
 .photo-mobile-header
   = link_to root_path, class: 'photo-header-root' do
@@ -73,6 +74,11 @@
               = t('.original_timestamp')
             td
               = current.original_timestamp
+          tr
+            th
+              = t('.tz')
+            td
+              = current.tz
 
         - if current.exif.present?
           tr
@@ -103,12 +109,6 @@
             = t('.views')
           td
             = current.current_views
-
-        tr
-          th
-            = t('.tz')
-          td
-            = current.tz
 
         tr
           th
