@@ -7,6 +7,8 @@ module Rubrics
       @rubric_id = rubric_id
 
       @only_with_geo_tags = opts.fetch(:only_with_geo_tags, false)
+      @with_rubrics = opts.fetch(:with_rubrics, false)
+
       @limit = opts.fetch(:limit, 0)
       @offset = opts.fetch(:offset, 0)
     end
@@ -26,19 +28,18 @@ module Rubrics
 
     private
 
-    delegate :quoted_table_name, to: Photo
-
     def photos_scope
       scope = Photo.where(rubric_id: @rubric_id).uploaded
 
       scope.where!(Photo.arel_table[:lat_long].not_eq(nil)) if @only_with_geo_tags
+      table_name = Photo.quoted_table_name
 
       scope.select(
         Photo.arel_table[Arel.star],
         <<~SQL.squish
           ROW_NUMBER() OVER (
-            ORDER BY #{quoted_table_name}.original_timestamp AT TIME ZONE #{quoted_table_name}.tz NULLS FIRST,
-                     #{quoted_table_name}.id
+            ORDER BY #{table_name}.original_timestamp AT TIME ZONE #{table_name}.tz NULLS FIRST,
+                     #{table_name}.id
           ) rn
         SQL
       )
