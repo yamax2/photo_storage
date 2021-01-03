@@ -75,6 +75,18 @@ RSpec.describe Rubrics::PhotosFinder do
     end
   end
 
+  context 'when custom columns' do
+    subject(:photos) do
+      described_class.
+        call(root_rubric1.id, columns: [Photo.arel_table[:id], Photo.arel_table[:name]]).
+        limit(1)
+    end
+
+    let(:actual_columns) { ActiveRecord::Base.connection.execute(photos.to_sql).to_a.first.keys }
+
+    it { expect(actual_columns).to match_array(%w[id name rn]) }
+  end
+
   context 'when sub_rubric' do
     subject(:photos) { described_class.call(sub_rubric1.id) }
 
@@ -84,7 +96,7 @@ RSpec.describe Rubrics::PhotosFinder do
     end
   end
 
-  context 'only_with_geo_tags opt' do
+  context 'only_with_geo_tags option' do
     subject(:photos) { described_class.call(root_rubric1.id, only_with_geo_tags: true) }
 
     it do
@@ -132,9 +144,7 @@ RSpec.describe Rubrics::PhotosFinder do
     context 'and only_with_geo_tags' do
       subject(:photos) { described_class.call(root_rubric1.id, offset: 1, limit: 5, only_with_geo_tags: true) }
 
-      it do
-        expect(photos).to be_empty
-      end
+      it { is_expected.to be_empty }
     end
   end
 

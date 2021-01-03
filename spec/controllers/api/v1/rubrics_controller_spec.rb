@@ -48,7 +48,6 @@ RSpec.describe Api::V1::RubricsController, type: :request do
                 'image_size',
                 'preview',
                 'id' => photo2.id,
-                'rn' => 2,
                 'properties' => hash_including(
                   'actual_image_size' => [180, 360],
                   'turned' => false,
