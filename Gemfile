@@ -18,8 +18,7 @@ gem 'turbolinks', '>= 5'
 
 gem 'bootstrap', '~> 4'
 gem 'bootstrap4-datetime-picker-rails'
-# FIXME: waiting for release https://github.com/bokmann/font-awesome-rails/issues/206
-gem 'font-awesome-rails', git: 'https://github.com/bokmann/font-awesome-rails.git'
+gem 'font-awesome-rails'
 gem 'jquery-rails'
 gem 'jquery-simplecolorpicker-rails'
 gem 'leaflet-rails'
