@@ -3,7 +3,7 @@
 class PagesController < ApplicationController
   def show
     if (rubric_id = params[:id]).present?
-      @rubric = RubricFinder.call(rubric_id).decorate
+      @rubric = RubricFinder.call(rubric_id)
     end
 
     redirect_to root_path unless with_rubrics? || with_photos?

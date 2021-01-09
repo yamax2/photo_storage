@@ -5,7 +5,13 @@ RSpec.describe PhotosController, type: :request do
     let(:rubric) { create :rubric }
     let(:token) { create :'yandex/token' }
     let(:photo) do
-      create :photo, storage_filename: 'test', yandex_token: token, rubric: rubric, width: 4_096, height: 3_072
+      create :photo,
+             storage_filename: 'test',
+             yandex_token: token,
+             rubric: rubric,
+             width: 4_096,
+             height: 3_072,
+             views: 10
     end
 
     context 'when preview selected' do
@@ -18,6 +24,7 @@ RSpec.describe PhotosController, type: :request do
         expect(assigns(:photos).current).to eq(photo)
 
         expect(response.body).to match(/proxy.+1066/)
+        expect(response.body).to include('<td class="views-counter">11</td>')
       end
     end
 
@@ -33,6 +40,7 @@ RSpec.describe PhotosController, type: :request do
         expect(assigns(:photos).current).to eq(photo)
 
         expect(response.body).to match(/proxy.+1280/)
+        expect(response.body).to include('<td class="views-counter">11</td>')
       end
     end
 

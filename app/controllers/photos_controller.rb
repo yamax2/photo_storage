@@ -6,7 +6,7 @@ class PhotosController < ApplicationController
   rescue_from ActiveRecord::RecordNotFound, with: :try_to_find_rubric
 
   def show
-    @rubric = RubricFinder.call(params[:page_id]).decorate
+    @rubric = RubricFinder.call(params[:page_id])
     @photos = Rubrics::CurrentPhotoFinder.call(@rubric.id, params[:id])
   end
 

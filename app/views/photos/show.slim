@@ -107,8 +107,8 @@
         tr
           th
             = t('.views')
-          td
-            = current.current_views
+          td.views-counter
+            = current.views + current.inc_counter
 
         tr
           th

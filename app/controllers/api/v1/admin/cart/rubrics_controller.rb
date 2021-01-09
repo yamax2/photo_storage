@@ -11,8 +11,7 @@ module Api
           def index
             @rubrics = Rubric.
               where(id: selected_rubric_ids.keys, rubric_id: params[:id]).
-              default_order.
-              decorate
+              default_order
           end
 
           private

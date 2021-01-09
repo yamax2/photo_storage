@@ -3,10 +3,6 @@
 class PhotoDecorator < ApplicationDecorator
   delegate_all
 
-  def current_views
-    views + inc_counter
-  end
-
   # FIXME: url??
   def url(size = :original)
     return if storage_filename.blank?

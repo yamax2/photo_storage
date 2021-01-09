@@ -12,20 +12,6 @@ RSpec.describe PhotoDecorator do
     allow(Rails.application.config).to receive(:max_thumb_width).and_return(1_280)
   end
 
-  describe '#current_views' do
-    let(:photo) { create :photo, views: 1_000, local_filename: 'test' }
-
-    context 'when first call' do
-      it { expect(decorated_photo.current_views).to eq(1_001) }
-    end
-
-    context 'when second call' do
-      before { decorated_photo.inc_counter }
-
-      it { expect(decorated_photo.current_views).to eq(1_002) }
-    end
-  end
-
   describe '#image_size' do
     context 'when simple photo' do
       let(:photo) { create :photo, width: 1_000, height: 2_000, local_filename: 'test' }

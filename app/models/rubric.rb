@@ -44,4 +44,18 @@ class Rubric < ApplicationRecord
       ) sort ON sort.id = #{quoted_table_name}.id
     SQL
   end)
+
+  def rubrics_tree
+    current_rubric = self
+    rubrics = []
+
+    loop do
+      rubrics << current_rubric
+      current_rubric = current_rubric.rubric
+
+      break if current_rubric.blank?
+    end
+
+    rubrics
+  end
 end
