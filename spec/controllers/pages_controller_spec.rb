@@ -13,7 +13,6 @@ RSpec.describe PagesController, type: :request do
           expect(response).to have_http_status(:ok)
 
           expect(assigns(:rubric)).to be_nil
-          expect(assigns(:rubrics)).to be_empty
         end
       end
 
@@ -31,7 +30,6 @@ RSpec.describe PagesController, type: :request do
           expect(response).to have_http_status(:ok)
 
           expect(assigns(:rubric)).to be_nil
-          expect(assigns(:rubrics)).to match_array([rubric])
         end
       end
     end
@@ -48,7 +46,6 @@ RSpec.describe PagesController, type: :request do
           expect(response).to redirect_to(root_path)
 
           expect(assigns(:rubric)).to eq(rubric)
-          expect(assigns(:rubrics)).to be_empty
         end
       end
 
@@ -63,7 +60,6 @@ RSpec.describe PagesController, type: :request do
           expect(response).to have_http_status(:ok)
 
           expect(assigns(:rubric)).to eq(rubric)
-          expect(assigns(:rubrics)).to be_empty
         end
       end
 
@@ -78,7 +74,6 @@ RSpec.describe PagesController, type: :request do
           expect(response).to redirect_to(root_path)
 
           expect(assigns(:rubric)).to eq(rubric)
-          expect(assigns(:rubrics)).to be_empty
         end
       end
 
@@ -95,7 +90,6 @@ RSpec.describe PagesController, type: :request do
           expect(response).to have_http_status(:ok)
 
           expect(assigns(:rubric)).to eq(rubric)
-          expect(assigns(:rubrics)).to match_array([sub_rubric])
         end
       end
 
@@ -112,7 +106,6 @@ RSpec.describe PagesController, type: :request do
           expect(response).to redirect_to(root_path)
 
           expect(assigns(:rubric)).to eq(rubric)
-          expect(assigns(:rubrics)).to be_empty
         end
       end
 
@@ -131,7 +124,6 @@ RSpec.describe PagesController, type: :request do
           expect(response).to redirect_to(root_path)
 
           expect(assigns(:rubric)).to eq(rubric)
-          expect(assigns(:rubrics)).to match_array([other_rubric])
         end
       end
     end

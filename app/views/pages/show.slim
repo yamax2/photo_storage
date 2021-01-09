@@ -36,13 +36,5 @@
      attribution: Leaflet.attribution}}
     #map
 
-- if @rubric
-  .photos*{data: {url: api_v1_rubric_path(@rubric)}}
-    - if with_rubrics?
-      = render partial: 'rubric', collection: @rubrics
-
-    #loader
-
-- elsif with_rubrics?
-  .photos
-    = render partial: 'rubric', collection: @rubrics
+.photos*{data: {url: @rubric ? api_v1_rubric_path(@rubric) : api_v1_rubrics_path}}
+  #loader
