@@ -238,7 +238,61 @@ RSpec.describe Rubrics::ListingFinder do
     end
 
     context 'when rubrics and photos' do
+      let(:rubric_id) { rubric6_only_deep.id }
+      let!(:uploaded_photo1) do
+        create :photo, rubric: rubric6_only_deep, storage_filename: '1.jpg', yandex_token: token
+      end
 
+      let!(:uploaded_photo2) do
+        create :photo, rubric: rubric6_only_deep, storage_filename: '2.jpg', yandex_token: token
+      end
+
+      let!(:uploaded_photo3) do
+        create :photo, rubric: rubric6_only_deep, storage_filename: '4.jpg', yandex_token: token
+      end
+
+      let(:actual_models) { listing.map { |x| [x.id, x.model_type] } }
+
+      before { create :photo, rubric: rubric6_only_deep, local_filename: '3.jpg' }
+
+      context 'when first 2 objects' do
+        let(:opts) { {limit: 2} }
+
+        it do
+          expect(actual_models).to eq([[rubric7_sub.id, 'Rubric'], [uploaded_photo1.id, 'Photo']])
+        end
+      end
+
+      context 'when last objects' do
+        let(:opts) { {limit: 2, offset: 2} }
+
+        it do
+          expect(actual_models).to eq([[uploaded_photo2.id, 'Photo'], [uploaded_photo3.id, 'Photo']])
+        end
+      end
+
+      context 'when objects in the middle' do
+        let(:opts) { {limit: 2, offset: 1} }
+
+        it do
+          expect(actual_models).to eq([[uploaded_photo1.id, 'Photo'], [uploaded_photo2.id, 'Photo']])
+        end
+      end
+
+      context 'when offset without a limit' do
+        let(:opts) { {offset: 1} }
+
+        it do
+          expect(actual_models).
+            to eq([[uploaded_photo1.id, 'Photo'], [uploaded_photo2.id, 'Photo'], [uploaded_photo3.id, 'Photo']])
+        end
+      end
+
+      context 'when wrong offset' do
+        let(:opts) { {offset: 500, limit: 2} }
+
+        it { is_expected.to be_empty }
+      end
     end
   end
   # rubocop:enable RSpec/LetSetup
