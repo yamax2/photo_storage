@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 module Rubrics
+  # FIXME: build specific objects (presenters) here
   class ListingFinder
     COLUMNS = %i[
       id
@@ -32,9 +33,12 @@ module Rubrics
     end
 
     def call
-      Photo.select(*COLUMNS, :model_type).from(
-        scope.as('query')
-      ).reorder(:model_index, :rn).tap do |scope|
+      Photo.
+        select(*COLUMNS, :photos_count, :rubrics_count, :model_type).
+        from(scope.as('query')).
+        preload(:yandex_token).
+        reorder(:model_index, :rn).
+        readonly.tap do |scope|
         scope.limit!(@limit) if @limit.positive?
         scope.offset!(@offset) if @offset.positive?
       end
@@ -62,9 +66,9 @@ module Rubrics
       scope.select(
         :id, :name,
         *COLUMNS_FOR_RUBRIC.map { |attr| photos[attr] },
-        'null rubric_id',
+        :rubric_id,
         "ROW_NUMBER() OVER (ORDER BY #{scope.order_values.map(&:to_sql).join(',')}) rn",
-        '0 model_index',
+        :photos_count, :rubrics_count, '0 model_index',
         "#{Rubric.connection.quote('Rubric')} model_type"
       )
     end
@@ -77,7 +81,7 @@ module Rubrics
         columns: COLUMNS.map { |attr| photos[attr] },
         only_with_geo_tags: @only_with_geo_tags
       ).select(
-        '1 model_index',
+        '0 photos_count', '0 rubrics_count', '1 model_index',
         "#{Photo.connection.quote('Photo')} model_type"
       )
     end

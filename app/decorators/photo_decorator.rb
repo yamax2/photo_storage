@@ -26,6 +26,11 @@ class PhotoDecorator < ApplicationDecorator
     transforms.join(' ').presence
   end
 
+  # FIXME: move to a separate object
+  def rubric?
+    respond_to?(:model_type) && model_type == 'Rubric'
+  end
+
   def turned?
     rotated.to_i.odd?
   end

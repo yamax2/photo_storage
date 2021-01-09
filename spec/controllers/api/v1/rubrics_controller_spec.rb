@@ -14,98 +14,218 @@ RSpec.describe Api::V1::RubricsController, type: :request do
     end
 
     context 'when correct rubric' do
-      let(:root_rubric) { create :rubric }
-      let(:rubric) { create :rubric, rubric: root_rubric }
       let(:token) { create :'yandex/token' }
 
+      let(:root_rubric) { create :rubric }
+      let(:rubric) { create :rubric, rubric: root_rubric }
+      let(:another_rubric) { create :rubric, rubric: root_rubric }
+
       let!(:photo1) do
-        create :photo, rubric: rubric,
+        create :photo, rubric: root_rubric,
                        yandex_token: token,
-                       storage_filename: 'test',
+                       storage_filename: 'test1',
                        width: 3_000,
                        height: 1_000,
                        rotated: 1
       end
 
       let!(:photo2) do
-        create :photo, rubric: rubric,
+        create :photo, rubric: root_rubric,
                        yandex_token: token,
-                       storage_filename: 'test',
+                       storage_filename: 'test2',
                        width: 1_000,
                        height: 2_000,
                        lat_long: [1, 2]
       end
 
-      context 'and with limit' do
-        before { get api_v1_rubric_url(id: rubric.id, offset: 1, limit: 1) }
+      let(:correct_response) do
+        [
+          {
+            'id' => another_rubric.id,
+            'model_type' => 'Rubric',
+            'lat_long' => nil,
+            'image_size' => [480, 360],
+            'preview' => nil,
+            'url' => "/rubrics/#{another_rubric.id}",
+            'name' => "#{another_rubric.name}, фото: 1",
+            'properties' => {
+              'actual_image_size' => [480, 360],
+              'css_transform' => nil,
+              'turned' => false
+            }
+          },
+          {
+            'id' => rubric.id,
+            'model_type' => 'Rubric',
+            'lat_long' => nil,
+            'image_size' => [300, 360],
+            'preview' => "/proxy/previews/test_photos/test3?id=#{token.id}&size=300",
+            'url' => "/rubrics/#{rubric.id}",
+            'name' => "#{rubric.name}, фото: 1",
+            'properties' => {
+              'actual_image_size' => [300, 360],
+              'css_transform' => nil,
+              'turned' => false
+            }
+          },
+          {
+            'id' => photo1.id,
+            'model_type' => 'Photo',
+            'lat_long' => nil,
+            'image_size' => [360, 120],
+            'preview' => "/proxy/previews/test_photos/test1?id=#{token.id}&size=360",
+            'url' => "/rubrics/#{root_rubric.id}/photos/#{photo1.id}",
+            'name' => photo1.name,
+            'properties' => {
+              'actual_image_size' => [120, 360],
+              'css_transform' => 'rotate(90deg)',
+              'turned' => true
+            }
+          },
+          {
+            'id' => photo2.id,
+            'model_type' => 'Photo',
+            'lat_long' => {'x' => 1.0, 'y' => 2.0},
+            'image_size' => [180, 360],
+            'preview' => "/proxy/previews/test_photos/test2?id=#{token.id}&size=180",
+            'url' => "/rubrics/#{root_rubric.id}/photos/#{photo2.id}",
+            'name' => photo2.name,
+            'properties' => {
+              'actual_image_size' => [180, 360],
+              'css_transform' => nil,
+              'turned' => false
+            }
+          }
+        ]
+      end
+
+      before do
+        photo = create :photo, rubric: rubric, yandex_token: token, storage_filename: 'test3', width: 500, height: 600
+
+        rubric.update!(main_photo_id: photo.id)
+
+        create :photo, rubric: another_rubric, yandex_token: token, storage_filename: 'test4', width: 600, height: 600
+
+        root_rubric.update!(main_photo_id: photo1.id)
+      end
+
+      context 'and without pagination' do
+        before { get api_v1_rubric_url(id: root_rubric.id) }
 
         it do
           expect(response).to have_http_status(:ok)
-          expect(json).to match_array(
-            [
-              hash_including(
-                'url',
-                'image_size',
-                'preview',
-                'id' => photo2.id,
-                'properties' => hash_including(
-                  'actual_image_size' => [180, 360],
-                  'turned' => false,
-                  'css_transform' => nil
-                )
-              )
-            ]
-          )
+
+          expect(json).to eq(correct_response)
         end
       end
 
-      context 'when without limits' do
-        before { get api_v1_rubric_url(id: rubric.id) }
+      context 'when pagination' do
+        before { get api_v1_rubric_url(id: root_rubric.id, limit: 2, offset: 1) }
 
         it do
           expect(response).to have_http_status(:ok)
 
-          expect(json).to match_array(
-            [
-              hash_including(
-                'id' => photo1.id,
-                'image_size' => [360, 120],
-                'properties' => hash_including(
-                  'turned' => true,
-                  'actual_image_size' => [120, 360],
-                  'css_transform' => 'rotate(90deg)'
-                )
-              ),
-
-              hash_including(
-                'id' => photo2.id,
-                'image_size' => [180, 360],
-                'properties' => hash_including(
-                  'turned' => false,
-                  'actual_image_size' => [180, 360],
-                  'css_transform' => nil
-                )
-              )
-            ]
-          )
+          expect(json).to eq(correct_response[1..2])
         end
       end
 
       context 'when only_with_geo_tags' do
-        before { get api_v1_rubric_url(id: rubric.id, only_with_geo_tags: true) }
+        before { get api_v1_rubric_url(id: root_rubric.id, only_with_geo_tags: true) }
 
         it do
           expect(response).to have_http_status(:ok)
-          expect(json).to match_array([hash_including('id' => photo2.id)])
+
+          expect(json).to eq([correct_response.last])
         end
       end
 
-      context 'when limit and only_with_geo_tags' do
-        before { get api_v1_rubric_url(id: rubric.id, only_with_geo_tags: true, offset: 1, limit: 5) }
+      context 'when offset and only_with_geo_tags' do
+        before { get api_v1_rubric_url(id: root_rubric.id, only_with_geo_tags: true, offset: 5) }
 
         it do
           expect(response).to have_http_status(:ok)
           expect(json).to be_empty
+        end
+      end
+    end
+  end
+
+  describe '#index' do
+    context 'when without rubrics' do
+      before { get api_v1_rubrics_url }
+
+      it do
+        expect(response).to have_http_status(:ok)
+        expect(json).to be_empty
+      end
+    end
+
+    context 'when rubrics exist' do
+      let(:token) { create :'yandex/token' }
+
+      let!(:rubric1) { create :rubric }
+      let!(:rubric2) { create :rubric, rubrics_count: 5 }
+
+      let!(:photo1) do
+        create :photo, rubric: rubric1, storage_filename: '1.jpg', yandex_token: token, width: 100, height: 100
+      end
+
+      before do
+        create :photo, rubric: rubric2, storage_filename: '2.jpg', yandex_token: token, width: 100, height: 100
+
+        rubric1.update!(main_photo_id: photo1.id)
+
+        create :rubric
+      end
+
+      context 'when request without limits' do
+        before { get api_v1_rubrics_url }
+
+        it do
+          expect(response).to have_http_status(:ok)
+
+          expect(json).to eq(
+            [
+              {
+                'id' => rubric2.id,
+                'model_type' => 'Rubric',
+                'lat_long' => nil,
+                'image_size' => [480, 360],
+                'preview' => nil,
+                'url' => "/rubrics/#{rubric2.id}",
+                'name' => "#{rubric2.name}, подрубрик: 5, фото: 1",
+                'properties' => {
+                  'actual_image_size' => [480, 360],
+                  'css_transform' => nil,
+                  'turned' => false
+                }
+              },
+              {
+                'id' => rubric1.id,
+                'model_type' => 'Rubric',
+                'lat_long' => nil,
+                'image_size' => [360, 360],
+                'preview' => "/proxy/previews/test_photos/1.jpg?id=#{token.id}&size=360",
+                'url' => "/rubrics/#{rubric1.id}",
+                'name' => "#{rubric1.name}, фото: 1",
+                'properties' => {
+                  'actual_image_size' => [360, 360],
+                  'css_transform' => nil,
+                  'turned' => false
+                }
+              }
+            ]
+          )
+        end
+      end
+
+      context 'when limit and offset' do
+        before { get api_v1_rubrics_url(limit: 50, offset: 1) }
+
+        it do
+          expect(response).to have_http_status(:ok)
+
+          expect(json.map { |x| x['id'] }).to eq([rubric1.id])
         end
       end
     end

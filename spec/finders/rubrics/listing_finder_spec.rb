@@ -60,8 +60,12 @@ RSpec.describe Rubrics::ListingFinder do
         yandex_token_id: photo_for_rubric7.yandex_token_id,
         storage_filename: photo_for_rubric7.storage_filename,
         model_type: 'Rubric',
-        rubric_id: nil
+        rubric_id: nil,
+        photos_count: 0,
+        rubrics_count: 1
       )
+
+      expect(listing.first.association(:yandex_token)).to be_loaded
 
       expect(listing.second).to have_attributes(
         id: rubric5_without_avatar.id,
@@ -69,7 +73,9 @@ RSpec.describe Rubrics::ListingFinder do
         yandex_token_id: nil,
         storage_filename: nil,
         model_type: 'Rubric',
-        rubric_id: nil
+        rubric_id: nil,
+        photos_count: 1,
+        rubrics_count: 0
       )
 
       expect(listing.third).to have_attributes(
@@ -78,8 +84,12 @@ RSpec.describe Rubrics::ListingFinder do
         yandex_token_id: photo_for_rubric2.yandex_token_id,
         storage_filename: photo_for_rubric2.storage_filename,
         model_type: 'Rubric',
-        rubric_id: nil
+        rubric_id: nil,
+        photos_count: 1,
+        rubrics_count: 0
       )
+
+      expect(listing.third.association(:yandex_token)).to be_loaded
 
       expect(listing.last).to have_attributes(
         id: rubric1_empty.id,
@@ -87,10 +97,13 @@ RSpec.describe Rubrics::ListingFinder do
         yandex_token_id: nil,
         storage_filename: nil,
         model_type: 'Rubric',
-        rubric_id: nil
+        rubric_id: nil,
+        photos_count: 1,
+        rubrics_count: 0
       )
 
       expect(actual_models).not_to include('Photo')
+      expect(listing).to all(be_readonly)
     end
   end
 
@@ -112,8 +125,12 @@ RSpec.describe Rubrics::ListingFinder do
         name: rubric7_sub.name,
         storage_filename: photo_for_rubric7.storage_filename,
         model_type: 'Rubric',
-        rubric_id: nil
+        rubric_id: rubric6_only_deep.id,
+        photos_count: 1,
+        rubrics_count: 0
       )
+
+      expect(listing).to all(be_readonly)
     end
   end
 
@@ -129,8 +146,12 @@ RSpec.describe Rubrics::ListingFinder do
         name: photo_for_rubric2.name,
         storage_filename: photo_for_rubric2.storage_filename,
         model_type: 'Photo',
-        rubric_id: rubric2_with_photo_and_avatar.id
+        rubric_id: rubric2_with_photo_and_avatar.id,
+        photos_count: 0,
+        rubrics_count: 0
       )
+
+      expect(listing).to all(be_readonly)
     end
   end
 
@@ -151,6 +172,8 @@ RSpec.describe Rubrics::ListingFinder do
 
       expect(actual_models['Photo']).to match_array([photo_for_rubric7.id, another_photo.id])
       expect(actual_models['Rubric']).to match_array([another_rubric.id])
+
+      expect(listing).to all(be_readonly)
     end
   end
 
@@ -186,6 +209,7 @@ RSpec.describe Rubrics::ListingFinder do
       expect(actual_models.keys).to match_array(%w[Photo])
 
       expect(actual_models['Photo']).to match_array([another_photo.id])
+      expect(listing).to all(be_readonly)
     end
   end
 

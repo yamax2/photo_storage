@@ -47,7 +47,7 @@ Rails.application.routes.draw do
     namespace :v1 do
       get '/readiness' => 'readiness#index', as: :readiness
 
-      resources :rubrics, only: :show do
+      resources :rubrics, only: %i[show index] do
         resources :tracks, only: :index
 
         member do

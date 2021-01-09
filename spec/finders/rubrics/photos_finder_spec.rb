@@ -105,49 +105,6 @@ RSpec.describe Rubrics::PhotosFinder do
     end
   end
 
-  context 'when pagination' do
-    context 'and first 2 photos' do
-      subject(:photos) { described_class.call(root_rubric1.id, limit: 2) }
-
-      it do
-        expect(photos).to eq([photo6, photo7])
-        expect(photos.map(&:rn)).to eq([1, 2])
-      end
-    end
-
-    context 'and last 2 photos' do
-      subject(:photos) { described_class.call(root_rubric1.id, limit: 2, offset: 3) }
-
-      it do
-        expect(photos).to eq([photo2, photo5])
-        expect(photos.map(&:rn)).to eq([4, 5])
-      end
-    end
-
-    context 'and 3 photos in the middle' do
-      subject(:photos) { described_class.call(root_rubric1.id, limit: 3, offset: 1) }
-
-      it do
-        expect(photos).to eq([photo7, photo3, photo2])
-        expect(photos.map(&:rn)).to eq([2, 3, 4])
-      end
-    end
-
-    context 'and offset without limit' do
-      subject(:photos) { described_class.call(root_rubric1.id, offset: 1) }
-
-      it do
-        expect(photos.map(&:rn)).to eq([2, 3, 4, 5])
-      end
-    end
-
-    context 'and only_with_geo_tags' do
-      subject(:photos) { described_class.call(root_rubric1.id, offset: 1, limit: 5, only_with_geo_tags: true) }
-
-      it { is_expected.to be_empty }
-    end
-  end
-
   context 'when wrong rubric' do
     subject(:photos) { described_class.call(-1) }
 

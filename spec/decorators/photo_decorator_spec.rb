@@ -191,4 +191,34 @@ RSpec.describe PhotoDecorator do
     it_behaves_like 'turned? for photo', 2, false
     it_behaves_like 'turned? for photo', 3, true
   end
+
+  describe '#rubric?' do
+    subject(:rubric?) { decorated_photo.rubric? }
+
+    context 'when regular photo' do
+      let(:photo) { create :photo, local_filename: 'test' }
+
+      it { is_expected.to eq(false) }
+    end
+
+    context 'when photo selected by finder' do
+      let(:photo) do
+        create :photo, local_filename: 'test'
+
+        Photo.find_by_sql("select photos.*, 'Photo' model_type from photos limit 1").first
+      end
+
+      it { is_expected.to eq(false) }
+    end
+
+    context 'when rubric' do
+      let(:photo) do
+        create :photo, local_filename: 'test'
+
+        Photo.find_by_sql("select photos.*, 'Rubric' model_type from photos limit 1").first
+      end
+
+      it { is_expected.to eq(true) }
+    end
+  end
 end
