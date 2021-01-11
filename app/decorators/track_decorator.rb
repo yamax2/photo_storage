@@ -20,15 +20,8 @@ class TrackDecorator < ApplicationDecorator
     format_duration(hours, minutes)
   end
 
-  def url
-    return if storage_filename.blank?
-
-    Rails.application.routes.url_helpers.proxy_object_path \
-      "#{yandex_token.other_dir.sub(%r{^/}, '')}/#{storage_filename}",
-      {
-        id: yandex_token_id,
-        fn: original_filename
-      }
+  def proxy_url
+    url_generator.generate
   end
 
   private
@@ -40,5 +33,9 @@ class TrackDecorator < ApplicationDecorator
     result << I18n.t('tracks.duration.minutes', minutes: minutes.to_s.rjust(2, '0')) if minutes.positive?
 
     result.empty? ? '0' : result.join(' ')
+  end
+
+  def url_generator
+    @url_generator ||= ::ProxyUrls::Track.new(object)
   end
 end

@@ -1,21 +1,11 @@
 # frozen_string_literal: true
 
 module Rubrics
-  # FIXME: build specific objects (presenters) here
-  class ListingFinder
-    COLUMNS = %i[
-      id
-      name
-      yandex_token_id
-      storage_filename
-      content_type
-      width
-      height
-      lat_long
-      props
-      rubric_id
-    ].freeze
-    COLUMNS_FOR_RUBRIC = (COLUMNS - %i[id name rubric_id]).freeze
+  class Listing
+    include Enumerable
+
+    COLUMNS = (::Listing::Item::COLUMNS - %w[yandex_token model_type photos_count rubrics_count]).freeze
+    COLUMNS_FOR_RUBRIC = (COLUMNS - %w[id name rubric_id]).freeze
     private_constant :COLUMNS, :COLUMNS_FOR_RUBRIC
 
     def initialize(rubric_id = nil, opts = {})
@@ -28,14 +18,25 @@ module Rubrics
       @offset = opts.fetch(:offset, 0)
     end
 
-    def self.call(rubric_id = nil, opts = {})
-      new(rubric_id, opts).call
+    def each
+      return to_enum unless block_given?
+
+      scope.each do |model|
+        attrs = model.attributes
+        attrs[:yandex_token] = model.yandex_token
+
+        yield ::Listing::Item.new(attrs)
+      end
+
+      self
     end
 
-    def call
+    private
+
+    def scope
       Photo.
         select(*COLUMNS, :photos_count, :rubrics_count, :model_type).
-        from(scope.as('query')).
+        from(base_scope.as('query')).
         preload(:yandex_token).
         reorder(:model_index, :rn).
         readonly.tap do |scope|
@@ -44,9 +45,7 @@ module Rubrics
       end
     end
 
-    private
-
-    def scope
+    def base_scope
       if @only_with_geo_tags
         photos_scope.arel
       elsif @rubric_id.present?

@@ -56,20 +56,12 @@ RSpec.describe TrackDecorator do
     end
   end
 
-  describe '#url' do
-    subject { track.decorate.url }
+  describe '#proxy_url' do
+    subject(:url) { track.decorate.proxy_url }
 
-    context 'when track is not uploaded' do
-      let(:track) { create :track, local_filename: 'test' }
+    let(:token) { create :'yandex/token', other_dir: '/other' }
+    let(:track) { create :track, storage_filename: 'test.gpx', yandex_token: token, original_filename: 'my.gpx' }
 
-      it { is_expected.to be_nil }
-    end
-
-    context 'when track is uploaded' do
-      let(:token) { create :'yandex/token', other_dir: '/other' }
-      let(:track) { create :track, storage_filename: 'test.gpx', yandex_token: token, original_filename: 'my.gpx' }
-
-      it { is_expected.to eq("/proxy/other/test.gpx?fn=my.gpx&id=#{token.id}") }
-    end
+    it { is_expected.to eq("/proxy/other/test.gpx?fn=my.gpx&id=#{token.id}") }
   end
 end

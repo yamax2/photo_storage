@@ -51,7 +51,7 @@
 
     .photo-content-image class=('rotated' if current.turned?) *{style: "width: #{size.first}px; height: #{size.last}px", id: "photo_#{current.id}"}
       - transform = current.css_transform
-      = image_tag current.url(preview_id),
+      = image_tag current.proxy_url(preview_id),
                   id: 'mainimg',
                   style: transform ? "transform: #{transform}" : nil
 
@@ -102,7 +102,7 @@
           th
             = t('.original_download')
           td
-            = link_to t('.download'), current.url, target: '_blank', title: current.original_filename
+            = link_to t('.download'), current.proxy_url, target: '_blank', title: current.original_filename
 
         tr
           th

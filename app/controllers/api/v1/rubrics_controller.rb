@@ -21,12 +21,12 @@ module Api
       private
 
       def find_objects
-        @objects = Rubrics::ListingFinder.call(
+        @listing = Rubrics::Listing.new(
           params[:id],
           offset: params[:offset].to_i,
           limit: params[:limit].to_i,
           only_with_geo_tags: params[:only_with_geo_tags]
-        ).decorate
+        ).to_a
       end
     end
   end
