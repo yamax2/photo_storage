@@ -85,9 +85,13 @@ ru:
         tracks: Треки
         yandex_tokens: Токены Yandex
     photos:
+      destroy:
+        success: 'Фото %{name} удалено'
       edit:
         <<: *form_base
         clear: Очистить
+        delete: Удалить фото
+        delete_confirm: Удалить фото?
         rubric_search: Название рубрики
         rubric_select: Выбрать
         effects:

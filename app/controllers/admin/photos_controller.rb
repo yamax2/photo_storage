@@ -12,6 +12,12 @@ module Admin
       end
     end
 
+    def destroy
+      @photo.destroy
+
+      redirect_to admin_root_path, notice: t('.success', name: @photo.name)
+    end
+
     private
 
     def find_photo

@@ -3,20 +3,20 @@
 RSpec.describe Admin::PhotosController, type: :request do
   describe '#edit' do
     context 'when wrong photo' do
-      subject(:request) { get edit_admin_photo_url(id: 1) }
+      subject(:request!) { get edit_admin_photo_url(id: 1) }
 
       it do
-        expect { request }.to raise_error(ActiveRecord::RecordNotFound)
+        expect { request! }.to raise_error(ActiveRecord::RecordNotFound)
       end
     end
 
     context 'when unpublished photo' do
-      subject(:request) { get edit_admin_photo_url(id: photo.id) }
+      subject(:request!) { get edit_admin_photo_url(id: photo.id) }
 
       let!(:photo) { create :photo, local_filename: 'test' }
 
       it do
-        expect { request }.to raise_error(ActiveRecord::RecordNotFound)
+        expect { request! }.to raise_error(ActiveRecord::RecordNotFound)
       end
     end
 
@@ -36,31 +36,31 @@ RSpec.describe Admin::PhotosController, type: :request do
 
   describe '#update' do
     context 'when wrong photo' do
-      subject(:request) { put admin_photo_url(id: 1, photo: {name: 'test'}) }
+      subject(:request!) { put admin_photo_url(id: 1, photo: {name: 'test'}) }
 
       it do
-        expect { request }.to raise_error(ActiveRecord::RecordNotFound)
+        expect { request! }.to raise_error(ActiveRecord::RecordNotFound)
       end
     end
 
     context 'when unpublished photo' do
-      subject(:request) { put admin_photo_url(id: photo.id, photo: {name: 'test'}) }
+      subject(:request!) { put admin_photo_url(id: photo.id, photo: {name: 'test'}) }
 
       let!(:photo) { create :photo, local_filename: 'test' }
 
       it do
-        expect { request }.to raise_error(ActiveRecord::RecordNotFound)
+        expect { request! }.to raise_error(ActiveRecord::RecordNotFound)
       end
     end
 
     context 'when without photo param' do
-      subject(:request) { put admin_photo_url(id: photo.id, photo1: {name: 'test'}) }
+      subject(:request!) { put admin_photo_url(id: photo.id, photo1: {name: 'test'}) }
 
       let(:token) { create :'yandex/token' }
       let!(:photo) { create :photo, storage_filename: 'test', yandex_token: token }
 
       it do
-        expect { request }.to raise_error(ActionController::ParameterMissing)
+        expect { request! }.to raise_error(ActionController::ParameterMissing)
       end
     end
 
@@ -135,6 +135,42 @@ RSpec.describe Admin::PhotosController, type: :request do
         expect(assigns(:photo).effects).to match_array(%w[scaleX(-1) scaleY(-1)])
 
         expect(response).to redirect_to(edit_admin_photo_path(photo))
+      end
+    end
+  end
+
+  describe '#destroy' do
+    context 'when wrong photo' do
+      subject(:request!) { delete admin_photo_url(id: 1) }
+
+      it do
+        expect { request! }.to raise_error(ActiveRecord::RecordNotFound)
+      end
+    end
+
+    context 'when unpublished photo' do
+      subject(:request!) { delete admin_photo_url(id: photo.id) }
+
+      let!(:photo) { create :photo, local_filename: 'test' }
+
+      it do
+        expect { request! }.to raise_error(ActiveRecord::RecordNotFound)
+      end
+    end
+
+    context 'when successful delete' do
+      subject(:request!) { delete admin_photo_url(id: photo.id) }
+
+      let(:token) { create :'yandex/token' }
+      let!(:photo) { create :photo, storage_filename: 'test', yandex_token: token }
+
+      it do
+        expect { request! }.to change(Photo, :count).by(-1)
+
+        expect(response).to redirect_to(admin_root_path)
+        expect(flash[:notice]).to eq I18n.t('admin.photos.destroy.success', name: photo.name)
+
+        expect { photo.reload }.to raise_error(ActiveRecord::RecordNotFound)
       end
     end
   end

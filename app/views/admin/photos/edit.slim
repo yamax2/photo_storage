@@ -93,8 +93,12 @@
 
         .card-footer.action-buttons
           = button_tag class: 'btn btn-primary btn-sm' do
-            .fa.fa-dot-circle-o
+            i.fa.fa-dot-circle-o
             = t('.apply')
+
+          = link_to admin_photo_path(@photo), class: 'btn btn-danger btn-sm', data: {confirm: t('.delete_confirm')}, method: :delete do
+            i.fa.fa-trash
+            = t('.delete')
 
 .modal#rubric-modal
   .modal-dialog.modal-xl
