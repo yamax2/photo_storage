@@ -6,7 +6,7 @@ RUN apk add --update --no-cache \
 RUN cp /usr/share/zoneinfo/Asia/Yekaterinburg /etc/localtime && echo 'Asia/Yekaterinburg' > /etc/timezone
 
 RUN gem update --system
-RUN gem install 'bundler:2.2.2'
+RUN gem install 'bundler:2.2.4'
 RUN ssh-keyscan -H github.com >> /etc/ssh/ssh_known_hosts
 
 ENV EDITOR mcedit
