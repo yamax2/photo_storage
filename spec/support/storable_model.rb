@@ -2,7 +2,7 @@
 
 RSpec.shared_context 'storable model' do |factory|
   describe 'structure' do
-    it { is_expected.to have_db_column(:yandex_token_id).of_type(:integer).with_options(null: true, foreign_key: true) }
+    it { is_expected.to have_db_column(:yandex_token_id).of_type(:integer).with_options(null: true) }
 
     it { is_expected.to have_db_column(:storage_filename).of_type(:text) }
     it { is_expected.to have_db_column(:local_filename).of_type(:text) }

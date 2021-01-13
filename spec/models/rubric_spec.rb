@@ -5,8 +5,8 @@ RSpec.describe Rubric do
     it { is_expected.to have_db_column(:name).of_type(:string).with_options(null: false, limit: 100) }
     it { is_expected.to have_db_column(:description).of_type(:text) }
 
-    it { is_expected.to have_db_column(:rubric_id).of_type(:integer).with_options(null: true, foreign_key: true) }
-    it { is_expected.to have_db_column(:main_photo_id).of_type(:integer).with_options(null: true, foreign_key: true) }
+    it { is_expected.to have_db_column(:rubric_id).of_type(:integer).with_options(null: true) }
+    it { is_expected.to have_db_column(:main_photo_id).of_type(:integer).with_options(null: true) }
 
     it { is_expected.to have_db_column(:created_at).of_type(:datetime).with_options(null: false) }
     it { is_expected.to have_db_column(:updated_at).of_type(:datetime).with_options(null: false) }

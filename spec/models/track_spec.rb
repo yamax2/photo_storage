@@ -10,9 +10,9 @@ RSpec.describe Track do
     it { is_expected.to have_db_column(:duration).of_type(:decimal).with_options(null: false, default: 0.0) }
     it { is_expected.to have_db_column(:distance).of_type(:decimal).with_options(null: false, default: 0.0) }
     it { is_expected.to have_db_column(:started_at).of_type(:datetime) }
-    it { is_expected.to have_db_column(:bounds).of_type(:point).with_options(null: false, array: true, default: []) }
+    it { is_expected.to have_db_column(:bounds).of_type(:point).with_options(null: false, default: []) }
 
-    it { is_expected.to have_db_column(:rubric_id).of_type(:integer).with_options(null: false, foreign_key: true) }
+    it { is_expected.to have_db_column(:rubric_id).of_type(:integer).with_options(null: false) }
     it { is_expected.to have_db_index(:rubric_id) }
 
     it { is_expected.to have_db_column(:color).of_type(:text).with_options(null: false, default: 'red') }

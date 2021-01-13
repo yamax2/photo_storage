@@ -9,7 +9,7 @@ RSpec.describe Photo do
 
     it { is_expected.to have_db_column(:name).of_type(:string).with_options(null: false, limit: 512) }
     it { is_expected.to have_db_column(:description).of_type(:text) }
-    it { is_expected.to have_db_column(:rubric_id).of_type(:integer).with_options(null: false, foreign_key: true) }
+    it { is_expected.to have_db_column(:rubric_id).of_type(:integer).with_options(null: false) }
 
     it { is_expected.to have_db_column(:exif).of_type(:jsonb) }
     it { is_expected.to have_db_column(:lat_long).of_type(:point) }
