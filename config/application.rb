@@ -34,5 +34,7 @@ module PhotoStorage
     ]
 
     config.action_dispatch.rescue_responses['Yandex::BackupInfoService::WrongResourceError'] = :bad_request
+
+    config.redis = config_for(:redis)
   end
 end

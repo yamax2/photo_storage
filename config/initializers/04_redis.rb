@@ -1,12 +1,4 @@
 # frozen_string_literal: true
 
-config = Rails.root.join('config', 'redis.yml')
-
-if File.exist?(config)
-  opts = YAML.load_file(config).fetch(Rails.env)
-  Rails.application.config.redis_options = opts
-
-  Redis.current = Redis.new(opts)
-end
-
+Redis.current = Redis.new(Rails.application.config.redis)
 RedisClassy.redis = Redis.current

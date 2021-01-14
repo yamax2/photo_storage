@@ -5,7 +5,7 @@ require 'sidekiq/throttled'
 Sidekiq::Throttled.setup!
 Sidekiq::Extensions.enable_delay!
 
-if (opts = Rails.application.config.try(:redis_options))
+if (opts = Rails.application.config.try(:redis))
   Sidekiq.configure_server do |config|
     config.redis = opts
     # config.error_handlers << proc { |ex, ctx_hash| ErrorMailer.delay.error_msg(ex, ctx_hash) }

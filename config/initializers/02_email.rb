@@ -25,9 +25,7 @@ Rails.application.configure do
   #   tls: true
   # }
 
-  info = YAML.load(
-    ERB.new(File.read(Rails.root.join('config/email.yml'))).result
-  ).fetch(Rails.env).deep_symbolize_keys!
+  info = config_for(:email).deep_symbolize_keys!
 
   config.action_mailer.smtp_settings = info.fetch(:smtp)
   config.mail_default_from = info.fetch(:default_from)
