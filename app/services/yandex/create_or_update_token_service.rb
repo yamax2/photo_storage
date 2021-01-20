@@ -11,7 +11,7 @@ module Yandex
       find_token
 
       token.assign_attributes(passport_response.slice(:login))
-      token.assign_attributes(token_response)
+      token.assign_attributes token_response.except(:token_type)
 
       changed = token.changed?
 

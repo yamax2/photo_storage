@@ -12,7 +12,7 @@ module Yandex
       return unless token.valid_till - TOKEN_REFRESH_PERIOD < Time.current
 
       token.valid_till = Time.current + token_response.delete(:expires_in).seconds
-      token.assign_attributes(token_response)
+      token.assign_attributes token_response.except!(:token_type)
 
       save_token
     end
