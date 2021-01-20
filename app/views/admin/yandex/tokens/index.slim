@@ -20,14 +20,14 @@
           table.table
             thead
               tr
-                - %i[id login valid_till active dir other_dir free_space last_upload].each do |col|
+                - %i[id login valid_till active dir other_dir free_space last_upload_at].each do |col|
                   th
                     = sort_link @search, col, ::Yandex::Token.human_attribute_name(col)
                 th
             tbody
               - @tokens.each do |token|
                 tr
-                  - %i[id login valid_till active dir other_dir free_space last_upload].each do |col|
+                  - %i[id login valid_till active dir other_dir free_space last_upload_at].each do |col|
                     td
                       - if col == :free_space
                         = t '.free_space', free_space: number_to_human_size(token.total_space - token.used_space),

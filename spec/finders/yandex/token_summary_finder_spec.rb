@@ -5,8 +5,8 @@ RSpec.describe Yandex::TokenSummaryFinder do
 
   let!(:token1) { create :'yandex/token' }
   let!(:token2) { create :'yandex/token' }
-  let(:last_upload) do
-    scope.map { |x| x.slice(:id, :last_upload).values }.to_h
+  let(:last_upload_at) do
+    scope.map { |x| x.slice(:id, :last_upload_at).values }.to_h
   end
 
   let(:current_time) { Time.zone.local(2017, 1, 1, 15, 45, 55) }
@@ -25,7 +25,7 @@ RSpec.describe Yandex::TokenSummaryFinder do
     it do
       expect(scope.to_a).to match_array([token1, token2])
 
-      expect(last_upload.values.compact).to be_empty
+      expect(last_upload_at.values.compact).to be_empty
     end
   end
 
@@ -38,9 +38,9 @@ RSpec.describe Yandex::TokenSummaryFinder do
     it do
       expect(scope.to_a).to match_array([token1, token2])
 
-      expect(last_upload[token1.id]).to eq(current_time)
-      expect(last_upload[token1.id].time_zone.name).to eq(default_tz)
-      expect(last_upload[token2.id]).to be_nil
+      expect(last_upload_at[token1.id]).to eq(current_time)
+      expect(last_upload_at[token1.id].time_zone.name).to eq(default_tz)
+      expect(last_upload_at[token2.id]).to be_nil
     end
   end
 
@@ -53,9 +53,9 @@ RSpec.describe Yandex::TokenSummaryFinder do
     it do
       expect(scope.to_a).to match_array([token1, token2])
 
-      expect(last_upload[token1.id]).to eq(1.day.from_now)
-      expect(last_upload[token1.id].time_zone.name).to eq(default_tz)
-      expect(last_upload[token2.id]).to be_nil
+      expect(last_upload_at[token1.id]).to eq(1.day.from_now)
+      expect(last_upload_at[token1.id].time_zone.name).to eq(default_tz)
+      expect(last_upload_at[token2.id]).to be_nil
     end
   end
 
@@ -71,14 +71,14 @@ RSpec.describe Yandex::TokenSummaryFinder do
     it do
       expect(scope.to_a).to match_array([token1, token2])
 
-      expect(last_upload[token1.id]).to eq(1.day.from_now)
-      expect(last_upload[token1.id].time_zone.name).to eq(default_tz)
-      expect(last_upload[token2.id]).to be_nil
+      expect(last_upload_at[token1.id]).to eq(1.day.from_now)
+      expect(last_upload_at[token1.id].time_zone.name).to eq(default_tz)
+      expect(last_upload_at[token2.id]).to be_nil
     end
   end
 
   describe 'ransack and pagination' do
-    subject(:scope) { described_class.call.page(1).ransack(s: 'last_upload desc').result }
+    subject(:scope) { described_class.call.page(1).ransack(s: 'last_upload_at desc').result }
 
     before do
       create :photo, storage_filename: '1.jpg', created_at: current_time, yandex_token: token1
@@ -92,11 +92,11 @@ RSpec.describe Yandex::TokenSummaryFinder do
       expect(scope.to_a).to eq([token2, token1])
       expect(scope.total_pages).to eq(1)
 
-      expect(last_upload[token1.id]).to eq(current_time)
-      expect(last_upload[token1.id].time_zone.name).to eq(default_tz)
+      expect(last_upload_at[token1.id]).to eq(current_time)
+      expect(last_upload_at[token1.id].time_zone.name).to eq(default_tz)
 
-      expect(last_upload[token2.id]).to eq(1.day.from_now)
-      expect(last_upload[token2.id].time_zone.name).to eq(default_tz)
+      expect(last_upload_at[token2.id]).to eq(1.day.from_now)
+      expect(last_upload_at[token2.id].time_zone.name).to eq(default_tz)
     end
   end
 end
