@@ -37,6 +37,7 @@ ru:
         other_dir: Каталог прочего
         valid_till: Действует до
         updated_at: Обновлён
+        last_upload: Последняя загрузка
     errors:
       models:
         photo:

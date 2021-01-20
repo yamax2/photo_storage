@@ -22,6 +22,9 @@ module Yandex
 
     scope :active, -> { where(active: true).order(:id) }
 
+    ransacker(:free_space) { Arel.sql('total_space - used_space') }
+    ransacker(:last_upload) { Arel.sql('last_upload') }
+
     private
 
     def dir_names

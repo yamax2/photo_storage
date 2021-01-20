@@ -118,4 +118,13 @@ RSpec.describe Yandex::Token do
     it { is_expected.to strip_attribute(:dir) }
     it { is_expected.to strip_attribute(:other_dir) }
   end
+
+  describe 'ransack' do
+    subject(:scope) { described_class.ransack(s: 'free_space desc').result.to_a }
+
+    let!(:token1) { create :'yandex/token', total_space: 30.megabytes, used_space: 15.megabytes }
+    let!(:token2) { create :'yandex/token', total_space: 20.megabytes }
+
+    it { is_expected.to eq([token2, token1]) }
+  end
 end

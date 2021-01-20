@@ -1,7 +1,6 @@
 GIT
   remote: git@github.com:rspec/rspec-core.git
-  revision: 1b65f8521ffc4d593662191fc8693907bc630e74
-  branch: main
+  revision: 6543181b4ae91e2ecc7e1a7385532b4aca716bcb
   specs:
     rspec-core (3.11.0.pre)
       rspec-support (= 3.11.0.pre)
@@ -9,7 +8,6 @@ GIT
 GIT
   remote: git@github.com:rspec/rspec-expectations.git
   revision: 3f880716f41e4af722d82ee636c48c7ac9a696db
-  branch: main
   specs:
     rspec-expectations (3.11.0.pre)
       diff-lcs (>= 1.2.0, < 2.0)
@@ -17,8 +15,7 @@ GIT
 
 GIT
   remote: git@github.com:rspec/rspec-mocks.git
-  revision: ea4d8ea4532480500462cc7a633d3408656a4dcd
-  branch: main
+  revision: 65e97d11872dcb9deb853979e7e696981d9e5ab8
   specs:
     rspec-mocks (3.11.0.pre)
       diff-lcs (>= 1.2.0, < 2.0)
@@ -41,9 +38,16 @@ GIT
 GIT
   remote: git@github.com:rspec/rspec-support.git
   revision: 5f043d299ee75fb98c1718ecb8f73c2b6a8691d0
-  branch: main
   specs:
     rspec-support (3.11.0.pre)
+
+GIT
+  remote: git@github.com:yamax2/gpx.git
+  revision: 798635ba2cc3a8f268d2c3bdeca5f58e831ab2f9
+  specs:
+    gpx (1.0.0)
+      nokogiri (~> 1.7)
+      rake
 
 GEM
   remote: https://rubygems.org/
@@ -183,9 +187,6 @@ GEM
       raabro (~> 1.4)
     globalid (0.4.2)
       activesupport (>= 4.2.0)
-    gpx (1.0.0)
-      nokogiri (~> 1.7)
-      rake
     gretel (4.2.0)
       actionview (>= 5.1, < 7.0)
       railties (>= 5.1, < 7.0)
@@ -194,8 +195,8 @@ GEM
       concurrent-ruby (~> 1.0)
     image_size (2.1.0)
     interactor (3.1.2)
-    io-console (0.5.6)
-    irb (1.3.1)
+    io-console (0.5.7)
+    irb (1.3.2)
       reline (>= 0.1.5)
     jbuilder (2.10.1)
       activesupport (>= 5.0.0)
@@ -327,7 +328,7 @@ GEM
       redis (>= 3.0.4)
     redis-prescription (1.0.0)
     regexp_parser (2.0.3)
-    reline (0.2.1)
+    reline (0.2.2)
       io-console (~> 0.5)
     request_store (1.5.0)
       rack (>= 1.4)
@@ -402,7 +403,7 @@ GEM
       actionpack (>= 4.0)
       activesupport (>= 4.0)
       sprockets (>= 3.0.0)
-    sshkit (1.21.1)
+    sshkit (1.21.2)
       net-scp (>= 1.1.2)
       net-ssh (>= 2.8.0)
     strip_attributes (1.11.0)
@@ -454,7 +455,7 @@ DEPENDENCIES
   exifr
   factory_bot_rails
   font-awesome-rails
-  gpx
+  gpx!
   gretel (>= 3)
   image_size
   interactor (>= 3.1)

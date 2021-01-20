@@ -41,7 +41,7 @@ gem 'sidekiq-failures', '>= 1'
 gem 'sidekiq-throttled', '>= 0.13'
 
 gem 'exifr'
-gem 'gpx'
+gem 'gpx', github: 'yamax2/gpx'
 gem 'image_size'
 gem 'yandex_client', '>= 0.2'
 
@@ -67,11 +67,11 @@ group :test do
   gem 'rubocop-rspec', require: false
 
   # FIXME: remove all lines except rspec-rails after release
-  gem 'rspec-core', git: 'git@github.com:rspec/rspec-core.git', branch: 'main'
-  gem 'rspec-expectations', git: 'git@github.com:rspec/rspec-expectations.git', branch: 'main'
-  gem 'rspec-mocks', git: 'git@github.com:rspec/rspec-mocks.git', branch: 'main'
-  gem 'rspec-rails', git: 'git@github.com:rspec/rspec-rails.git', branch: 'rails-6-1-dev'
-  gem 'rspec-support', git: 'git@github.com:rspec/rspec-support.git', branch: 'main'
+  gem 'rspec-core', github: 'rspec/rspec-core'
+  gem 'rspec-expectations', github: 'rspec/rspec-expectations'
+  gem 'rspec-mocks', github: 'rspec/rspec-mocks'
+  gem 'rspec-rails', github: 'rspec/rspec-rails', branch: 'rails-6-1-dev'
+  gem 'rspec-support', github: 'rspec/rspec-support'
 end
 
 group :development do
