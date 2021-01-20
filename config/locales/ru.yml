@@ -210,6 +210,7 @@ ru:
         max: Большой
       tz: Часовой пояс
       views: Просмотры
+      ago_in_words: '%{time} назад'
   rubrics:
     name:
       rubrics_count_text: 'подрубрик: %{rubrics_count}'

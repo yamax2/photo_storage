@@ -69,7 +69,7 @@
     .photo-info
       table
         - if current.original_timestamp.present?
-          tr
+          tr*{title: t('.ago_in_words', time: time_ago_in_words(current.original_timestamp))}
             th
               = t('.original_timestamp')
             td
