@@ -16,18 +16,20 @@
   .col-sm-12
     .card
       .card-body
+        p
+          = t('.warning')
         .table-scroll
           table.table
             thead
               tr
-                - %i[id login valid_till active dir other_dir free_space last_upload_at].each do |col|
+                - %i[id login valid_till active dir other_dir free_space last_upload_at last_archived_at].each do |col|
                   th
                     = sort_link @search, col, ::Yandex::Token.human_attribute_name(col)
                 th
             tbody
               - @tokens.each do |token|
                 tr
-                  - %i[id login valid_till active dir other_dir free_space last_upload_at].each do |col|
+                  - %i[id login valid_till active dir other_dir free_space last_upload_at last_archived_at].each do |col|
                     td
                       - if col == :free_space
                         = t '.free_space', free_space: number_to_human_size(token.total_space - token.used_space),
@@ -37,6 +39,12 @@
                           input.switch-input type="checkbox"*{checked: token.active? ? 'checked' : nil, disabled: true}
                           span.switch-label*{data: {on: t('views.switches.on_text'), off: t('views.switches.off_text')}}
                           span.switch-handle
+                      - elsif col == :last_archived_at
+                        - if token.last_upload_at.present? && (token.last_archived_at.nil? || token.last_upload_at > token.last_archived_at)
+                          i*{style: 'color:red'}
+                            = token[col] || t('.not_archived')
+                        - else
+                          = token[col]
                       - else
                         = token[col]
                   td.action-buttons

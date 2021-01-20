@@ -7,11 +7,12 @@ module Api
         class TokensController < BaseController
           # dumb api for my NAS :-)
           def index
-            @resources = resource_scope.each_with_object([]) do |token, memo|
+            @resources = resource_scope.active.each_with_object([]) do |token, memo|
               resource = {token: token}
 
-              memo << resource.merge(type: :photo) if token.photo_count.present?
+              # photos always last element
               memo << resource.merge(type: :track) if token.track_count.present?
+              memo << resource.merge(type: :photo) if token.photo_count.present?
             end
           end
 
@@ -26,6 +27,17 @@ module Api
             ).info
 
             head :accepted if @info.blank?
+          end
+
+          def touch
+            @token = ::Yandex::Token.find(params[:id])
+            @token.last_archived_at = Time.current
+
+            if @token.save
+              render status: :accepted
+            else
+              head :unprocessable_entity
+            end
           end
 
           private

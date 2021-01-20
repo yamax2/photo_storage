@@ -18,6 +18,8 @@ RSpec.describe Yandex::Token do
 
     it { is_expected.to have_db_column(:created_at).of_type(:datetime).with_options(null: false) }
     it { is_expected.to have_db_column(:updated_at).of_type(:datetime).with_options(null: false) }
+
+    it { is_expected.to have_db_column(:last_archived_at).of_type(:datetime) }
   end
 
   describe 'validations' do

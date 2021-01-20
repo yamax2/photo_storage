@@ -60,7 +60,11 @@ Rails.application.routes.draw do
         resources :rubrics, only: %i[index update]
 
         namespace :yandex do
-          resources :tokens, only: %i[index show]
+          resources :tokens, only: %i[index show] do
+            member do
+              get :touch
+            end
+          end
         end
 
         namespace :cart do

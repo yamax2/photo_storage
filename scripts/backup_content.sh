@@ -4,12 +4,13 @@
 
 exec 2>err.log
 
-PHOTO_HOST='http://www.photostorage.localhost'
+PHOTO_HOST='http://photostorage.localhost'
 SECRET='very_secret'
 
 TG_CHAT_ID='-...'
 TG_BOT_ID='...:...'
-TG_CURL_PROXY='socks5h://user:passs@host:port'
+#TG_CURL_PROXY='socks5h://user:passs@host:port'
+TG_CURL_PROXY=
 CURL_PROXY=
 
 fn="$(date +"%Y_%m_%d")"
@@ -62,11 +63,6 @@ api_request '/api/v1/admin/yandex/tokens' | \
   jq  -r '.[] | [.id,.login,.type] | @csv' | while read -r line; do
   id=$(echo "$line" | cut -d',' -f1)
 
-  if [ -f processed ] && grep -q "\b$id\b" processed
-  then
-    continue
-  fi
-
   login=$(echo "$line" | cut -d',' -f2 | sed -e 's/^"//' -e 's/"$//')
   resource=$(echo "$line" | cut -d',' -f3 | sed -e 's/^"//' -e 's/"$//')
 
@@ -99,6 +95,10 @@ api_request '/api/v1/admin/yandex/tokens' | \
       tg_notify "⛔ $filename validation fails: downloaded $actual_data instead of $files_data"
 
       continue
+    fi
+
+    if [ "$resource" = "photo" ]; then
+      api_request "/api/v1/admin/yandex/tokens/$id/touch"
     fi
 
     # "find -not" is not supported

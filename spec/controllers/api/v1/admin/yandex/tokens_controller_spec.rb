@@ -2,9 +2,26 @@
 
 RSpec.describe Api::V1::Admin::Yandex::TokensController, type: :request do
   let(:json) { JSON.parse(response.body) }
-  let!(:token) { create :'yandex/token', dir: '/test', other_dir: '/other', access_token: API_ACCESS_TOKEN }
+  let!(:token) do
+    create :'yandex/token', dir: '/test', other_dir: '/other', access_token: API_ACCESS_TOKEN, active: true
+  end
 
   describe '#index' do
+    context 'when without active tokens' do
+      let!(:token) { create :'yandex/token' }
+
+      before do
+        create :track, yandex_token: token, storage_filename: 'test'
+
+        get api_v1_admin_yandex_tokens_url
+      end
+
+      it do
+        expect(response).to have_http_status(:ok)
+        expect(json).to be_empty
+      end
+    end
+
     context 'when without resources' do
       before { get api_v1_admin_yandex_tokens_url }
 
@@ -49,12 +66,12 @@ RSpec.describe Api::V1::Admin::Yandex::TokensController, type: :request do
           {
             'id' => token.id,
             'login' => token.login,
-            'type' => 'photo'
+            'type' => 'track'
           },
           {
             'id' => token.id,
             'login' => token.login,
-            'type' => 'track'
+            'type' => 'photo'
           }
         ]
       end
@@ -66,7 +83,7 @@ RSpec.describe Api::V1::Admin::Yandex::TokensController, type: :request do
     end
 
     context 'when multiple tokens' do
-      let!(:another_token) { create :'yandex/token' }
+      let!(:another_token) { create :'yandex/token', dir: '/test', other_dir: '/other', active: true }
       let(:response_tokens) do
         [
           {
@@ -75,14 +92,14 @@ RSpec.describe Api::V1::Admin::Yandex::TokensController, type: :request do
             'type' => 'photo'
           },
           {
-            'id' => token.id,
-            'login' => token.login,
-            'type' => 'track'
-          },
-          {
             'id' => another_token.id,
             'login' => another_token.login,
             'type' => 'photo'
+          },
+          {
+            'id' => token.id,
+            'login' => token.login,
+            'type' => 'track'
           }
         ]
       end
@@ -201,6 +218,45 @@ RSpec.describe Api::V1::Admin::Yandex::TokensController, type: :request do
       it do
         expect { get api_v1_admin_yandex_token_url(id: token.id, resource: :photo) }.
           to raise_error(ActiveRecord::RecordNotFound)
+      end
+    end
+  end
+
+  describe '#touch' do
+    before { Timecop.freeze(current_time) }
+
+    after { Timecop.return }
+
+    let(:current_time) { Time.zone.local(2017, 1, 1, 15, 45, 55) }
+    let(:request) { get touch_api_v1_admin_yandex_token_url(token.id) }
+
+    context 'when successful update' do
+      it do
+        expect { request }.to change { token.reload.last_archived_at }.from(nil).to(current_time)
+
+        expect(response).to have_http_status(:accepted)
+        expect(json).to include('id' => token.id, 'last_archived_at' => String)
+      end
+    end
+
+    context 'when wrong id' do
+      let(:request) { get touch_api_v1_admin_yandex_token_url(token.id * 2) }
+
+      it do
+        expect { request }.to raise_error(ActiveRecord::RecordNotFound)
+      end
+    end
+
+    context 'when validation failed' do
+      before do
+        Yandex::Token.where(id: token.id).update_all(active: true, other_dir: nil)
+      end
+
+      it do
+        expect { request }.not_to(change { token.reload.last_archived_at })
+
+        expect(response).to have_http_status(:unprocessable_entity)
+        expect(response.body).to be_empty
       end
     end
   end
