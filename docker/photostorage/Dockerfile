@@ -3,7 +3,7 @@ FROM ruby:${DOCKER_RUBY_VERSION}-alpine AS base
 
 RUN apk add --update --no-cache tzdata libexif-dev xz-dev libpq less postgresql-client nodejs curl jq unzip openssl
 RUN gem update --system
-RUN gem install 'bundler:2.2.5'
+RUN gem install 'bundler:2.2.7'
 RUN mkdir /photostorage
 
 ENV RAILS_ENV production
