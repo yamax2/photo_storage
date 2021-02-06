@@ -1,12 +1,12 @@
 GIT
-  remote: git@github.com:rspec/rspec-core.git
+  remote: https://github.com/rspec/rspec-core.git
   revision: ecb65d2d4ea7b381472e3084f45e2da94e00ce91
   specs:
     rspec-core (3.11.0.pre)
       rspec-support (= 3.11.0.pre)
 
 GIT
-  remote: git@github.com:rspec/rspec-expectations.git
+  remote: https://github.com/rspec/rspec-expectations.git
   revision: bd10f0cf3970932781efcd09b5e427877d16a6c2
   specs:
     rspec-expectations (3.11.0.pre)
@@ -14,7 +14,7 @@ GIT
       rspec-support (= 3.11.0.pre)
 
 GIT
-  remote: git@github.com:rspec/rspec-mocks.git
+  remote: https://github.com/rspec/rspec-mocks.git
   revision: eadd0e63ce4522cad191e9034dc0f877b11abd4d
   specs:
     rspec-mocks (3.11.0.pre)
@@ -22,7 +22,7 @@ GIT
       rspec-support (= 3.11.0.pre)
 
 GIT
-  remote: git@github.com:rspec/rspec-rails.git
+  remote: https://github.com/rspec/rspec-rails.git
   revision: ba5bab2533acbabc4c2c8a1de0672f5a261d8415
   branch: rails-6-1-dev
   specs:
@@ -36,13 +36,13 @@ GIT
       rspec-support (= 3.11.0.pre)
 
 GIT
-  remote: git@github.com:rspec/rspec-support.git
+  remote: https://github.com/rspec/rspec-support.git
   revision: d04c8aef72d030fc354902f1e1b486b5c21e0732
   specs:
     rspec-support (3.11.0.pre)
 
 GIT
-  remote: git@github.com:yamax2/gpx.git
+  remote: https://github.com/yamax2/gpx.git
   revision: 798635ba2cc3a8f268d2c3bdeca5f58e831ab2f9
   specs:
     gpx (1.0.0)
