@@ -4,7 +4,7 @@ module Api
   module V1
     module Admin
       module Yandex
-        class TokensController < BaseController
+        class TokensController < AdminController
           # dumb api for my NAS :-)
           def index
             @resources = resource_scope.active.each_with_object([]) do |token, memo|

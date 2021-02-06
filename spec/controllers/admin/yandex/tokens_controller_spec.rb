@@ -55,6 +55,12 @@ RSpec.describe Admin::Yandex::TokensController, type: :request do
         expect(assigns(:new_token_url)).to include(API_APPLICATION_KEY)
       end
     end
+
+    context 'when with auth' do
+      let(:request_proc) { ->(headers) { get admin_yandex_tokens_url, headers: headers } }
+
+      it_behaves_like 'admin restricted route'
+    end
   end
 
   describe '#refresh' do
@@ -63,7 +69,7 @@ RSpec.describe Admin::Yandex::TokensController, type: :request do
     end
 
     context 'when token exists' do
-      let!(:token) { create :'yandex/token' }
+      let(:token) { create :'yandex/token' }
 
       before { get refresh_admin_yandex_token_url(id: token.id) }
 
@@ -82,11 +88,18 @@ RSpec.describe Admin::Yandex::TokensController, type: :request do
         expect { request }.to raise_error(ActiveRecord::RecordNotFound)
       end
     end
+
+    context 'when with auth' do
+      let(:token) { create :'yandex/token' }
+      let(:request_proc) { ->(headers) { get refresh_admin_yandex_token_url(id: token.id), headers: headers } }
+
+      it_behaves_like 'admin restricted route'
+    end
   end
 
   describe '#destroy' do
     context 'when token exists' do
-      let!(:token) { create :'yandex/token' }
+      let(:token) { create :'yandex/token' }
 
       before { delete admin_yandex_token_url(id: token.id) }
 
@@ -105,11 +118,18 @@ RSpec.describe Admin::Yandex::TokensController, type: :request do
         expect { request }.to raise_error(ActiveRecord::RecordNotFound)
       end
     end
+
+    context 'when with auth' do
+      let(:token) { create :'yandex/token' }
+      let(:request_proc) { ->(headers) { delete admin_yandex_token_url(id: token.id), headers: headers } }
+
+      it_behaves_like 'admin restricted route'
+    end
   end
 
   describe '#update' do
     context 'when successful update' do
-      let!(:token) { create :'yandex/token' }
+      let(:token) { create :'yandex/token' }
 
       before do
         put admin_yandex_token_url(id: token.id, yandex_token: {dir: '/my_dir', other_dir: '/other_dir', active: true})
@@ -155,6 +175,15 @@ RSpec.describe Admin::Yandex::TokensController, type: :request do
         expect { request }.to raise_error(ActiveRecord::RecordNotFound)
       end
     end
+
+    context 'when with auth' do
+      let(:token) { create :'yandex/token' }
+      let(:request_proc) do
+        ->(headers) { put admin_yandex_token_url(id: token.id, yandex_token: {dir: '/my_dir'}), headers: headers }
+      end
+
+      it_behaves_like 'admin restricted route'
+    end
   end
 
   describe '#edit' do
@@ -176,6 +205,13 @@ RSpec.describe Admin::Yandex::TokensController, type: :request do
         expect(assigns(:token)).to eq(token)
         expect(response).to render_template(:edit)
       end
+    end
+
+    context 'when with auth' do
+      let(:token) { create :'yandex/token' }
+      let(:request_proc) { ->(headers) { get edit_admin_yandex_token_url(id: token.id), headers: headers } }
+
+      it_behaves_like 'admin restricted route'
     end
   end
 end

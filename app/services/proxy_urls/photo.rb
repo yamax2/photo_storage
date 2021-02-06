@@ -19,7 +19,7 @@ module ProxyUrls
 
     private
 
-    delegate :yandex_token, :yandex_token_id, :original_filename, :storage_filename, to: :model
+    delegate :yandex_token, :yandex_token_id, :original_filename, :storage_filename, to: :model, private: true
 
     def params_for_size(size, thumb_width)
       {id: yandex_token_id}.tap do |params|

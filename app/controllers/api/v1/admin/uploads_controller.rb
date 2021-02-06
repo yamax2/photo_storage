@@ -3,7 +3,7 @@
 module Api
   module V1
     module Admin
-      class UploadsController < BaseController
+      class UploadsController < AdminController
         OBJECT_TYPES = Photo::ALLOWED_CONTENT_TYPES.index_with { Photo }.merge!(
           Track::MIME_TYPE => Track
         ).freeze

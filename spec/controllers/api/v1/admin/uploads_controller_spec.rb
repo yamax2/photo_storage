@@ -24,6 +24,19 @@ RSpec.describe Api::V1::Admin::UploadsController do
       end
     end
 
+    context 'when with auth' do
+      let(:rubric) { create :rubric }
+      let(:content) { fixture_file_upload('spec/fixtures/test.txt', 'text/plain') }
+      let(:request_proc) do
+        lambda do |headers|
+          request.headers.merge!(headers)
+          post :create, params: {rubric_id: rubric.id, content: content}, xhr: true
+        end
+      end
+
+      it_behaves_like 'admin restricted route', api: true
+    end
+
     shared_examples 'content upload' do |test_file, test_type, klass|
       let(:content) { fixture_file_upload(test_file, test_type) }
 

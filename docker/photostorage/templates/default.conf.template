@@ -20,18 +20,6 @@ server {
         add_header        Cache-Control public;
     }
 
-    # if ($request_uri ~ ^/admin|^/api/v1/admin) {
-    #   set $adm "1";
-    # }
-
-    # if ($remote_user != "admin") {
-    #    set $adm "${adm}2";
-    # }
-
-    # if ($adm = "12") {
-    #   return 403;
-    # }
-
     location @photos {
         proxy_pass         http://photos;
 

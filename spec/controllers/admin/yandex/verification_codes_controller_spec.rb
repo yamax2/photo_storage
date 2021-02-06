@@ -23,5 +23,11 @@ RSpec.describe Admin::Yandex::VerificationCodesController, type: :request do
         expect { request }.to raise_error(ActionController::ParameterMissing)
       end
     end
+
+    context 'when with auth' do
+      let(:request_proc) { ->(headers) { get admin_yandex_verification_code_url(code: '999'), headers: headers } }
+
+      it_behaves_like 'admin restricted route'
+    end
   end
 end

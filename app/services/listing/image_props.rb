@@ -33,8 +33,8 @@ module Listing
 
     private
 
-    delegate :max_thumb_width, :photo_sizes, to: 'Rails.application.config'
-    delegate :width, :height, :rotated, :effects, to: :model
+    delegate :max_thumb_width, :photo_sizes, to: 'Rails.application.config', private: true
+    delegate :width, :height, :rotated, :effects, to: :model, private: true
 
     def actual_width_for(width)
       width > max_thumb_width ? max_thumb_width : width

@@ -5,7 +5,7 @@ module Api
     module Admin
       module Cart
         # rubrics cart formatted for jstree
-        class RubricsController < BaseController
+        class RubricsController < AdminController
           helper_method :selected_rubric_ids, :children?
 
           def index

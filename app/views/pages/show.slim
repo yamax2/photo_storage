@@ -2,6 +2,8 @@
 
 - if @rubric
   - content_for :title, @rubric.name
+- elsif current_user.admin?
+  = link_to t('.admin'), admin_root_path, class: 'admin-link'
 
 .photo-mobile-header.rubrics-list
   = link_to root_path, class: 'photo-header-root' do

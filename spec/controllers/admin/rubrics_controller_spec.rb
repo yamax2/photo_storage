@@ -48,6 +48,12 @@ RSpec.describe Admin::RubricsController, type: :request do
         expect { request }.to raise_error(ActionController::ParameterMissing)
       end
     end
+
+    context 'when with auth' do
+      let(:request_proc) { ->(headers) { post admin_rubrics_url(rubric: {name: 'test'}), headers: headers } }
+
+      it_behaves_like 'admin restricted route'
+    end
   end
 
   describe '#destroy' do
@@ -85,6 +91,14 @@ RSpec.describe Admin::RubricsController, type: :request do
       it do
         expect { delete admin_rubric_url(id: 2) }.to raise_error(ActiveRecord::RecordNotFound)
       end
+    end
+
+    context 'when with auth' do
+      let(:rubric) { create :rubric }
+
+      let(:request_proc) { ->(headers) { delete admin_rubric_url(id: rubric.id), headers: headers } }
+
+      it_behaves_like 'admin restricted route'
     end
   end
 
@@ -154,6 +168,12 @@ RSpec.describe Admin::RubricsController, type: :request do
         expect { request }.to raise_error(ActiveRecord::RecordNotFound)
       end
     end
+
+    context 'when with auth' do
+      let(:request_proc) { ->(headers) { get admin_rubrics_url, headers: headers } }
+
+      it_behaves_like 'admin restricted route'
+    end
   end
 
   describe '#new' do
@@ -185,6 +205,12 @@ RSpec.describe Admin::RubricsController, type: :request do
       it do
         expect { request }.to raise_error(ActiveRecord::RecordNotFound)
       end
+    end
+
+    context 'when with auth' do
+      let(:request_proc) { ->(headers) { get new_admin_rubric_url, headers: headers } }
+
+      it_behaves_like 'admin restricted route'
     end
   end
 
@@ -243,6 +269,14 @@ RSpec.describe Admin::RubricsController, type: :request do
         expect { request }.to raise_error(ActiveRecord::RecordNotFound)
       end
     end
+
+    context 'when with auth' do
+      let(:request_proc) do
+        ->(headers) { put admin_rubric_url(id: rubric.id, rubric: {name: 'text 1'}), headers: headers }
+      end
+
+      it_behaves_like 'admin restricted route'
+    end
   end
 
   describe '#edit' do
@@ -262,6 +296,13 @@ RSpec.describe Admin::RubricsController, type: :request do
       it do
         expect { get edit_admin_rubric_url(id: 1) }.to raise_error(ActiveRecord::RecordNotFound)
       end
+    end
+
+    context 'when with auth' do
+      let(:rubric) { create :rubric }
+      let(:request_proc) { ->(headers) { get edit_admin_rubric_url(id: rubric.id), headers: headers } }
+
+      it_behaves_like 'admin restricted route'
     end
   end
 end

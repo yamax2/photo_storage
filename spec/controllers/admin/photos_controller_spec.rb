@@ -22,7 +22,7 @@ RSpec.describe Admin::PhotosController, type: :request do
 
     context 'when published photo' do
       let(:token) { create :'yandex/token' }
-      let!(:photo) { create :photo, storage_filename: 'test', yandex_token: token }
+      let(:photo) { create :photo, storage_filename: 'test', yandex_token: token }
 
       before { get edit_admin_photo_url(id: photo.id) }
 
@@ -31,6 +31,14 @@ RSpec.describe Admin::PhotosController, type: :request do
         expect(response).to have_http_status(:ok)
         expect(response).to render_template(:edit)
       end
+    end
+
+    context 'when request with auth' do
+      let(:token) { create :'yandex/token' }
+      let(:photo) { create :photo, storage_filename: 'test', yandex_token: token }
+      let(:request_proc) { ->(headers) { get edit_admin_photo_url(id: photo.id), headers: headers } }
+
+      it_behaves_like 'admin restricted route'
     end
   end
 
@@ -137,6 +145,14 @@ RSpec.describe Admin::PhotosController, type: :request do
         expect(response).to redirect_to(edit_admin_photo_path(photo))
       end
     end
+
+    context 'when request with auth' do
+      let(:token) { create :'yandex/token' }
+      let(:photo) { create :photo, storage_filename: 'test', yandex_token: token }
+      let(:request_proc) { ->(headers) { put admin_photo_url(id: photo.id, photo: {name: 'test'}), headers: headers } }
+
+      it_behaves_like 'admin restricted route'
+    end
   end
 
   describe '#destroy' do
@@ -172,6 +188,14 @@ RSpec.describe Admin::PhotosController, type: :request do
 
         expect { photo.reload }.to raise_error(ActiveRecord::RecordNotFound)
       end
+    end
+
+    context 'when request with auth' do
+      let(:token) { create :'yandex/token' }
+      let(:photo) { create :photo, storage_filename: 'test', yandex_token: token }
+      let(:request_proc) { ->(headers) { delete admin_photo_url(id: photo.id), headers: headers } }
+
+      it_behaves_like 'admin restricted route'
     end
   end
 end

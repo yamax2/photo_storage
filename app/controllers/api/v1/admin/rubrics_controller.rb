@@ -3,7 +3,7 @@
 module Api
   module V1
     module Admin
-      class RubricsController < BaseController
+      class RubricsController < AdminController
         # rubrics list formatted for jstree
         def index
           @rubrics = Rubrics::FilterFinder.

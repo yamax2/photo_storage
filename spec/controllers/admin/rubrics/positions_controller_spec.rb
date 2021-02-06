@@ -52,6 +52,12 @@ RSpec.describe Admin::Rubrics::PositionsController, type: :request do
         expect(response).to redirect_to(admin_rubrics_positions_path)
       end
     end
+
+    context 'when with auth' do
+      let(:request_proc) { ->(headers) { post admin_rubrics_positions_url(data: '1,2,5'), headers: headers } }
+
+      it_behaves_like 'admin restricted route'
+    end
   end
 
   describe '#index' do
@@ -156,6 +162,12 @@ RSpec.describe Admin::Rubrics::PositionsController, type: :request do
           expect(response).to render_template(:index)
         end
       end
+    end
+
+    context 'when with auth' do
+      let(:request_proc) { ->(headers) { get admin_rubrics_positions_url, headers: headers } }
+
+      it_behaves_like 'admin restricted route'
     end
   end
 end

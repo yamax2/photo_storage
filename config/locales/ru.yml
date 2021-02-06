@@ -211,6 +211,9 @@ ru:
       tz: Часовой пояс
       views: Просмотры
       ago_in_words: '%{time} назад'
+  pages:
+    show:
+      admin: Управление
   rubrics:
     name:
       rubrics_count_text: 'подрубрик: %{rubrics_count}'

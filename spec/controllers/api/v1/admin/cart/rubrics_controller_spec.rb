@@ -20,6 +20,12 @@ RSpec.describe Api::V1::Admin::Cart::RubricsController, type: :request do
       end
     end
 
+    context 'when with auth' do
+      let(:request_proc) { ->(headers) { get api_v1_admin_cart_rubrics_url, headers: headers } }
+
+      it_behaves_like 'admin restricted route', api: true
+    end
+
     context 'when some rubrics selected' do
       let(:photo1) { create :photo, yandex_token: token, storage_filename: 'test', rubric: rubric1 }
       let(:photo2) { create :photo, yandex_token: token, storage_filename: 'test', rubric: sub_rubric1 }

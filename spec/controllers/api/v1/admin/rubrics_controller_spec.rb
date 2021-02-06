@@ -54,6 +54,12 @@ RSpec.describe Api::V1::Admin::RubricsController, type: :request do
         expect(assigns(:rubrics)).to match_array([rubric3])
       end
     end
+
+    context 'when with auth' do
+      let(:request_proc) { ->(headers) { get api_v1_admin_rubrics_url, headers: headers } }
+
+      it_behaves_like 'admin restricted route', api: true
+    end
   end
 
   describe '#update' do
@@ -85,7 +91,7 @@ RSpec.describe Api::V1::Admin::RubricsController, type: :request do
 
     context 'when correct params' do
       let(:rubric) { create :rubric }
-      let!(:photo) { create :photo, local_filename: 'test', rubric: rubric }
+      let(:photo) { create :photo, local_filename: 'test', rubric: rubric }
 
       it do
         expect { put api_v1_admin_rubric_url(id: rubric.id, rubric: {main_photo_id: photo.id}) }.
@@ -94,6 +100,16 @@ RSpec.describe Api::V1::Admin::RubricsController, type: :request do
         expect(response).to have_http_status(:ok)
         expect(json['id']).to eq(rubric.id)
       end
+    end
+
+    context 'when with auth' do
+      let(:rubric) { create :rubric }
+      let(:photo) { create :photo, local_filename: 'test', rubric: rubric }
+      let(:request_proc) do
+        ->(headers) { put api_v1_admin_rubric_url(id: rubric.id, rubric: {main_photo_id: photo.id}), headers: headers }
+      end
+
+      it_behaves_like 'admin restricted route', api: true
     end
   end
 end

@@ -4,7 +4,7 @@ module Api
   module V1
     module Admin
       module Photos
-        class CartController < BaseController
+        class CartController < AdminController
           before_action :find_photo
 
           def create

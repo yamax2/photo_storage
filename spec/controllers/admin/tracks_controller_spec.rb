@@ -33,6 +33,15 @@ RSpec.describe Admin::TracksController, type: :request do
         expect { track.reload }.to raise_error(ActiveRecord::RecordNotFound)
       end
     end
+
+    context 'when with auth' do
+      let(:track) { create :track, local_filename: 'test' }
+      let(:request_proc) do
+        ->(headers) { delete admin_rubric_track_url(rubric_id: track.rubric_id, id: track.id), headers: headers }
+      end
+
+      it_behaves_like 'admin restricted route'
+    end
   end
 
   describe '#edit' do
@@ -64,6 +73,15 @@ RSpec.describe Admin::TracksController, type: :request do
         expect { get edit_admin_rubric_track_url(rubric_id: track.rubric_id * 2, id: track.id) }.
           to raise_error(ActiveRecord::RecordNotFound)
       end
+    end
+
+    context 'when with auth' do
+      let(:track) { create :track, local_filename: 'test' }
+      let(:request_proc) do
+        ->(headers) { get edit_admin_rubric_track_url(rubric_id: track.rubric_id, id: track.id), headers: headers }
+      end
+
+      it_behaves_like 'admin restricted route'
     end
   end
 
@@ -120,6 +138,13 @@ RSpec.describe Admin::TracksController, type: :request do
           expect(assigns(:tracks)).to match_array([my_track])
         end
       end
+    end
+
+    context 'when auth' do
+      let(:rubric) { create :rubric }
+      let(:request_proc) { ->(headers) { get admin_rubric_tracks_url(rubric_id: rubric.id), headers: headers } }
+
+      it_behaves_like 'admin restricted route'
     end
   end
 
@@ -195,6 +220,18 @@ RSpec.describe Admin::TracksController, type: :request do
         expect(assigns(:track)).to eq(track)
         expect(track.reload).to have_attributes(name: 'zozo', rubric: new_rubric)
       end
+    end
+
+    context 'when with auth' do
+      let(:track) { create :track, local_filename: 'test', name: 'test', color: 'red' }
+
+      let(:request_proc) do
+        lambda do |headers|
+          put admin_rubric_track_url(rubric_id: track.rubric_id, id: track.id, track: {name: 'zozo'}), headers: headers
+        end
+      end
+
+      it_behaves_like 'admin restricted route'
     end
   end
 end

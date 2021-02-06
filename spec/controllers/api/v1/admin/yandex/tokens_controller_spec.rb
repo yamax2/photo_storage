@@ -118,6 +118,12 @@ RSpec.describe Api::V1::Admin::Yandex::TokensController, type: :request do
         expect(json).to match_array(response_tokens)
       end
     end
+
+    context 'when with auth' do
+      let(:request_proc) { ->(headers) { get api_v1_admin_yandex_tokens_url, headers: headers } }
+
+      it_behaves_like 'admin restricted route', api: true
+    end
   end
 
   describe '#show' do
@@ -220,6 +226,18 @@ RSpec.describe Api::V1::Admin::Yandex::TokensController, type: :request do
           to raise_error(ActiveRecord::RecordNotFound)
       end
     end
+
+    context 'when with auth' do
+      before do
+        create :photo, yandex_token: token, storage_filename: 'test.jpg', size: 12
+      end
+
+      let(:request_proc) do
+        ->(headers) { get api_v1_admin_yandex_token_url(id: token.id, resource: :photo), headers: headers }
+      end
+
+      it_behaves_like 'admin restricted route', api: true
+    end
   end
 
   describe '#touch' do
@@ -258,6 +276,12 @@ RSpec.describe Api::V1::Admin::Yandex::TokensController, type: :request do
         expect(response).to have_http_status(:unprocessable_entity)
         expect(response.body).to be_empty
       end
+    end
+
+    context 'when with auth' do
+      let(:request_proc) { ->(headers) { get touch_api_v1_admin_yandex_token_url(token.id), headers: headers } }
+
+      it_behaves_like 'admin restricted route', api: true
     end
   end
 end
