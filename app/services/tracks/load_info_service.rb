@@ -11,22 +11,14 @@ module Tracks
 
       track.update!(
         distance: gpx.distance,
-        avg_speed: avg_speed,
         duration: gpx.duration,
-        started_at: started_at,
+        started_at: calc_time(:min),
+        finished_at: calc_time(:max),
         bounds: bounds
       )
     end
 
     private
-
-    def avg_speed
-      if (avg_speed = gpx.average_speed).infinite?
-        0
-      else
-        avg_speed
-      end
-    end
 
     def bounds
       data = gpx.bounds
@@ -41,8 +33,8 @@ module Tracks
       @gpx ||= GPX::GPXFile.new(gpx_file: track.tmp_local_filename.to_s)
     end
 
-    def started_at
-      gpx.tracks.map { |track| track.points.map(&:time).compact.min }.min
+    def calc_time(method)
+      gpx.tracks.map { |track| track.points.map(&:time).compact.public_send(method) }.public_send(method)
     end
   end
 end

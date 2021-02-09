@@ -7,7 +7,7 @@ AllCops:
   TargetRubyVersion: 2.7
   NewCops: enable
   Exclude:
-    - 'db/**/*'
+    - 'db/schema.rb'
     - 'config/**/*'
     - 'lib/tasks/**/*'
     - 'bin/**/*'
@@ -49,6 +49,7 @@ Metrics/BlockLength:
 Metrics/AbcSize:
   Exclude:
     - spec/support/**/*
+    - db/migrate/**
 
 Rails/SkipsModelValidations:
   Enabled: false
@@ -69,4 +70,11 @@ RSpec/NestedGroups:
   Max: 4
 
 RSpec/MultipleMemoizedHelpers:
+  Enabled: false
+
+Metrics/MethodLength:
+  Exclude:
+    - db/migrate/**
+
+Rails/NotNullColumn:
   Enabled: false

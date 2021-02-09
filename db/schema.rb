@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_20_091802) do
+ActiveRecord::Schema.define(version: 2021_02_08_110415) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -52,7 +52,7 @@ ActiveRecord::Schema.define(version: 2021_01_20_091802) do
     t.bigint "photos_count", default: 0, null: false
     t.bigint "main_photo_id"
     t.integer "ord"
-    t.text "external_info"
+    t.bigint "tracks_count", default: 0, null: false
     t.index ["main_photo_id"], name: "index_rubrics_on_main_photo_id", where: "(main_photo_id IS NOT NULL)"
     t.index ["rubric_id"], name: "index_rubrics_on_rubric_id"
   end
@@ -67,7 +67,6 @@ ActiveRecord::Schema.define(version: 2021_01_20_091802) do
     t.string "sha256", limit: 64, null: false
     t.string "original_filename", limit: 512, null: false
     t.bigint "size", default: 0, null: false
-    t.decimal "avg_speed", default: "0.0", null: false
     t.decimal "duration", default: "0.0", null: false
     t.decimal "distance", default: "0.0", null: false
     t.datetime "started_at"
@@ -76,6 +75,7 @@ ActiveRecord::Schema.define(version: 2021_01_20_091802) do
     t.text "external_info"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.datetime "finished_at"
     t.index ["md5", "sha256"], name: "uq_tracks", unique: true
     t.index ["rubric_id"], name: "index_tracks_on_rubric_id"
     t.index ["yandex_token_id"], name: "index_tracks_on_yandex_token_id", where: "(yandex_token_id IS NOT NULL)"

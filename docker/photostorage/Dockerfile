@@ -29,8 +29,7 @@ RUN bundle config set frozen true
 RUN bundle config set without 'development test production'
 
 FROM base AS builder
-RUN apk add --update --no-cache build-base postgresql-dev git openssh-client
-RUN ssh-keyscan -H github.com >> /etc/ssh/ssh_known_hosts
+RUN apk add --update --no-cache build-base postgresql-dev git
 RUN bundle install --jobs `grep -c ^processor /proc/cpuinfo`
 RUN bundle exec rails assets:precompile
 

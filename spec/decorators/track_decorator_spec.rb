@@ -2,11 +2,7 @@
 
 RSpec.describe TrackDecorator do
   describe 'info methods' do
-    let(:track) do
-      create(
-        :track, avg_speed: 10.0 / 3, distance: 20.0 / 3, local_filename: 'test'
-      ).decorate
-    end
+    let(:track) { create(:track, duration: 7_200, distance: 20.0 / 3, local_filename: 'test').decorate }
 
     it do
       expect(track.avg_speed).to eq(3.33)

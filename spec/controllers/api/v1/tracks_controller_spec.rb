@@ -32,7 +32,6 @@ RSpec.describe Api::V1::TracksController, type: :request do
         create :track, storage_filename: 'test2.gpx',
                        rubric: rubric,
                        yandex_token: token,
-                       avg_speed: 2,
                        duration: 2.hours + 59.minutes,
                        distance: 200,
                        name: 'track2',
@@ -45,9 +44,8 @@ RSpec.describe Api::V1::TracksController, type: :request do
         create :track, storage_filename: 'test3.gpx',
                        rubric: rubric,
                        yandex_token: token,
-                       avg_speed: 3,
-                       duration: 5.minutes,
-                       distance: 300,
+                       duration: 50.minutes,
+                       distance: 30,
                        name: 'track3',
                        original_filename: 'track3.gpx',
                        started_at: 10.days.ago,
@@ -58,13 +56,13 @@ RSpec.describe Api::V1::TracksController, type: :request do
         [
           {
             'id' => track3.id,
-            'name' => 'track3: 300.0 км, 05мин., ср. скорость 3.0 км/ч',
+            'name' => 'track3: 30.0 км, 50мин., ср. скорость 36.0 км/ч',
             'url' => "/proxy/other/test3.gpx?fn=track3.gpx&id=#{token.id}",
             'color' => 'blue'
           },
           {
             'id' => track2.id,
-            'name' => 'track2: 200.0 км, 2ч. 59мин., ср. скорость 2.0 км/ч',
+            'name' => 'track2: 200.0 км, 2ч. 59мин., ср. скорость 67.04 км/ч',
             'url' => "/proxy/other/test2.gpx?fn=track2.gpx&id=#{token.id}",
             'color' => 'red'
           }

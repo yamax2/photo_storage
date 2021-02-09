@@ -6,10 +6,10 @@ RSpec.describe Track do
   describe 'structure' do
     it { is_expected.to have_db_column(:name).of_type(:string).with_options(null: false, limit: 512) }
 
-    it { is_expected.to have_db_column(:avg_speed).of_type(:decimal).with_options(null: false, default: 0.0) }
     it { is_expected.to have_db_column(:duration).of_type(:decimal).with_options(null: false, default: 0.0) }
     it { is_expected.to have_db_column(:distance).of_type(:decimal).with_options(null: false, default: 0.0) }
     it { is_expected.to have_db_column(:started_at).of_type(:datetime) }
+    it { is_expected.to have_db_column(:finished_at).of_type(:datetime) }
     it { is_expected.to have_db_column(:bounds).of_type(:point).with_options(null: false, default: []) }
 
     it { is_expected.to have_db_column(:rubric_id).of_type(:integer).with_options(null: false) }
@@ -22,9 +22,6 @@ RSpec.describe Track do
   describe 'validations' do
     it { is_expected.to validate_presence_of(:name) }
     it { is_expected.to validate_length_of(:name).is_at_most(512) }
-
-    it { is_expected.to validate_presence_of(:avg_speed) }
-    it { is_expected.to validate_numericality_of(:avg_speed).is_greater_than_or_equal_to(0) }
 
     it { is_expected.to validate_presence_of(:duration) }
     it { is_expected.to validate_numericality_of(:duration).is_greater_than_or_equal_to(0) }
@@ -105,7 +102,7 @@ RSpec.describe Track do
 
   describe 'associations' do
     it { is_expected.to belong_to(:yandex_token).inverse_of(:tracks).optional }
-    it { is_expected.to belong_to(:rubric).inverse_of(:tracks) }
+    it { is_expected.to belong_to(:rubric).inverse_of(:tracks).counter_cache(true) }
   end
 
   describe 'remote file removing' do
@@ -125,6 +122,22 @@ RSpec.describe Track do
     it do
       expect(colors).to be_a(Array)
       expect(colors).to include('blue', 'red', 'green')
+    end
+  end
+
+  describe '#avg_speed' do
+    subject(:avg_speed) { track.avg_speed }
+
+    context 'when duration is zero' do
+      let(:track) { create :track, local_filename: 'test.gpx', duration: 0 }
+
+      it { is_expected.to be_zero }
+    end
+
+    context 'when duration is assigned' do
+      let(:track) { create :track, local_filename: 'test.gpx', duration: 7200, distance: 10 }
+
+      it { is_expected.to eq(5) }
     end
   end
 end

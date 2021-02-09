@@ -19,7 +19,11 @@ RSpec.describe Tracks::LoadInfoService do
       {
         duration: 6152,
         started_at: Time.zone.local(2019, 3, 10, 11, 30, 5),
-        bounds: [ActiveRecord::Point.new(58.8514683, 56.8266267), ActiveRecord::Point.new(59.4318817, 57.670655)]
+        finished_at: Time.zone.local(2019, 3, 10, 13, 12, 37),
+        bounds: [
+          ActiveRecord::Point.new(58.8514683, 56.8266267),
+          ActiveRecord::Point.new(59.4318817, 57.670655)
+        ]
       }
     end
 
@@ -64,7 +68,7 @@ RSpec.describe Tracks::LoadInfoService do
 
     after { FileUtils.rm_f(tmp_dir.join('test.gpx')) }
 
-    let(:track) { create :track, local_filename: 'test.gpx', avg_speed: 20, distance: 20 }
+    let(:track) { create :track, local_filename: 'test.gpx', distance: 20 }
     let(:correct_bounds) do
       [
         ActiveRecord::Point.new(58.8514683, 56.8266267),

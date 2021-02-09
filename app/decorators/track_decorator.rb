@@ -12,7 +12,7 @@ class TrackDecorator < ApplicationDecorator
   end
 
   def duration
-    value = (super / 60).round
+    value = (super / 60.0).round
 
     hours = (value / 60).floor
     minutes = (value - hours * 60).floor

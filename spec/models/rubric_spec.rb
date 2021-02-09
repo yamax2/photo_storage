@@ -18,7 +18,6 @@ RSpec.describe Rubric do
     it { is_expected.to have_db_index(:main_photo_id) }
 
     it { is_expected.to have_db_column(:ord).of_type(:integer) }
-    it { is_expected.to have_db_column(:external_info).of_type(:text) }
   end
 
   describe 'associations' do

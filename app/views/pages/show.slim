@@ -33,7 +33,7 @@
 - if @rubric
   .page-map-content*{data: {url: summary_api_v1_rubric_path(@rubric),
      photos_url: api_v1_rubric_path(@rubric, only_with_geo_tags: true),
-     tracks_url: api_v1_rubric_tracks_path(@rubric),
+     tracks_url: @rubric.tracks_count.zero? ? nil : api_v1_rubric_tracks_path(@rubric),
      center: Rails.application.config.default_map_center, tile_layer: Leaflet.tile_layer,
      attribution: Leaflet.attribution}}
     #map
