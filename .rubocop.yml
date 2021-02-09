@@ -12,6 +12,7 @@ AllCops:
     - 'lib/tasks/**/*'
     - 'bin/**/*'
     - '.pryrc'
+    - 'vendor/bundle/**/*'
 
 Rails:
   Enabled: true

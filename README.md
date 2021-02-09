@@ -1,5 +1,7 @@
 # PhotoStorage
 
+[![CircleCI](https://circleci.com/gh/yamax2/photo_storage.svg?style=svg)](https://circleci.com/gh/yamax2/photo_storage)
+
 Приложение для организации фотоархива на облачных серверах, поддерживается только yandex disk.
 
 Позволяет использовать yandex disk-аккаунты как webdav-ноды.
@@ -28,19 +30,13 @@ API Яндекс.Паспорта
 
 ## TODO
 
-* add ci
 * eng docs and locale + нормальные доки.
 * move to webpack
-* выложить сюда ansible playbooks боевого деплоя.
 * ресайз карты (фронт)
-* итоги для треков рубрики
 * перечитать координаты из фото
-* удалить фото, трек
 * статистика в admin dashboard
 
-* заменить гем gpx на тулзу на golang для получения итогов
 * склеивание треков
-
 * вынести yandex в другое измерение - тип токена (?)
 * бот-загрузчик
 * цепочка действий в корзине

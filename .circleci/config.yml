@@ -1,0 +1,59 @@
+version: 2.1
+
+jobs:
+  test:
+    resource_class: small
+    docker:
+      - image: cimg/ruby:2.7-node
+        environment:
+          - DATABASE_URL=postgresql://postgres@localhost/photos
+          - TZ=Asia/Yekaterinburg
+          - PHOTOSTORAGE_SMTP_USER=auto@tretyakov-ma.ru
+      - image: postgres
+        environment:
+          - POSTGRES_USER=postgres
+          - PGUSER=postgres
+          - POSTGRES_DB=photos
+          - POSTGRES_PASSWORD=
+          - POSTGRES_HOST_AUTH_METHOD=trust
+      - image: redis
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - photos-storage-bundle-{{ checksum "Gemfile.lock" }}
+      - run:
+          name: install bundler
+          command: gem install bundler
+      - run:
+          name: Which bundler?
+          command: >
+            bundle config set deployment true &&
+            bundle config set without 'development production' &&
+            bundle -v
+      - run:
+          name: bundle install
+          command: bundle install
+      - save_cache:
+          key: photos-storage-bundle-{{ checksum "Gemfile.lock" }}
+          paths:
+            - vendor/bundle
+      - run:
+          name: Create APP database
+          command: RAILS_ENV=test bundle exec rails db:migrate
+      - run:
+          name: Test syntax with rubocop
+          command: bundle exec ./rubocop
+      - run:
+          name: Fix config
+          command: >
+            echo -e "test:\n  url: redis://localhost/0" > config/redis.yml
+      - run:
+          name: Run tests
+          command: bundle exec rspec
+
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - test
