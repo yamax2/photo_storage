@@ -26,16 +26,16 @@ module Yandex
         return id
       end
     LUA
-
     private_constant :FIND_SCRIPT
+
     delegate :resource_size, :token_id, to: :context
 
     def call
       return if actual_tokens.empty?
 
-      token_id = RedisScriptService.
+      token_id = RedisScript.
         new(FIND_SCRIPT).
-        call(
+        exec(
           keys: CACHE_REDIS_KEY,
           argv: [actual_tokens.to_json, resource_size]
         )

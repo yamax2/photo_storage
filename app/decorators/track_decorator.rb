@@ -12,12 +12,7 @@ class TrackDecorator < ApplicationDecorator
   end
 
   def duration
-    value = (super / 60.0).round
-
-    hours = (value / 60).floor
-    minutes = (value - hours * 60).floor
-
-    format_duration(hours, minutes)
+    Formatters::Duration.new(super).call
   end
 
   def proxy_url
@@ -25,15 +20,6 @@ class TrackDecorator < ApplicationDecorator
   end
 
   private
-
-  def format_duration(hours, minutes)
-    result = []
-
-    result << I18n.t('tracks.duration.hours', hours: hours) if hours.positive?
-    result << I18n.t('tracks.duration.minutes', minutes: minutes.to_s.rjust(2, '0')) if minutes.positive?
-
-    result.empty? ? '0' : result.join(' ')
-  end
 
   def url_generator
     @url_generator ||= ::ProxyUrls::Track.new(object)

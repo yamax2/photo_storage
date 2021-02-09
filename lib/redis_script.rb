@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
-class RedisScriptService
+class RedisScript
   def initialize(script)
     @script = script
   end
 
-  def call(keys: [], argv: [])
+  def exec(keys: [], argv: [])
     redis.evalsha(script_sha1, keys: Array.wrap(keys), argv: Array.wrap(argv))
   rescue Redis::CommandError => e
     raise unless e.message.start_with?('NOSCRIPT')
@@ -15,7 +15,7 @@ class RedisScriptService
 
   private
 
-  delegate :redis, to: RedisClassy
+  delegate :redis, to: RedisClassy, private: true
 
   def script_sha1
     Digest::SHA1.hexdigest(@script)

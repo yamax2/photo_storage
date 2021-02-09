@@ -26,7 +26,7 @@ jobs:
           name: install bundler
           command: gem install bundler
       - run:
-          name: Which bundler?
+          name: Configure bundler
           command: >
             bundle config set deployment true &&
             bundle config set without 'development production' &&
@@ -45,7 +45,7 @@ jobs:
           name: Test syntax with rubocop
           command: bundle exec ./rubocop
       - run:
-          name: Fix config
+          name: Configure app
           command: >
             echo -e "test:\n  url: redis://localhost/0" > config/redis.yml
       - run:
