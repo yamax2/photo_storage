@@ -214,6 +214,13 @@ ru:
   pages:
     show:
       admin: Управление
+      summary:
+        started_at: Начало путешествия
+        finished_at: Окончание путешествия
+        travel_duration: Длительность
+        distance: Расстояние, км.
+        avg_speed: Средняя скорость, км/ч.
+        duration: Время в пути
   rubrics:
     name:
       rubrics_count_text: 'подрубрик: %{rubrics_count}'

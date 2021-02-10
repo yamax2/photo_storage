@@ -13,6 +13,7 @@ RSpec.describe PagesController, type: :request do
           expect(response).to have_http_status(:ok)
 
           expect(assigns(:rubric)).to be_nil
+          expect(assigns(:summary)).to be_nil
         end
       end
 
@@ -30,6 +31,7 @@ RSpec.describe PagesController, type: :request do
           expect(response).to have_http_status(:ok)
 
           expect(assigns(:rubric)).to be_nil
+          expect(assigns(:summary)).to be_nil
         end
       end
     end
@@ -46,6 +48,7 @@ RSpec.describe PagesController, type: :request do
           expect(response).to redirect_to(root_path)
 
           expect(assigns(:rubric)).to eq(rubric)
+          expect(assigns(:summary)).to be_nil
         end
       end
 
@@ -60,6 +63,7 @@ RSpec.describe PagesController, type: :request do
           expect(response).to have_http_status(:ok)
 
           expect(assigns(:rubric)).to eq(rubric)
+          expect(assigns(:summary)).to be_nil
         end
       end
 
@@ -74,6 +78,7 @@ RSpec.describe PagesController, type: :request do
           expect(response).to redirect_to(root_path)
 
           expect(assigns(:rubric)).to eq(rubric)
+          expect(assigns(:summary)).to be_nil
         end
       end
 
@@ -90,6 +95,7 @@ RSpec.describe PagesController, type: :request do
           expect(response).to have_http_status(:ok)
 
           expect(assigns(:rubric)).to eq(rubric)
+          expect(assigns(:summary)).to be_nil
         end
       end
 
@@ -106,6 +112,7 @@ RSpec.describe PagesController, type: :request do
           expect(response).to redirect_to(root_path)
 
           expect(assigns(:rubric)).to eq(rubric)
+          expect(assigns(:summary)).to be_nil
         end
       end
 
@@ -124,6 +131,23 @@ RSpec.describe PagesController, type: :request do
           expect(response).to redirect_to(root_path)
 
           expect(assigns(:rubric)).to eq(rubric)
+          expect(assigns(:summary)).to be_nil
+        end
+      end
+
+      context 'when with tracks and photos' do
+        before do
+          create :photo, storage_filename: 'test', rubric: rubric, yandex_token: token
+          create :track, local_filename: '1.gpx', rubric: rubric
+
+          get page_url(id: rubric.id)
+        end
+
+        it do
+          expect(response).to have_http_status(:ok)
+
+          expect(assigns(:rubric)).to eq(rubric)
+          expect(assigns(:summary)).not_to be_nil
         end
       end
     end

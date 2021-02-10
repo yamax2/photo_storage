@@ -78,3 +78,6 @@ Metrics/MethodLength:
 
 Rails/NotNullColumn:
   Enabled: false
+
+Style/ParallelAssignment:
+  Enabled: false

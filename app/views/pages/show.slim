@@ -29,6 +29,14 @@
 .rubric-content
   - if @rubric
     = @rubric.description.to_s.html_safe
+  - if @summary
+    table.summary-table
+      - %i[started_at finished_at travel_duration distance avg_speed duration].each do |attr|
+        tr
+          th
+            = t(attr, scope: 'pages.show.summary')
+          td
+            = @summary.public_send(attr)
 
 - if @rubric
   .page-map-content*{data: {url: summary_api_v1_rubric_path(@rubric),
