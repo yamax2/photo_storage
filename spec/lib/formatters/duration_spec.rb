@@ -38,4 +38,16 @@ RSpec.describe Formatters::Duration do
 
     it { is_expected.to eq('1ч. 06мин.') }
   end
+
+  context 'when days' do
+    let(:duration) { 10.days + 1.hour + 5.minutes + 55.seconds }
+
+    it { is_expected.to eq('10дн. 1ч. 06мин.') }
+  end
+
+  context 'when days roundup' do
+    let(:duration) { 23.hours + 59.minutes + 55.seconds }
+
+    it { is_expected.to eq('1дн.') }
+  end
 end

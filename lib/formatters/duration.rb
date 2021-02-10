@@ -3,21 +3,27 @@
 module Formatters
   class Duration
     def initialize(value_seconds)
-      @value = (value_seconds / 60.0).round
+      @minutes = (value_seconds / 60.0).round
     end
 
     def call
-      hours = (@value / 60).floor
-      minutes = (@value - hours * 60).floor
+      minutes = @minutes
 
-      format_duration_text hours, minutes
+      days = (minutes / (24 * 60)).floor
+      minutes -= days * 24 * 60
+
+      hours = (minutes / 60).floor
+      minutes -= hours * 60
+
+      format_duration_text days, hours, minutes
     end
 
     private
 
-    def format_duration_text(hours, minutes)
+    def format_duration_text(days, hours, minutes)
       result = []
 
+      result << I18n.t('tracks.duration.days', days: days) if days.positive?
       result << I18n.t('tracks.duration.hours', hours: hours) if hours.positive?
       result << I18n.t('tracks.duration.minutes', minutes: minutes.to_s.rjust(2, '0')) if minutes.positive?
 

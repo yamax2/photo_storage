@@ -2,11 +2,16 @@
 
 namespace :migrations do
   desc 'fill finished_at for tracks'
+  # HOST=photos.tretyakov-ma.ru PROTOCOL=https bundle exec rails migrations:fill_tracks_finished_at
   task fill_tracks_finished_at: :environment do
     host = Rails.application.routes.default_url_options[:host]
     protocol = Rails.application.routes.default_url_options[:protocol]
 
-    Track.uploaded.where.not(finished_at: nil).order(:id).each_instance do |track|
+    Track.
+      uploaded.
+      where(finished_at: nil).
+      order(:id).
+      each_instance(with_hold: true, block_size: 10) do |track|
       url = "#{protocol}://#{host}#{::ProxyUrls::Track.new(track).generate}"
 
       # rubocop:disable Security/Open
@@ -18,8 +23,8 @@ namespace :migrations do
 
         track.update!(finished_at: finished_at)
       ensure
-        tempfile.close
-        tempfile.unlink
+        tempfile.try(:close)
+        tempfile.try(:unlink)
       end
     end
   end

@@ -227,6 +227,7 @@ ru:
       photos_count_text: 'фото: %{photos_count}'
   tracks:
     duration:
+      days: '%{days}дн.'
       hours: '%{hours}ч.'
       minutes: '%{minutes}мин.'
   views:
