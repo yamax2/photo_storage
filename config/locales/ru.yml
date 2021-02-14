@@ -28,6 +28,7 @@ ru:
         name: Название
         size: Размер
         started_at: Начало
+        finished_at: Окончание
         rubric: Рубрика
       yandex/token:
         active: Активность
@@ -152,6 +153,7 @@ ru:
         rubric_select: Выбрать
         rubric_search: Название рубрики
       index:
+        download: Скачать
         edit: Редактировать трек
         new: Добавить треки
         remove: Удалить трек
