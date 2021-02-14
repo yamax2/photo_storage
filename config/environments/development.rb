@@ -53,8 +53,6 @@ Rails.application.configure do
   # routes, locales, etc. This feature depends on the listen gem.
   config.file_watcher = ActiveSupport::EventedFileUpdateChecker
 
-  config.web_console.whitelisted_ips = %w[0.0.0.0/0 ::/0]
-
   Slim::Engine.set_options pretty: true
   config.action_mailer.delivery_method = :letter_opener
 end

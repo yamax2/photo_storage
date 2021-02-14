@@ -25,8 +25,7 @@ RUN bundle config set deployment true
 RUN bundle config set no-cache true
 RUN bundle config set clean true
 RUN bundle config set frozen true
-# production env is only for ubuntu
-RUN bundle config set without 'development test production'
+RUN bundle config set without 'development test'
 
 FROM base AS builder
 RUN apk add --update --no-cache build-base postgresql-dev git

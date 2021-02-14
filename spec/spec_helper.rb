@@ -13,8 +13,8 @@ require 'timecop'
 require 'webmock/rspec'
 require 'vcr'
 
-Dir[Rails.root.join('spec/support/**/*.rb')].sort.each { require _1 }
-Dir[Rails.root.join('spec/rspec_helpers/**/*.rb')].sort.each { require _1 }
+Dir[Rails.root.join('spec/support/**/*.rb')].each { require _1 }
+Dir[Rails.root.join('spec/rspec_helpers/**/*.rb')].each { require _1 }
 
 begin
   ActiveRecord::Migration.maintain_test_schema!
