@@ -6,7 +6,6 @@ RUN apk add --update --no-cache \
 RUN cp /usr/share/zoneinfo/Asia/Yekaterinburg /etc/localtime && echo 'Asia/Yekaterinburg' > /etc/timezone
 
 RUN gem update --system
-RUN gem install 'bundler:2.2.9'
 
 ENV EDITOR mcedit
 ENV BROWSER /bin/cat

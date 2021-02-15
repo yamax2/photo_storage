@@ -15,7 +15,7 @@ GIT
 
 GIT
   remote: https://github.com/rspec/rspec-mocks.git
-  revision: eadd0e63ce4522cad191e9034dc0f877b11abd4d
+  revision: 7013c5f2156d1de4b265175b85ac1e5f6788649c
   specs:
     rspec-mocks (3.11.0.pre)
       diff-lcs (>= 1.2.0, < 2.0)
@@ -327,7 +327,7 @@ GEM
     request_store (1.5.0)
       rack (>= 1.4)
     rexml (3.2.4)
-    rubocop (1.9.1)
+    rubocop (1.10.0)
       parallel (~> 1.10)
       parser (>= 3.0.0.0)
       rainbow (>= 2.2.2, < 4.0)
@@ -492,4 +492,4 @@ DEPENDENCIES
   yandex_client (>= 0.2)
 
 BUNDLED WITH
-   2.2.9
+   2.2.11
