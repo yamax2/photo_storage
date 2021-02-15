@@ -18,7 +18,9 @@ class Track < ApplicationRecord
                             optional: true
 
   def self.available_colors
-    @available_colors ||= YAML.load_file(Rails.root.join('config/track_colors.yml')).map!(&:downcase)
+    @available_colors ||= YAML.load_file(
+      Rails.root.join('config/track_colors.yml')
+    ).map!(&:downcase)
   end
 
   # km/h

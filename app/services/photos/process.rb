@@ -4,6 +4,10 @@ module Photos
   class Process
     include ::Interactor::Organizer
 
-    organize LoadInfoService, UploadService, MainPhotoService, EnqueueLoadDescriptionService
+    organize LoadInfoService,
+             FrontCameraService,
+             UploadService,
+             MainPhotoService,
+             EnqueueLoadDescriptionService
   end
 end

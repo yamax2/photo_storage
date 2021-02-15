@@ -1,0 +1,22 @@
+default: &default
+  detects:
+    - make: HUAWEI
+      model: CLT-L29
+      dimension: 5632
+      effects:
+        - scaleX(-1)
+
+    - make: Xiaomi
+      model: Mi Note 10
+      dimension: 6560
+      effects:
+        - scaleX(-1)
+
+development:
+  <<: *default
+
+test:
+  <<: *default
+
+production:
+  <<: *default
