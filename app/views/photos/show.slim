@@ -25,7 +25,15 @@
     li.photo-caption*{title: current.name}
       = current.name
 
-  = select_tag :preview_id, photo_size_selector_opts(preview_id)
+  .photo-header-buttons
+    - if @photos.next.present?
+      - slideshow = params[:next].present?
+      = link_to '',
+                page_photo_path(@rubric, current, next: slideshow ? nil : Rails.application.config.slideshow_delay),
+                class: ['slideshow-link', slideshow ? 'active' : nil].compact.join(' '),
+                title: slideshow ? t('.slideshow_stop') : t('.slideshow')
+
+    = select_tag :preview_id, photo_size_selector_opts(preview_id)
 
   - if @photos.next.present?
     = link_to '', page_photo_path(@rubric, @photos.next), class: 'photo-arrow photo-arrow-right',
@@ -34,7 +42,7 @@
     span.nav-stub.photo-arrow.photo-arrow-right
 
 .photo-page
-  .photo-content
+  .photo-content *{data: {end: @rubric.photos_count - current.pos}}
     - if @photos.prev.present?
       = link_to '', page_photo_path(@rubric, @photos.prev), class: 'photo-arrow photo-arrow-left',
                                                             title: @photos.prev.name

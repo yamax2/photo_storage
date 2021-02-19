@@ -44,6 +44,25 @@
   justify-content: space-between
   padding: 0 1rem
 
+  .photo-header-buttons
+    display: flex
+
+    .slideshow-link
+      display: inline-block
+      margin-right: 0.5rem
+
+      &.active
+        background: #007bff
+        height: 1rem
+        width: 1rem
+
+      &:not(.active)
+        width: 0
+        height: 0
+        border-style: solid
+        border-width: 0.5rem 0 0.5rem 0.5rem
+        border-color: transparent transparent transparent #007bff
+
   .photo-arrow
     display: none !important
 

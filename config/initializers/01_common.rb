@@ -25,4 +25,7 @@ Rails.application.configure do
 
   config.admin_emails = ENV.fetch('PHOTOSTORAGE_ADMIN_EMAILS', 'admin@photostorage.localhost').split(',').map(&:strip)
   config.default_map_center = [56.799631, 60.596571]
+
+  # delay for slideshow, seconds
+  config.slideshow_delay = ENV.fetch('PHOTOSTORAGE_SLIDESHOW_DELAY', 2).to_i
 end

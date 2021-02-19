@@ -15,7 +15,7 @@ GIT
 
 GIT
   remote: https://github.com/rspec/rspec-mocks.git
-  revision: 7013c5f2156d1de4b265175b85ac1e5f6788649c
+  revision: 97c972be57f2c060a4a7fb8a3c5700a5ede693f0
   specs:
     rspec-mocks (3.11.0.pre)
       diff-lcs (>= 1.2.0, < 2.0)
@@ -23,7 +23,7 @@ GIT
 
 GIT
   remote: https://github.com/rspec/rspec-rails.git
-  revision: ba5bab2533acbabc4c2c8a1de0672f5a261d8415
+  revision: 9883300cebb9f1a6c3891aa0baa0e61034adf40a
   branch: rails-6-1-dev
   specs:
     rspec-rails (4.1.0.pre)

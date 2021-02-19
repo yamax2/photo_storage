@@ -213,6 +213,8 @@ ru:
       tz: Часовой пояс
       views: Просмотры
       ago_in_words: '%{time} назад'
+      slideshow: Запустить слайд-шоу
+      slideshow_stop: Остановить слайл-шоу
   pages:
     show:
       admin: Управление

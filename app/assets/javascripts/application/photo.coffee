@@ -1,3 +1,5 @@
+nextPageTimeout = null
+
 $(document)
   .on 'click', '.cart-selector', ->
     $this = $(this)
@@ -28,6 +30,24 @@ $(document)
   .on 'turbolinks:load', ->
     $('#mainimg').on 'load', ->
       $('a.photo-arrow').show()
+
+    clearTimeout(nextPageTimeout) if nextPageTimeout?
+    $link = $('a.photo-arrow-right')
+
+    if $link.length > 0
+      url = new URL(window.location)
+      waitForNext = url.searchParams.get('next')
+
+      if waitForNext
+        $content = $('.photo-content')
+
+        nextPageTimeout = setTimeout ->
+          url = $link.attr('href')
+          url += "?next=#{waitForNext}" if $content.data('end') > 1
+
+          Turbolinks.visit url
+
+        , waitForNext * 1000
 
   .on 'keydown', (e) ->
     switch e.keyCode
