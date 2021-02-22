@@ -1,13 +1,13 @@
 GIT
   remote: https://github.com/rspec/rspec-core.git
-  revision: ecb65d2d4ea7b381472e3084f45e2da94e00ce91
+  revision: a5bf456bfb999adb180da13178013884a6f8a736
   specs:
     rspec-core (3.11.0.pre)
       rspec-support (= 3.11.0.pre)
 
 GIT
   remote: https://github.com/rspec/rspec-expectations.git
-  revision: 9efd205e008661b88eddf21c8b6cf52f564aa140
+  revision: 4e7011fe8ac68b74621336b07f894879c8da202d
   specs:
     rspec-expectations (3.11.0.pre)
       diff-lcs (>= 1.2.0, < 2.0)
@@ -23,7 +23,7 @@ GIT
 
 GIT
   remote: https://github.com/rspec/rspec-rails.git
-  revision: 9883300cebb9f1a6c3891aa0baa0e61034adf40a
+  revision: 5874755a3e6043a0dada6d24c7414728900f9401
   branch: rails-6-1-dev
   specs:
     rspec-rails (4.1.0.pre)

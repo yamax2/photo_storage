@@ -37,6 +37,30 @@ RSpec.describe Tracks::LoadInfoService do
     end
   end
 
+  context 'when file with gaps' do
+    before do
+      FileUtils.mkdir_p(tmp_dir)
+      FileUtils.cp('spec/fixtures/test3.gpx', tmp_dir.join('test.gpx'))
+    end
+
+    after { FileUtils.rm_f(tmp_dir.join('test.gpx')) }
+
+    let(:track) { create :track, local_filename: 'test.gpx' }
+
+    it do
+      expect(service_context).to be_a_success
+
+      expect(track.distance.round(2)).to eq(137.45)
+      expect(track.avg_speed.round(2)).to eq(55.34)
+
+      expect(track).to have_attributes(
+        duration: 8942,
+        started_at: Time.zone.local(2021, 2, 21, 17, 10, 59),
+        finished_at: Time.zone.local(2021, 2, 21, 20, 51, 47)
+      )
+    end
+  end
+
   context 'when tmp file does not exist' do
     let(:track) { create :track, local_filename: 'test.gpx' }
 

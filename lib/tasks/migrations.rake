@@ -28,4 +28,31 @@ namespace :migrations do
       end
     end
   end
+
+  desc 'fix duration for all tracks'
+  task fix_tracks_duration: :environment do
+    host = Rails.application.routes.default_url_options[:host]
+    protocol = Rails.application.routes.default_url_options[:protocol]
+
+    Track.uploaded.order(:id).each_instance(with_hold: true, block_size: 10) do |track|
+      url = "#{protocol}://#{host}#{::ProxyUrls::Track.new(track).generate}"
+
+      # rubocop:disable Security/Open
+      tempfile = URI.open(url)
+      # rubocop:enable Security/Open
+      begin
+        gpx = GPX::GPXFile.new(gpx_file: tempfile.path)
+
+        old_value = track.duration
+        track.update!(duration: gpx.moving_duration)
+
+        Rails.logger.info "track #{track.id} updated from #{old_value} to #{track.duration}"
+      rescue => e
+        Rails.logger.error("#{track.id}: #{e.message}")
+      ensure
+        tempfile.try(:close)
+        tempfile.try(:unlink)
+      end
+    end
+  end
 end

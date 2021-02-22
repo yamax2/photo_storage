@@ -11,7 +11,7 @@ module Tracks
 
       track.update!(
         distance: gpx.distance,
-        duration: gpx.duration,
+        duration: gpx.moving_duration,
         started_at: calc_time(:min),
         finished_at: calc_time(:max),
         bounds: bounds
