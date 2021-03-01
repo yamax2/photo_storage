@@ -35,7 +35,7 @@ class Track < ApplicationRecord
   private
 
   def bounds_is_array
-    return if bounds.all? { |bound| bound.is_a?(ActiveRecord::Point) } && bounds.size == 2
+    return if bounds.all?(ActiveRecord::Point) && bounds.size == 2
 
     errors.add(:bounds, :wrong_value)
   end
