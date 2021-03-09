@@ -66,12 +66,7 @@ group :test do
   gem 'rubocop-rails', require: false
   gem 'rubocop-rspec', require: false
 
-  # FIXME: remove all lines except rspec-rails after release
-  gem 'rspec-core', github: 'rspec/rspec-core'
-  gem 'rspec-expectations', github: 'rspec/rspec-expectations'
-  gem 'rspec-mocks', github: 'rspec/rspec-mocks'
-  gem 'rspec-rails', github: 'rspec/rspec-rails', branch: 'rails-6-1-dev'
-  gem 'rspec-support', github: 'rspec/rspec-support'
+  gem 'rspec-rails', '>= 4.1.0'
 end
 
 group :development do
