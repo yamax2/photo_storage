@@ -27,7 +27,6 @@ RSpec.configure do |config|
   config.include FactoryBot::Syntax::Methods
   config.include StripAttributes::Matchers
   config.include RSpecHelpers::Sidekiq
-  config.include ActionDispatch::TestProcess::FixtureFile
 
   config.use_transactional_fixtures = true
 

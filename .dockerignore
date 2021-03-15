@@ -1,2 +1,3 @@
 config/master.key
 config/credentials.yml.enc
+.irb-save-history
