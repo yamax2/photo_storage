@@ -1,10 +1,10 @@
 version: '3.3'
 
 # DOCKER_RUBY_VERSION: 3.0
-# DOCKER_GO_VERSION=1.15.6
-# POSTGRES_VERSION: 13.1
+# DOCKER_GO_VERSION=1.15.7
+# POSTGRES_VERSION: 13.2
 # REDIS_VERSION: 6
-# NGINX_VERSION=1.19.7
+# NGINX_VERSION=1.19.8
 # POSTGRES_DB: photos
 
 services:
@@ -46,7 +46,7 @@ services:
       - nginx
 
   db:
-    image: postgres:${POSTGRES_VERSION:-13.1}-alpine
+    image: postgres:${POSTGRES_VERSION:-13.2}-alpine
     environment:
       - POSTGRES_DB=${POSTGRES_DB:-photos}
       - POSTGRES_HOST_AUTH_METHOD=trust
@@ -64,7 +64,7 @@ services:
       context: ../../
       dockerfile: docker/photostorage/Dockerfile.proxy
       args:
-        DOCKER_GO_VERSION: ${DOCKER_GO_VERSION:-1.15.6}
+        DOCKER_GO_VERSION: ${DOCKER_GO_VERSION:-1.15.7}
     depends_on:
       - db
       - web
@@ -74,11 +74,11 @@ services:
       context: .
       dockerfile: Dockerfile.sender
       args:
-        DOCKER_GO_VERSION: ${DOCKER_GO_VERSION:-1.15.6}
+        DOCKER_GO_VERSION: ${DOCKER_GO_VERSION:-1.15.7}
     env_file: .env
 
   nginx:
-    image: nginx:${NGINX_VERSION:-1.19.7}-alpine
+    image: nginx:${NGINX_VERSION:-1.19.8}-alpine
     depends_on:
       - web
       - proxy
