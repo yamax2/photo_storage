@@ -14,4 +14,4 @@ COPY --from=builder /app/smtp_tg/smtp_tg /
 ENV ST_SMTP_LISTEN "0.0.0.0:2525"
 EXPOSE 2525
 
-CMD /smtp_tg
+ENTRYPOINT ["/smtp_tg"]
