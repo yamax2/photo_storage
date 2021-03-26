@@ -101,6 +101,32 @@ RSpec.describe Admin::PhotosController, type: :request do
       end
     end
 
+    context 'when new description' do
+      let(:token) { create :'yandex/token' }
+      let(:request) { put admin_photo_url(id: photo.id, get_new_description: true, photo: {name: 'test'}) }
+
+      context 'when photo without lat_long' do
+        let(:photo) { create :photo, storage_filename: 'test', yandex_token: token, name: 'my' }
+
+        it do
+          expect { request }.not_to(change { enqueued_jobs('descr', klass: Photos::LoadDescriptionJob) })
+
+          expect(assigns(:photo)).to have_attributes(name: 'test')
+        end
+      end
+
+      context 'when photo with lat_long' do
+        let(:photo) { create :photo, storage_filename: 'test', yandex_token: token, description: nil, lat_long: [1, 2] }
+
+        it do
+          expect { request }.to change { enqueued_jobs('descr', klass: Photos::LoadDescriptionJob).size }.by(1)
+
+          expect(assigns(:photo)).to have_attributes(name: 'test')
+          expect(flash[:notice]).to eq I18n.t('admin.photos.edit.get_new_description_enqueued', name: 'test')
+        end
+      end
+    end
+
     context 'when try to clear lat_long' do
       let(:token) { create :'yandex/token' }
       let!(:photo) { create :photo, storage_filename: 'test', yandex_token: token, name: 'my', lat_long: [1, 2] }

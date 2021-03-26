@@ -6,6 +6,8 @@ module Admin
 
     def update
       if @photo.update(photo_params)
+        enqueue_description if params[:get_new_description]
+
         redirect_to action: :edit, id: @photo.id
       else
         render 'edit'
@@ -46,6 +48,12 @@ module Admin
       return if (value = par[:effects]).blank?
 
       par[:effects] = value.map!(&:presence).compact!.presence
+    end
+
+    def enqueue_description
+      ::Photos::EnqueueLoadDescriptionService.call!(photo: @photo)
+
+      flash[:notice] = I18n.t('admin.photos.edit.get_new_description_enqueued', name: @photo.name)
     end
   end
 end

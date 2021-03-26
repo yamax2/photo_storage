@@ -4,7 +4,7 @@
 .row
   .col-sm-12.col-lg-9
     .card
-      = form_for [:admin, @photo], html: {class: 'form-horizontal'} do |f|
+      = form_for [:admin, @photo], html: {class: 'form-horizontal photo-edit-form'} do |f|
         .card-header
           strong
             = "#{@photo.name} (#{@photo.rubric.name})"
@@ -87,9 +87,16 @@
               = button_tag class: 'btn btn-outline-secondary btn-clear', type: 'button' do
                 = t('.clear')
 
+          .row.form-group
             .col.col-md-3
             .col.col-md-9
               #map*{data: {point: @photo.lat_long&.to_a || Rails.application.config.default_map_center}}
+
+          .row.form-group
+            .col.col-md-3
+            .col.col-md-9*{style: 'display: flex; align-items: center'}
+              = check_box_tag :get_new_description, 1, false, data: {error: t('.get_new_description_error')}
+              = label_tag :get_new_description, t('.get_new_description'), style: 'padding-left: 0.25rem; margin-bottom: 0'
 
         .card-footer.action-buttons
           = button_tag class: 'btn btn-primary btn-sm' do

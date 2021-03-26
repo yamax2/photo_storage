@@ -95,6 +95,9 @@ ru:
         clear: Очистить
         delete: Удалить фото
         delete_confirm: Удалить фото?
+        get_new_description: Запросить новое описание локации
+        get_new_description_error: Запросить новое описание локации можно только для фото с пустым описанием
+        get_new_description_enqueued: Загрузка нового описания запланирована для фото %{name}
         rubric_search: Название рубрики
         rubric_select: Выбрать
         effects:

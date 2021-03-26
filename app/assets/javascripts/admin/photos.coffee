@@ -25,3 +25,10 @@ $(document)
     $($(this).data('name')).val(selected[0].text)
 
     $('#rubric-modal').modal('hide')
+
+  .on 'submit', '.photo-edit-form', ->
+    $checkbox = $('#get_new_description', this)
+
+    if $checkbox.is(':checked') && $('#photo_description', this).val().length > 0
+      alert $checkbox.data('error')
+      false
