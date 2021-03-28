@@ -94,9 +94,9 @@
 
           .row.form-group
             .col.col-md-3
-            .col.col-md-9*{style: 'display: flex; align-items: center'}
+            .col.col-md-9.new-description
               = check_box_tag :get_new_description, 1, false, data: {error: t('.get_new_description_error')}
-              = label_tag :get_new_description, t('.get_new_description'), style: 'padding-left: 0.25rem; margin-bottom: 0'
+              = label_tag :get_new_description, t('.get_new_description')
 
         .card-footer.action-buttons
           = button_tag class: 'btn btn-primary btn-sm' do

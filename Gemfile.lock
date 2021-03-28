@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/yamax2/gpx.git
-  revision: 798635ba2cc3a8f268d2c3bdeca5f58e831ab2f9
+  revision: 7841b9fd20a5af1f1e3cda2466ce8ca6e5ca392c
   specs:
     gpx (1.0.0)
       nokogiri (~> 1.7)

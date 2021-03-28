@@ -19,11 +19,11 @@ loadPhotos = ($photos) ->
 
         style = "width: #{actual_size[0]}px; height: #{actual_size[1]}px; min-height: #{actual_size[1]}px"
 
-        img_style = "width: #{photo.image_size[0]}px; height: #{photo.image_size[1]}px; " +
-                    "min-height: #{photo.image_size[1]}px"
+        imgStyle = "width: #{photo.image_size[0]}px; height: #{photo.image_size[1]}px; " +
+                   "min-height: #{photo.image_size[1]}px"
 
         if photo.properties.css_transform
-          img_style += "; transform: #{photo.properties.css_transform}"
+          imgStyle += "; transform: #{photo.properties.css_transform}"
 
         if photo.properties.turned
           value = 100 * actual_size[1] / actual_size[0]
@@ -33,7 +33,7 @@ loadPhotos = ($photos) ->
 
         html += "<a title=\"#{photo.name}\" class=\"photo\" style=\"#{style}\" href=\"#{photo.url}\" " +
                 "id=\"llink_#{photo.id}\">" +
-                "<img id=\"lphoto_#{photo.id}\" src=\"#{photo.preview}\" style=\"#{img_style}\"" +
+                "<img id=\"lphoto_#{photo.id}\" src=\"#{photo.preview}\" style=\"#{imgStyle}\"" +
                 " onload=\"$(this).parent().addClass('loaded')\">" +
                 "<div class=\"photo-name\"><span>#{photo.name}</span></div></a>"
 
