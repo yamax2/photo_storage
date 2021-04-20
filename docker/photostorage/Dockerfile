@@ -1,9 +1,9 @@
 ARG DOCKER_RUBY_VERSION
 FROM ruby:${DOCKER_RUBY_VERSION}-alpine AS base
 
-RUN apk add --update --no-cache tzdata libexif-dev xz-dev libpq less postgresql-client nodejs curl jq unzip openssl
-RUN gem update --system
-RUN mkdir /photostorage
+RUN apk add --update --no-cache tzdata libexif-dev xz-dev libpq less postgresql-client nodejs curl jq unzip openssl && \
+    gem update --system && \
+    mkdir /photostorage
 
 ENV RAILS_ENV production
 WORKDIR /photostorage
@@ -20,16 +20,16 @@ COPY vendor /photostorage/vendor
 COPY config.ru /photostorage/config.ru
 COPY Rakefile /photostorage/Rakefile
 
-RUN bundle config set deployment true
-RUN bundle config set no-cache true
-RUN bundle config set clean true
-RUN bundle config set frozen true
-RUN bundle config set without 'development test'
+RUN bundle config set deployment true && \
+    bundle config set no-cache true && \
+    bundle config set clean true && \
+    bundle config set frozen true && \
+    bundle config set without 'development test'
 
 FROM base AS builder
-RUN apk add --update --no-cache build-base postgresql-dev git
-RUN bundle install --jobs `grep -c ^processor /proc/cpuinfo`
-RUN bundle exec rails assets:precompile
+RUN apk add --update --no-cache build-base postgresql-dev git && \
+    bundle install --jobs `grep -c ^processor /proc/cpuinfo` && \
+    bundle exec rails assets:precompile
 
 FROM base
 

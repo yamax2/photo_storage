@@ -4,7 +4,7 @@ version: '3.3'
 # DOCKER_GO_VERSION=1.15.7
 # POSTGRES_VERSION: 13.2
 # REDIS_VERSION: 6
-# NGINX_VERSION=1.19.8
+# NGINX_VERSION=1.19.10
 # POSTGRES_DB: photos
 
 services:
@@ -78,7 +78,7 @@ services:
     env_file: .env
 
   nginx:
-    image: nginx:${NGINX_VERSION:-1.19.8}-alpine
+    image: nginx:${NGINX_VERSION:-1.19.10}-alpine
     depends_on:
       - web
       - proxy

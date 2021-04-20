@@ -31,7 +31,7 @@ module Nominatim
 
       raise Error.new(error_text: response.body, code: response.code.to_i) unless response.is_a?(Net::HTTPSuccess)
 
-      body = JSON.parse(response.body).deep_symbolize_keys
+      body = JSON.parse(response.body, symbolize_names: true)
 
       if (error = body[:error]).present?
         raise Error.new(error_text: error)
