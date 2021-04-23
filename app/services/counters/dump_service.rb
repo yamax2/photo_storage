@@ -10,7 +10,7 @@ module Counters
     delegate :model_klass, to: :context
 
     def call
-      redis.scan_each(match: key_for('*'), count: BATCH_SIZE).each do |key|
+      redis.scan_each(match: key_for('*'), count: BATCH_SIZE) do |key|
         id = key.gsub(/[^\d]+/, '').to_i
 
         if (model = model_klass.find_by(id: id)).present?

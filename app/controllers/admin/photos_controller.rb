@@ -41,7 +41,7 @@ module Admin
     end
 
     def normalize_lat_long_param(par)
-      par[:lat_long] = nil if (value = par[:lat_long]).present? && value.map(&:presence).compact.empty?
+      par[:lat_long] = nil if (value = par[:lat_long]).present? && value.filter_map(&:presence).empty?
     end
 
     def normalize_effects_param(par)

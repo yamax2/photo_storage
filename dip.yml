@@ -64,6 +64,7 @@ interaction:
     command: go build -ldflags '-s -w' proxy_service/yandex_proxy.go
 
 provision:
+  - docker pull ruby:${DOCKER_RUBY_VERSION}-alpine
   - ./docker/prepare_env.sh
   - docker volume create --name bundler_data
   - dip compose up -d db

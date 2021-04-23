@@ -34,7 +34,7 @@ module Tracks
     end
 
     def calc_time(method)
-      gpx.tracks.map { |track| track.points.map(&:time).compact.public_send(method) }.public_send(method)
+      gpx.tracks.map { |track| track.points.filter_map(&:time).public_send(method) }.public_send(method)
     end
   end
 end
