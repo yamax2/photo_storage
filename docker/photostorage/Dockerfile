@@ -8,8 +8,15 @@ RUN apk add --update --no-cache tzdata libexif-dev xz-dev libpq less postgresql-
 ENV RAILS_ENV production
 WORKDIR /photostorage
 
-COPY Gemfile Gemfile.lock ./
+RUN bundle config set deployment true && \
+    bundle config set no-cache true && \
+    bundle config set clean true && \
+    bundle config set frozen true && \
+    bundle config set without 'development test'
 
+FROM base AS builder
+
+COPY Gemfile Gemfile.lock ./
 COPY app /photostorage/app
 COPY bin /photostorage/bin
 COPY config /photostorage/config
@@ -20,19 +27,12 @@ COPY vendor /photostorage/vendor
 COPY config.ru /photostorage/config.ru
 COPY Rakefile /photostorage/Rakefile
 
-RUN bundle config set deployment true && \
-    bundle config set no-cache true && \
-    bundle config set clean true && \
-    bundle config set frozen true && \
-    bundle config set without 'development test'
-
-FROM base AS builder
 RUN apk add --update --no-cache build-base postgresql-dev git && \
     bundle install --jobs `grep -c ^processor /proc/cpuinfo` && \
     bundle exec rails assets:precompile
 
 FROM base
-
+COPY --from=builder /photostorage /photostorage
 COPY --from=builder /photostorage/vendor/bundle /photostorage/vendor/bundle
 COPY --from=builder /usr/local/bundle/config /usr/local/bundle/config
 COPY --from=builder /photostorage/public/assets /photostorage/public/assets
