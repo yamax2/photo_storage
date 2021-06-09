@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class PagesController < ApplicationController
+  helper_method :with_photos?
+
   def show
     if (rubric_id = params[:id]).present?
       @rubric = RubricFinder.call(rubric_id)
