@@ -16,6 +16,7 @@ module Rubrics
 
       @limit = opts.fetch(:limit, 0)
       @offset = opts.fetch(:offset, 0)
+      @desc_order = opts.fetch(:desc_order, false)
     end
 
     def each
@@ -78,7 +79,8 @@ module Rubrics
       PhotosFinder.call(
         @rubric_id,
         columns: COLUMNS.map { |attr| photos[attr] },
-        only_with_geo_tags: @only_with_geo_tags
+        only_with_geo_tags: @only_with_geo_tags,
+        desc_order: @desc_order
       ).select(
         '0 photos_count', '0 rubrics_count', '1 model_index',
         "#{Photo.connection.quote('Photo')} model_type"

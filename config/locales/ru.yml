@@ -18,6 +18,7 @@ ru:
         ord: Порядок в листинге
         rubric: Рубрика
         rubrics_count: Подрубрики
+        desc_order: Обратный порядок фото в листинге
       track:
         avg_speed: Средняя скорость, км/ч
         content: gpx-файл (содержимое)
@@ -221,6 +222,8 @@ ru:
   pages:
     show:
       admin: Управление
+      older_first: Сначала старые
+      newer_first: Сначала новые
       summary:
         started_at: Начало путешествия
         finished_at: Окончание путешествия

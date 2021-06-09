@@ -33,6 +33,15 @@
 
           .row.form-group
             .col.col-md-3
+              = f.label :desc_order
+            .col-12.col-md-9
+              label.switch.switch-text.switch-primary
+                = f.check_box(:desc_order, {class: 'switch-input type'})
+                span.switch-label*{data: {on: t('views.switches.on_text'), off: t('views.switches.off_text') }}
+                span.switch-handle
+
+          .row.form-group
+            .col.col-md-3
               = f.label :description
             .col-12.col-md-9
               = f.text_area :description, class: 'form-control', rows: 10

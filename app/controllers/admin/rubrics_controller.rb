@@ -56,7 +56,7 @@ module Admin
     end
 
     def rubric_params
-      params.require(:rubric).permit(:rubric_id, :name, :description)
+      params.require(:rubric).permit(:rubric_id, :name, :description, :desc_order)
     end
   end
 end

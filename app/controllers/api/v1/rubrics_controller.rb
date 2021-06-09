@@ -25,7 +25,8 @@ module Api
           params[:id],
           offset: params[:offset].to_i,
           limit: params[:limit].to_i,
-          only_with_geo_tags: params[:only_with_geo_tags]
+          only_with_geo_tags: params[:only_with_geo_tags],
+          desc_order: params[:desc_order]
         ).to_a
       end
     end

@@ -154,19 +154,34 @@ RSpec.describe Rubrics::Listing do
     let!(:another_photo) { create :photo, rubric: rubric7_sub, storage_filename: '2.jpg', yandex_token: token }
     let!(:another_empty_rubric) { create :rubric, rubric: rubric7_sub }
     let!(:another_rubric) { create :rubric, rubric: rubric7_sub }
+    let!(:yet_another_rubric) { create :rubric, rubric: rubric7_sub }
 
     let(:rubric_id) { rubric7_sub.id }
 
     before do
       create :photo, rubric: another_rubric, storage_filename: '3.jpg', yandex_token: token
       create :photo, rubric: another_rubric, local_filename: '4.jpg'
+      create :photo, rubric: yet_another_rubric, local_filename: '5.jpg', yandex_token: token
     end
 
-    it do
-      expect(actual_models.keys).to match_array(%w[Photo Rubric])
+    context 'when regular call' do
+      it do
+        expect(actual_models.keys).to match_array(%w[Photo Rubric])
 
-      expect(actual_models['Photo']).to match_array([photo_for_rubric7.id, another_photo.id])
-      expect(actual_models['Rubric']).to match_array([another_rubric.id])
+        expect(actual_models['Photo']).to eq([photo_for_rubric7.id, another_photo.id])
+        expect(actual_models['Rubric']).to eq([yet_another_rubric.id, another_rubric.id])
+      end
+    end
+
+    context 'when desc order' do
+      let(:opts) { {desc_order: true} }
+
+      it do
+        expect(actual_models.keys).to match_array(%w[Photo Rubric])
+
+        expect(actual_models['Photo']).to eq([another_photo.id, photo_for_rubric7.id])
+        expect(actual_models['Rubric']).to eq([yet_another_rubric.id, another_rubric.id])
+      end
     end
   end
 

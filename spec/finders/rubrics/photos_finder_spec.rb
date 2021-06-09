@@ -96,12 +96,21 @@ RSpec.describe Rubrics::PhotosFinder do
     end
   end
 
-  context 'only_with_geo_tags option' do
+  context 'when only_with_geo_tags option' do
     subject(:photos) { described_class.call(root_rubric1.id, only_with_geo_tags: true) }
 
     it do
       expect(photos).to eq([photo7])
       expect(photos.map(&:rn)).to eq([1])
+    end
+  end
+
+  context 'when desc_order option' do
+    subject(:photos) { described_class.call(root_rubric1.id, desc_order: true) }
+
+    it do
+      expect(photos).to eq([photo5, photo2, photo3, photo7, photo6])
+      expect(photos.map(&:rn)).to eq([1, 2, 3, 4, 5])
     end
   end
 

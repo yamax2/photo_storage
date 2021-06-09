@@ -14,6 +14,8 @@ RSpec.describe Rubric do
     it { is_expected.to have_db_column(:rubrics_count).of_type(:integer).with_options(null: false, default: 0) }
     it { is_expected.to have_db_column(:photos_count).of_type(:integer).with_options(null: false, default: 0) }
 
+    it { is_expected.to have_db_column(:desc_order).of_type(:boolean).with_options(null: false, default: false) }
+
     it { is_expected.to have_db_index(:rubric_id) }
     it { is_expected.to have_db_index(:main_photo_id) }
 

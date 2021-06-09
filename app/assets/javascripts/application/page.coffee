@@ -8,7 +8,14 @@ loadPhotos = ($photos) ->
   offset = parseInt($loader.attr('data-offset') || 0)
   limit = $loader.attr('data-limit') || 10
 
+  url = new URL(window.location)
+  descOrder = url.searchParams.get('desc_order')
+
+  $orderId = $('#photos_order_id')
+  $orderId.val(descOrder) if descOrder?
+
   url = "#{$photos.attr('data-url')}?limit=#{limit}&offset=#{offset}"
+  url += '&desc_order=true' if $orderId.val() == 'true'
 
   $.get url, (response) ->
     if response.length > 0
@@ -68,3 +75,9 @@ $(document)
     scene.on 'enter', ->
       renders.push(true)
       loadPhotos($photos) if renders.length == 1
+
+  .on 'change', '#photos_order_id', ->
+      url = new URL(window.location)
+      url.searchParams.set('desc_order', $(this).val())
+
+      Turbolinks.visit url
