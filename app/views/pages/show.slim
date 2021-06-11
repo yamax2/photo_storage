@@ -36,7 +36,11 @@
     = @rubric.description.to_s.html_safe
   - if @summary
     table.summary-table
-      - %i[started_at finished_at travel_duration distance avg_speed duration].each do |attr|
+      - attrs = %i[distance avg_speed duration]
+      - unless @rubric.hide_common_stat
+        - attrs = %i[started_at finished_at travel_duration] + attrs
+
+      - attrs.each do |attr|
         tr
           th
             = t(attr, scope: 'pages.show.summary')

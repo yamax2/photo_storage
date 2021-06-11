@@ -19,6 +19,7 @@ ru:
         rubric: Рубрика
         rubrics_count: Подрубрики
         desc_order: Обратный порядок фото в листинге
+        hide_common_stat: Не показывать общую статистику
       track:
         avg_speed: Средняя скорость, км/ч
         content: gpx-файл (содержимое)

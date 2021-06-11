@@ -35,7 +35,7 @@
           table.table
             thead
               tr
-                - %i[id name created_at rubrics_count ord desc_order].each do |attr|
+                - %i[id name created_at rubrics_count ord desc_order hide_common_stat].each do |attr|
                   th
                     = sort_link @search, attr, Rubric.human_attribute_name(attr)
                 th
@@ -50,11 +50,13 @@
                       - else
                         = rubric[attr]
 
-                  td
-                    label.switch.switch-text.switch-primary
-                      input.switch-input type="checkbox"*{checked: rubric.desc_order? ? 'checked' : nil, disabled: true}
-                      span.switch-label*{data: {on: t('views.switches.on_text'), off: t('views.switches.off_text')}}
-                      span.switch-handle
+                  - %i[desc_order hide_common_stat].each do |attr|
+                    td
+                      label.switch.switch-text.switch-primary
+                        input.switch-input type="checkbox"*{checked: rubric.public_send("#{attr}?") ? 'checked' : nil, disabled: true}
+                        span.switch-label*{data: {on: t('views.switches.on_text'), off: t('views.switches.off_text')}}
+                        span.switch-handle
+
                   td.action-buttons
                     = link_to admin_rubrics_path(id: rubric.id), title: t('.subrubrics', name: rubric.name),
                                                                  class: 'btn btn-outline-info btn-sm' do

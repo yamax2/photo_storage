@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_09_111248) do
+ActiveRecord::Schema.define(version: 2021_06_11_133109) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -54,6 +54,7 @@ ActiveRecord::Schema.define(version: 2021_06_09_111248) do
     t.integer "ord"
     t.bigint "tracks_count", default: 0, null: false
     t.boolean "desc_order", default: false, null: false
+    t.boolean "hide_common_stat", default: false, null: false
     t.index ["main_photo_id"], name: "index_rubrics_on_main_photo_id", where: "(main_photo_id IS NOT NULL)"
     t.index ["rubric_id"], name: "index_rubrics_on_rubric_id"
   end
