@@ -25,7 +25,7 @@ class Rubric < ApplicationRecord
     SQL
   end)
 
-  scope :default_order, -> { order(PhotosNullsFirstAsc.new(arel_table[:ord]), arel_table[:id].desc) }
+  scope :default_order, -> { order(arel_table[:ord].asc.nulls_first, arel_table[:id].desc) }
   scope(:by_first_photo, lambda do
     joins(<<~SQL.squish).order('sort.rn')
       JOIN (
