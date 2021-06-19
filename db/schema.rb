@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_11_133109) do
+ActiveRecord::Schema.define(version: 2021_06_19_184303) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -104,4 +104,6 @@ ActiveRecord::Schema.define(version: 2021_06_11_133109) do
   add_foreign_key "photos", "yandex_tokens", name: "fk_photo_tokens", on_update: :cascade, on_delete: :restrict
   add_foreign_key "rubrics", "photos", column: "main_photo_id", name: "fk_rubrics_main_photo", on_update: :cascade, on_delete: :nullify
   add_foreign_key "rubrics", "rubrics", name: "fk_rubrics", on_update: :cascade, on_delete: :restrict
+  add_foreign_key "tracks", "rubrics", name: "fk_track_rubrics", on_update: :cascade, on_delete: :restrict
+  add_foreign_key "tracks", "yandex_tokens", name: "fk_tracks_tokens", on_update: :cascade, on_delete: :restrict
 end
