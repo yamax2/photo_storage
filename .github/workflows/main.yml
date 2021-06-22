@@ -1,0 +1,58 @@
+name: CI
+
+on:
+  push:
+    branches: ['*']
+  pull_request:
+    branches: [master]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    env:
+      TZ: Asia/Yekaterinburg
+      PHOTOSTORAGE_SMTP_USER: auto@tretyakov-ma.ru
+      RAILS_ENV: test
+
+    services:
+      redis:
+        image: redis
+        ports:
+          - 6379/tcp
+      postgres:
+        image: postgres
+        env:
+          POSTGRES_USER: postgres
+          PGUSER: postgres
+          POSTGRES_DB: photos
+          POSTGRES_HOST_AUTH_METHOD: trust
+        ports:
+          - 5432/tcp
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Ruby
+        # To automatically get bug fixes and new Ruby versions for ruby/setup-ruby,
+        # change this to (see https://github.com/ruby/setup-ruby#versioning):
+        # uses: ruby/setup-ruby@v1
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+
+      - name: configure
+        run: >
+          echo -e "test:\n  url: redis://localhost:${{ job.services.redis.ports['6379'] }}/0" > config/redis.yml
+
+      - name: create db
+        run: bundle exec rails db:migrate
+        env:
+          DATABASE_URL: "postgresql://postgres@localhost:${{ job.services.postgres.ports['5432'] }}/photos"
+
+      - name: rubocop
+        run: bundle exec ./rubocop --display-style-guide --extra-details
+
+      - name: tests
+        run: bundle exec rspec
+        env:
+          DATABASE_URL: "postgresql://postgres@localhost:${{ job.services.postgres.ports['5432'] }}/photos"
