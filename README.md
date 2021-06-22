@@ -1,16 +1,14 @@
 # PhotoStorage
 
-[![CircleCI](https://circleci.com/gh/yamax2/photo_storage.svg?style=svg)](https://circleci.com/gh/yamax2/photo_storage)
+Store your photos and tracks on multiple free cloud file storage accounts.
 
-Приложение для организации фотоархива на облачных серверах, поддерживается только yandex disk.
+Only [Yandex disk](https://disk.yandex.ru/client/disk) is now supported.
 
-Позволяет использовать yandex disk-аккаунты как webdav-ноды.
+See the docker-compose example on local domain `photos.localhost:8080` in `docker/photostorage` dir (Ubuntu >= 18.04 tested only).
 
-Пример docker-compose на локальном домене photos.localhost:8080 см. `docker/photostorage`
+## How to use the app (wip)
 
-## Как работать с приложением?
-
-* Регаемся на https://oauth.yandex.ru/, выбираем права:
+Register a new app on this page https://oauth.yandex.ru/ and choose the following permissions:
 ```
 Яндекс.Диск REST API
 Доступ к информации о Диске
@@ -22,39 +20,24 @@ API Яндекс.Паспорта
 Яндекс.Диск WebDAV API
 Доступ к Яндекс.Диску для приложений
 ```
-* вход в админку `/admin`
-* создать рубрику и токены яндекса.
-* загружаем фото и треки на главной странице админки
 
-Боевая версия отлично работает на самом дешевом VDS: 2 core, 1GB RAM, 10GB hdd.
+Then open admin page `/admin`
 
-## TODO
+You can use the app with the cheapest VDS: 2 core, 1GB RAM (2GB is recommended), 10GB hdd.
 
-* eng docs and locale + нормальные доки.
-* move to webpack
-* ресайз карты (фронт)
-* перечитать координаты из фото
-* статистика в admin dashboard
+## Local development with docker
 
-* склеивание треков
-* вынести yandex в другое измерение - тип токена (?)
-* бот-загрузчик
-* цепочка действий в корзине
-
-* гео-индекс в редисе (?)
-* информирование о новых фото (?)
-
-## local development with docker
+For ubuntu >= 18.04. For another os see the dip readme.
 
 * install [dip](https://github.com/bibendi/dip)
 * add `export DOCKER_TLD=localhost` to `.bashrc`
 * `dip ssh up && dip dns up --domain localhost && dip nginx up --domain localhost`
 * `dip provision`
-* webapp: `dip rails s` and open photostorage.localhost in your browser
-* sidekiq: `dip compose up -d sidekiq`
-* tests:
+* Start web app: `dip rails s` and open `photostorage.localhost` in your browser
+* Start sidekiq: `dip compose up -d sidekiq`
+* Run tests:
 ```bash
 RAILS_ENV=test dip provision
 dip rspec
 ```
-* rubocop: `dip rubocop`
+* Run rubocop: `dip rubocop` (test env)
