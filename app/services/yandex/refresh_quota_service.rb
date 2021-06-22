@@ -7,7 +7,7 @@ module Yandex
     delegate :token, to: :context
 
     def call
-      response = YandexClient::Disk::Client.new(access_token: token.access_token).info
+      response = YandexClient::Disk[token.access_token].info
 
       token.update!(
         used_space: response.fetch(:used_space),

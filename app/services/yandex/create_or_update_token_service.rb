@@ -30,7 +30,7 @@ module Yandex
 
     def passport_response
       @passport_response ||=
-        YandexClient::Passport::Client.new(access_token: token_response.fetch(:access_token)).info
+        YandexClient::Passport[token_response.fetch(:access_token)].info
     end
 
     def perform_refresh
@@ -39,7 +39,7 @@ module Yandex
     end
 
     def token_response
-      @token_response ||= YandexClient::Auth::Client.new.create_token(code: code)
+      @token_response ||= YandexClient.auth.create_token(code: code)
     end
   end
 end

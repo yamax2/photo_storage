@@ -50,7 +50,7 @@ RSpec.describe Yandex::RefreshTokenService do
       before { stub_request(:any, /oauth.yandex.ru/).to_timeout }
 
       it do
-        expect { service_context }.to raise_error(Net::OpenTimeout)
+        expect { service_context }.to raise_error(HTTP::TimeoutError)
 
         expect(Yandex::TokenChangedNotifyJob).not_to have_received(:perform_async)
       end

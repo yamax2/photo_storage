@@ -23,22 +23,16 @@ module Yandex
     end
 
     def dav_response
-      return @dav_response if defined?(@dav_response)
-
-      client = YandexClient::Dav::Client.new(access_token: token.access_token)
-
-      @dav_response = client.
-        propfind(name: storage_dir, depth: 1).
-        delete_if { |_, info| info[:resourcetype] == :folder }.
-        transform_keys do |key|
-        key.sub(%r{^#{base_storage_dir}/}, '')
-      end
+      @dav_response ||= ::YandexClient::Dav[token.access_token].
+        propfind(storage_dir, 1).
+        select(&:file?).
+        index_by { |info| info.name.sub(%r{^#{base_storage_dir}/}, '') }
     end
 
     def match_info(model, dav_info)
       [].tap do |errors|
-        errors << 'size mismatch' if model.size != dav_info.fetch(:getcontentlength)
-        errors << 'etag mismatch' if model.md5 != dav_info.fetch(:getetag)
+        errors << 'size mismatch' if model.size != dav_info.size
+        errors << 'etag mismatch' if model.md5 != dav_info.etag
       end
     end
 

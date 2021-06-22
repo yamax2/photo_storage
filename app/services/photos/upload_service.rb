@@ -21,13 +21,13 @@ module Photos
     private
 
     def client
-      @client ||= ::YandexClient::Dav::Client.new(access_token: token_for_upload.access_token)
+      @client ||= ::YandexClient::Dav[token_for_upload.access_token]
     end
 
     def create_remote_dir(path)
-      client.propfind(name: path)
+      client.propfind(path)
     rescue ::YandexClient::NotFoundError
-      client.mkcol(name: path)
+      client.mkcol(path)
     end
 
     def create_remote_dirs
@@ -61,7 +61,7 @@ module Photos
     end
 
     def remote_path_exists?
-      client.propfind(name: "/#{remote_path.join('/')}")
+      client.propfind("/#{remote_path.join('/')}")
 
       true
     rescue ::YandexClient::NotFoundError
@@ -76,10 +76,10 @@ module Photos
 
     def upload_file
       client.put(
-        file: local_file,
-        name: "#{token_for_upload.dir}/#{storage_filename}",
+        local_file,
+        "#{token_for_upload.dir}/#{storage_filename}",
         size: photo.size,
-        md5: photo.md5,
+        etag: photo.md5,
         sha256: photo.sha256
       )
     end

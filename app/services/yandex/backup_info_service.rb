@@ -30,10 +30,7 @@ module Yandex
     private
 
     def download_url
-      YandexClient::Disk::Client.
-        new(access_token: token.access_token).
-        download_url(path: path).
-        fetch(:href)
+      YandexClient::Disk[token.access_token].download_url(path)
     end
 
     def path

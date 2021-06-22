@@ -24,7 +24,7 @@ module Yandex
     end
 
     def token_response
-      @token_response ||= YandexClient::Auth::Client.new.refresh_token(refresh_token: token.refresh_token)
+      @token_response ||= YandexClient.auth.refresh_token(token.refresh_token)
     end
   end
 end

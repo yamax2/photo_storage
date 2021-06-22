@@ -7,23 +7,18 @@ module Yandex
     include Sidekiq::Worker
     sidekiq_options queue: :tokens
 
+    delegate :config, to: YandexClient, private: true
+
     def perform
-      request = ::Net::HTTP::Get.new(request_uri.request_uri)
-      response = http.start { |req| req.request(request) }
+      response = HTTP.
+        timeout(
+          connect: config.connect_timeout,
+          read: config.read_timeout,
+          write: config.write_timeout
+        ).
+        get(Rails.application.routes.url_helpers.proxy_reload_url)
 
-      raise 'proxy reload error' unless response.is_a?(::Net::HTTPSuccess)
-    end
-
-    private
-
-    def http
-      ::Net::HTTP.new(request_uri.host, request_uri.port).tap do |http|
-        http.use_ssl = Rails.application.routes.default_url_options[:protocol] == 'https'
-      end
-    end
-
-    def request_uri
-      @request_uri ||= URI.parse(Rails.application.routes.url_helpers.proxy_reload_url)
+      raise 'proxy reload error' unless response.status.success?
     end
   end
 end

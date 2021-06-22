@@ -29,7 +29,7 @@ RSpec.describe Tracks::RemoveService do
     before { stub_request(:any, /webdav.yandex.ru/).to_timeout }
 
     it do
-      expect { service_context }.to raise_error(Net::OpenTimeout)
+      expect { service_context }.to raise_error(HTTP::TimeoutError)
     end
   end
 end

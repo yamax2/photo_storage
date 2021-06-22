@@ -10,6 +10,8 @@ module Nominatim
     ACTION_URL = 'https://nominatim.openstreetmap.org/reverse'
     USER_AGENT = 'PhotoStorage https://github.com/yamax2/photo_storage'
 
+    delegate :config, to: YandexClient, private: true
+
     class Error < StandardError
       attr_reader :code, :error_text
 
@@ -29,7 +31,7 @@ module Nominatim
     def call
       response = make_request
 
-      raise Error.new(error_text: response.body, code: response.code.to_i) unless response.is_a?(Net::HTTPSuccess)
+      raise Error.new(error_text: response.body, code: response.code.to_i) unless response.status.success?
 
       body = JSON.parse(response.body, symbolize_names: true)
 
@@ -43,23 +45,21 @@ module Nominatim
     private
 
     def make_request
-      request = Net::HTTP::Get.new(request_uri.request_uri, request_headers)
-
-      http = Net::HTTP.new(request_uri.host, request_uri.port)
-      http.use_ssl = true
-
-      http.start { |req| req.request(request) }
+      HTTP.
+        timeout(
+          connect: config.connect_timeout,
+          read: config.read_timeout,
+          write: config.write_timeout
+        ).
+        get(
+          request_url,
+          headers: {'User-Agent' => USER_AGENT}
+        )
     end
 
-    def request_headers
-      {'User-Agent' => USER_AGENT}
-    end
-
-    def request_uri
-      @request_uri ||= URI.parse(
-        "#{ACTION_URL}?format=jsonv2&lat=#{@lat}&lon=#{@long}&accept-language=" \
-          "#{Rails.application.config.i18n.default_locale}"
-      )
+    def request_url
+      "#{ACTION_URL}?format=jsonv2&lat=#{@lat}&lon=#{@long}&accept-language=" \
+        "#{Rails.application.config.i18n.default_locale}"
     end
   end
 end

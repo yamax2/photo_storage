@@ -41,7 +41,7 @@ RSpec.describe Nominatim::ReverseGeocode do
     before { stub_request(:any, /nominatim.openstreetmap.org/).to_timeout }
 
     it do
-      expect { described_class.new(lat: 1, long: 2).call }.to raise_error(Net::OpenTimeout)
+      expect { described_class.new(lat: 1, long: 2).call }.to raise_error(HTTP::TimeoutError)
     end
   end
 end

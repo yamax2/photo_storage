@@ -21,7 +21,7 @@ RSpec.describe Yandex::TokenChangedNotifyJob do
     before { stub_request(:get, reload_url).to_timeout }
 
     it do
-      expect { request }.to raise_error(Net::OpenTimeout)
+      expect { request }.to raise_error(HTTP::TimeoutError)
     end
   end
 end

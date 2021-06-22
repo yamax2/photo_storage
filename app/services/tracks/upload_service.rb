@@ -30,13 +30,12 @@ module Tracks
     end
 
     def upload_file
-      ::YandexClient::Dav::Client.
-        new(access_token: token_for_upload.access_token).
+      ::YandexClient::Dav[token_for_upload.access_token].
         put(
-          file: local_file,
-          name: "#{token_for_upload.other_dir}/#{storage_filename}",
+          local_file,
+          "#{token_for_upload.other_dir}/#{storage_filename}",
           size: track.size,
-          md5: track.md5,
+          etag: track.md5,
           sha256: track.sha256
         )
     end

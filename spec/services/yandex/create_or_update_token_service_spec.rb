@@ -83,7 +83,7 @@ RSpec.describe Yandex::CreateOrUpdateTokenService do
       expect(Yandex::TokenChangedNotifyJob).not_to receive(:perform_async)
       expect(Yandex::RefreshTokenJob).not_to receive(:perform_async)
 
-      expect { service_context }.to raise_error(Net::OpenTimeout)
+      expect { service_context }.to raise_error(HTTP::TimeoutError)
     end
   end
 end

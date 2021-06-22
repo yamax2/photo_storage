@@ -14,7 +14,7 @@ module Yandex
 
     def match_info(model, dav_info)
       super.tap do |errors|
-        errors << 'content type mismatch' if model.content_type != dav_info.fetch(:getcontenttype)
+        errors << 'content type mismatch' if model.content_type != dav_info.content_type
       end
     end
 

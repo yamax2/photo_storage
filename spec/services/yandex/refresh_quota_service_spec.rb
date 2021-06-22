@@ -28,7 +28,7 @@ RSpec.describe Yandex::RefreshQuotaService do
 
     it do
       expect { service_context }.
-        to raise_error(Net::OpenTimeout).
+        to raise_error(HTTP::TimeoutError).
         and change { redis.hgetall('yandex_tokens_usage').size }.by(0)
     end
   end

@@ -104,7 +104,7 @@ RSpec.describe Photos::UploadService do
       after { FileUtils.rm_f(tmp_file) }
 
       it do
-        expect { service_context }.to raise_error(Net::OpenTimeout)
+        expect { service_context }.to raise_error(HTTP::TimeoutError)
       end
     end
 
