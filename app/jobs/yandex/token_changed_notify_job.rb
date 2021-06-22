@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'net/http'
-
 module Yandex
   class TokenChangedNotifyJob
     include Sidekiq::Worker
