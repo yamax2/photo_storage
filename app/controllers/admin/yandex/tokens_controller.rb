@@ -15,7 +15,8 @@ module Admin
       end
 
       def index
-        @new_token_url = 'https://oauth.yandex.ru/authorize?response_type=' \
+        @new_token_url =
+          'https://oauth.yandex.ru/authorize?response_type=' \
           "code&client_id=#{YandexClient.config.api_key}&force_confirm=false"
 
         @search = ::Yandex::TokenSummaryFinder.call.ransack(params[:q])

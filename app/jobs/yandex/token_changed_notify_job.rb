@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 module Yandex
+  # FIXME: remove after proxy rework
   class TokenChangedNotifyJob
     include Sidekiq::Worker
     sidekiq_options queue: :tokens
