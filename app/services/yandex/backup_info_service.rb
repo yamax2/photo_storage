@@ -20,10 +20,8 @@ module Yandex
       validate
 
       encryptor = new_cipher
-      value = "#{download_url}\t#{token.access_token}"
-
       context.info = Base64.encode64(
-        encryptor.update(value) + encryptor.final
+        encryptor.update("#{download_url}\t#{token.access_token}") + encryptor.final
       ).gsub(/[[:space:]]/, '')
     end
 

@@ -77,6 +77,8 @@ Rails.application.routes.draw do
           post   ':photo_id/cart' => 'cart#create', as: :cart
           delete ':photo_id/cart' => 'cart#destroy', as: nil
         end
+
+        resources :nodes, only: :show
       end
     end
   end
