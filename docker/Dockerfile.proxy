@@ -1,5 +1,8 @@
 ARG DOCKER_GO_VERSION
 FROM golang:${DOCKER_GO_VERSION}-alpine
 
-RUN apk add git && \
-    go get -u github.com/lib/pq
+WORKDIR /app
+COPY proxy_service/go.* /app/
+
+RUN apk add --no-cache git build-base && \
+    go mod download

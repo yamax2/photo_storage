@@ -72,13 +72,9 @@ services:
         DOCKER_GO_VERSION: $DOCKER_GO_VERSION
       labels:
         com.photo-storage.go.version: $DOCKER_GO_VERSION
-    working_dir: /app
-    depends_on:
-      - db
     volumes:
-      - ..:/app
-      # - ../../go:/go
-    command: 'go run proxy_service/yandex_proxy.go -db_host=db -user=postgres -db=photos -listen=0.0.0.0'
+      - ../proxy_service:/app
+    command: 'go run proxy_service.go -listen=0.0.0.0'
     expose:
       - '9000'
     networks:

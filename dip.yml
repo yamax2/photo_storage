@@ -5,7 +5,7 @@ environment:
   POSTGRES_IMAGE_TAG: 13.3
   REDIS_IMAGE_TAG: 6
   DOCKER_RUBY_VERSION: 3.0
-  DOCKER_GO_VERSION: 1.15.7
+  DOCKER_GO_VERSION: 1.16.5
   POSTGRES_DB: photos
   POSTGRES_HOST: db
   RAILS_ENV: development
@@ -53,20 +53,21 @@ interaction:
     service: proxy
     command: go
 
+  go_sh:
+    service: proxy
+    command: sh
+
   rubocop:
     service: app
     environment:
       RAILS_ENV: test
     command: bundle exec ./rubocop
 
-  build_proxy:
-    service: proxy
-    command: go build -ldflags '-s -w' proxy_service/yandex_proxy.go
-
 provision:
   - docker pull ruby:${DOCKER_RUBY_VERSION}-alpine
   - docker pull postgres:${POSTGRES_IMAGE_TAG}-alpine
   - docker pull redis:${REDIS_IMAGE_TAG}-alpine
+  - docker pull golang:${DOCKER_GO_VERSION}-alpine
   - ./docker/prepare_env.sh
   - docker volume create --name bundler_data
   - dip compose up -d db

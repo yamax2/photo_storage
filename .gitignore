@@ -30,3 +30,4 @@ scripts/*.log
 
 /config/credentials/production.key
 db.sh
+proxy_service/proxy_service
