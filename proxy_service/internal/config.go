@@ -17,7 +17,7 @@ func LoadConfig() {
 	config = &Config{}
 
 	apiHost := flag.String("api", "localhost:3000", "api host")
-	listen := flag.String("listen", "::9000", "listen addr")
+	listen := flag.String("listen", ":9000", "listen addr")
 
 	flag.Parse()
 

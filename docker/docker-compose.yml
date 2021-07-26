@@ -74,7 +74,7 @@ services:
         com.photo-storage.go.version: $DOCKER_GO_VERSION
     volumes:
       - ../proxy_service:/app
-    command: 'go run proxy_service.go -listen=0.0.0.0'
+    command: 'go run proxy_service.go -listen=0.0.0.0:9000'
     expose:
       - '9000'
     networks:
