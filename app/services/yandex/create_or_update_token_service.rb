@@ -39,7 +39,7 @@ module Yandex
     end
 
     def token_response
-      @token_response ||= YandexClient.auth.create_token(code: code)
+      @token_response ||= YandexClient.auth.create_token(code)
     end
   end
 end
