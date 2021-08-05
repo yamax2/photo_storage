@@ -20,6 +20,10 @@ server {
         add_header        Cache-Control public;
     }
 
+    location /api/v1/admin/nodes {
+       return 404;
+    }
+
     location @photos {
         proxy_pass         http://photos;
 
