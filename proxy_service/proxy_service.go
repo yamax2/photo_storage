@@ -15,9 +15,10 @@ import (
 func init() {
     log.SetFormatter(&log.JSONFormatter{})
     log.SetOutput(os.Stdout)
-    log.SetLevel(log.InfoLevel)
 
-    LoadConfig()
+    if err := LoadConfig(); err != nil {
+        log.Fatalf("cannot load config: %s", err)
+    }
 }
 
 func main() {
@@ -26,6 +27,13 @@ func main() {
     log.Info("Starting proxy service...")
     log.Infof("Api host: %s", cfg.ApiHost)
     log.Infof("Listen: %s", cfg.Listen)
+
+    if level, err := log.ParseLevel(cfg.LogLevel); err != nil {
+        log.Fatalf("Cannot parse log level: %s", err)
+    } else {
+        log.Infof("Log level: %s", cfg.LogLevel)
+        log.SetLevel(level)
+    }
 
     ctx, stop := signal.NotifyContext(context.Background(), syscall.SIGINT, syscall.SIGTERM)
     defer stop()

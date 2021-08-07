@@ -40,19 +40,27 @@ jobs:
         with:
           bundler-cache: true
 
-      - name: configure
+      - name: Configure
         run: >
           echo -e "test:\n  url: redis://localhost:${{ job.services.redis.ports['6379'] }}/0" > config/redis.yml
 
-      - name: create db
+      - name: Create DB
         run: bundle exec rails db:migrate
         env:
           DATABASE_URL: "postgresql://postgres@localhost:${{ job.services.postgres.ports['5432'] }}/photos"
 
-      - name: rubocop
+      - name: Rubocop
         run: bundle exec ./rubocop --display-style-guide --extra-details
 
-      - name: tests
+      - name: Rails App Tests
         run: bundle exec rspec
         env:
           DATABASE_URL: "postgresql://postgres@localhost:${{ job.services.postgres.ports['5432'] }}/photos"
+
+      - name: Install Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: 1.16
+
+      - name: Test Proxy Service
+        run: cd proxy_service && go test -v ./...

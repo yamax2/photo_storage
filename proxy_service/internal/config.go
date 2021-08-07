@@ -1,10 +1,11 @@
 package internal
 
-import "flag"
+import "github.com/kelseyhightower/envconfig"
 
 type Config struct {
-	ApiHost	string
-	Listen  string
+	ApiHost	 string	`envconfig:"PHOTOSTORAGE_PROXY_API_HOST" default:"localhost:3000"`
+	Listen   string `envconfig:"PHOTOSTORAGE_PROXY_LISTEN" default:":9000"`
+	LogLevel string	`envconfig:"PHOTOSTORAGE_PROXY_LOG_LEVEL" default:"info"`
 }
 
 var config *Config
@@ -13,14 +14,8 @@ func GetConfig() *Config {
 	return config
 }
 
-func LoadConfig() {
+func LoadConfig() error {
 	config = &Config{}
 
-	apiHost := flag.String("api", "localhost:3000", "api host")
-	listen := flag.String("listen", ":9000", "listen addr")
-
-	flag.Parse()
-
-	config.ApiHost = *apiHost
-	config.Listen = *listen
+	return envconfig.Process("photostorage-proxy", config)
 }
