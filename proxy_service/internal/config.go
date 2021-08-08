@@ -6,6 +6,7 @@ type Config struct {
 	ApiHost	 string	`envconfig:"PHOTOSTORAGE_PROXY_API_HOST" default:"localhost:3000"`
 	Listen   string `envconfig:"PHOTOSTORAGE_PROXY_LISTEN" default:":9000"`
 	LogLevel string	`envconfig:"PHOTOSTORAGE_PROXY_LOG_LEVEL" default:"info"`
+	Secret   string `envconfig:"PHOTOSTORAGE_PROXY_SECRET" required:"true"`
 }
 
 var config *Config
