@@ -33,7 +33,7 @@ func TestLoadConfig(t *testing.T) {
 		assert.Equal(t, cfg.ApiHost, "localhost:3000")
 		assert.Equal(t, cfg.Listen, ":9000")
 		assert.Equal(t, cfg.LogLevel, "info")
-		assert.Equal(t, cfg.Secret, "")
+		assert.Equal(t, cfg.Secret, "very_secret")
 	})
 
 	t.Run("loads the env values", func(t *testing.T) {

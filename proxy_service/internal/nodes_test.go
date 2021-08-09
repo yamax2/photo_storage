@@ -20,7 +20,7 @@ func TestGetNode(t *testing.T) {
 			Type: "yandex",
 			Name: "test",
 			Secret: "secret",
-			LoadedAt: time.Now().Add(-2 * time.Hour),
+			LoadedAt: time.Now().Add(-4 * time.Hour),
 		}
 
 		assert.Nil(t, GetNode(1))
@@ -55,10 +55,28 @@ func TestLoadNode(t *testing.T) {
 
 		assert.Nil(t, err)
 
-		assert.Equal(t, node.Name, "test")
+		assert.Equal(t, node.Name, "nodedev.photostorage")
 		assert.Equal(t, node.Type, "yandex")
-		assert.Equal(t, node.Secret, "secret")
+		assert.Equal(t, node.Secret, "SAMPLE_TOKEN")
 		assert.Equal(t, node.IsExpired(), false)
+	})
+
+	t.Run("when wrong encrypted data", func(t *testing.T) {
+		nodes = make(map[int64]Node)
+
+		nodeApiStub = httptest.NewServer(
+			http.HandlerFunc(
+				func(w http.ResponseWriter, r *http.Request) {
+					w.Write([]byte(`{"id": 1, "name": "nodedev.photostorage", "type": "yandex", "secret": "c29tZSB0ZXh0"}`))
+				},
+			),
+		)
+		config.ApiHost = nodeApiStub.URL
+
+		_, err := LoadNode(context.Background(), 1)
+
+		assert.NotNil(t, err)
+		assert.Equal(t, err.Error(), "encoded secret is not a multiple of the block size")
 	})
 
 	t.Run("when expired node exists", func(t *testing.T) {
@@ -68,7 +86,7 @@ func TestLoadNode(t *testing.T) {
 		nodes[1] = Node{
 			Name: "zozo",
 			Type: "zozo",
-			Secret: "zozo",
+			Secret: "secret",
 			LoadedAt: time.Now().Add(-5 * time.Hour),
 		}
 
@@ -77,7 +95,7 @@ func TestLoadNode(t *testing.T) {
 		node, err := LoadNode(context.Background(), 1)
 
 		assert.Nil(t, err)
-		assert.Equal(t, node.Name, "test")
+		assert.Equal(t, node.Name, "nodedev.photostorage")
 		assert.Equal(t, node.IsExpired(), false)
 
 		assert.NotNil(t, GetNode(1))
@@ -207,7 +225,7 @@ func defaultStub() *httptest.Server {
 	return httptest.NewServer(
 		http.HandlerFunc(
 			func(w http.ResponseWriter, r *http.Request) {
-				w.Write([]byte(`{"id": 1, "name": "test", "type": "yandex", "secret": "secret"}`))
+				w.Write([]byte(`{"id": 1, "name": "nodedev.photostorage", "type": "yandex", "secret": "Nm2H6lQKpuGl8h0FpQXAOw=="}`))
 			},
 		),
 	)
