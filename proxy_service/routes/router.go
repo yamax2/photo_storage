@@ -91,6 +91,8 @@ func (h *ProxyHandlers) YandexPreviewsHandler(w http.ResponseWriter, r *http.Req
 
 	imageURL := yandexNodeBackend + s.Replace(r.URL.Path, "/proxy/yandex/previews", "", -1)
 
+	// FIXME: temporary code
+
 	client := &http.Client{}
 	req, _ := http.NewRequest("GET", imageURL, nil)
 	req.Header.Set("Authorization", fmt.Sprintf("OAuth %s", node.Secret))

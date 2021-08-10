@@ -215,6 +215,7 @@ ru:
       sizes:
         preview: Обычный
         max: Большой
+        p2k: 2K
       tz: Часовой пояс
       views: Просмотры
       ago_in_words: '%{time} назад'

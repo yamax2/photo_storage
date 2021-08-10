@@ -33,18 +33,14 @@ module Listing
 
     private
 
-    delegate :max_thumb_width, :photo_sizes, to: 'Rails.application.config', private: true
+    delegate :photo_sizes, to: 'Rails.application.config', private: true
     delegate :width, :height, :rotated, :effects, to: :model, private: true
-
-    def actual_width_for(width)
-      width > max_thumb_width ? max_thumb_width : width
-    end
 
     def calc_image_size(size)
       thumb_width = thumb_width(size)
 
       [
-        actual_width_for(thumb_width),
+        thumb_width,
         height * thumb_width / width
       ].tap do |result|
         if turned?
@@ -60,10 +56,7 @@ module Listing
       result = result.call(model) if result.respond_to?(:call)
 
       # we can scale up only thumbs
-      if size != :thumb
-        result = width if result > width
-        result = actual_width_for(result)
-      end
+      result = width if size != :thumb && result > width
 
       result
     end

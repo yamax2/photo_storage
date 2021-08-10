@@ -26,7 +26,7 @@ RSpec.describe Listing::ImageProps do
       let(:photo) { create :photo, width: 3_000, height: 300, local_filename: 'test' }
 
       it do
-        expect(props.image_size).to eq([1_280, 360])
+        expect(props.image_size).to eq([3_600, 360])
         expect(props.image_size(:preview)).to eq([900, 90])
       end
     end

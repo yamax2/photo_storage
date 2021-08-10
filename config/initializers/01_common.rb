@@ -10,12 +10,31 @@ Rails.application.configure do
   # widths
   config.photo_sizes = {
     thumb: ->(photo) { photo.width * 360 / photo.height },
-    preview: ->(photo) { photo.width * 800 / photo.height },
-    max: ->(photo) { photo.width * 960 / photo.height }
-  }
 
-  # yandex max width
-  config.max_thumb_width = 1280
+    preview: lambda do |photo|
+      size = photo.width * 800 / photo.height
+      size = 1_280 if size > 1_280
+
+      size
+    end,
+
+    max: lambda do |photo|
+      size = photo.width * 960 / photo.height
+      size = 1280 if size > 1_280
+
+      size
+    end,
+
+    p2k: lambda do |photo|
+      if photo.height > 1_140
+        size = photo.width * 1_140 / photo.height
+        size = 2_000 if size > 2_000
+        size
+      else
+        photo.height
+      end
+    end
+  }
 
   # allowed timezones
   config.photo_timezones = [
