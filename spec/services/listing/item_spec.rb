@@ -132,7 +132,7 @@ RSpec.describe Listing::Item do
   describe '#proxy_url' do
     let(:attrs) { default_photo_attrs }
 
-    it { expect(item.proxy_url).to eq("/proxy/previews/test_photos/test.jpg?id=#{token.id}&size=360") }
+    it { expect(item.proxy_url).to eq("/proxy/yandex/previews/test_photos/test.jpg?id=#{token.id}&size=360") }
   end
 
   describe '#rubric?' do

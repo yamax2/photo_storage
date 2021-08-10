@@ -57,13 +57,13 @@ RSpec.describe Api::V1::TracksController, type: :request do
           {
             'id' => track3.id,
             'name' => 'track3: 30.0 км, 50мин., ср. скорость 36.0 км/ч',
-            'url' => "/proxy/other/test3.gpx?fn=track3.gpx&id=#{token.id}",
+            'url' => "/proxy/yandex/other/test3.gpx?fn=track3.gpx&id=#{token.id}",
             'color' => 'blue'
           },
           {
             'id' => track2.id,
             'name' => 'track2: 200.0 км, 2ч. 59мин., ср. скорость 67.04 км/ч',
-            'url' => "/proxy/other/test2.gpx?fn=track2.gpx&id=#{token.id}",
+            'url' => "/proxy/yandex/other/test2.gpx?fn=track2.gpx&id=#{token.id}",
             'color' => 'red'
           }
         ]

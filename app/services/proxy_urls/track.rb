@@ -11,7 +11,7 @@ module ProxyUrls
     def generate
       return if storage_filename.blank?
 
-      Rails.application.routes.url_helpers.proxy_object_path \
+      Rails.application.routes.url_helpers.proxy_yandex_object_path \
         "#{yandex_token.other_dir.sub(%r{^/}, '')}/#{storage_filename}",
         {
           id: yandex_token_id,

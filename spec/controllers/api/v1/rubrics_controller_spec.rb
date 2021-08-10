@@ -59,7 +59,7 @@ RSpec.describe Api::V1::RubricsController, type: :request do
             'model_type' => 'Rubric',
             'lat_long' => nil,
             'image_size' => [300, 360],
-            'preview' => "/proxy/previews/test_photos/test3?id=#{token.id}&size=300",
+            'preview' => "/proxy/yandex/previews/test_photos/test3?id=#{token.id}&size=300",
             'url' => "/rubrics/#{rubric.id}",
             'name' => "#{rubric.name}, фото: 1",
             'properties' => {
@@ -73,7 +73,7 @@ RSpec.describe Api::V1::RubricsController, type: :request do
             'model_type' => 'Photo',
             'lat_long' => nil,
             'image_size' => [360, 120],
-            'preview' => "/proxy/previews/test_photos/test1?id=#{token.id}&size=360",
+            'preview' => "/proxy/yandex/previews/test_photos/test1?id=#{token.id}&size=360",
             'url' => "/rubrics/#{root_rubric.id}/photos/#{photo1.id}",
             'name' => photo1.name,
             'properties' => {
@@ -87,7 +87,7 @@ RSpec.describe Api::V1::RubricsController, type: :request do
             'model_type' => 'Photo',
             'lat_long' => {'x' => 1.0, 'y' => 2.0},
             'image_size' => [180, 360],
-            'preview' => "/proxy/previews/test_photos/test2?id=#{token.id}&size=180",
+            'preview' => "/proxy/yandex/previews/test_photos/test2?id=#{token.id}&size=180",
             'url' => "/rubrics/#{root_rubric.id}/photos/#{photo2.id}",
             'name' => photo2.name,
             'properties' => {
@@ -237,7 +237,7 @@ RSpec.describe Api::V1::RubricsController, type: :request do
                 'model_type' => 'Rubric',
                 'lat_long' => nil,
                 'image_size' => [360, 360],
-                'preview' => "/proxy/previews/test_photos/1.jpg?id=#{token.id}&size=360",
+                'preview' => "/proxy/yandex/previews/test_photos/1.jpg?id=#{token.id}&size=360",
                 'url' => "/rubrics/#{rubric1.id}",
                 'name' => "#{rubric1.name}, фото: 1",
                 'properties' => {

@@ -34,7 +34,6 @@ module Yandex
     end
 
     def perform_refresh
-      TokenChangedNotifyJob.perform_async
       RefreshTokenJob.perform_async(token.id)
     end
 

@@ -10,7 +10,6 @@ RSpec.describe Yandex::CreateOrUpdateTokenService do
     end
 
     it do
-      expect(Yandex::TokenChangedNotifyJob).to receive(:perform_async)
       expect(Yandex::RefreshTokenJob).to receive(:perform_async).with(Integer)
 
       expect { update! }.to change(Yandex::Token, :count).by(1)
@@ -27,7 +26,6 @@ RSpec.describe Yandex::CreateOrUpdateTokenService do
     let!(:token) { create :'yandex/token', user_id: '1130000019982670' }
 
     it do
-      expect(Yandex::TokenChangedNotifyJob).to receive(:perform_async)
       expect(Yandex::RefreshTokenJob).to receive(:perform_async).with(token.id)
 
       expect { update! }.to change(Yandex::Token, :count).by(0).and(change { token.reload.access_token })
@@ -69,7 +67,6 @@ RSpec.describe Yandex::CreateOrUpdateTokenService do
     after { Timecop.return }
 
     it do
-      expect(Yandex::TokenChangedNotifyJob).not_to receive(:perform_async)
       expect(Yandex::RefreshTokenJob).not_to receive(:perform_async)
 
       expect { service_context }.not_to change(token, :reload)
@@ -80,7 +77,6 @@ RSpec.describe Yandex::CreateOrUpdateTokenService do
     before { stub_request(:any, /oauth.yandex.ru/).to_timeout }
 
     it do
-      expect(Yandex::TokenChangedNotifyJob).not_to receive(:perform_async)
       expect(Yandex::RefreshTokenJob).not_to receive(:perform_async)
 
       expect { service_context }.to raise_error(HTTP::TimeoutError)

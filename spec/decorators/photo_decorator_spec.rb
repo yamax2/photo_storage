@@ -35,21 +35,21 @@ RSpec.describe PhotoDecorator do
       context 'when original size' do
         it do
           expect(decorated_photo.proxy_url).
-            to eq("/proxy/photos/001/002/test.jpg?fn=test.jpg&id=#{token.id}")
+            to eq("/proxy/yandex/photos/001/002/test.jpg?fn=test.jpg&id=#{token.id}")
         end
       end
 
       context 'when thumb' do
         it do
           expect(decorated_photo.proxy_url(:thumb)).
-            to eq("/proxy/previews/photos/001/002/test.jpg?id=#{token.id}&size=480")
+            to eq("/proxy/yandex/previews/photos/001/002/test.jpg?id=#{token.id}&size=480")
         end
       end
 
       context 'when preview' do
         it do
           expect(decorated_photo.proxy_url(:preview)).
-            to eq("/proxy/previews/photos/001/002/test.jpg?id=#{token.id}&size=900")
+            to eq("/proxy/yandex/previews/photos/001/002/test.jpg?id=#{token.id}&size=900")
         end
       end
 
@@ -58,7 +58,7 @@ RSpec.describe PhotoDecorator do
 
         it do
           expect(decorated_photo.proxy_url(:thumb)).
-            to eq("/proxy/previews/photos/001/002/test.jpg?id=#{token.id}&size=360")
+            to eq("/proxy/yandex/previews/photos/001/002/test.jpg?id=#{token.id}&size=360")
         end
       end
 
@@ -67,7 +67,7 @@ RSpec.describe PhotoDecorator do
 
         it do
           expect(decorated_photo.proxy_url(:thumb)).
-            to eq("/proxy/previews/photos/001/002/test.jpg?id=#{token.id}&size=480")
+            to eq("/proxy/yandex/previews/photos/001/002/test.jpg?id=#{token.id}&size=480")
         end
       end
 

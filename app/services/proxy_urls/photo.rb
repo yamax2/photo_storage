@@ -12,9 +12,13 @@ module ProxyUrls
       return if storage_filename.blank?
 
       path = "#{yandex_token.dir.sub(%r{^/}, '')}/#{storage_filename}"
-      method = size == :original ? :proxy_object_path : :proxy_object_preview_path
+      method = size == :original ? :proxy_yandex_object_path : :proxy_yandex_object_preview_path
 
-      Rails.application.routes.url_helpers.public_send(method, path, params_for_size(size, thumb_width))
+      Rails.application.routes.url_helpers.public_send(
+        method,
+        path,
+        params_for_size(size, thumb_width)
+      )
     end
 
     private

@@ -11,11 +11,10 @@ Rails.application.routes.draw do
   end
 
   namespace :proxy do
-    get '*storage_path' => 'dev#null', as: :object
-    get 'previews/*storage_path' => 'dev#null', as: :object_preview
-
-    # FIXME: remove this route after proxy rework
-    get 'reload' => 'dev#null', as: :reload
+    namespace :yandex do
+      get '*storage_path' => 'dev#null', as: :object
+      get 'previews/*storage_path' => 'dev#null', as: :object_preview
+    end
   end
 
   namespace :admin do
