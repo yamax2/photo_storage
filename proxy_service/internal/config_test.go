@@ -30,7 +30,7 @@ func TestLoadConfig(t *testing.T) {
 		LoadConfig()
 		cfg := GetConfig()
 
-		assert.Equal(t, cfg.ApiHost, "localhost:3000")
+		assert.Equal(t, cfg.ApiHost, "http://photostorage.localhost")
 		assert.Equal(t, cfg.Listen, ":9000")
 		assert.Equal(t, cfg.LogLevel, "info")
 		assert.Equal(t, cfg.Secret, "very_secret")

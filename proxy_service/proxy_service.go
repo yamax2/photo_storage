@@ -10,6 +10,7 @@ import (
 
     log "github.com/sirupsen/logrus"
     . "proxy_service/internal"
+    r "proxy_service/routes"
 )
 
 func init() {
@@ -38,9 +39,17 @@ func main() {
     ctx, stop := signal.NotifyContext(context.Background(), syscall.SIGINT, syscall.SIGTERM)
     defer stop()
 
+    if handlers, err := r.NewProxyHandlers(); err != nil {
+        log.Fatalf("Error: %s", err)
+    } else {
+        http.HandleFunc("/proxy/ping", handlers.PingHandler)
+        http.HandleFunc("/proxy/yandex/", handlers.YandexOriginalsHandler)
+        http.HandleFunc("/proxy/yandex/previews/", handlers.YandexPreviewsHandler)
+    }
+
     srv := &http.Server{
-        Addr:    cfg.Listen,
-        Handler: nil,
+       Addr:    cfg.Listen,
+       Handler: logRequest(http.DefaultServeMux),
     }
 
     go func() {
@@ -62,4 +71,28 @@ func main() {
     }
 
     log.Info("Stopping...")
+}
+
+type loggingResponseWriter struct {
+    http.ResponseWriter
+    statusCode int
+}
+
+func (lrw *loggingResponseWriter) WriteHeader(code int) {
+    lrw.statusCode = code
+    lrw.ResponseWriter.WriteHeader(code)
+}
+
+func logRequest(handler http.Handler) http.Handler {
+    return http.HandlerFunc(
+        func(w http.ResponseWriter, r *http.Request) {
+            lrw := &loggingResponseWriter{w, http.StatusOK}
+            handler.ServeHTTP(lrw, r)
+
+            log.WithFields(log.Fields{
+                "method": r.Method,
+                "url": r.URL.String(),
+            }).Info(lrw.statusCode)
+        },
+    )
 }

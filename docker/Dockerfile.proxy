@@ -4,5 +4,5 @@ FROM golang:${DOCKER_GO_VERSION}-alpine
 WORKDIR /app
 COPY proxy_service/go.* /app/
 
-RUN apk add --no-cache git build-base && \
+RUN apk add --no-cache git build-base vips-dev && \
     go mod download
