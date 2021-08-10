@@ -1,10 +1,10 @@
 version: '3.3'
 
 # DOCKER_RUBY_VERSION: 3.0
-# DOCKER_GO_VERSION=1.15.7
+# DOCKER_GO_VERSION=1.16.7
 # POSTGRES_VERSION: 13.3
 # REDIS_VERSION: 6
-# NGINX_VERSION=1.20.0
+# NGINX_VERSION=1.21.1
 # POSTGRES_DB: photos
 
 services:
@@ -64,21 +64,27 @@ services:
       context: ../../
       dockerfile: docker/photostorage/Dockerfile.proxy
       args:
-        DOCKER_GO_VERSION: ${DOCKER_GO_VERSION:-1.15.7}
+        DOCKER_GO_VERSION: ${DOCKER_GO_VERSION:-1.16.7}
     depends_on:
       - db
       - web
+    environment:
+      - PHOTOSTORAGE_PROXY_API_HOST=http://web:3000
+    env_file: .env
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "localhost:9000/proxy/ping"]
+      timeout: 10s
 
   sender:
     build:
       context: .
       dockerfile: Dockerfile.sender
       args:
-        DOCKER_GO_VERSION: ${DOCKER_GO_VERSION:-1.15.7}
+        DOCKER_GO_VERSION: 1.15.7
     env_file: .env
 
   nginx:
-    image: nginx:${NGINX_VERSION:-1.20.0}-alpine
+    image: nginx:${NGINX_VERSION:-1.21.1}-alpine
     depends_on:
       - web
       - proxy

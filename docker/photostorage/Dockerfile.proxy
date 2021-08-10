@@ -1,20 +1,19 @@
 ARG DOCKER_GO_VERSION
 FROM golang:${DOCKER_GO_VERSION}-alpine as builder
 
-RUN apk add git
-RUN go get -u github.com/lib/pq
+RUN apk add git build-base vips-dev
 
 COPY proxy_service /proxy
 WORKDIR /proxy
-RUN go build -ldflags '-s -w' yandex_proxy.go
+RUN go build -ldflags '-s -w' proxy_service.go
 
 FROM alpine
 
-RUN apk add --update --no-cache postgresql-client
-COPY --from=builder /proxy/yandex_proxy /proxy/
-COPY docker/photostorage/templates/wait_for_pg.sh /proxy/
+RUN apk add --update --no-cache vips-dev curl
+COPY --from=builder /proxy/proxy_service /proxy/
 
 WORKDIR /proxy
 EXPOSE 9000
+ENV PHOTOSTORAGE_PROXY_LISTEN=0.0.0.0:9000
 
-CMD ./wait_for_pg.sh && ./yandex_proxy -db_host=db -user=postgres -db=photos -listen=0.0.0.0
+CMD ./proxy_service
