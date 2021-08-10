@@ -26,13 +26,15 @@ Rails.application.configure do
     end,
 
     p2k: lambda do |photo|
-      if photo.height > 1_140
-        size = photo.width * 1_140 / photo.height
-        size = 2_000 if size > 2_000
-        size
-      else
-        photo.height
-      end
+      size =
+        if photo.height > 1_140
+          photo.width * 1_140 / photo.height
+        else
+          photo.height
+        end
+
+      size = 2_000 if size > 2_000
+      size
     end
   }
 
