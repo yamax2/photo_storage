@@ -40,12 +40,13 @@ func main() {
     ctx, stop := signal.NotifyContext(context.Background(), syscall.SIGINT, syscall.SIGTERM)
     defer stop()
 
-    if handlers, err := r.NewProxyHandlers(); err != nil {
+    if err := r.InitHandlers(); err != nil {
         log.Fatalf("Error: %s", err)
     } else {
-        http.HandleFunc("/proxy/ping", handlers.PingHandler)
-        http.HandleFunc("/proxy/yandex/", handlers.YandexOriginalsHandler)
-        http.HandleFunc("/proxy/yandex/previews/", handlers.YandexPreviewsHandler)
+        http.HandleFunc("/proxy/ping", r.PingHandler)
+        http.HandleFunc("/proxy/yandex/", r.YandexOriginalsHandler)
+        http.HandleFunc("/proxy/yandex/previews/", r.YandexPreviewsHandler)
+        http.HandleFunc("/proxy/yandex/resize/", r.YandexResizeHandler)
     }
 
     srv := &http.Server{

@@ -4,71 +4,55 @@ import (
 	"fmt"
 	"strconv"
 	"context"
-	"io/ioutil"
 
 	"net/url"
 	"net/http"
 	"net/http/httputil"
 
 	s "strings"
-	"github.com/h2non/bimg"
 
 	. "proxy_service/internal"
 )
 
 const yandexNodeBackend = "https://webdav.yandex.ru"
 
-type ProxyHandlers struct {
-	proxy *httputil.ReverseProxy
-}
+var proxy *httputil.ReverseProxy
 
-func NewProxyHandlers() (*ProxyHandlers, error) {
-	remote, err := url.Parse(yandexNodeBackend)
-
-	if err != nil {
-		return nil, err
+func InitHandlers() error {
+	if remote, err := url.Parse(yandexNodeBackend); err != nil {
+		return err
+	} else {
+		proxy = httputil.NewSingleHostReverseProxy(remote)
 	}
 
-	handler := &ProxyHandlers{}
-	handler.proxy = httputil.NewSingleHostReverseProxy(remote)
-
-	return handler, nil
+	return nil
 }
 
-func (h *ProxyHandlers) PingHandler(w http.ResponseWriter, r *http.Request) {
+func PingHandler(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte("PONG"))
 }
 
-func (h *ProxyHandlers) YandexOriginalsHandler(w http.ResponseWriter, r *http.Request) {
+func YandexOriginalsHandler(w http.ResponseWriter, r *http.Request) {
 	fn := r.URL.Query().Get("fn")
 
 	if len(fn) != 0 {
 		w.Header().Add("Content-Disposition", fmt.Sprintf("inline; filename=\"%s\"", fn))
 	}
 
-	node, err := getNode(r.URL.Query().Get("id"))
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-
-	if node == nil {
-		http.Error(w, "Node not found", http.StatusNotFound)
-		return
-	}
-
 	r.URL.Path = s.Replace(r.URL.Path, "/proxy/yandex", "", -1)
 	w.Header().Add("Access-Control-Allow-Origin", "*")
 
-	for k := range r.Header {
-		delete(r.Header, k)
-	}
-
-	r.Header.Add("Authorization", fmt.Sprintf("OAuth %s", node.Secret))
-	h.proxy.ServeHTTP(w, r)
+	yandexProxyHandler(w, r)
 }
 
-func (h *ProxyHandlers) YandexPreviewsHandler(w http.ResponseWriter, r *http.Request) {
+func YandexPreviewsHandler(w http.ResponseWriter, r *http.Request) {
+	r.URL.Path = s.Replace(r.URL.Path, "/proxy/yandex/previews", "", -1)
+	r.URL.RawQuery = "preview&" + r.URL.Query().Encode()
+
+	yandexProxyHandler(w, r)
+}
+
+func YandexResizeHandler(w http.ResponseWriter, r *http.Request) {
 	node, err := getNode(r.URL.Query().Get("id"))
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -88,44 +72,34 @@ func (h *ProxyHandlers) YandexPreviewsHandler(w http.ResponseWriter, r *http.Req
 		return
 	}
 
-	imageURL := yandexNodeBackend + s.Replace(r.URL.Path, "/proxy/yandex/previews", "", -1)
-
-	// FIXME: temporary code
-	client := &http.Client{}
-	req, err := http.NewRequest("GET", imageURL, nil)
-	if err != nil {
+	imageURL := yandexNodeBackend + s.Replace(r.URL.Path, "/proxy/yandex/resize", "", -1)
+	if img, err := DownloadAndResize(imageURL, node, size); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-
-	req.Header.Set("Authorization", fmt.Sprintf("OAuth %s", node.Secret))
-	resp, err := client.Do(req)
-
-	if err != nil {
-	    http.Error(w, err.Error(), http.StatusInternalServerError)
-	    return
-	}
-
-	defer resp.Body.Close()
-
-	buf, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-
-	options := bimg.Options{
-		Width:	size,
-		Type:	bimg.WEBP,
-	}
-
-	if img, err := bimg.NewImage(buf).Process(options); err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
 	} else {
 		w.Header().Add("Content-Type", "image/webp")
 		w.Write(img)
 	}
+}
+
+func yandexProxyHandler(w http.ResponseWriter, r *http.Request) {
+	node, err := getNode(r.URL.Query().Get("id"))
+
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	if node == nil {
+		http.Error(w, "Node not found", http.StatusNotFound)
+		return
+	}
+
+	for k := range r.Header {
+		delete(r.Header, k)
+	}
+
+	r.Header.Add("Authorization", fmt.Sprintf("OAuth %s", node.Secret))
+	proxy.ServeHTTP(w, r)
 }
 
 func getNode(id string) (*Node, error) {
