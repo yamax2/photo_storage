@@ -6,6 +6,7 @@ import (
     "context"
     "net/http"
     "time"
+    "fmt"
     "syscall"
 
     log "github.com/sirupsen/logrus"
@@ -86,13 +87,18 @@ func (lrw *loggingResponseWriter) WriteHeader(code int) {
 func logRequest(handler http.Handler) http.Handler {
     return http.HandlerFunc(
         func(w http.ResponseWriter, r *http.Request) {
+            start := time.Now()
+            url := r.URL.String()
+
             lrw := &loggingResponseWriter{w, http.StatusOK}
             handler.ServeHTTP(lrw, r)
 
             log.WithFields(log.Fields{
                 "method": r.Method,
-                "url": r.URL.String(),
-            }).Info(lrw.statusCode)
+                "url": url,
+                "duration": fmt.Sprintf("%.2f", time.Since(start).Seconds()),
+                "code": lrw.statusCode,
+            }).Info(http.StatusText(lrw.statusCode))
         },
     )
 }

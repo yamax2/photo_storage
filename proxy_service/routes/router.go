@@ -4,17 +4,16 @@ import (
 	"fmt"
 	"strconv"
 	"context"
-
 	"io/ioutil"
+
 	"net/url"
 	"net/http"
 	"net/http/httputil"
 
 	s "strings"
+	"github.com/h2non/bimg"
 
 	. "proxy_service/internal"
-
-	"github.com/h2non/bimg"
 )
 
 const yandexNodeBackend = "https://webdav.yandex.ru"
@@ -93,9 +92,19 @@ func (h *ProxyHandlers) YandexPreviewsHandler(w http.ResponseWriter, r *http.Req
 
 	// FIXME: temporary code
 	client := &http.Client{}
-	req, _ := http.NewRequest("GET", imageURL, nil)
+	req, err := http.NewRequest("GET", imageURL, nil)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
 	req.Header.Set("Authorization", fmt.Sprintf("OAuth %s", node.Secret))
-	resp, _ := client.Do(req)
+	resp, err := client.Do(req)
+
+	if err != nil {
+	    http.Error(w, err.Error(), http.StatusInternalServerError)
+	    return
+	}
 
 	defer resp.Body.Close()
 
@@ -136,4 +145,3 @@ func getNode(id string) (*Node, error) {
 
 	return node, nil
 }
-
