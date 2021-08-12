@@ -65,7 +65,7 @@ server {
        proxy_hide_header "Set-Cookie";
     }
 
-    location ~ ^/proxy/yandex/(previews/|.+.gpx$) {
+    location ~ ^/proxy/yandex/(previews/|resize/|.+.gpx$) {
        proxy_pass http://$PROXY_HOST:9000;
        proxy_cache_valid 90d;
 

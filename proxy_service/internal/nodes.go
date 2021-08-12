@@ -65,7 +65,7 @@ var (
 	nodes map[int64]Node
 	mx sync.RWMutex
 	httpClient = http.Client{
-		Timeout: time.Duration(5 * time.Second),
+		Timeout: time.Duration(30 * time.Second),
 	}
 )
 
