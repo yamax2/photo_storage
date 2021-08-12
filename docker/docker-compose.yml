@@ -85,6 +85,17 @@ services:
       - VIRTUAL_HOST=photostorage.$DOCKER_TLD
       - VIRTUAL_PATH=/proxy/
 
+  proxy-build:
+    build:
+      context: ../
+      dockerfile: ./docker/Dockerfile.proxy.deb
+      args:
+        DOCKER_GO_VERSION: $DOCKER_GO_VERSION
+      labels:
+        com.photo-storage.go.version: $DOCKER_GO_VERSION
+    volumes:
+      - ../proxy_service:/app
+
 volumes:
   bundler-data:
     external:

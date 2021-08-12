@@ -63,6 +63,10 @@ interaction:
       RAILS_ENV: test
     command: go test -v ./...
 
+  proxy_build:
+    service: proxy-build
+    command: go build -ldflags '-s -w' proxy_service.go
+
   rubocop:
     service: app
     environment:
@@ -74,6 +78,7 @@ provision:
   - docker pull postgres:${POSTGRES_IMAGE_TAG}-alpine
   - docker pull redis:${REDIS_IMAGE_TAG}-alpine
   - docker pull golang:${DOCKER_GO_VERSION}-alpine
+  - docker pull golang:${DOCKER_GO_VERSION}
   - ./docker/prepare_env.sh
   - docker volume create --name bundler_data
   - dip compose up -d db
