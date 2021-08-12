@@ -57,7 +57,7 @@ module Listing
     def proxy_url
       url_generator.generate(
         :thumb,
-        image_size.first
+        image_size
       )
     end
 

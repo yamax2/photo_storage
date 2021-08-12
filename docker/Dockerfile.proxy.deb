@@ -1,0 +1,7 @@
+FROM golang:1.16.7
+
+RUN apt update && apt install -y libvips-dev
+
+COPY proxy_service /proxy
+WORKDIR /proxy
+RUN go build -ldflags '-s -w' proxy_service.go

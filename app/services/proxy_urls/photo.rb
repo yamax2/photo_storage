@@ -2,22 +2,21 @@
 
 module ProxyUrls
   class Photo
+    YANDEX_MAX_DIMENSION = 1_280
+
     attr_reader :model
 
     def initialize(model)
       @model = model
     end
 
-    def generate(size = :original, thumb_width = nil)
+    def generate(size = :original, dimensions = nil)
       return if storage_filename.blank?
 
-      path = "#{yandex_token.dir.sub(%r{^/}, '')}/#{storage_filename}"
-      method = size == :original ? :proxy_yandex_object_path : :proxy_yandex_object_preview_path
-
       Rails.application.routes.url_helpers.public_send(
-        method,
-        path,
-        params_for_size(size, thumb_width)
+        proxy_method(size, dimensions),
+        "#{yandex_token.dir.sub(%r{^/}, '')}/#{storage_filename}",
+        params_for_size(size, dimensions&.first)
       )
     end
 
@@ -32,6 +31,16 @@ module ProxyUrls
         else
           params[:size] = thumb_width
         end
+      end
+    end
+
+    def proxy_method(size, dimensions)
+      if size == :original
+        :proxy_yandex_object_path
+      elsif dimensions && dimensions.max > YANDEX_MAX_DIMENSION
+        :proxy_yandex_object_resize_path
+      else
+        :proxy_yandex_object_preview_path
       end
     end
   end

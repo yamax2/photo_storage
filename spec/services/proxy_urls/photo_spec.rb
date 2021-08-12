@@ -22,14 +22,22 @@ RSpec.describe ProxyUrls::Photo do
 
     context 'when original size' do
       it do
-        expect(generator.generate).to eq("/proxy/yandex/photos/001/002/test.jpg?fn=test.jpg&id=#{token.id}")
+        expect(generator.generate).
+          to eq("/proxy/yandex/photos/001/002/test.jpg?fn=test.jpg&id=#{token.id}")
       end
     end
 
-    context 'when thumb' do
+    context 'when small thumb' do
       it do
-        expect(generator.generate(:thumb, 480)).
+        expect(generator.generate(:thumb, [480, 640])).
           to eq("/proxy/yandex/previews/photos/001/002/test.jpg?id=#{token.id}&size=480")
+      end
+    end
+
+    context 'when large preview' do
+      it do
+        expect(generator.generate(:p2k, [3_000, 2_000])).
+          to eq("/proxy/yandex/resize/photos/001/002/test.jpg?id=#{token.id}&size=3000")
       end
     end
   end

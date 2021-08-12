@@ -14,6 +14,7 @@ Rails.application.routes.draw do
     namespace :yandex do
       get '*storage_path' => 'dev#null', as: :object
       get 'previews/*storage_path' => 'dev#null', as: :object_preview
+      get 'resize/*storage_path' => 'dev#null', as: :object_resize
     end
   end
 
