@@ -13,6 +13,7 @@ services:
       - BUNDLE_PATH=/bundle/${DOCKER_RUBY_VERSION}
       - SSH_AUTH_SOCK=/ssh/auth/sock
       - RAILS_ENV=$RAILS_ENV
+      - LOG_LEVEL=$LOG_LEVEL
       - PHOTOSTORAGE_SMTP_USER=auto@tretyakov-ma.ru
     depends_on:
       - db
@@ -43,6 +44,7 @@ services:
       - BUNDLE_PATH=/bundle/${DOCKER_RUBY_VERSION}
       - SSH_AUTH_SOCK=/ssh/auth/sock
       - RAILS_ENV=$RAILS_ENV
+      - LOG_LEVEL=$LOG_LEVEL
       - VIRTUAL_HOST=photostorage.$DOCKER_TLD
       - VIRTUAL_PATH=/
 
@@ -84,6 +86,7 @@ services:
     environment:
       - VIRTUAL_HOST=photostorage.$DOCKER_TLD
       - VIRTUAL_PATH=/proxy/
+      - LOG_LEVEL=$LOG_LEVEL
 
   proxy-build:
     build:
