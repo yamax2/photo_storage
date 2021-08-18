@@ -71,8 +71,14 @@
 
   .photo-sidebar
     - if current.lat_long.present?
-      = map(center: {latlng: current.lat_long.to_a, zoom: Leaflet.max_zoom},
-            markers: [{latlng: current.lat_long.to_a}])
+      - lat_long = current.lat_long.to_a
+      = map(center: {latlng: lat_long, zoom: Leaflet.max_zoom})
+      javascript:
+        marker = L.marker(#{lat_long.to_a}).on('click', onClick).addTo(map);
+
+        function onClick(e) {
+            window.open('https://www.openstreetmap.org/?mlat=#{lat_long.first}&mlon=#{lat_long.last}#map=#{Leaflet.max_zoom}/#{lat_long.first}/#{lat_long.last}', '_blank')
+        }
 
     .photo-info
       table
