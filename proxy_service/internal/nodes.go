@@ -6,7 +6,6 @@ import (
 	"sync"
 	"fmt"
 	"context"
-	"io/ioutil"
 	"net/http"
 	"encoding/json"
 	"encoding/base64"
@@ -115,18 +114,10 @@ func LoadNode(c context.Context, id int64) (*Node, error) {
 		return nil, fmt.Errorf("Api response is %s", http.StatusText(resp.StatusCode))
 	}
 
-	var content []byte
+	node = Node{}
 	defer resp.Body.Close()
 
-	content, err = ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return nil, err
-	}
-
-	node = Node{}
-	err = json.Unmarshal(content, &node)
-
-	if err != nil {
+	if err := json.NewDecoder(resp.Body).Decode(&node); err != nil {
 		return nil, err
 	}
 

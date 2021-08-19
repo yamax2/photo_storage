@@ -10,8 +10,8 @@ import (
 	"net/http/httputil"
 
 	s "strings"
-
 	. "proxy_service/internal"
+	//_ "net/http/pprof"
 )
 
 const yandexNodeBackend = "https://webdav.yandex.ru"
