@@ -1,16 +1,16 @@
 package routes
 
 import (
+	"context"
 	"fmt"
 	"strconv"
-	"context"
 
-	"net/url"
 	"net/http"
 	"net/http/httputil"
+	"net/url"
 
-	s "strings"
 	. "proxy_service/internal"
+	s "strings"
 	//_ "net/http/pprof"
 )
 

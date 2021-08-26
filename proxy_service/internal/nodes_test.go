@@ -1,11 +1,11 @@
 package internal
 
 import (
-	"testing"
 	"context"
-	"time"
 	"net/http"
 	"net/http/httptest"
+	"testing"
+	"time"
 
 	"github.com/stretchr/testify/assert"
 )
@@ -17,9 +17,9 @@ func TestGetNode(t *testing.T) {
 
 	t.Run("returns nil for expired", func(t *testing.T) {
 		nodes[1] = Node{
-			Type: "yandex",
-			Name: "test",
-			Secret: "secret",
+			Type:     "yandex",
+			Name:     "test",
+			Secret:   "secret",
 			LoadedAt: time.Now().Add(-4 * time.Hour),
 		}
 
@@ -28,9 +28,9 @@ func TestGetNode(t *testing.T) {
 
 	t.Run("returns value when not expired", func(t *testing.T) {
 		nodes[1] = Node{
-			Type: "yandex",
-			Name: "test",
-			Secret: "secret",
+			Type:     "yandex",
+			Name:     "test",
+			Secret:   "secret",
 			LoadedAt: time.Now().Add(-59 * time.Minute),
 		}
 
@@ -84,9 +84,9 @@ func TestLoadNode(t *testing.T) {
 		config.ApiHost = nodeApiStub.URL
 
 		nodes[1] = Node{
-			Name: "zozo",
-			Type: "zozo",
-			Secret: "secret",
+			Name:     "zozo",
+			Type:     "zozo",
+			Secret:   "secret",
 			LoadedAt: time.Now().Add(-5 * time.Hour),
 		}
 
@@ -170,15 +170,15 @@ func TestLoadNode(t *testing.T) {
 
 func TestNode_Valid(t *testing.T) {
 	tests := []struct {
-		name   string
-		node   Node
-		want   bool
+		name string
+		node Node
+		want bool
 	}{
 		{
 			"Valid with name, type and secret",
 			Node{
-				Type: "test",
-				Name: "test",
+				Type:   "test",
+				Name:   "test",
 				Secret: "test",
 			},
 			true,
@@ -191,7 +191,7 @@ func TestNode_Valid(t *testing.T) {
 		{
 			"Invalid without name",
 			Node{
-				Type: "test",
+				Type:   "test",
 				Secret: "secret",
 			},
 			false,
@@ -208,7 +208,7 @@ func TestNode_Valid(t *testing.T) {
 			"Invalid without type",
 			Node{
 				Secret: "test",
-				Name: "name",
+				Name:   "name",
 			},
 			false,
 		},

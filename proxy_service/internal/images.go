@@ -29,8 +29,8 @@ func DownloadAndResize(imageURL string, node *Node, size int) ([]byte, error) {
 	}
 
 	options := bimg.Options{
-		Width:	size,
-		Type:	bimg.WEBP,
+		Width: size,
+		Type:  bimg.WEBP,
 	}
 
 	if img, err := bimg.NewImage(buf).Process(options); err != nil {

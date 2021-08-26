@@ -7,9 +7,9 @@ import (
 )
 
 type Config struct {
-	ApiHost	 string	`envconfig:"PHOTOSTORAGE_PROXY_API_HOST" default:"http://photostorage.localhost"`
+	ApiHost  string `envconfig:"PHOTOSTORAGE_PROXY_API_HOST" default:"http://photostorage.localhost"`
 	Listen   string `envconfig:"PHOTOSTORAGE_PROXY_LISTEN" default:":9000"`
-	LogLevel string	`envconfig:"LOG_LEVEL" default:"info"`
+	LogLevel string `envconfig:"LOG_LEVEL" default:"info"`
 	Secret   string `envconfig:"PHOTOSTORAGE_PROXY_SECRET" default:"very_secret"`
 
 	secretSHA256 string

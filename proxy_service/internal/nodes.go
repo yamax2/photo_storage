@@ -1,15 +1,15 @@
 package internal
 
 import (
-	"errors"
-	"time"
-	"sync"
-	"fmt"
 	"context"
-	"net/http"
-	"encoding/json"
 	"encoding/base64"
+	"encoding/json"
+	"errors"
+	"fmt"
+	"net/http"
 	s "strings"
+	"sync"
+	"time"
 
 	"crypto/aes"
 	"crypto/cipher"
@@ -19,10 +19,10 @@ import (
 const nodeTTL = 3 * time.Hour
 
 type Node struct {
-	Type 		string		`json:"type"`
-	Name		string		`json:"name"`
-	Secret		string		`json:"secret"`
-	LoadedAt 	time.Time
+	Type     string `json:"type"`
+	Name     string `json:"name"`
+	Secret   string `json:"secret"`
+	LoadedAt time.Time
 }
 
 func (node *Node) IsExpired() bool {
@@ -61,8 +61,8 @@ func (node *Node) decodeSecret() error {
 }
 
 var (
-	nodes map[int64]Node
-	mx sync.RWMutex
+	nodes      map[int64]Node
+	mx         sync.RWMutex
 	httpClient = http.Client{
 		Timeout: time.Duration(30 * time.Second),
 	}
@@ -91,7 +91,7 @@ func LoadNode(c context.Context, id int64) (*Node, error) {
 
 	node, ok := nodes[id]
 
-	if ok && !node.IsExpired()  {
+	if ok && !node.IsExpired() {
 		return &node, nil
 	}
 
