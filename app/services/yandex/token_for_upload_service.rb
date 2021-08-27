@@ -5,7 +5,7 @@ module Yandex
     include ::Interactor
 
     CACHE_REDIS_KEY = 'yandex_tokens_usage'
-    FIND_SCRIPT = <<~LUA
+    FIND_SCRIPT = <<~LUA.freeze
       local cache_values = redis.call("HGETALL", KEYS[1])
       local cache = {}
       for idx = 1, #cache_values, 2 do
