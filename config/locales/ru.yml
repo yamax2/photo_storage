@@ -133,6 +133,7 @@ ru:
         search_by_name: Поиск по названию
         subrubrics: Подрубрики %{name}
         tracks: Треки
+        warm_up: Прогреть кэш для размера %{size}
       new:
         title_root: Создание новой корневой рубрики
         title_with_parent: 'Создание новой подрубрики в рубрике %{name}'

@@ -2,7 +2,7 @@ ARG DOCKER_RUBY_VERSION
 FROM ruby:${DOCKER_RUBY_VERSION}-alpine
 
 RUN apk add --update --no-cache \
-    tzdata libexif-dev xz-dev libpq nodejs build-base less git postgresql-dev postgresql-client mc && \
+    curl tzdata libexif-dev xz-dev libpq nodejs build-base less git postgresql-dev postgresql-client mc && \
     cp /usr/share/zoneinfo/Asia/Yekaterinburg /etc/localtime && \
     echo 'Asia/Yekaterinburg' > /etc/timezone && \
     gem update --system

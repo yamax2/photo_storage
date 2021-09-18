@@ -73,6 +73,7 @@ interaction:
     environment:
       RAILS_ENV: test
     command: bundle exec ./rubocop
+    compose_run_options: [no-deps]
 
 provision:
   - docker pull ruby:${DOCKER_RUBY_VERSION}-alpine

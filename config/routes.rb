@@ -35,6 +35,10 @@ Rails.application.routes.draw do
 
     resources :rubrics, except: :show do
       resources :tracks, except: %i[create new]
+
+      member do
+        get :warm_up
+      end
     end
 
     namespace :rubrics do

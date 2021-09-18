@@ -46,7 +46,7 @@ module Listing
         if turned?
           result.reverse!
 
-          result[1] = result.first**2 / result.last
+          result[1] = (result.first**2) / result.last
         end
       end
     end

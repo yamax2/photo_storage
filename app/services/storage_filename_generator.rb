@@ -13,7 +13,7 @@ class StorageFilenameGenerator
   def call
     if @partition
       [
-        partition_number(model.id / PARTITION_SIZE**2),
+        partition_number(model.id / (PARTITION_SIZE**2)),
         partition_number(model.id / PARTITION_SIZE),
         new_filename
       ].join('/')

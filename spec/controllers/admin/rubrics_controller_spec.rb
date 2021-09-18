@@ -305,4 +305,47 @@ RSpec.describe Admin::RubricsController, type: :request do
       it_behaves_like 'admin restricted route'
     end
   end
+
+  describe '#warm_up' do
+    let!(:rubric) { create :rubric }
+
+    before do
+      allow(::Rubrics::WarmUpJob).to receive(:perform_async)
+    end
+
+    context 'when without photo size' do
+      it do
+        expect { get warm_up_admin_rubric_url(id: rubric.id) }.
+          to raise_error(ActionController::ParameterMissing)
+
+        expect(::Rubrics::WarmUpJob).not_to have_received(:perform_async)
+      end
+    end
+
+    context 'when successful call' do
+      before { get warm_up_admin_rubric_url(id: rubric.id, size: 'preview') }
+
+      it do
+        expect(response).to redirect_to(admin_rubrics_path)
+
+        expect(::Rubrics::WarmUpJob).to have_received(:perform_async)
+      end
+    end
+
+    context 'when wrong rubric' do
+      it do
+        expect { get warm_up_admin_rubric_url(id: -1) }.
+          to raise_error(ActiveRecord::RecordNotFound)
+      end
+    end
+
+    context 'when with auth' do
+      let(:rubric) { create :rubric }
+      let(:request_proc) do
+        ->(headers) { get warm_up_admin_rubric_url(id: rubric.id, size: 'preview'), headers: headers }
+      end
+
+      it_behaves_like 'admin restricted route'
+    end
+  end
 end
