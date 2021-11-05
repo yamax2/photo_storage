@@ -1,4 +1,4 @@
-concurrency: 4
+concurrency: <%= ENV.fetch('SIDEKIQ_CONCURRENCY', 4) %>
 queues:
   - tokens
   - mailers

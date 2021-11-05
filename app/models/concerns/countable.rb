@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 module Countable
+  extend ActiveSupport::Concern
+
   def inc_counter
     return unless persisted?
 

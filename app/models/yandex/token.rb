@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 module Yandex
+  # TODO: rename to Node
   class Token < ApplicationRecord
     self.table_name = 'yandex_tokens'
 

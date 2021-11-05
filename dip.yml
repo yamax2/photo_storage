@@ -22,7 +22,7 @@ interaction:
 
   irb:
     service: app
-    command: bundle exec irb
+    command: bundle exec pry
 
   bundle:
     service: app
@@ -67,6 +67,7 @@ interaction:
   proxy_build:
     service: proxy-build
     command: go build -ldflags '-s -w' proxy_service.go
+    compose_run_options: [no-deps]
 
   rubocop:
     service: app

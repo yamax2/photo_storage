@@ -1,7 +1,7 @@
 version: '3.3'
 
 # DOCKER_RUBY_VERSION: 3.0
-# DOCKER_GO_VERSION=1.16.7
+# DOCKER_GO_VERSION=1.17
 # POSTGRES_VERSION: 14.0
 # REDIS_VERSION: 6
 # NGINX_VERSION=1.21.1
@@ -64,7 +64,7 @@ services:
       context: ../../
       dockerfile: docker/photostorage/Dockerfile.proxy
       args:
-        DOCKER_GO_VERSION: ${DOCKER_GO_VERSION:-1.16.7}
+        DOCKER_GO_VERSION: ${DOCKER_GO_VERSION:-1.17}
     depends_on:
       - db
       - web

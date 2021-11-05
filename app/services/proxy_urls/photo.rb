@@ -3,6 +3,7 @@
 module ProxyUrls
   class Photo
     YANDEX_MAX_DIMENSION = 1_280
+    private_constant :YANDEX_MAX_DIMENSION
 
     attr_reader :model
 
