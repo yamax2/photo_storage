@@ -13,6 +13,7 @@ RSpec.describe Rubric do
 
     it { is_expected.to have_db_column(:rubrics_count).of_type(:integer).with_options(null: false, default: 0) }
     it { is_expected.to have_db_column(:photos_count).of_type(:integer).with_options(null: false, default: 0) }
+    it { is_expected.to have_db_column(:videos_count).of_type(:integer).with_options(null: false, default: 0) }
 
     it { is_expected.to have_db_column(:desc_order).of_type(:boolean).with_options(null: false, default: false) }
     it { is_expected.to have_db_column(:hide_common_stat).of_type(:boolean).with_options(null: false, default: false) }
@@ -29,6 +30,7 @@ RSpec.describe Rubric do
     it { is_expected.to have_many(:rubrics).inverse_of(:rubric).dependent(:destroy) }
     it { is_expected.to have_many(:photos).inverse_of(:rubric).dependent(:destroy) }
     it { is_expected.to have_many(:tracks).inverse_of(:rubric).dependent(:destroy) }
+    it { is_expected.to have_many(:videos).inverse_of(:rubric).dependent(:destroy) }
   end
 
   describe 'validations' do
@@ -45,13 +47,14 @@ RSpec.describe Rubric do
     let!(:rubric1) { create :rubric, photos_count: 0 }
     let!(:rubric2) { create :rubric, photos_count: 0 }
     let!(:rubric3) { create :rubric, photos_count: 5, rubric: rubric1, ord: 1 }
-    let!(:rubric4) { create :rubric, rubric: rubric2, ord: 2 }
+    let!(:rubric4) { create :rubric, rubric: rubric2, ord: 2, videos_count: 1 }
 
-    describe '#with_photos' do
+    describe '#with_objects' do
       let!(:rubric5) { create :rubric, photos_count: 1, rubric: rubric3, ord: 2 }
 
-      it { expect(described_class.with_photos).to match_array([rubric1, rubric3, rubric5]) }
-      it { expect(rubric1.rubrics.with_photos).to match_array([rubric3]) }
+      it { expect(described_class.with_objects).to match_array([rubric1, rubric2, rubric3, rubric4, rubric5]) }
+      it { expect(rubric1.rubrics.with_objects).to match_array([rubric3]) }
+      it { expect(rubric2.rubrics.with_objects).to match_array([rubric4]) }
     end
 
     describe '#default_order' do
@@ -60,25 +63,31 @@ RSpec.describe Rubric do
       end
     end
 
-    describe '#by_first_photo' do
+    describe '#by_first_object' do
       context 'when all rubrics without photo' do
         # should sort by id
         it do
-          expect(described_class.by_first_photo).to eq([rubric4, rubric3, rubric2, rubric1])
+          expect(described_class.by_first_object).to eq([rubric4, rubric3, rubric2, rubric1])
         end
       end
 
       context 'when some rubrics have photo' do
+        let(:node) { create :'yandex/token' }
+        let!(:rubric5) { create :rubric }
+
         before do
           create :photo, rubric: rubric1, local_filename: 'test', original_timestamp: nil
-          create :photo, rubric: rubric2, local_filename: 'test', original_timestamp: Date.yesterday
-          create :photo, rubric: rubric2, local_filename: 'test', original_timestamp: Time.zone.today
+          create :photo, rubric: rubric2, local_filename: 'test', original_timestamp: 1.day.ago
+          create :photo, rubric: rubric2, local_filename: 'test', original_timestamp: Time.current
           create :photo, rubric: rubric4, local_filename: 'test', original_timestamp: 2.days.ago
           create :photo, rubric: rubric4, local_filename: 'test', original_timestamp: nil
+
+          create :video, rubric: rubric1, yandex_token: node, original_timestamp: 1.hour.ago
         end
 
         it do
-          expect(described_class.by_first_photo).to eq([rubric2, rubric4, rubric3, rubric1])
+          expect(described_class.by_first_object).
+            to eq([rubric1, rubric2, rubric4, rubric5, rubric3])
         end
       end
     end

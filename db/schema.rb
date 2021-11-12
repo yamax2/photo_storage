@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_19_184303) do
+ActiveRecord::Schema.define(version: 2021_11_05_012011) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -55,6 +55,7 @@ ActiveRecord::Schema.define(version: 2021_06_19_184303) do
     t.bigint "tracks_count", default: 0, null: false
     t.boolean "desc_order", default: false, null: false
     t.boolean "hide_common_stat", default: false, null: false
+    t.bigint "videos_count", default: 0, null: false
     t.index ["main_photo_id"], name: "index_rubrics_on_main_photo_id", where: "(main_photo_id IS NOT NULL)"
     t.index ["rubric_id"], name: "index_rubrics_on_rubric_id"
   end
@@ -83,6 +84,32 @@ ActiveRecord::Schema.define(version: 2021_06_19_184303) do
     t.index ["yandex_token_id"], name: "index_tracks_on_yandex_token_id", where: "(yandex_token_id IS NOT NULL)"
   end
 
+  create_table "videos", force: :cascade do |t|
+    t.string "name", limit: 512, null: false
+    t.text "description"
+    t.bigint "rubric_id", null: false
+    t.bigint "yandex_token_id", null: false
+    t.text "storage_filename", null: false
+    t.text "preview_filename", null: false
+    t.jsonb "props", default: {}, null: false
+    t.point "lat_long"
+    t.datetime "original_timestamp"
+    t.string "content_type", limit: 30, null: false
+    t.integer "width", default: 0, null: false
+    t.integer "height", default: 0, null: false
+    t.bigint "views", default: 0, null: false
+    t.string "tz", limit: 50, default: "Asia/Yekaterinburg", null: false
+    t.string "md5", limit: 32, null: false
+    t.string "sha256", limit: 64, null: false
+    t.string "original_filename", limit: 512, null: false
+    t.bigint "size", default: 0, null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["md5", "sha256"], name: "uq_videos", unique: true
+    t.index ["rubric_id"], name: "index_videos_on_rubric_id"
+    t.index ["yandex_token_id"], name: "index_videos_on_yandex_token_id"
+  end
+
   create_table "yandex_tokens", force: :cascade do |t|
     t.string "user_id", limit: 20, null: false
     t.string "login", limit: 255, null: false
@@ -106,4 +133,6 @@ ActiveRecord::Schema.define(version: 2021_06_19_184303) do
   add_foreign_key "rubrics", "rubrics", name: "fk_rubrics", on_update: :cascade, on_delete: :restrict
   add_foreign_key "tracks", "rubrics", name: "fk_track_rubrics", on_update: :cascade, on_delete: :restrict
   add_foreign_key "tracks", "yandex_tokens", name: "fk_tracks_tokens", on_update: :cascade, on_delete: :restrict
+  add_foreign_key "videos", "rubrics", name: "fk_video_rubrics", on_update: :cascade, on_delete: :restrict
+  add_foreign_key "videos", "yandex_tokens", name: "fk_video_tokens", on_update: :cascade, on_delete: :restrict
 end

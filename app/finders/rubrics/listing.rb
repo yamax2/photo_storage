@@ -61,7 +61,7 @@ module Rubrics
 
     def rubrics_scope
       photos = Photo.arel_table
-      scope = Rubric.where(rubric_id: @rubric_id).with_photos.left_joins(:main_photo).default_order
+      scope = Rubric.where(rubric_id: @rubric_id).with_objects.left_joins(:main_photo).default_order
 
       scope.select(
         :id, :name,

@@ -21,7 +21,7 @@ module Admin
 
         @rubrics =
           if params[:ord] == FIRST_PHOTO
-            @rubrics.by_first_photo
+            @rubrics.by_first_object
           else
             @rubrics.default_order
           end

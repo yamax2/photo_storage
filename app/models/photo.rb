@@ -4,6 +4,7 @@
 class Photo < ApplicationRecord
   include Countable
   include Storable
+  include UploadWorkflow
 
   JPEG_IMAGE = 'image/jpeg'
   PNG_IMAGE = 'image/png'

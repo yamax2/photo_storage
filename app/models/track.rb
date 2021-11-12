@@ -2,6 +2,7 @@
 
 class Track < ApplicationRecord
   include Storable
+  include UploadWorkflow
 
   MIME_TYPE = 'application/gpx+xml'
 

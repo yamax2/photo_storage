@@ -7,16 +7,18 @@ class Rubric < ApplicationRecord
   has_many :rubrics, dependent: :destroy, inverse_of: :rubric
   has_many :photos, dependent: :destroy, inverse_of: :rubric
   has_many :tracks, dependent: :destroy, inverse_of: :rubric
+  has_many :videos, dependent: :destroy, inverse_of: :rubric
 
   validates :name, presence: true, length: {maximum: 100}
 
   strip_attributes only: %i[name description]
 
-  scope(:with_photos, lambda do
+  scope(:with_objects, lambda do
     where(<<~SQL.squish)
-      rubrics.id in (
+      rubrics.id IN (
         WITH RECURSIVE tt AS (
-        SELECT id, rubric_id FROM #{quoted_table_name} WHERE photos_count > 0
+        SELECT id, rubric_id FROM #{quoted_table_name}
+        WHERE photos_count + videos_count + tracks_count > 0
         UNION ALL
         SELECT rubrics.id, rubrics.rubric_id
         FROM #{quoted_table_name} rubrics, tt WHERE rubrics.id = tt.rubric_id)
@@ -26,20 +28,23 @@ class Rubric < ApplicationRecord
   end)
 
   scope :default_order, -> { order(arel_table[:ord].asc.nulls_first, arel_table[:id].desc) }
-  scope(:by_first_photo, lambda do
+  scope(:by_first_object, lambda do
     joins(<<~SQL.squish).order('sort.rn')
       JOIN (
         WITH ords as (
           SELECT rubrics.id,
                  (
-                    SELECT MIN(original_timestamp)
-                      FROM #{Photo.quoted_table_name}
-                     WHERE rubric_id = rubrics.id AND original_timestamp IS NOT NULL
-                 ) time_to_order
+                    SELECT MIN(original_timestamp) FROM #{Photo.quoted_table_name}
+                      WHERE rubric_id = rubrics.id AND original_timestamp IS NOT NULL
+                 ) photo_time,
+                 (
+                    SELECT MIN(original_timestamp) FROM #{Video.quoted_table_name}
+                      WHERE rubric_id = rubrics.id AND original_timestamp IS NOT NULL
+                 ) video_time
           FROM #{quoted_table_name} rubrics
         )
         SELECT id,
-               ROW_NUMBER() OVER (ORDER BY time_to_order DESC NULLS LAST, id DESC) rn
+               ROW_NUMBER() OVER (ORDER BY least(photo_time, video_time) DESC NULLS LAST, id DESC) rn
           FROM ords
       ) sort ON sort.id = #{quoted_table_name}.id
     SQL

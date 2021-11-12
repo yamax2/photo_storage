@@ -19,6 +19,6 @@ class PagesController < ApplicationController
   end
 
   def with_rubrics?
-    @rubric.nil? || (@rubric.rubrics_count.positive? && @rubric.rubrics.with_photos.exists?)
+    @rubric.nil? || (@rubric.rubrics_count.positive? && @rubric.rubrics.with_objects.exists?)
   end
 end
