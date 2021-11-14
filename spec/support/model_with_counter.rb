@@ -7,7 +7,8 @@ RSpec.shared_context 'model with counter' do |factory|
     let(:redis) { RedisClassy.redis }
 
     context 'when persisted' do
-      let(:model) { create factory, local_filename: 'test' }
+      let(:token) { create :'yandex/token' }
+      let(:model) { create factory, storage_filename: 'test', yandex_token: token }
 
       context 'and first view' do
         it do

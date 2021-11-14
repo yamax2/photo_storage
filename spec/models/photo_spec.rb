@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
 RSpec.describe Photo do
-  it_behaves_like 'storable model', :photo
+  it_behaves_like 'storable model'
+  it_behaves_like 'model with upload workflow', :photo
   it_behaves_like 'model with counter', :photo
 
   describe 'structure' do

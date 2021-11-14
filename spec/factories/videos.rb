@@ -13,5 +13,8 @@ FactoryBot.define do
 
     sequence(:md5) { SecureRandom.hex(16).to_s }
     sequence(:sha256) { SecureRandom.hex(32).to_s }
+
+    width { 3_840 }
+    height { 2_160 }
   end
 end

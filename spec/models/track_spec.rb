@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
 RSpec.describe Track do
-  it_behaves_like 'storable model', :track
+  it_behaves_like 'storable model'
+  it_behaves_like 'model with upload workflow', :track
 
   describe 'structure' do
     it { is_expected.to have_db_column(:name).of_type(:string).with_options(null: false, limit: 512) }

@@ -16,9 +16,8 @@ class Video < ApplicationRecord
   validates :storage_filename, :preview_filename, presence: true, length: {maximum: 512}
   validates :content_type, presence: true, inclusion: ALLOWED_CONTENT_TYPES
 
-  validates :width, :height, presence: true, numericality: {only_integer: true, greater_than_or_equal_to: 0}
+  validates :width, :height, presence: true, numericality: {only_integer: true, greater_than: 0}
   validates :tz, presence: true, inclusion: Rails.application.config.photo_timezones
-  validates :yandex_token, presence: true
 
   strip_attributes only: %i[name description content_type]
 end
