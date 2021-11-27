@@ -9,6 +9,7 @@ gem 'pg'
 gem 'puma', '>= 4.3'
 gem 'rails', '~> 6.1'
 gem 'sass-rails', '>= 5.0'
+gem 'sprockets-rails', '>= 3.4'
 gem 'uglifier', '>= 1.3.0'
 
 gem 'bootsnap', '>= 1.1.0', require: false
