@@ -27,7 +27,7 @@ module Photos
     private
 
     def exif?
-      photo.content_type == Photo::JPEG_IMAGE && \
+      photo.jpeg? && \
         photo.exif.nil? && \
         exif_data.exif? && \
         (exif_data.model.present? || exif_data.make.present?)

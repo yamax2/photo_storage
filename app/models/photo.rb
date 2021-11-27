@@ -7,11 +7,9 @@ class Photo < ApplicationRecord
   include UploadWorkflow
 
   JPEG_IMAGE = 'image/jpeg'
-  PNG_IMAGE = 'image/png'
-
   ALLOWED_CONTENT_TYPES = [
     JPEG_IMAGE,
-    PNG_IMAGE
+    'image/png'
   ].freeze
 
   ALLOWED_EFFECTS = [
@@ -39,6 +37,10 @@ class Photo < ApplicationRecord
   before_save { @rubric_changed = rubric_id_changed? if persisted? }
   after_update :change_rubric
   after_commit :remove_from_cart
+
+  def jpeg?
+    content_type.to_s == JPEG_IMAGE
+  end
 
   private
 
