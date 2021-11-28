@@ -2,8 +2,8 @@
 
 module ProxyUrls
   class Photo
-    YANDEX_MAX_DIMENSION = 1_280
-    private_constant :YANDEX_MAX_DIMENSION
+    YANDEX_MAX_IMAGE_DIMENSION = 1_280
+    private_constant :YANDEX_MAX_IMAGE_DIMENSION
 
     attr_reader :model
 
@@ -14,20 +14,26 @@ module ProxyUrls
     def generate(size = :original, dimensions = nil)
       return if storage_filename.blank?
 
-      Rails.application.routes.url_helpers.public_send(
-        proxy_method(size, dimensions),
-        "#{yandex_token.dir.sub(%r{^/}, '')}/#{storage_filename}",
-        params_for_size(size, dimensions&.first)
-      )
+      if video?
+        video_url(size, dimensions)
+      else
+        photo_url(size, dimensions)
+      end
     end
 
     private
 
-    delegate :yandex_token, :yandex_token_id, :original_filename, :storage_filename, to: :model, private: true
+    delegate :yandex_token,
+             :yandex_token_id,
+             :original_filename,
+             :storage_filename,
+             :preview_filename,
+             :video?,
+             to: :model, private: true
 
     def params_for_size(size, thumb_width)
       {id: yandex_token_id}.tap do |params|
-        if size == :original
+        if original?(size)
           params[:fn] = original_filename
         else
           params[:size] = thumb_width
@@ -36,13 +42,35 @@ module ProxyUrls
     end
 
     def proxy_method(size, dimensions)
-      if size == :original
+      if original?(size)
         :proxy_yandex_object_path
-      elsif dimensions && dimensions.max > YANDEX_MAX_DIMENSION
+      elsif dimensions && dimensions.max > YANDEX_MAX_IMAGE_DIMENSION
         :proxy_yandex_object_resize_path
       else
         :proxy_yandex_object_preview_path
       end
+    end
+
+    def video_url(size, dimensions)
+      actual_filename = original?(size) ? storage_filename : preview_filename
+
+      Rails.application.routes.url_helpers.public_send(
+        proxy_method(size, dimensions),
+        "#{yandex_token.other_dir.sub(%r{^/}, '')}/#{actual_filename}",
+        params_for_size(size, dimensions&.first)
+      )
+    end
+
+    def photo_url(size, dimensions)
+      Rails.application.routes.url_helpers.public_send(
+        proxy_method(size, dimensions),
+        "#{yandex_token.dir.sub(%r{^/}, '')}/#{storage_filename}",
+        params_for_size(size, dimensions&.first)
+      )
+    end
+
+    def original?(size)
+      size == :original
     end
   end
 end

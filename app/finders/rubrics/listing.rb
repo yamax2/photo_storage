@@ -16,6 +16,7 @@ module Rubrics
 
       @limit = opts.fetch(:limit, 0)
       @offset = opts.fetch(:offset, 0)
+
       @desc_order = opts.fetch(:desc_order, false)
     end
 
@@ -24,6 +25,7 @@ module Rubrics
 
       scope.each do |model|
         attrs = model.attributes
+
         attrs[:yandex_token] = model.yandex_token
 
         yield ::Listing::Item.new(attrs)

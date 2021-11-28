@@ -64,6 +64,8 @@ RSpec.describe Listing::Item do
           photos_count: 10,
           rubrics_count: 20
         )
+
+        expect(item.video?).to eq(false)
       end
     end
 
@@ -163,6 +165,22 @@ RSpec.describe Listing::Item do
       let(:model_type) { 'Wrong' }
 
       it { is_expected.to eq(false) }
+    end
+  end
+
+  describe 'video attrs' do
+    let(:attrs) do
+      default_photo_attrs.merge!(
+        content_type: 'video/mp4',
+        props: {
+          preview_filename: '1.jpg'
+        }
+      )
+    end
+
+    it do
+      expect(item.video?).to eq(true)
+      expect(item.preview_filename).to eq('1.jpg')
     end
   end
 

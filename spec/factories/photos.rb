@@ -14,5 +14,9 @@ FactoryBot.define do
       md5 { nil }
       sha256 { nil }
     end
+
+    trait :video do
+      content_type { 'video/mp4' }
+    end
   end
 end

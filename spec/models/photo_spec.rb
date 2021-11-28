@@ -53,7 +53,7 @@ RSpec.describe Photo do
   end
 
   describe 'video validations' do
-    subject(:model) { build :photo, content_type: 'video/mp4' }
+    subject(:model) { build :photo, :video }
 
     it { is_expected.to validate_absence_of(:local_filename) }
     it { is_expected.to validate_absence_of(:rotated) }

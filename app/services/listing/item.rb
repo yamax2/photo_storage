@@ -21,9 +21,8 @@ module Listing
     ].freeze
     private_constant :DEFAULT_SIZE
 
-    (COLUMNS - %w[name]).each do |attr|
-      define_method(attr) { @values.fetch(attr) }
-    end
+    (COLUMNS - %w[name]).each { |attr| define_method(attr) { @values.fetch(attr) } }
+    %w[rotated effects preview_filename].each { |attr| define_method(attr) { props&.[](attr) } }
 
     def initialize(attrs = {})
       @values = attrs.with_indifferent_access.slice(*COLUMNS)
@@ -65,15 +64,11 @@ module Listing
       model_type == 'Rubric'
     end
 
+    def video?
+      Photo::VIDEO_CONTENT_TYPES.include?(content_type)
+    end
+
     delegate :css_transform, :turned?, to: :image_props
-
-    def rotated
-      props&.[]('rotated')
-    end
-
-    def effects
-      props&.[]('effects')
-    end
 
     private
 

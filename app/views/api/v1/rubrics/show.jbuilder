@@ -14,5 +14,6 @@ json.array!(@listing) do |obj|
     json.turned obj.turned?
     json.css_transform obj.css_transform
     json.actual_image_size obj.image_size(apply_rotation: true)
+    json.video obj.video?
   end
 end

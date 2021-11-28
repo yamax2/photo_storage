@@ -14,7 +14,7 @@ RSpec.describe Api::V1::RubricsController, type: :request do
     end
 
     context 'when correct rubric' do
-      let(:token) { create :'yandex/token' }
+      let(:token) { create :'yandex/token', other_dir: '/other' }
 
       let(:root_rubric) { create :rubric }
       let(:rubric) { create :rubric, rubric: root_rubric }
@@ -30,12 +30,15 @@ RSpec.describe Api::V1::RubricsController, type: :request do
       end
 
       let!(:photo2) do
-        create :photo, rubric: root_rubric,
-                       yandex_token: token,
-                       storage_filename: 'test2',
-                       width: 1_000,
-                       height: 2_000,
-                       lat_long: [1, 2]
+        create :photo,
+               :video,
+               rubric: root_rubric,
+               yandex_token: token,
+               storage_filename: 'test2.mp4',
+               preview_filename: 'test2.jpg',
+               width: 1_000,
+               height: 2_000,
+               lat_long: [1, 2]
       end
 
       let(:correct_response) do
@@ -51,7 +54,8 @@ RSpec.describe Api::V1::RubricsController, type: :request do
             'properties' => {
               'actual_image_size' => [480, 360],
               'css_transform' => nil,
-              'turned' => false
+              'turned' => false,
+              'video' => false
             }
           },
           {
@@ -65,7 +69,8 @@ RSpec.describe Api::V1::RubricsController, type: :request do
             'properties' => {
               'actual_image_size' => [300, 360],
               'css_transform' => nil,
-              'turned' => false
+              'turned' => false,
+              'video' => false
             }
           },
           {
@@ -79,7 +84,8 @@ RSpec.describe Api::V1::RubricsController, type: :request do
             'properties' => {
               'actual_image_size' => [120, 360],
               'css_transform' => 'rotate(90deg)',
-              'turned' => true
+              'turned' => true,
+              'video' => false
             }
           },
           {
@@ -87,13 +93,14 @@ RSpec.describe Api::V1::RubricsController, type: :request do
             'model_type' => 'Photo',
             'lat_long' => {'x' => 1.0, 'y' => 2.0},
             'image_size' => [180, 360],
-            'preview' => "/proxy/yandex/previews/test_photos/test2?id=#{token.id}&size=180",
+            'preview' => "/proxy/yandex/previews/other/test2.jpg?id=#{token.id}&size=180",
             'url' => "/rubrics/#{root_rubric.id}/photos/#{photo2.id}",
             'name' => photo2.name,
             'properties' => {
               'actual_image_size' => [180, 360],
               'css_transform' => nil,
-              'turned' => false
+              'turned' => false,
+              'video' => true
             }
           }
         ]
@@ -229,7 +236,8 @@ RSpec.describe Api::V1::RubricsController, type: :request do
                 'properties' => {
                   'actual_image_size' => [480, 360],
                   'css_transform' => nil,
-                  'turned' => false
+                  'turned' => false,
+                  'video' => false
                 }
               },
               {
@@ -243,7 +251,8 @@ RSpec.describe Api::V1::RubricsController, type: :request do
                 'properties' => {
                   'actual_image_size' => [360, 360],
                   'css_transform' => nil,
-                  'turned' => false
+                  'turned' => false,
+                  'video' => false
                 }
               }
             ]
