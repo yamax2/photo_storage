@@ -4,7 +4,7 @@ module Api
   module V1
     module Admin
       class UploadsController < AdminController
-        OBJECT_TYPES = Photo::ALLOWED_CONTENT_TYPES.index_with { Photo }.merge!(
+        OBJECT_TYPES = Photo::IMAGE_CONTENT_TYPES.index_with { Photo }.merge!(
           Track::MIME_TYPE => Track
         ).freeze
 
@@ -20,6 +20,7 @@ module Api
           return if @success
 
           FileUtils.rm_f(@model.tmp_local_filename)
+
           render status: :unprocessable_entity
         end
 

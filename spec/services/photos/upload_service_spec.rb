@@ -21,6 +21,15 @@ RSpec.describe Photos::UploadService do
     end
   end
 
+  context 'when not an image' do
+    let(:photo) { build :photo, content_type: 'video/mp4' }
+
+    it do
+      expect(service_context).to be_a_failure
+      expect(service_context.message).to eq("#{photo.id} is not an image")
+    end
+  end
+
   context 'when real upload' do
     let(:photo) { build :photo, local_filename: 'cats.jpg' }
     let!(:tmp_file) { photo.tmp_local_filename }

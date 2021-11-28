@@ -2,6 +2,7 @@
 
 RSpec.describe Photo do
   it_behaves_like 'storable model'
+
   it_behaves_like 'model with upload workflow', :photo
   it_behaves_like 'model with counter', :photo
 
@@ -47,6 +48,19 @@ RSpec.describe Photo do
 
     it { is_expected.to validate_inclusion_of(:rotated).in_array([1, 2, 3]).allow_blank }
     it { is_expected.to validate_numericality_of(:rotated).only_integer }
+
+    it { is_expected.to validate_absence_of(:preview_filename) }
+  end
+
+  describe 'video validations' do
+    subject(:model) { build :photo, content_type: 'video/mp4' }
+
+    it { is_expected.to validate_absence_of(:local_filename) }
+    it { is_expected.to validate_absence_of(:rotated) }
+    it { is_expected.to validate_absence_of(:effects) }
+    it { is_expected.to validate_absence_of(:exif) }
+    it { is_expected.to validate_presence_of(:storage_filename) }
+    it { is_expected.to validate_presence_of(:preview_filename) }
   end
 
   describe 'effects validation' do
@@ -230,6 +244,62 @@ RSpec.describe Photo do
           and change { new_rubric.reload.main_photo }.from(nil).to(photo).
           and change { new_rubric_parent.reload.main_photo }.from(nil).to(photo)
       end
+    end
+  end
+
+  describe '#video?' do
+    subject(:video?) { photo.video? }
+
+    let(:photo) { build :photo, content_type: content_type }
+
+    context 'when video' do
+      described_class::VIDEO_CONTENT_TYPES.each do |type|
+        context "when content_type is #{type}" do
+          let(:content_type) { type }
+
+          it { is_expected.to eq(true) }
+        end
+      end
+    end
+
+    context 'when empty content_type' do
+      let(:content_type) { nil }
+
+      it { is_expected.to eq(false) }
+    end
+
+    context 'when photo' do
+      let(:content_type) { 'image/png' }
+
+      it { is_expected.to eq(false) }
+    end
+  end
+
+  describe '#jpeg?' do
+    subject(:jpeg?) { photo.jpeg? }
+
+    let(:photo) { build :photo, content_type: content_type }
+
+    context 'when jpeg' do
+      described_class::JPEG_CONTENT_TYPES.each do |type|
+        context "when content_type is #{type}" do
+          let(:content_type) { type }
+
+          it { is_expected.to eq(true) }
+        end
+      end
+    end
+
+    context 'when empty content_type' do
+      let(:content_type) { nil }
+
+      it { is_expected.to eq(false) }
+    end
+
+    context 'when not a jpeg' do
+      let(:content_type) { 'image/png' }
+
+      it { is_expected.to eq(false) }
     end
   end
 end

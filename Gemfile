@@ -33,7 +33,6 @@ gem 'postgresql_cursor', '>= 0.6.2'
 gem 'ransack', '>= 2.1'
 gem 'redis-classy', '>= 2.4'
 gem 'redis-mutex', '>= 4'
-gem 'russian'
 gem 'strip_attributes', '>= 1.8'
 
 gem 'sidekiq', '>= 6'

@@ -24,6 +24,18 @@ RSpec.describe Api::V1::Admin::UploadsController do
       end
     end
 
+    context 'when try to upload video' do
+      let(:rubric) { create :rubric }
+      let(:content) { fixture_file_upload('spec/fixtures/test.txt', 'video/mp4') }
+
+      before { post :create, params: {rubric_id: rubric.id, content: content}, xhr: true }
+
+      it do
+        expect(response).to have_http_status(:unprocessable_entity)
+        expect(response.body).to be_empty
+      end
+    end
+
     context 'when with auth' do
       let(:rubric) { create :rubric }
       let(:content) { fixture_file_upload('spec/fixtures/test.txt', 'text/plain') }

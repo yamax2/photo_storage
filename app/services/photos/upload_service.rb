@@ -85,6 +85,7 @@ module Photos
     end
 
     def validate_upload
+      context.fail!(message: "#{photo.id} is not an image") if photo.video?
       context.fail!(message: 'local file not found') unless photo.local_file?
       context.fail!(message: 'active token not found') if token_for_upload.blank?
     end

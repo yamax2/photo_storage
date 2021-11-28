@@ -26,7 +26,9 @@ module PhotoStorage
     config.generators.system_tests = nil
 
     config.time_zone = ENV.fetch('TZ', 'Asia/Yekaterinburg')
+
     config.i18n.default_locale = :ru
+    config.i18n.fallbacks = %i[en]
     config.i18n.enforce_available_locales = true
 
     config.eager_load_paths += %W[
