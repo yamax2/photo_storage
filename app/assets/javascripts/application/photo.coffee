@@ -1,4 +1,5 @@
 nextPageTimeout = null
+player = null
 
 $(document)
   .on 'click', '.cart-selector', ->
@@ -30,6 +31,15 @@ $(document)
   .on 'turbolinks:load', ->
     $('#mainimg').on 'load', ->
       $('a.photo-arrow').show()
+
+    if $('#main_video').length > 0
+      player.dispose() if player
+      player = videojs('main_video', {controlBar: {pictureInPictureToggle: false}})
+      player.ready ->
+        $('a.photo-arrow').show()
+    else if player
+      player.dispose()
+      player = null
 
     clearTimeout(nextPageTimeout) if nextPageTimeout?
     $link = $('a.photo-arrow-right')

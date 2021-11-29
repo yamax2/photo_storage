@@ -58,10 +58,14 @@
         }
 
     .photo-content-image class=('rotated' if current.turned?) *{style: "width: #{size.first}px; height: #{size.last}px", id: "photo_#{current.id}"}
-      - transform = current.css_transform
-      = image_tag current.proxy_url(preview_id),
-                  id: 'mainimg',
-                  style: transform ? "transform: #{transform}" : nil
+      - if current.video?
+        video.video-js#main_video*{controls: true, autoplay: :play, preload: :auto, poster: current.proxy_url(preview_id), width: size.first, height: size.last}
+          source*{src: current.proxy_url(:original), type: current.content_type}
+      - else
+        - transform = current.css_transform
+        = image_tag current.proxy_url(preview_id),
+                    id: 'mainimg',
+                    style: transform ? "transform: #{transform}" : nil
 
     - if @photos.next.present?
       = link_to '', page_photo_path(@rubric, @photos.next), class: 'photo-arrow photo-arrow-right',
@@ -112,11 +116,12 @@
           td
             = number_to_human_size(current.size)
 
-        tr
-          th
-            = t('.original_download')
-          td
-            = link_to t('.download'), current.proxy_url, target: '_blank', title: current.original_filename
+        - unless current.video?
+          tr
+            th
+              = t('.original_download')
+            td
+              = link_to t('.download'), current.proxy_url, target: '_blank', title: current.original_filename
 
         tr
           th
