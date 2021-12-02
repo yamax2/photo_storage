@@ -53,6 +53,34 @@ RSpec.describe Api::V1::Admin::Yandex::TokensController, type: :request do
       end
     end
 
+    context 'when photos and videos' do
+      before do
+        create :photo, yandex_token: token, storage_filename: 'test'
+        create :photo, :video, yandex_token: token, storage_filename: 'test'
+
+        get api_v1_admin_yandex_tokens_url
+      end
+
+      it do
+        expect(response).to have_http_status(:ok)
+
+        expect(json).to match_array(
+          [
+            {
+              'id' => token.id,
+              'login' => token.login,
+              'type' => 'photo'
+            },
+            {
+              'id' => token.id,
+              'login' => token.login,
+              'type' => 'other'
+            }
+          ]
+        )
+      end
+    end
+
     context 'when photos and tracks' do
       before do
         create :photo, yandex_token: token, storage_filename: 'test'
@@ -66,7 +94,7 @@ RSpec.describe Api::V1::Admin::Yandex::TokensController, type: :request do
           {
             'id' => token.id,
             'login' => token.login,
-            'type' => 'track'
+            'type' => 'other'
           },
           {
             'id' => token.id,
@@ -99,7 +127,7 @@ RSpec.describe Api::V1::Admin::Yandex::TokensController, type: :request do
           {
             'id' => token.id,
             'login' => token.login,
-            'type' => 'track'
+            'type' => 'other'
           }
         ]
       end
@@ -187,15 +215,15 @@ RSpec.describe Api::V1::Admin::Yandex::TokensController, type: :request do
       end
     end
 
-    context 'when job finished for track' do
+    context 'when job finished for other' do
       before do
-        RedisClassy.redis.set("backup_info:#{token.id}:track", 'value')
+        RedisClassy.redis.set("backup_info:#{token.id}:other", 'value')
 
         create :track, yandex_token: token, storage_filename: 'test.gpx', size: 12
       end
 
       it do
-        expect { get api_v1_admin_yandex_token_url(id: token.id, resource: :track) }.
+        expect { get api_v1_admin_yandex_token_url(id: token.id, resource: :other) }.
           not_to(change { enqueued_jobs('tokens').size })
 
         expect(response).to have_http_status(:ok)

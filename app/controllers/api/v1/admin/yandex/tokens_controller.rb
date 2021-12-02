@@ -11,7 +11,7 @@ module Api
               resource = {token: token}
 
               # photos always last element
-              memo << resource.merge(type: :track) if token.track_count.present?
+              memo << resource.merge(type: :other) if token.other_count.present?
               memo << resource.merge(type: :photo) if token.photo_count.present?
             end
           end

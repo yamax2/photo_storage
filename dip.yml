@@ -6,8 +6,6 @@ environment:
   REDIS_IMAGE_TAG: 6
   DOCKER_RUBY_VERSION: 3.0
   DOCKER_GO_VERSION: 1.17
-  POSTGRES_DB: photos
-  POSTGRES_HOST: db
   RAILS_ENV: development
   LOG_LEVEL: debug
 
@@ -48,7 +46,8 @@ interaction:
 
   psql:
     service: db
-    command: psql -h ${POSTGRES_HOST} -U postgres ${POSTGRES_DB}
+    command: psql -h db -U postgres photos
+    compose_run_options: [no-deps]
 
   go:
     service: proxy

@@ -21,7 +21,7 @@ class Photo < ApplicationRecord
                             inverse_of: :photos,
                             optional: true
 
-  store_accessor :props, :rotated, :effects, :external_info, :preview_filename
+  store_accessor :props, :rotated, :effects, :external_info, :preview_filename, :preview_size
 
   validates :name, presence: true, length: {maximum: 512}
   validates :width, :height, presence: true, numericality: {only_integer: true, greater_than_or_equal_to: 0}
@@ -35,13 +35,17 @@ class Photo < ApplicationRecord
   validates :local_filename, :rotated, :effects, :exif, absence: true, if: :video?
   validates :storage_filename, presence: true, if: :video?
   validates :preview_filename, presence: true, length: {maximum: 512}, if: :video?
-  validates :preview_filename, absence: true, unless: :video?
+  validates :preview_size, presence: true, numericality: {only_integer: true, greater_than: 0}, if: :video?
+  validates :preview_filename, :preview_size, absence: true, unless: :video?
 
   strip_attributes only: %i[name description content_type]
 
   before_save { @rubric_changed = rubric_id_changed? if persisted? }
   after_update :change_rubric
   after_commit :remove_from_cart
+
+  scope :images, -> { where.not(content_type: VIDEO_CONTENT_TYPES) }
+  scope :videos, -> { where(content_type: VIDEO_CONTENT_TYPES) }
 
   def jpeg?
     JPEG_CONTENT_TYPES.include?(content_type)

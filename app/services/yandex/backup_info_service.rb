@@ -11,7 +11,7 @@ module Yandex
     WrongResourceError = Class.new(StandardError)
     RESOURCE_DIRS = {
       photo: :dir,
-      track: :other_dir
+      other: :other_dir
     }.with_indifferent_access.freeze
 
     delegate :token, :resource, :info, :backup_secret, to: :context

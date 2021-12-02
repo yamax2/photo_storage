@@ -34,9 +34,9 @@ RSpec.describe Yandex::ResourceFinder do
 
       expect(result.first).to have_attributes(
         photo_count: 1.0,
-        track_count: nil,
+        other_count: nil,
         photo_size: 10.0,
-        track_size: nil
+        other_size: nil
       )
     end
   end
@@ -53,28 +53,31 @@ RSpec.describe Yandex::ResourceFinder do
 
       expect(result.first).to have_attributes(
         photo_count: nil,
-        track_count: 1.0,
+        other_count: 1.0,
         photo_size: nil,
-        track_size: 12.0
+        other_size: 12.0
       )
     end
   end
 
-  context 'when both track and photo is published' do
+  context 'when track, photo and video are published' do
     let!(:photo) { create :photo, yandex_token: token, storage_filename: 'test', size: 12 }
     let!(:track) { create :track, yandex_token: token, storage_filename: 'test', size: 10 }
+    let!(:video) do
+      create :photo, :video, yandex_token: token, storage_filename: 'test', size: 500, preview_size: 200
+    end
 
     it do
-      expect(token.photos).to match_array([photo])
+      expect(token.photos).to match_array([photo, video])
       expect(token.tracks).to match_array([track])
 
       expect(result).to match_array([token])
 
       expect(result.first).to have_attributes(
-        photo_count: 1.0,
-        track_count: 1.0,
+        photo_count: 1,
+        other_count: 3,
         photo_size: 12.0,
-        track_size: 10.0
+        other_size: 710.0
       )
     end
   end
@@ -83,6 +86,7 @@ RSpec.describe Yandex::ResourceFinder do
     before do
       create :photo, yandex_token: token, storage_filename: 'test', size: 12
       create :track, yandex_token: other_token, storage_filename: 'test', size: 10
+      create :photo, :video, yandex_token: other_token, size: 100, storage_filename: 'test', preview_size: 50
     end
 
     it do
@@ -90,16 +94,16 @@ RSpec.describe Yandex::ResourceFinder do
 
       expect(result.first).to have_attributes(
         photo_count: 1.0,
-        track_count: nil,
+        other_count: nil,
         photo_size: 12.0,
-        track_size: nil
+        other_size: nil
       )
 
       expect(result.last).to have_attributes(
         photo_count: nil,
-        track_count: 1.0,
+        other_count: 3,
         photo_size: nil,
-        track_size: 10.0
+        other_size: 160
       )
     end
   end

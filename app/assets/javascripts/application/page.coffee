@@ -38,11 +38,14 @@ loadPhotos = ($photos) ->
           html += "<style>@media (max-width: 992px) { #lphoto_#{photo.id} { min-width: #{value}vw !important; }" +
                   " #llink_#{photo.id} { height: #{value}vw !important; } }</style>"
 
+        video_content = ""
+        video_content = "<div class=\"video-icon\"></div>" if photo.properties.video
+
         html += "<a title=\"#{photo.name}\" class=\"photo\" style=\"#{style}\" href=\"#{photo.url}\" " +
                 "id=\"llink_#{photo.id}\">" +
                 "<img id=\"lphoto_#{photo.id}\" src=\"#{photo.preview}\" style=\"#{imgStyle}\"" +
                 " onload=\"$(this).parent().addClass('loaded')\">" +
-                "<div class=\"photo-name\"><span>#{photo.name}</span></div></a>"
+                "<div class=\"photo-name\"><span>#{photo.name}</span></div>" + video_content + "</a>"
 
       $(html).insertBefore($loader)
       $loader.attr('data-offset', offset + response.length)

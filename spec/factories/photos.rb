@@ -17,6 +17,8 @@ FactoryBot.define do
 
     trait :video do
       content_type { 'video/mp4' }
+      preview_size { 100 }
+      preview_filename { 'test.mp4' }
     end
   end
 end

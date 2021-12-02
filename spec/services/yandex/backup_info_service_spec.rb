@@ -53,7 +53,7 @@ RSpec.describe Yandex::BackupInfoService do
   context 'when other' do
     subject(:encoded_string) do
       VCR.use_cassette('yandex_download_url_other') do
-        described_class.call!(token: token, resource: 'track', backup_secret: backup_secret).info
+        described_class.call!(token: token, resource: 'other', backup_secret: backup_secret).info
       end
     end
 

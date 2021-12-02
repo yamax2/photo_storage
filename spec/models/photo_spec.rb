@@ -50,6 +50,7 @@ RSpec.describe Photo do
     it { is_expected.to validate_numericality_of(:rotated).only_integer }
 
     it { is_expected.to validate_absence_of(:preview_filename) }
+    it { is_expected.to validate_absence_of(:preview_size) }
   end
 
   describe 'video validations' do
@@ -61,6 +62,32 @@ RSpec.describe Photo do
     it { is_expected.to validate_absence_of(:exif) }
     it { is_expected.to validate_presence_of(:storage_filename) }
     it { is_expected.to validate_presence_of(:preview_filename) }
+    it { is_expected.to validate_presence_of(:preview_size) }
+    it { is_expected.to validate_numericality_of(:preview_size).is_greater_than(0).only_integer }
+  end
+
+  describe 'scopes' do
+    let(:token) { create :'yandex/token' }
+
+    before do
+      described_class::ALLOWED_CONTENT_TYPES.each do |content_type|
+        model = build(:photo, content_type: content_type, yandex_token: token, storage_filename: 'test')
+
+        if model.video?
+          model.assign_attributes(
+            preview_size: 10,
+            preview_filename: 'test'
+          )
+        end
+
+        model.save!
+      end
+    end
+
+    it do
+      expect(described_class.images.count).to eq(4)
+      expect(described_class.videos.count).to eq(2)
+    end
   end
 
   describe 'effects validation' do
