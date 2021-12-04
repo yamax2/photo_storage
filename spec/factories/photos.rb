@@ -19,6 +19,7 @@ FactoryBot.define do
       content_type { 'video/mp4' }
       preview_size { 100 }
       preview_filename { 'test.mp4' }
+      preview_md5 { Digest::MD5.hexdigest(SecureRandom.hex(32)) }
     end
   end
 end

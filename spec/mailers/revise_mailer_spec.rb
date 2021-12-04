@@ -13,7 +13,7 @@ RSpec.describe ReviseMailer do
 
     context 'when without admin_emails' do
       let(:admin_emails) { [] }
-      let(:info) { {1 => %w[test test]} }
+      let(:info) { {'photo:1' => %w[test test]} }
 
       it { is_expected.not_to be_present }
     end
@@ -23,12 +23,12 @@ RSpec.describe ReviseMailer do
     end
 
     context 'when info presents' do
-      let(:info) { {1 => %w[test qq], 2 => %w[error1 error2]} }
+      let(:info) { {'photo:1' => %w[test qq], 'photo:2' => %w[error1 error2]} }
 
       it do
         expect(mail.to).to match_array(%w[max@tretyakov-ma.ru scott@evil.pro])
         expect(mail.subject).to eq I18n.t('views.revise_mailer.failed.subject', token_id: 10, dir: '000/013/')
-        expect(mail.body.encoded).to include('table')
+        expect(mail.body.encoded).to include('table', 'photo:1', 'photo:2')
       end
     end
   end

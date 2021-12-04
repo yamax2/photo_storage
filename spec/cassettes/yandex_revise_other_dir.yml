@@ -2,10 +2,10 @@
 http_interactions:
 - request:
     method: propfind
-    uri: https://webdav.yandex.ru/other
+    uri: https://webdav.yandex.ru/other_dev
     body:
       encoding: UTF-8
-      string: ''
+      string: <?xml version="1.0" encoding="utf-8"?><propfind xmlns="DAV:"></propfind>
     headers:
       Authorization:
       - OAuth <TOKEN>
@@ -13,23 +13,27 @@ http_interactions:
       - '1'
       Content-Type:
       - application/x-www-form-urlencoded
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-      Accept:
-      - "*/*"
+      Content-Length:
+      - '72'
+      Connection:
+      - close
+      Host:
+      - webdav.yandex.ru
       User-Agent:
-      - Ruby
+      - http.rb/5.0.4
   response:
     status:
       code: 207
       message: Multi-Status
     headers:
+      Connection:
+      - close
       Date:
-      - Fri, 27 Dec 2019 20:30:44 GMT
+      - Fri, 03 Dec 2021 23:43:11 GMT
       Yandex-Cloud-Request-Id:
-      - dav-4e0d0255994ab2fa73f335c324428d08-iva4-646b2d75e43c
+      - dav-ca7b55c9f3b90e8ac89726921e01b5e6-vgbea6xsbapxi7dv
       Yandex-Uid:
-      - '1130000019982670'
+      - '1259373998'
       X-Frame-Options:
       - SAMEORIGIN
       X-Xss-Protection:
@@ -38,21 +42,22 @@ http_interactions:
       - nosniff
       Content-Type:
       - application/xml; charset=UTF-8
-      Transfer-Encoding:
-      - chunked
       Server:
       - Jetty(9.4.11.v20180605)
     body:
       encoding: UTF-8
-      string: <?xml version="1.0" encoding="UTF-8"?><d:multistatus xmlns:d="DAV:"><d:response><d:href>/other/</d:href><d:propstat><d:status>HTTP/1.1
-        200 OK</d:status><d:prop><d:creationdate>2019-12-08T19:13:41Z</d:creationdate><d:displayname>other</d:displayname><d:getlastmodified>Sun,
-        08 Dec 2019 19:13:41 GMT</d:getlastmodified><d:resourcetype><d:collection /></d:resourcetype></d:prop></d:propstat></d:response><d:response><d:href>/other/100629933dd18a31a7bc895ec04ee18fa70f15266512.gpx</d:href><d:propstat><d:status>HTTP/1.1
-        200 OK</d:status><d:prop><d:getetag>d01370991b04c6089763ae93c4ae9799</d:getetag><d:creationdate>2019-12-23T17:57:15Z</d:creationdate><d:displayname>100629933dd18a31a7bc895ec04ee18fa70f15266512.gpx</d:displayname><d:getlastmodified>Mon,
-        23 Dec 2019 17:57:15 GMT</d:getlastmodified><d:getcontenttype>text/plain</d:getcontenttype><d:getcontentlength>3801113</d:getcontentlength><d:resourcetype /></d:prop></d:propstat></d:response><d:response><d:href>/other/1007fcb25a39fb7254397755506edee33cd602e27714.gpx</d:href><d:propstat><d:status>HTTP/1.1
-        200 OK</d:status><d:prop><d:getetag>9d23b5658fb6c202e54b48f65b8ca35e</d:getetag><d:creationdate>2019-12-23T17:57:16Z</d:creationdate><d:displayname>1007fcb25a39fb7254397755506edee33cd602e27714.gpx</d:displayname><d:getlastmodified>Mon,
-        23 Dec 2019 17:57:16 GMT</d:getlastmodified><d:getcontenttype>text/plain</d:getcontenttype><d:getcontentlength>1984394</d:getcontentlength><d:resourcetype /></d:prop></d:propstat></d:response><d:response><d:href>/other/1008c271d57b9d519ba2d304bdb8584ed1666dc64069.gpx</d:href><d:propstat><d:status>HTTP/1.1
-        200 OK</d:status><d:prop><d:getetag>a568fedd7b0b3224611a3e29a9127c21</d:getetag><d:creationdate>2019-12-23T17:57:16Z</d:creationdate><d:displayname>1008c271d57b9d519ba2d304bdb8584ed1666dc64069.gpx</d:displayname><d:getlastmodified>Mon,
-        23 Dec 2019 17:57:16 GMT</d:getlastmodified><d:getcontenttype>text/plain</d:getcontenttype><d:getcontentlength>3780953</d:getcontentlength><d:resourcetype /></d:prop></d:propstat></d:response></d:multistatus>
-    http_version: 
-  recorded_at: Fri, 27 Dec 2019 20:30:46 GMT
-recorded_with: VCR 5.0.0
+      string: <?xml version='1.0' encoding='UTF-8'?><d:multistatus xmlns:d="DAV:"><d:response><d:href>/other_dev/</d:href><d:propstat><d:status>HTTP/1.1
+        200 OK</d:status><d:prop><d:creationdate>2020-12-14T06:22:04Z</d:creationdate><d:displayname>other_dev</d:displayname><d:getlastmodified>Mon,
+        14 Dec 2020 06:22:04 GMT</d:getlastmodified><d:resourcetype><d:collection/></d:resourcetype></d:prop></d:propstat></d:response><d:response><d:href>/other_dev/69853337f2a537d654b3f062af5ff939ea6d6a6358c.gpx</d:href><d:propstat><d:status>HTTP/1.1
+        200 OK</d:status><d:prop><file_url>https://downloader.disk.yandex.ru/disk/c881f1f521441345fdd5ef798f9823c349f7ff14ae62d83b1cabef67294ed047/61aae3d0/fKqInKw3d7bLFOeFnMGnhHghqCwlwr4MTJxTTxQ7RZ20LgvohK5vl7dsaCUMD4u58UWY0nb-Si8kZmcbQ0Z6QGJ4dxpTTFkgn5VlhaRhnv6r8npumZHI4midPdWhecNq?uid=1259373998&amp;filename=69853337f2a537d654b3f062af5ff939ea6d6a6358c.gpx&amp;disposition=attachment&amp;hash=&amp;limit=0&amp;content_type=text%2Fxml&amp;owner_uid=1259373998&amp;fsize=5985588&amp;hid=e30d94f1ea1632bdf4cc146c4b5d9885&amp;media_type=data&amp;tknv=v2&amp;etag=c8740b29d009bcc106733d0387e070b8</file_url><d:getetag>c8740b29d009bcc106733d0387e070b8</d:getetag><d:creationdate>2021-02-14T12:21:20Z</d:creationdate><mulca_file_url>320.yadisk:1130000042725705.E1866279:401617607573576180231384602871</mulca_file_url><d:displayname>69853337f2a537d654b3f062af5ff939ea6d6a6358c.gpx</d:displayname><d:getlastmodified>Sun,
+        14 Feb 2021 12:21:20 GMT</d:getlastmodified><d:getcontenttype>text/xml</d:getcontenttype><d:getcontentlength>5985588</d:getcontentlength><mulca_digest_url>320.yadisk:1130000042725705.E2996982:401617607570976401040612727031</mulca_digest_url><d:resourcetype/></d:prop></d:propstat></d:response><d:response><d:href>/other_dev/6999074555a5624c001a8c20a3ff3e76a663b8070f0.gpx</d:href><d:propstat><d:status>HTTP/1.1
+        200 OK</d:status><d:prop><file_url>https://downloader.disk.yandex.ru/disk/f502d37cc4d6ab76f026aa989a265d8ace5f9fb675ccf862c6099d751327e8f2/61aae3d0/fKqInKw3d7bLFOeFnMGnhHeVb8t8Sk3h1Z3eTXcpylkmei4fDlL30WZN4mhJOu6uadD7SN88PWtQEIoXWXch8nOuswvCB4XClk_HHsMJZ1yr8npumZHI4midPdWhecNq?uid=1259373998&amp;filename=6999074555a5624c001a8c20a3ff3e76a663b8070f0.gpx&amp;disposition=attachment&amp;hash=&amp;limit=0&amp;content_type=text%2Fxml&amp;owner_uid=1259373998&amp;fsize=773092&amp;hid=bf270a23edbc20916de27c9e7e28c583&amp;media_type=data&amp;tknv=v2&amp;etag=a0c943c88f6a1640eacd5a741ce632b8</file_url><d:getetag>a0c943c88f6a1640eacd5a741ce632b8</d:getetag><d:creationdate>2021-02-14T12:20:05Z</d:creationdate><mulca_file_url>320.yadisk:1130000042725705.E2835480:1320504259119269042758408962097</mulca_file_url><d:displayname>6999074555a5624c001a8c20a3ff3e76a663b8070f0.gpx</d:displayname><d:getlastmodified>Sun,
+        14 Feb 2021 12:20:05 GMT</d:getlastmodified><d:getcontenttype>text/xml</d:getcontenttype><d:getcontentlength>773092</d:getcontentlength><mulca_digest_url>320.yadisk:1130000042725705.E2714045:132050425967866995460479834161</mulca_digest_url><d:resourcetype/></d:prop></d:propstat></d:response><d:response><d:href>/other_dev/7008ed91aa61caac19d80fc41a3d10b12466c2769cb.gpx</d:href><d:propstat><d:status>HTTP/1.1
+        200 OK</d:status><d:prop><file_url>https://downloader.disk.yandex.ru/disk/84e1aed0224d70164478f009838b6669b353adbf9a9b3db4fd6943d29b5ed143/61aae3d0/fKqInKw3d7bLFOeFnMGnhOVGiEmmiHtzLo-w3fwapYZwsxVH_AuiWhJzeLh_biANIzgd42XBengalvTejfPzyLU9bAqRYFqQnxT6p3SVhWCr8npumZHI4midPdWhecNq?uid=1259373998&amp;filename=7008ed91aa61caac19d80fc41a3d10b12466c2769cb.gpx&amp;disposition=attachment&amp;hash=&amp;limit=0&amp;content_type=text%2Fxml&amp;owner_uid=1259373998&amp;fsize=1453201&amp;hid=5148af9bda21671ef5dc73f16d22ea9b&amp;media_type=data&amp;tknv=v2&amp;etag=95fbf34957defb9289714639ec96c657</file_url><d:getetag>95fbf34957defb9289714639ec96c657</d:getetag><d:creationdate>2021-02-14T12:20:05Z</d:creationdate><mulca_file_url>320.yadisk:1130000019982670.E2981465:344280335857270849113807206887</mulca_file_url><d:displayname>7008ed91aa61caac19d80fc41a3d10b12466c2769cb.gpx</d:displayname><d:getlastmodified>Sun,
+        14 Feb 2021 12:20:05 GMT</d:getlastmodified><d:getcontenttype>text/xml</d:getcontenttype><d:getcontentlength>1453201</d:getcontentlength><mulca_digest_url>320.yadisk:1130000019982670.E2853335:3442803358150727855321038186983</mulca_digest_url><d:resourcetype/></d:prop></d:propstat></d:response><d:response><d:href>/other_dev/VID_20211104_121243.mp4</d:href><d:propstat><d:status>HTTP/1.1
+        200 OK</d:status><d:prop><file_url>https://downloader.disk.yandex.ru/disk/92e55d3d17f148e4aac8279bf4b5a8429ff9ab73b685310d4e8fc05caf07af81/61aae3d0/mQccSCmoqN_r44jQYeaULXhrufZF1Vw5qJ4cxa-AaYZJ514hsQkNjvKBejerxaVn6hjAPf5r72p584PrqZDJvQ%3D%3D?uid=1259373998&amp;filename=VID_20211104_121243.mp4&amp;disposition=attachment&amp;hash=&amp;limit=0&amp;content_type=video%2Fmp4&amp;owner_uid=1259373998&amp;fsize=60518940&amp;hid=1d3a9c278e702c9346d134e51f4e1905&amp;media_type=video&amp;tknv=v2&amp;etag=4c863a1f2f92740565a0bf0919598893</file_url><d:getetag>4c863a1f2f92740565a0bf0919598893</d:getetag><d:creationdate>2021-11-14T16:42:35Z</d:creationdate><mulca_file_url>320.yadisk:1499635514.E3298549:78450166170036040348957307145</mulca_file_url><d:displayname>VID_20211104_121243.mp4</d:displayname><d:getlastmodified>Sun,
+        14 Nov 2021 16:42:35 GMT</d:getlastmodified><d:getcontenttype>video/mp4</d:getcontenttype><d:getcontentlength>60518940</d:getcontentlength><mulca_digest_url>320.yadisk:1499635514.E5602097:78450166197530974419886913807</mulca_digest_url><d:resourcetype/></d:prop></d:propstat></d:response><d:response><d:href>/other_dev/VID_20211104_121243.mp4.jpg</d:href><d:propstat><d:status>HTTP/1.1
+        200 OK</d:status><d:prop><file_url>https://downloader.disk.yandex.ru/disk/4f3fe8d2c9df829b2a102813a9dca8a3774debf155199ab43ed45c837e576af3/61aae3d0/z09fMFiWn2Q0ke7F7_7a1-1eb2UwCKsswZPcGPckhRkspuYPMNsExhKG-j1rFrFAOBH1yaC6kgVkoJj2cacTdQ%3D%3D?uid=1259373998&amp;filename=VID_20211104_121243.mp4.jpg&amp;disposition=attachment&amp;hash=&amp;limit=0&amp;content_type=image%2Fjpeg&amp;owner_uid=1259373998&amp;fsize=360580&amp;hid=555dbf053347ee3dd81af5b656c7e3ac&amp;media_type=image&amp;tknv=v2&amp;etag=ec22d5b206a64036b37a8d66c3e6a3c6</file_url><d:getetag>ec22d5b206a64036b37a8d66c3e6a3c6</d:getetag><d:creationdate>2021-11-14T16:56:33Z</d:creationdate><mulca_file_url>320.yadisk:1259373998.E5963856:4185423026152522016734912660042</mulca_file_url><d:displayname>VID_20211104_121243.mp4.jpg</d:displayname><d:getlastmodified>Sun,
+        14 Nov 2021 16:56:33 GMT</d:getlastmodified><d:getcontenttype>image/jpeg</d:getcontenttype><d:getcontentlength>360580</d:getcontentlength><mulca_digest_url>320.yadisk:1259373998.E5542581:418542302644467523758919938634</mulca_digest_url><d:resourcetype/></d:prop></d:propstat></d:response></d:multistatus>
+  recorded_at: Fri, 03 Dec 2021 23:43:12 GMT
+recorded_with: VCR 6.0.0

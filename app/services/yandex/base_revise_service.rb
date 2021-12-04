@@ -41,22 +41,28 @@ module Yandex
     end
 
     def revise
-      relation_to_revise.each do |model|
-        dav_info = dav_response.delete(model.storage_filename)
+      relation_to_revise.each_instance { |model| check_model(model) }
+    end
 
-        if dav_info.nil?
-          errors[model.id] = ['not found on remote storage']
-          next
-        end
+    def check_model(model)
+      dav_info = dav_response.delete(model.storage_filename)
 
-        next if (er = match_info(model, dav_info)).blank?
-
-        errors[model.id] = er
+      if dav_info.nil?
+        errors[model_id(model)] = ['not found on the remote storage']
+        return
       end
+
+      return if (er = match_info(model, dav_info)).blank?
+
+      errors[model_id(model)] = er
     end
 
     def storage_dir
       @storage_dir ||= base_storage_dir
+    end
+
+    def model_id(model)
+      [model.class.name.underscore, model.id].join(':')
     end
   end
 end

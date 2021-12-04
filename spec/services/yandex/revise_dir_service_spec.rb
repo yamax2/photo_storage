@@ -18,6 +18,8 @@ RSpec.describe Yandex::ReviseDirService do
                    md5: '98d63be6348659f5d3623246a55fcb39',
                    content_type: 'image/jpeg',
                    yandex_token: token
+
+    create :photo, :video, yandex_token: token, storage_filename: '000/013/test.mov'
   end
 
   context 'when dir exists' do
@@ -48,8 +50,8 @@ RSpec.describe Yandex::ReviseDirService do
       it do
         expect(service_context).to be_a_success
 
-        expect(service_context.errors.keys).to eq([photo4.id])
-        expect(service_context.errors[photo4.id]).to eq(['not found on remote storage'])
+        expect(service_context.errors.keys).to eq(["photo:#{photo4.id}"])
+        expect(service_context.errors["photo:#{photo4.id}"]).to eq(['not found on the remote storage'])
       end
     end
 
@@ -65,8 +67,8 @@ RSpec.describe Yandex::ReviseDirService do
       it do
         expect(service_context).to be_a_success
 
-        expect(service_context.errors.keys).to eq([photo3.id])
-        expect(service_context.errors[photo3.id]).to match_array(
+        expect(service_context.errors.keys).to eq(["photo:#{photo3.id}"])
+        expect(service_context.errors["photo:#{photo3.id}"]).to match_array(
           ['size mismatch', 'content type mismatch', 'etag mismatch']
         )
       end

@@ -21,6 +21,7 @@ module Yandex
     def relation_to_revise
       Photo.
         uploaded.
+        images.
         where(yandex_token: token).
         where(Photo.arel_table[:storage_filename].matches_regexp("^#{dir}[a-z0-9]+\.[A-z]+$"))
     end

@@ -3,7 +3,7 @@
 RSpec.describe Yandex::ReviseOtherDirJob do
   subject(:run_job!) { described_class.new.perform(token.id) }
 
-  let!(:token) { create :'yandex/token', other_dir: '/other' }
+  let!(:token) { create :'yandex/token', other_dir: '/other_dev' }
 
   context 'when errors' do
     let(:request) { VCR.use_cassette('yandex_revise_other_dir') { run_job! } }

@@ -51,6 +51,7 @@ RSpec.describe Photo do
 
     it { is_expected.to validate_absence_of(:preview_filename) }
     it { is_expected.to validate_absence_of(:preview_size) }
+    it { is_expected.to validate_absence_of(:preview_md5) }
   end
 
   describe 'video validations' do
@@ -64,6 +65,8 @@ RSpec.describe Photo do
     it { is_expected.to validate_presence_of(:preview_filename) }
     it { is_expected.to validate_presence_of(:preview_size) }
     it { is_expected.to validate_numericality_of(:preview_size).is_greater_than(0).only_integer }
+    it { is_expected.to validate_presence_of(:preview_md5) }
+    it { is_expected.to validate_length_of(:preview_md5).is_equal_to(32) }
   end
 
   describe 'scopes' do
@@ -76,7 +79,8 @@ RSpec.describe Photo do
         if model.video?
           model.assign_attributes(
             preview_size: 10,
-            preview_filename: 'test'
+            preview_filename: 'test',
+            preview_md5: Digest::MD5.hexdigest(SecureRandom.hex(32))
           )
         end
 
