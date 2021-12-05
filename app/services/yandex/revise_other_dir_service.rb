@@ -42,7 +42,7 @@ module Yandex
 
     def match_preview_info(model, dav_info)
       [].tap do |errors|
-        errors << 'preview size mismatch' if model.preview_size != dav_info.size
+        errors << 'preview size mismatch' if model.preview_size.to_i != dav_info.size
         errors << 'preview etag mismatch' if model.preview_md5 != dav_info.etag
       end
     end

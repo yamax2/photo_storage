@@ -3,11 +3,12 @@
 class StorageFilenameGenerator
   PARTITION_SIZE = 500
 
-  attr_reader :model
+  attr_reader :model, :prefix
 
-  def initialize(model, partition: true)
+  def initialize(model, partition: true, prefix: nil)
     @partition = partition
     @model = model
+    @prefix = prefix
   end
 
   def call
@@ -22,15 +23,15 @@ class StorageFilenameGenerator
     end
   end
 
-  def self.call(model, partition: true)
-    new(model, partition: partition).call
+  def self.call(model, partition: true, prefix: nil)
+    new(model, partition: partition, prefix: prefix).call
   end
 
   private
 
   def new_filename
     [
-      model.id.to_s,
+      (prefix || model.id).to_s,
       SecureRandom.hex(20),
       File.extname(model.original_filename).to_s.downcase
     ].join

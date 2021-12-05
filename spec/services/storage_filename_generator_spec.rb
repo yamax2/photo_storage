@@ -73,4 +73,12 @@ RSpec.describe StorageFilenameGenerator do
       expect(described_class.new(track, partition: false).call).to eq("#{track.id}test")
     end
   end
+
+  context 'when video with a prefix' do
+    let(:video) { build :photo, :video, original_filename: 'test.mp4' }
+
+    it do
+      expect(described_class.new(video, partition: false, prefix: :video).call).to eq('videotest.mp4')
+    end
+  end
 end

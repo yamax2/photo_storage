@@ -60,13 +60,14 @@ RSpec.describe Photo do
     it { is_expected.to validate_absence_of(:local_filename) }
     it { is_expected.to validate_absence_of(:rotated) }
     it { is_expected.to validate_absence_of(:effects) }
-    it { is_expected.to validate_absence_of(:exif) }
     it { is_expected.to validate_presence_of(:storage_filename) }
     it { is_expected.to validate_presence_of(:preview_filename) }
     it { is_expected.to validate_presence_of(:preview_size) }
     it { is_expected.to validate_numericality_of(:preview_size).is_greater_than(0).only_integer }
     it { is_expected.to validate_presence_of(:preview_md5) }
+    it { is_expected.to validate_presence_of(:preview_sha256) }
     it { is_expected.to validate_length_of(:preview_md5).is_equal_to(32) }
+    it { is_expected.to validate_length_of(:preview_sha256).is_equal_to(64) }
   end
 
   describe 'scopes' do
@@ -80,7 +81,8 @@ RSpec.describe Photo do
           model.assign_attributes(
             preview_size: 10,
             preview_filename: 'test',
-            preview_md5: Digest::MD5.hexdigest(SecureRandom.hex(32))
+            preview_md5: Digest::MD5.hexdigest(SecureRandom.hex(32)),
+            preview_sha256: Digest::SHA256.hexdigest(SecureRandom.hex(32))
           )
         end
 

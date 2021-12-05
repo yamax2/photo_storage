@@ -21,7 +21,8 @@ class Photo < ApplicationRecord
                             inverse_of: :photos,
                             optional: true
 
-  store_accessor :props, :rotated, :effects, :external_info, :preview_filename, :preview_size, :preview_md5
+  store_accessor :props,
+                 :rotated, :effects, :external_info, :preview_filename, :preview_size, :preview_md5, :preview_sha256
 
   validates :name, presence: true, length: {maximum: 512}
   validates :width, :height, presence: true, numericality: {only_integer: true, greater_than_or_equal_to: 0}
@@ -32,11 +33,12 @@ class Photo < ApplicationRecord
   validate :validate_effects
 
   # video attrs
-  validates :local_filename, :rotated, :effects, :exif, absence: true, if: :video?
+  validates :local_filename, :rotated, :effects, absence: true, if: :video?
   validates :storage_filename, presence: true, if: :video?
   validates :preview_filename, presence: true, length: {maximum: 512}, if: :video?
   validates :preview_size, presence: true, numericality: {only_integer: true, greater_than: 0}, if: :video?
   validates :preview_md5, presence: true, length: {is: 32}, if: :video?
+  validates :preview_sha256, presence: true, length: {is: 64}, if: :video?
   validates :preview_filename, :preview_size, :preview_md5, absence: true, unless: :video?
 
   strip_attributes only: %i[name description content_type]
