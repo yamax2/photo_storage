@@ -23,7 +23,7 @@ module Api
             require(:video).
             permit(
               :name, :rubric_id, :content_type, :original_filename, :original_timestamp, :width, :height,
-              :md5, :sha256, :preview_md5, :preview_sha256, :size, :preview_size,
+              :md5, :sha256, :preview_md5, :preview_sha256, :size, :preview_size, :tz,
               lat_long: [], exif: %i[make model]
             )
         end

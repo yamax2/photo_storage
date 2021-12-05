@@ -16,8 +16,7 @@ RSpec.describe Api::V1::Admin::VideosController, type: :request do
       {
         name: 'test',
         original_filename: 'test.mp4',
-        storage_filename: 'test.mp4',
-        preview_filename: 'test.mp4.jpg',
+        original_timestamp: '2021-11-04T07:12:43+05:00',
         preview_size: 100,
         size: 2_000,
         preview_md5: Digest::MD5.hexdigest('preview'),
@@ -29,7 +28,8 @@ RSpec.describe Api::V1::Admin::VideosController, type: :request do
         lat_long: [10.5, 11.65],
         exif: {'make' => 'Sony', 'model' => 'Test'},
         width: 1_024,
-        height: 768
+        height: 768,
+        tz: 'Europe/Moscow'
       }
     end
 
@@ -47,7 +47,8 @@ RSpec.describe Api::V1::Admin::VideosController, type: :request do
             yandex_token_id: token.id,
             preview_filename: String,
             storage_filename: String,
-            lat_long: ActiveRecord::Point.new(10.5, 11.65)
+            lat_long: ActiveRecord::Point.new(10.5, 11.65),
+            original_timestamp: Time.zone.local(2021, 11, 4, 7, 12, 43)
           )
         )
       end

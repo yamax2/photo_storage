@@ -12,7 +12,7 @@ RSpec.describe Video::UploadInfoService do
 
     decryptor = OpenSSL::Cipher.new('aes-256-cbc').decrypt.tap do |cipher|
       cipher.key = Digest::SHA256.digest(secret)
-      cipher.iv = Digest::MD5.digest(video.storage_filename)
+      cipher.iv = Digest::MD5.digest(video.original_filename)
     end
 
     JSON.parse(

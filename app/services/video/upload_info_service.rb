@@ -23,7 +23,7 @@ module Video
     def new_cipher
       OpenSSL::Cipher.new('aes-256-cbc').encrypt.tap do |cipher|
         cipher.key = Digest::SHA256.digest(@secret)
-        cipher.iv = Digest::MD5.digest(model.storage_filename)
+        cipher.iv = Digest::MD5.digest(model.original_filename)
       end
     end
 
