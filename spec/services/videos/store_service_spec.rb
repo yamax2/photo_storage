@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe Video::StoreService do
+RSpec.describe Videos::StoreService do
   let(:video) { build :photo, :video, original_filename: 'test.mp4' }
   let!(:node) { create :'yandex/token', active: true }
   let(:hex) { '84be4315c54a8cafa09a74a45d60936ff7c2df14' }

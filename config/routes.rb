@@ -64,7 +64,7 @@ Rails.application.routes.draw do
       namespace :admin do
         resources :uploads, only: :create
         resources :rubrics, only: %i[index update]
-        resources :videos, only: :create
+        resources :videos, only: %i[create show]
 
         namespace :yandex do
           resources :tokens, only: %i[index show] do

@@ -1,0 +1,54 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: https://cloud-api.yandex.net/v1/disk/resources/move?from=/12.mp4&overwrite=false&path=/other_dev/video0bd5626d12500a44c4cb5818a7ef73591a286dfc.mp4
+    body:
+      encoding: UTF-8
+      string: ''
+    headers:
+      Authorization:
+      - OAuth <TOKEN>
+      Connection:
+      - close
+      Host:
+      - cloud-api.yandex.net
+      User-Agent:
+      - http.rb/5.0.4
+  response:
+    status:
+      code: 409
+      message: Conflict
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Sat, 11 Dec 2021 21:28:05 GMT
+      Content-Type:
+      - application/json
+      Content-Length:
+      - '267'
+      Connection:
+      - close
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Yandex-Cloud-Request-Id:
+      - rest-6cf3daab3595aca5c25b31d42788f13a-api39h
+      Cache-Control:
+      - no-cache
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Headers:
+      - Accept-Language, Accept, X-Uid, X-HTTP-Method, X-Requested-With, Content-Type,
+        Authorization
+    body:
+      encoding: ASCII-8BIT
+      base64_string: |
+        eyJtZXNzYWdlIjoi0KDQtdGB0YPRgNGBIFwiL290aGVyX2Rldi92aWRlbzBi
+        ZDU2MjZkMTI1MDBhNDRjNGNiNTgxOGE3ZWY3MzU5MWEyODZkZmMubXA0XCIg
+        0YPQttC1INGB0YPRidC10YHRgtCy0YPQtdGCLiIsImRlc2NyaXB0aW9uIjoi
+        UmVzb3VyY2UgXCIvb3RoZXJfZGV2L3ZpZGVvMGJkNTYyNmQxMjUwMGE0NGM0
+        Y2I1ODE4YTdlZjczNTkxYTI4NmRmYy5tcDRcIiBhbHJlYWR5IGV4aXN0cy4i
+        LCJlcnJvciI6IkRpc2tSZXNvdXJjZUFscmVhZHlFeGlzdHNFcnJvciJ9
+  recorded_at: Sat, 11 Dec 2021 21:28:05 GMT
+recorded_with: VCR 6.0.0

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module Video
+module Videos
   class UploadInfoJob
     include Sidekiq::Worker
 
@@ -8,7 +8,8 @@ module Video
     private_constant :INFO_KEY_TTL
 
     def perform(video_id, redis_key)
-      video = Photo.video.find(video_id)
+      return if (video = Photo.videos.find_by(id: video_id)).nil?
+
       info = UploadInfoService.new(video).call
 
       RedisClassy.redis.set(
