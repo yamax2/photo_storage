@@ -10,8 +10,12 @@ module Video
     end
 
     def call
+      content = {
+        video: upload_url_for(model.storage_filename),
+        preview: upload_url_for(model.preview_filename)
+      }.to_json
+
       encryptor = new_cipher
-      content = upload_info.to_json
 
       Base64.encode64(
         encryptor.update(content) + encryptor.final
@@ -27,37 +31,11 @@ module Video
       end
     end
 
-    def upload_info # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
-      {
-        video: {
-          url: url_for(model.storage_filename),
-          headers: {
-            'Authorization' => auth_header,
-            'Content-Length' => model.size,
-            'Etag' => model.md5,
-            'Sha256' => model.sha256,
-            'Expect' => '100-continue'
-          }
-        },
-        preview: {
-          url: url_for(model.preview_filename),
-          headers: {
-            'Authorization' => auth_header,
-            'Content-Length' => model.preview_size,
-            'Etag' => model.preview_md5,
-            'Sha256' => model.preview_sha256,
-            'Expect' => '100-continue'
-          }
-        }
-      }
-    end
+    def upload_url_for(filename)
+      node = model.yandex_token
 
-    def auth_header
-      @auth_header ||= "OAuth #{model.yandex_token.access_token}"
-    end
-
-    def url_for(filename)
-      "#{YandexClient::Dav::ACTION_URL}#{model.yandex_token.other_dir}/#{filename}"
+      ::YandexClient::Disk[node.access_token].
+        upload_url([node.other_dir, filename].join('/'), overwrite: true)
     end
   end
 end

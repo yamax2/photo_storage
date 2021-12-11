@@ -1,10 +1,12 @@
 # frozen_string_literal: true
 
 RSpec.describe Video::UploadInfoService do
-  subject(:info) { described_class.new(video, secret: secret).call }
+  subject(:info) do
+    VCR.use_cassette('video_upload_info') { described_class.new(video, secret: secret).call }
+  end
 
   let(:secret) { 'very_secret' }
-  let(:node) { create :'yandex/token', other_dir: '/other' }
+  let(:node) { create :'yandex/token', other_dir: '/other_dev', access_token: API_ACCESS_TOKEN }
   let(:video) { create :photo, :video, storage_filename: 'test.mp4', yandex_token: node, size: 2_000 }
 
   let(:decoded_info) do
@@ -23,27 +25,7 @@ RSpec.describe Video::UploadInfoService do
   it do
     expect(info).to be_a(String)
 
-    expect(decoded_info).to include(
-      'video' => {
-        'url' => 'https://webdav.yandex.ru/other/test.mp4',
-        'headers' => {
-          'Authorization' => "OAuth #{node.access_token}",
-          'Content-Length' => video.size,
-          'Etag' => video.md5,
-          'Sha256' => video.sha256,
-          'Expect' => '100-continue'
-        }
-      },
-      'preview' => {
-        'url' => 'https://webdav.yandex.ru/other/test.mp4.jpg',
-        'headers' => {
-          'Authorization' => "OAuth #{node.access_token}",
-          'Content-Length' => video.preview_size,
-          'Etag' => video.preview_md5,
-          'Sha256' => video.preview_sha256,
-          'Expect' => '100-continue'
-        }
-      }
-    )
+    expect(decoded_info.fetch('video')).to include('disk.yandex.net')
+    expect(decoded_info.fetch('preview')).to include('disk.yandex.net')
   end
 end

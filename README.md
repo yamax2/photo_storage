@@ -11,7 +11,11 @@ See the docker-compose example on local domain `photos.localhost:8080` in `docke
 Register a new app on this page https://oauth.yandex.ru/ and choose the following permissions:
 ```
 Яндекс.Диск REST API
+Запись в любом месте на Диске
+Чтение всего Диска
 Доступ к информации о Диске
+Доступ к папке приложения на Диске
+
 
 API Яндекс.Паспорта
 Доступ к логину, имени и фамилии, полу

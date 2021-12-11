@@ -94,8 +94,10 @@ func yandexProxyHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	for k := range r.Header {
-		delete(r.Header, k)
+	for header := range r.Header {
+		if header != "Range" {
+			delete(r.Header, header)
+		}
 	}
 
 	r.Header.Add("Authorization", fmt.Sprintf("OAuth %s", node.Secret))

@@ -9,8 +9,8 @@ module Api
 
           ::Video::StoreService.new(@video).call
 
-          if @video.video? && @video.save
-            @info = ::Video::UploadInfoService.new(@video).call
+          if @video.video? && save_video
+            @info = '1' #::Video::UploadInfoService.new(@video).call
           else
             render status: :unprocessable_entity
           end
@@ -31,6 +31,16 @@ module Api
         def normalized_video_params
           video_params.tap do |par|
             par[:preview_size] = par[:preview_size].to_i
+          end
+        end
+
+        def save_video
+          Photo.transaction do
+            saved = @video.save
+
+            ::Photos::EnqueueLoadDescriptionService.call!(photo: @video) if saved
+
+            saved
           end
         end
       end

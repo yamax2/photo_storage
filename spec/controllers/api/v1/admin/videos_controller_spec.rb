@@ -8,6 +8,8 @@ RSpec.describe Api::V1::Admin::VideosController, type: :request do
   end
 
   describe '#create' do
+    subject(:request) { post api_v1_admin_videos_url(video: correct_video_attrs) }
+
     let(:rubric) { create :rubric }
     let(:token_active) { true }
     let!(:token) { create :'yandex/token', active: token_active }
@@ -36,9 +38,9 @@ RSpec.describe Api::V1::Admin::VideosController, type: :request do
     context 'when correct params' do
       let(:video) { Photo.videos.first! }
 
-      before { post api_v1_admin_videos_url(video: correct_video_attrs) }
-
       it do
+        expect { request }.to change { enqueued_jobs('descr', klass: Photos::LoadDescriptionJob).size }.by(1)
+
         expect(response).to have_http_status(:ok)
         expect(json[:id]).to eq(video.id)
         expect(json[:upload_info]).to be_a(String)
@@ -57,33 +59,37 @@ RSpec.describe Api::V1::Admin::VideosController, type: :request do
     context 'when without active tokens' do
       let(:token_active) { false }
 
-      before { post api_v1_admin_videos_url(video: correct_video_attrs) }
-
       it do
+        expect { request }.not_to(change { enqueued_jobs('descr', klass: Photos::LoadDescriptionJob).size })
+
         expect(response).to have_http_status(:unprocessable_entity)
         expect(json).to include(:yandex_token)
       end
     end
 
     context 'when wrong content_type' do
+      subject(:request) { post api_v1_admin_videos_url(video: attrs) }
+
       let(:attrs) do
         correct_video_attrs.
           merge(content_type: 'image/jpg').
           except(:preview_filename, :preview_size, :preview_md5)
       end
 
-      before { post api_v1_admin_videos_url(video: attrs) }
-
       it do
+        expect { request }.not_to(change { enqueued_jobs('descr', klass: Photos::LoadDescriptionJob).size })
+
         expect(response).to have_http_status(:unprocessable_entity)
         expect(json[:content_type]).to eq('not a video')
       end
     end
 
     context 'when incorrect params' do
-      before { post api_v1_admin_videos_url(video: correct_video_attrs.merge(name: '    ')) }
+      subject(:request) { post api_v1_admin_videos_url(video: correct_video_attrs.merge(name: '    ')) }
 
       it do
+        expect { request }.not_to(change { enqueued_jobs('descr', klass: Photos::LoadDescriptionJob).size })
+
         expect(response).to have_http_status(:unprocessable_entity)
         expect(json).to include(:name)
       end

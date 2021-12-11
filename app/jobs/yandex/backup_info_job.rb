@@ -9,6 +9,7 @@ module Yandex
 
     def perform(token_id, resource, redis_key)
       token = Yandex::Token.find(token_id)
+
       info = BackupInfoService.call!(
         token: token,
         resource: resource,
