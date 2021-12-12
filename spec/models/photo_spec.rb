@@ -137,13 +137,57 @@ RSpec.describe Photo do
   end
 
   describe 'remote file removing' do
-    let(:token) { create :'yandex/token' }
-    let(:photo) { create :photo, local_filename: nil, storage_filename: 'zozo', yandex_token: token }
+    let(:node) { create :'yandex/token', other_dir: '/other', dir: '/dir' }
+    let(:job_args) { enqueued_jobs(klass: Yandex::RemoveFileJob).map { |j| j['args'] } }
 
-    it do
-      expect(Photos::RemoveFileJob).to receive(:perform_async).with(token.id, 'zozo')
+    context 'when model is not uploaded' do
+      let(:photo) { create :photo, local_filename: 'zozo.jpg', yandex_token: node }
 
-      expect { photo.destroy }.not_to raise_error
+      it do
+        expect { photo.destroy }.
+          not_to(change { enqueued_jobs(klass: Yandex::RemoveFileJob).size })
+      end
+    end
+
+    context 'when image' do
+      let(:photo) { create :photo, storage_filename: '052/001/zozo.jpg', yandex_token: node }
+
+      it do
+        expect { photo.destroy }.to change { enqueued_jobs(klass: Yandex::RemoveFileJob).size }.by(1)
+
+        expect(job_args).to eq([[node.id, '/dir/052/001/zozo.jpg']])
+      end
+    end
+
+    context 'when video' do
+      let(:video) do
+        create :photo, :video, storage_filename: 'test.mp4', preview_filename: 'test.jpg', yandex_token: node
+      end
+
+      it do
+        expect { video.destroy }.
+          to change { enqueued_jobs(klass: Yandex::RemoveFileJob).size }.by(2)
+
+        expect(job_args).
+          to match_array([[node.id, '/other/test.mp4'], [node.id, '/other/test.jpg']])
+      end
+    end
+
+    context 'when job for preview enqueued with an error' do
+      let(:video) do
+        create :photo, :video, storage_filename: 'test.mp4', preview_filename: 'test.jpg', yandex_token: node
+      end
+
+      before do
+        allow(Yandex::RemoveFileJob).to receive(:perform_async).and_call_original
+        allow(Yandex::RemoveFileJob).to receive(:perform_async).with(node.id, '/other/test.jpg').and_raise('boom!')
+      end
+
+      it do
+        expect { video.destroy }.
+          to raise_error('boom!').
+          and change { enqueued_jobs(klass: Yandex::RemoveFileJob).size }.by(0)
+      end
     end
   end
 

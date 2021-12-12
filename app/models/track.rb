@@ -46,9 +46,9 @@ class Track < ApplicationRecord
 
     return if storage_filename.blank?
 
-    ::Tracks::RemoveFileJob.perform_async(
+    ::Yandex::RemoveFileJob.perform_async(
       yandex_token_id,
-      storage_filename
+      [yandex_token.other_dir, storage_filename].join('/')
     )
   end
 end

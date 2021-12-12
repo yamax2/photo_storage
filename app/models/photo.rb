@@ -72,15 +72,20 @@ class Photo < ApplicationRecord
     @rubric_changed = nil
   end
 
+  # if this method fails after commit, we should check the revise result
   def remove_file
     super
 
     return if storage_filename.blank?
 
-    ::Photos::RemoveFileJob.perform_async(
-      yandex_token_id,
-      storage_filename
-    )
+    if video?
+      with_redis_transaction do
+        enqueue_remove_job(yandex_token.other_dir, storage_filename)
+        enqueue_remove_job(yandex_token.other_dir, preview_filename)
+      end
+    else
+      enqueue_remove_job(yandex_token.dir, storage_filename)
+    end
   end
 
   def validate_effects
@@ -89,5 +94,15 @@ class Photo < ApplicationRecord
     valid = effects.is_a?(Array) && effects.all? { |value| ALLOWED_EFFECTS.any? { |regex| value =~ regex } }
 
     errors.add(:effects, :invalid) unless valid
+  end
+
+  def with_redis_transaction(&block)
+    Sidekiq.redis { |redis| redis.multi(&block) }
+  end
+
+  def enqueue_remove_job(dir, filename)
+    ::Yandex::RemoveFileJob.perform_async \
+      yandex_token_id,
+      [dir, filename].join('/')
   end
 end

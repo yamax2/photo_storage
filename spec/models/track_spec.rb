@@ -107,13 +107,26 @@ RSpec.describe Track do
   end
 
   describe 'remote file removing' do
-    let(:token) { create :'yandex/token' }
-    let(:track) { create :track, local_filename: nil, storage_filename: 'zozo', yandex_token: token }
+    let(:node) { create :'yandex/token', other_dir: '/other' }
 
-    it do
-      expect(Tracks::RemoveFileJob).to receive(:perform_async).with(token.id, 'zozo')
+    context 'when uploaded' do
+      let(:track) { create :track, storage_filename: 'zozo.gpx', yandex_token: node }
+      let(:job_args) { enqueued_jobs(klass: Yandex::RemoveFileJob).map { |j| j['args'] } }
 
-      expect { track.destroy }.not_to raise_error
+      it do
+        expect { track.destroy }.to change { enqueued_jobs(klass: Yandex::RemoveFileJob).size }.by(1)
+
+        expect(job_args).to eq([[node.id, '/other/zozo.gpx']])
+      end
+    end
+
+    context 'when track is not uploaded' do
+      let(:track) { create :track, local_filename: 'zozo.gpx' }
+
+      it do
+        expect { track.destroy }.
+          not_to(change { enqueued_jobs(klass: Yandex::RemoveFileJob).size })
+      end
     end
   end
 
