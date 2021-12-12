@@ -97,7 +97,7 @@ RSpec.describe Api::V1::Admin::VideosController, type: :request do
       it do
         expect { request }.
           to raise_error('boom!').
-          and change(Photo, :count).by(0).
+          and change(Photo, :count).by(1).
           and change { enqueued_jobs('descr', klass: Photos::LoadDescriptionJob).size }.by(0).
           and change { enqueued_jobs(klass: Videos::UploadInfoJob).size }.by(0).
           and change { enqueued_jobs(klass: Videos::MoveOriginalJob).size }.by(0)

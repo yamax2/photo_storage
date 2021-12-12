@@ -9,7 +9,9 @@ module Api
 
           ::Videos::StoreService.new(@video).call
 
-          if @video.video? && save_video
+          if @video.video? && @video.save
+            enqueue_jobs
+
             render status: :created
           else
             render status: :unprocessable_entity
@@ -41,16 +43,6 @@ module Api
         def normalized_video_params
           video_params.tap do |par|
             par[:preview_size] = par[:preview_size].to_i
-          end
-        end
-
-        def save_video
-          Photo.transaction do
-            saved = @video.save
-
-            enqueue_jobs if saved
-
-            saved
           end
         end
 

@@ -154,7 +154,8 @@ class NewVideo
   private
 
   def generate_curl(request_body)
-    "curl -sL -w '|%{http_code}' '#{Conf.host}/api/v1/admin/videos' -H 'Content-Type: application/json'" \
+    "curl -sL -w '|%{http_code}' '#{Conf.host}/api/v1/admin/videos' -u \"#{Conf.auth}\"" \
+      " -H 'Content-Type: application/json'" \
       " -d '{\"temporary_uploaded_filename\": \"#{uploaded_original}\", \"video\": #{request_body.to_json}'}"
   end
 end
@@ -173,7 +174,7 @@ class UploadInfo
     response = nil
 
     @attempts.times do
-      response, _, status = Open3.capture3("curl -sfL #{Conf.host}/api/v1/admin/videos/#{id}")
+      response, _, status = Open3.capture3("curl -sfL -u \"#{Conf.auth}\" '#{Conf.host}/api/v1/admin/videos/#{id}'")
 
       break if status.success?
 
