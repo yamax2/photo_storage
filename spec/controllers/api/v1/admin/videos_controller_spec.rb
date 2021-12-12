@@ -37,6 +37,7 @@ RSpec.describe Api::V1::Admin::VideosController, type: :request do
 
     context 'when correct params' do
       let(:video) { Photo.videos.first! }
+      let(:upload_job_args) { enqueued_jobs(klass: Videos::UploadInfoJob).map { |j| j['args'] } }
 
       it do
         expect { request }.
@@ -56,6 +57,8 @@ RSpec.describe Api::V1::Admin::VideosController, type: :request do
             original_timestamp: Time.zone.local(2021, 11, 4, 7, 12, 43)
           )
         )
+
+        expect(upload_job_args).to match_array([[video.id, "video_upload:#{video.id}", false]])
       end
     end
 
@@ -78,7 +81,7 @@ RSpec.describe Api::V1::Admin::VideosController, type: :request do
         expect(json[:id]).to eq(video.id)
 
         expect(move_job_args).to match_array([[video.id, 'test.mp4']])
-        expect(upload_job_args).to match_array([[video.id, "video_upload:#{video.id}"]])
+        expect(upload_job_args).to match_array([[video.id, "video_upload:#{video.id}", true]])
       end
     end
 

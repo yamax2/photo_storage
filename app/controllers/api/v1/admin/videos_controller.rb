@@ -58,14 +58,14 @@ module Api
           with_redis_transaction do
             ::Photos::EnqueueLoadDescriptionService.call!(photo: @video)
 
-            if (temporary_filename = params[:temporary_uploaded_filename]).present?
-              ::Videos::MoveOriginalJob.perform_async(
-                @video.id,
-                temporary_filename
-              )
+            temporary_filename = params[:temporary_uploaded_filename]
+
+            if temporary_filename.present?
+              ::Videos::MoveOriginalJob.perform_async \
+                @video.id, temporary_filename
             end
 
-            ::Videos::UploadInfoJob.perform_async(@video.id, info_redis_key)
+            ::Videos::UploadInfoJob.perform_async(@video.id, info_redis_key, temporary_filename.present?)
           end
         end
 

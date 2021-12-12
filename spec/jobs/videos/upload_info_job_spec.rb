@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 RSpec.describe Videos::UploadInfoJob do
-  subject(:run!) { described_class.new.perform(model.id, key) }
+  subject(:run!) { described_class.new.perform(model.id, key, false) }
 
   let(:node) { create :'yandex/token' }
   let(:key) { 'test_key' }
@@ -23,7 +23,7 @@ RSpec.describe Videos::UploadInfoJob do
   end
 
   context 'when wrong video' do
-    subject(:run!) { described_class.new.perform(1, key) }
+    subject(:run!) { described_class.new.perform(1, key, false) }
 
     it do
       expect { run! }.not_to raise_error
@@ -39,6 +39,24 @@ RSpec.describe Videos::UploadInfoJob do
       expect { run! }.not_to raise_error
 
       expect(RedisClassy.exists?(key)).to eq(false)
+    end
+  end
+
+  context 'when skip original' do
+    subject(:run!) { described_class.new.perform(model.id, key, true) }
+
+    let(:service) { double }
+    let(:model) { create :photo, :video, yandex_token: node, storage_filename: 'test.mp4' }
+
+    before do
+      allow(Videos::UploadInfoService).to receive(:new).with(model, skip_original: true).and_return(service)
+      allow(service).to receive(:call).and_return('info')
+    end
+
+    it do
+      expect { run! }.not_to raise_error
+
+      expect(RedisClassy.get(key)).to eq('info')
     end
   end
 end
