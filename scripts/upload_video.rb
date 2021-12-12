@@ -7,6 +7,11 @@
 #   * original video, required
 #   * rubric_id, required)
 #   * temporary uploaded, optional
+#
+# apt install mediainfo curl exiftool ffmpeg
+# $ cat ~/.photostorage
+# host: "http://11.0.2.5"
+# auth: "admin:..."
 
 require 'json'
 require 'tempfile'
@@ -15,10 +20,26 @@ require 'open3'
 require 'digest'
 require 'openssl'
 require 'base64'
-
-BACKEND_ROOT = '11.0.2.5'
+require 'yaml'
 
 # rubocop:disable Metrics/MethodLength,Style/FormatStringToken
+Conf = Struct.new(:host, :auth) do
+  def load!
+    config = "#{ENV['HOME']}/.photostorage"
+
+    raise "Config file not found #{config}" unless File.exist?(config)
+
+    mode = File.stat(config).mode & 0o7777
+
+    raise "Config file #{config} should have permissions 0600" unless mode == 0o600
+
+    configuration = YAML.load_file(config).slice('host', 'auth')
+
+    self.host = configuration.fetch('host')
+    self.auth = configuration['auth']
+  end
+end.new
+
 class VideoUploadInfo
   CONTENT_TYPES_BY_EXT = {
     'mp4' => 'video/mp4',
@@ -50,12 +71,15 @@ class VideoUploadInfo
 
   def upload_request_body(general, video) # rubocop:disable Metrics/AbcSize
     name = File.basename(filename)
-    lat_long = general.dig(:extra, :xyz)
+    lat_long = general.dig(:extra, :xyz) || general.dig(:extra, :location)
+
+    make = general.dig(:extra, :com_android_manufacturer)
+    model = general.dig(:extra, :com_android_model)
 
     {
       name: name,
       original_filename: name,
-      original_timestamp: parse_timestamp(general[:Tagged_Date]),
+      original_timestamp: parse_timestamp(general[:Tagged_Date] || general[:Encoded_Date]),
       size: general[:FileSize].to_i,
       width: video.fetch(:Width).to_i,
       height: video.fetch(:Height).to_i,
@@ -66,7 +90,8 @@ class VideoUploadInfo
       preview_md5: md5(preview_file.path),
       preview_sha256: sha256(preview_file.path),
       preview_size: preview_file.size,
-      tz: @timezone
+      tz: @timezone,
+      exif: make && model ? {make: make, model: model} : nil
     }
   end
 
@@ -129,7 +154,7 @@ class NewVideo
   private
 
   def generate_curl(request_body)
-    "curl -sL -w '|%{http_code}' '#{BACKEND_ROOT}/api/v1/admin/videos' -H 'Content-Type: application/json'" \
+    "curl -sL -w '|%{http_code}' '#{Conf.host}/api/v1/admin/videos' -H 'Content-Type: application/json'" \
       " -d '{\"temporary_uploaded_filename\": \"#{uploaded_original}\", \"video\": #{request_body.to_json}'}"
   end
 end
@@ -148,7 +173,7 @@ class UploadInfo
     response = nil
 
     @attempts.times do
-      response, _, status = Open3.capture3("curl -sfL #{BACKEND_ROOT}/api/v1/admin/videos/#{id}")
+      response, _, status = Open3.capture3("curl -sfL #{Conf.host}/api/v1/admin/videos/#{id}")
 
       break if status.success?
 
@@ -205,6 +230,8 @@ end
 
 filename = ARGV[0]
 raise "#{filename} not found" unless File.exist?(filename)
+
+Conf.load!
 
 info = VideoUploadInfo.new(filename)
 begin
