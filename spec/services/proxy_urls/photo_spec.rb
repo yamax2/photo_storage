@@ -51,13 +51,21 @@ RSpec.describe ProxyUrls::Photo do
              width: 720,
              height: 360,
              original_filename: 'test.mp4',
-             preview_filename: 'preview.jpg'
+             preview_filename: 'preview.jpg',
+             video_preview_filename: 'preview.mp4'
     end
 
     context 'when original' do
       it do
         expect(generator.generate).
           to eq("/proxy/yandex/other/video.mp4?fn=test.mp4&id=#{token.id}")
+      end
+    end
+
+    context 'when video preview' do
+      it do
+        expect(generator.generate(:video_preview)).
+          to eq("/proxy/yandex/other/preview.mp4?id=#{token.id}")
       end
     end
 

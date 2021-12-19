@@ -6,7 +6,7 @@ class PhotoDecorator < ApplicationDecorator
   def proxy_url(size = :original)
     url_generator.generate(
       size,
-      size == :original ? nil : image_size(size)
+      %i[original video_preview].include?(size) ? nil : image_size(size)
     )
   end
 

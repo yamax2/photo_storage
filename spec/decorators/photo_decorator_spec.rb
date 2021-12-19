@@ -39,6 +39,15 @@ RSpec.describe PhotoDecorator do
         end
       end
 
+      context 'when video preview' do
+        let(:photo) { create :photo, :video, storage_filename: 'test.mp4', yandex_token: token }
+
+        it do
+          expect(decorated_photo.proxy_url(:video_preview)).
+            to eq("/proxy/yandex/other_test_photos/test.preview.mp4?id=#{token.id}")
+        end
+      end
+
       context 'when thumb' do
         it do
           expect(decorated_photo.proxy_url(:thumb)).

@@ -28,6 +28,7 @@ module ProxyUrls
              :original_filename,
              :storage_filename,
              :preview_filename,
+             :video_preview_filename,
              :video?,
              to: :model, private: true
 
@@ -42,7 +43,7 @@ module ProxyUrls
     end
 
     def proxy_method(size, dimensions)
-      if original?(size)
+      if original?(size) || size == :video_preview
         :proxy_yandex_object_path
       elsif dimensions && dimensions.max > YANDEX_MAX_IMAGE_DIMENSION
         :proxy_yandex_object_resize_path
@@ -51,8 +52,15 @@ module ProxyUrls
       end
     end
 
-    def video_url(size, dimensions)
-      actual_filename = original?(size) ? storage_filename : preview_filename
+    def video_url(size, dimensions) # rubocop:disable Metrics/MethodLength
+      actual_filename =
+        if original?(size)
+          storage_filename
+        elsif size == :video_preview
+          video_preview_filename
+        else
+          preview_filename
+        end
 
       Rails.application.routes.url_helpers.public_send(
         proxy_method(size, dimensions),
