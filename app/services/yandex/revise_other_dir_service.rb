@@ -9,7 +9,14 @@ module Yandex
 
       videos_to_revise.each_instance do |model|
         check_model(model)
-        check_preview(model)
+
+        check_preview(model, model.preview_filename, md5: model.preview_md5, size: model.preview_size)
+
+        check_preview(
+          model,
+          model.video_preview_filename,
+          md5: model.video_preview_md5, size: model.video_preview_size
+        )
       end
     end
 
@@ -25,25 +32,25 @@ module Yandex
       token.photos.videos.uploaded
     end
 
-    def check_preview(model)
-      dav_info = dav_response.delete(model.preview_filename)
+    def check_preview(model, filename, md5:, size:)
+      dav_info = dav_response.delete(filename)
       id = model_id(model)
 
       if dav_info.nil?
-        (errors[id] ||= []) << 'preview not found on the remote storage'
+        (errors[id] ||= []) << "#{filename} not found on the remote storage"
 
         return
       end
 
-      return if (er = match_preview_info(model, dav_info)).blank?
+      return if (er = match_preview_info(filename, dav_info, md5: md5, size: size)).blank?
 
       (errors[id] ||= []).concat(er)
     end
 
-    def match_preview_info(model, dav_info)
+    def match_preview_info(filename, dav_info, md5:, size:)
       [].tap do |errors|
-        errors << 'preview size mismatch' if model.preview_size.to_i != dav_info.size
-        errors << 'preview etag mismatch' if model.preview_md5 != dav_info.etag
+        errors << "#{filename} size mismatch" if size != dav_info.size
+        errors << "#{filename} etag mismatch" if md5 != dav_info.etag
       end
     end
   end

@@ -116,12 +116,11 @@
           td
             = number_to_human_size(current.size)
 
-        - unless current.video?
-          tr
-            th
-              = t('.original_download')
-            td
-              = link_to t('.download'), current.proxy_url, target: '_blank', title: current.original_filename
+        tr
+          th
+            = t('.original_download')
+          td
+            = link_to t('.download'), current.proxy_url, target: '_blank', title: current.original_filename
 
         tr
           th

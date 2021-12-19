@@ -8,10 +8,11 @@
 #   * rubric_id, required)
 #   * temporary uploaded, optional
 #
-# apt install mediainfo curl exiftool ffmpeg
+# apt install mediainfo curl ffmpeg
 # $ cat ~/.photostorage
 # host: "http://11.0.2.5"
 # auth: "admin:..."
+# secret: "very_secret"
 
 require 'json'
 require 'tempfile'
@@ -23,9 +24,9 @@ require 'base64'
 require 'yaml'
 
 # rubocop:disable Metrics/MethodLength,Style/FormatStringToken
-Conf = Struct.new(:host, :auth) do
+Conf = Struct.new(:host, :secret, :auth) do
   def load!
-    config = "#{ENV['HOME']}/.photostorage"
+    config = "#{ENV['HOME']}/.photostorage.dev"
 
     raise "Config file not found #{config}" unless File.exist?(config)
 
@@ -33,14 +34,17 @@ Conf = Struct.new(:host, :auth) do
 
     raise "Config file #{config} should have permissions 0600" unless mode == 0o600
 
-    configuration = YAML.load_file(config).slice('host', 'auth')
+    configuration = YAML.load_file(config).slice('host', 'auth', 'secret')
 
     self.host = configuration.fetch('host')
+    self.secret = configuration.fetch('secret')
     self.auth = configuration['auth']
   end
 end.new
 
-class VideoUploadInfo
+# ffmpeg -i 12.mp4 -vf scale=1920:1080 -c:v libx264 -c:a copy -crf 25 12a.mp4
+# fails on < 1080
+class VideoMetadata
   CONTENT_TYPES_BY_EXT = {
     'mp4' => 'video/mp4',
     'mov' => 'video/quicktime'
@@ -56,6 +60,12 @@ class VideoUploadInfo
   def preview_file
     @preview_file ||= Tempfile.new(%w[preview .jpg]).tap do |file|
       make_preview(file.path)
+    end
+  end
+
+  def video_preview_file
+    @video_preview_file ||= Tempfile.new(['preview', File.extname(@filename)]).tap do |file|
+      make_video_preview(file.path)
     end
   end
 
@@ -80,16 +90,19 @@ class VideoUploadInfo
       name: name,
       original_filename: name,
       original_timestamp: parse_timestamp(general[:Tagged_Date] || general[:Encoded_Date]),
-      size: general[:FileSize].to_i,
       width: video.fetch(:Width).to_i,
       height: video.fetch(:Height).to_i,
       content_type: CONTENT_TYPES_BY_EXT.fetch(general.fetch(:FileExtension)),
       lat_long: lat_long ? lat_long.gsub(/[^0-9.]/, ' ').to_s.strip.split.map(&:to_f) : nil,
       md5: md5(filename),
       sha256: sha256(filename),
+      size: general[:FileSize].to_i,
       preview_md5: md5(preview_file.path),
       preview_sha256: sha256(preview_file.path),
       preview_size: preview_file.size,
+      video_preview_md5: md5(video_preview_file.path),
+      video_preview_sha256: sha256(video_preview_file.path),
+      video_preview_size: video_preview_file.size,
       tz: @timezone,
       exif: make && model ? {make: make, model: model} : nil
     }
@@ -109,6 +122,10 @@ class VideoUploadInfo
 
   def make_preview(path)
     `ffmpeg -y -hide_banner -loglevel error -ss 00:00:01.000 -i #{filename} -vframes 1 #{path}`
+  end
+
+  def make_video_preview(path)
+    `ffmpeg -y -i #{filename} -vf scale=1920:1080 -c:v libx264 -c:a copy -crf 25 #{path}`
   end
 
   def md5(filepath)
@@ -165,8 +182,9 @@ class UploadInfo
 
   attr_reader :id
 
-  def initialize(id, attempts: 10)
+  def initialize(id, filename, attempts: 10)
     @id = id
+    @filename = filename
     @attempts = attempts
   end
 
@@ -183,48 +201,53 @@ class UploadInfo
 
     raise NotFetchedError, "info fetch failed for video #{id}" if response&.empty?
 
-    response
-  end
-end
-
-class VideoUploader
-  NotUploadedError = Class.new(StandardError)
-
-  def initialize(info, filename, preview_filename)
-    @info = info
-    @filename = filename
-    @preview_filename = preview_filename
-  end
-
-  def upload
-    video, preview = parse_info
-
-    upload_file(video, @filename) if video
-    upload_file(preview, @preview_filename)
+    parse_info(response)
   end
 
   private
 
-  def upload_file(url, filename)
-    `curl -fL '#{url}' --upload-file #{filename}`
-  end
-
-  def parse_info
-    decoded = Base64.decode64(@info)
+  def parse_info(info)
+    decoded = Base64.decode64(info)
 
     schema = JSON.parse(
       decryptor.update(decoded) + decryptor.final,
       symbolize_names: true
     )
 
-    [schema[:video], schema.fetch(:preview)]
+    [schema[:video], schema.fetch(:preview), schema.fetch(:video_preview)]
   end
 
   def decryptor
     @decryptor ||= OpenSSL::Cipher.new('aes-256-cbc').decrypt.tap do |cipher|
-      cipher.key = Digest::SHA256.digest('very_secret')
+      cipher.key = Digest::SHA256.digest(Conf.secret)
       cipher.iv = Digest::MD5.digest(File.basename(@filename))
     end
+  end
+end
+
+class VideoUploader
+  NotUploadedError = Class.new(StandardError)
+
+  def initialize(info, filename, preview_filename, video_preview_filename)
+    @info = info
+
+    @filename = filename
+    @preview_filename = preview_filename
+    @video_preview_filename = video_preview_filename
+  end
+
+  def upload
+    video, preview, video_preview = @info
+
+    upload_file(video, @filename) if video
+    upload_file(preview, @preview_filename)
+    upload_file(video_preview, @video_preview_filename)
+  end
+
+  private
+
+  def upload_file(url, filename)
+    `curl -fL '#{url}' --upload-file #{filename}`
   end
 end
 # rubocop:enable Metrics/MethodLength,Style/FormatStringToken
@@ -234,19 +257,23 @@ raise "#{filename} not found" unless File.exist?(filename)
 
 Conf.load!
 
-info = VideoUploadInfo.new(filename)
+meta = VideoMetadata.new(filename)
 begin
-  body = info.request_body
+  body = meta.request_body
 
   id = NewVideo.new(rubric_id: ARGV[1].to_i, uploaded_original: ARGV[2]).create(body)
-  upload_info = UploadInfo.new(id).fetch
+  upload_info = UploadInfo.new(id, filename).fetch
 
   VideoUploader.new(
     upload_info,
     filename,
-    info.preview_file.path
+    meta.preview_file.path,
+    meta.video_preview_file.path
   ).upload
 ensure
-  info.preview_file.close
-  info.preview_file.unlink
+  meta.preview_file.close
+  meta.preview_file.unlink
+
+  meta.video_preview_file.close
+  meta.video_preview_file.unlink
 end

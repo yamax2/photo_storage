@@ -23,11 +23,11 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Mon, 06 Dec 2021 21:56:30 GMT
+      - Sat, 18 Dec 2021 22:11:57 GMT
       Content-Type:
       - application/json; charset=utf-8
       Content-Length:
-      - '243'
+      - '240'
       Connection:
       - close
       Vary:
@@ -37,7 +37,7 @@ http_interactions:
       Access-Control-Allow-Credentials:
       - 'true'
       Yandex-Cloud-Request-Id:
-      - rest-d262bc2b343308048e2cb37be3a34a0a-api08f
+      - rest-7c9b16b07d303f4a963a07e875a44517-api10e
       Cache-Control:
       - no-cache
       Access-Control-Allow-Origin:
@@ -47,8 +47,8 @@ http_interactions:
         Authorization
     body:
       encoding: UTF-8
-      string: '{"operation_id":"a256ebaa59291d5efa5491b83edc6c17d36adea0430f68a43e9bb4a5aa20b7e3","href":"https://uploader13j.disk.yandex.net:443/upload-target/zozo","method":"PUT","templated":false}'
-  recorded_at: Mon, 06 Dec 2021 21:56:30 GMT
+      string: '{"operation_id":"d9d8dcda72e3a65537772b7b88371fa225e0ec89f808cce5db76d1b881cd9226","href":"https://uploader24j.disk.yandex.net:443/upload-target/zozo","method":"PUT","templated":false}'
+  recorded_at: Sat, 18 Dec 2021 22:11:57 GMT
 - request:
     method: get
     uri: https://cloud-api.yandex.net/v1/disk/resources/upload?overwrite=true&path=/other_dev/test.mp4.jpg
@@ -72,11 +72,11 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Mon, 06 Dec 2021 21:56:32 GMT
+      - Sat, 18 Dec 2021 22:11:58 GMT
       Content-Type:
       - application/json; charset=utf-8
       Content-Length:
-      - '243'
+      - '241'
       Connection:
       - close
       Vary:
@@ -86,7 +86,7 @@ http_interactions:
       Access-Control-Allow-Credentials:
       - 'true'
       Yandex-Cloud-Request-Id:
-      - rest-0090961f6430aba698f118205d8d28ba-api01f
+      - rest-5e479efcd7cde37bf7040990a3aec53a-api23v
       Cache-Control:
       - no-cache
       Access-Control-Allow-Origin:
@@ -96,6 +96,55 @@ http_interactions:
         Authorization
     body:
       encoding: UTF-8
-      string: '{"operation_id":"379691092593beccd2b771e6b521037ecbcad78ee50353e43526e652d484cfc6","href":"https://uploader21o.disk.yandex.net:443/upload-target/zozo1","method":"PUT","templated":false}'
-  recorded_at: Mon, 06 Dec 2021 21:56:32 GMT
+      string: '{"operation_id":"92c1414191510a286f0f305a1275e1035e7d19c0a4149f84f5f923a73008afdb","href":"https://uploader30j.disk.yandex.net:443/upload-target/zozo","method":"PUT","templated":false}'
+  recorded_at: Sat, 18 Dec 2021 22:11:58 GMT
+- request:
+    method: get
+    uri: https://cloud-api.yandex.net/v1/disk/resources/upload?overwrite=true&path=/other_dev/test.preview.mp4
+    body:
+      encoding: UTF-8
+      string: ''
+    headers:
+      Authorization:
+      - OAuth <TOKEN>
+      Connection:
+      - close
+      Host:
+      - cloud-api.yandex.net
+      User-Agent:
+      - http.rb/5.0.4
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Sat, 18 Dec 2021 22:11:58 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Content-Length:
+      - '242'
+      Connection:
+      - close
+      Vary:
+      - Accept-Encoding
+      Access-Control-Allow-Methods:
+      - PUT, POST, GET, OPTIONS
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Yandex-Cloud-Request-Id:
+      - rest-32c8dac187d8c33cfde3aa1dad906e3d-api25h
+      Cache-Control:
+      - no-cache
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Headers:
+      - Accept-Language, Accept, X-Uid, X-HTTP-Method, X-Requested-With, Content-Type,
+        Authorization
+    body:
+      encoding: UTF-8
+      string: '{"operation_id":"296c02620f613aa7b7fffc2ee948bb6f8a294c1fa999e389b1f164e989ae81a6","href":"https://uploader22g.disk.yandex.net:443/upload-target/zozo","method":"PUT","templated":false}'
+  recorded_at: Sat, 18 Dec 2021 22:11:58 GMT
 recorded_with: VCR 6.0.0

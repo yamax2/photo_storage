@@ -20,9 +20,12 @@ RSpec.describe Api::V1::Admin::VideosController, type: :request do
         original_filename: 'test.mp4',
         original_timestamp: '2021-11-04T07:12:43+05:00',
         preview_size: 100,
+        video_preview_size: 1_000,
         size: 2_000,
         preview_md5: Digest::MD5.hexdigest('preview'),
         preview_sha256: Digest::SHA256.hexdigest('preview'),
+        video_preview_md5: Digest::MD5.hexdigest('preview'),
+        video_preview_sha256: Digest::SHA256.hexdigest('preview'),
         md5: Digest::MD5.hexdigest('test'),
         sha256: Digest::SHA256.hexdigest('test'),
         content_type: 'video/mp4',
@@ -53,6 +56,7 @@ RSpec.describe Api::V1::Admin::VideosController, type: :request do
             yandex_token_id: token.id,
             preview_filename: String,
             storage_filename: String,
+            video_preview_filename: String,
             lat_long: ActiveRecord::Point.new(10.5, 11.65),
             original_timestamp: Time.zone.local(2021, 11, 4, 7, 12, 43)
           )
@@ -121,11 +125,7 @@ RSpec.describe Api::V1::Admin::VideosController, type: :request do
     context 'when wrong content_type' do
       subject(:request) { post api_v1_admin_videos_url(video: attrs) }
 
-      let(:attrs) do
-        correct_video_attrs.
-          merge(content_type: 'image/jpg').
-          except(:preview_filename, :preview_size, :preview_md5)
-      end
+      let(:attrs) { correct_video_attrs.merge(content_type: 'image/jpg') }
 
       it do
         expect { request }.

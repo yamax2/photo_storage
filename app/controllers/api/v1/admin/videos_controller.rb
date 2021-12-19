@@ -35,14 +35,16 @@ module Api
             require(:video).
             permit(
               :name, :rubric_id, :content_type, :original_filename, :original_timestamp, :width, :height,
-              :md5, :sha256, :preview_md5, :preview_sha256, :size, :preview_size, :tz,
-              lat_long: [], exif: %i[make model]
+              :md5, :sha256, :preview_md5, :preview_sha256, :video_preview_md5, :video_preview_sha256,
+              :size, :preview_size, :video_preview_size,
+              :tz, lat_long: [], exif: %i[make model]
             )
         end
 
         def normalized_video_params
           video_params.tap do |par|
             par[:preview_size] = par[:preview_size].to_i
+            par[:video_preview_size] = par[:video_preview_size].to_i
           end
         end
 

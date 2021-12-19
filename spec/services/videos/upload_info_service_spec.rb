@@ -28,6 +28,7 @@ RSpec.describe Videos::UploadInfoService do
 
       expect(decoded_info.fetch('video')).to include('disk.yandex.net')
       expect(decoded_info.fetch('preview')).to include('disk.yandex.net')
+      expect(decoded_info.fetch('video_preview')).to include('disk.yandex.net')
     end
   end
 
@@ -43,6 +44,7 @@ RSpec.describe Videos::UploadInfoService do
 
       expect(decoded_info).not_to include('video')
       expect(decoded_info.fetch('preview')).to include('disk.yandex.net')
+      expect(decoded_info.fetch('video_preview')).to include('disk.yandex.net')
     end
   end
 end

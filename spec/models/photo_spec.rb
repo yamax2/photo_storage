@@ -52,6 +52,12 @@ RSpec.describe Photo do
     it { is_expected.to validate_absence_of(:preview_filename) }
     it { is_expected.to validate_absence_of(:preview_size) }
     it { is_expected.to validate_absence_of(:preview_md5) }
+    it { is_expected.to validate_absence_of(:preview_sha256) }
+
+    it { is_expected.to validate_absence_of(:video_preview_filename) }
+    it { is_expected.to validate_absence_of(:video_preview_size) }
+    it { is_expected.to validate_absence_of(:video_preview_md5) }
+    it { is_expected.to validate_absence_of(:video_preview_sha256) }
   end
 
   describe 'video validations' do
@@ -61,6 +67,7 @@ RSpec.describe Photo do
     it { is_expected.to validate_absence_of(:rotated) }
     it { is_expected.to validate_absence_of(:effects) }
     it { is_expected.to validate_presence_of(:storage_filename) }
+
     it { is_expected.to validate_presence_of(:preview_filename) }
     it { is_expected.to validate_presence_of(:preview_size) }
     it { is_expected.to validate_numericality_of(:preview_size).is_greater_than(0).only_integer }
@@ -68,6 +75,14 @@ RSpec.describe Photo do
     it { is_expected.to validate_presence_of(:preview_sha256) }
     it { is_expected.to validate_length_of(:preview_md5).is_equal_to(32) }
     it { is_expected.to validate_length_of(:preview_sha256).is_equal_to(64) }
+
+    it { is_expected.to validate_presence_of(:video_preview_filename) }
+    it { is_expected.to validate_presence_of(:video_preview_size) }
+    it { is_expected.to validate_numericality_of(:video_preview_size).is_greater_than(0).only_integer }
+    it { is_expected.to validate_presence_of(:video_preview_md5) }
+    it { is_expected.to validate_presence_of(:video_preview_sha256) }
+    it { is_expected.to validate_length_of(:video_preview_md5).is_equal_to(32) }
+    it { is_expected.to validate_length_of(:video_preview_sha256).is_equal_to(64) }
   end
 
   describe 'scopes' do
@@ -82,7 +97,12 @@ RSpec.describe Photo do
             preview_size: 10,
             preview_filename: 'test',
             preview_md5: Digest::MD5.hexdigest(SecureRandom.hex(32)),
-            preview_sha256: Digest::SHA256.hexdigest(SecureRandom.hex(32))
+            preview_sha256: Digest::SHA256.hexdigest(SecureRandom.hex(32)),
+
+            video_preview_size: 20,
+            video_preview_filename: 'test.preview',
+            video_preview_md5: Digest::MD5.hexdigest(SecureRandom.hex(32)),
+            video_preview_sha256: Digest::SHA256.hexdigest(SecureRandom.hex(32))
           )
         end
 
@@ -161,26 +181,67 @@ RSpec.describe Photo do
 
     context 'when video' do
       let(:video) do
-        create :photo, :video, storage_filename: 'test.mp4', preview_filename: 'test.jpg', yandex_token: node
+        create :photo,
+               :video,
+               storage_filename: 'test.mp4',
+               preview_filename: 'test.jpg',
+               video_preview_filename: 'test.preview.mp4',
+               yandex_token: node
       end
 
       it do
         expect { video.destroy }.
-          to change { enqueued_jobs(klass: Yandex::RemoveFileJob).size }.by(2)
+          to change { enqueued_jobs(klass: Yandex::RemoveFileJob).size }.by(3)
 
-        expect(job_args).
-          to match_array([[node.id, '/other/test.mp4'], [node.id, '/other/test.jpg']])
+        expect(job_args).to match_array(
+          [[node.id, '/other/test.mp4'], [node.id, '/other/test.jpg'], [node.id, '/other/test.preview.mp4']]
+        )
+      end
+    end
+
+    context 'when invalid video from previous release' do
+      let(:rubric) { create :rubric }
+      let(:video) do
+        build(
+          :photo,
+          :video,
+          storage_filename: 'test.mp4',
+          preview_filename: '  ',
+          video_preview_filename: nil,
+          yandex_token: node,
+          rubric: rubric
+        ).tap { |video| video.save(validate: false) }
+      end
+
+      it do
+        expect(video).to be_persisted
+        expect(video).not_to be_valid
+
+        expect { video.destroy }.
+          to change { enqueued_jobs(klass: Yandex::RemoveFileJob).size }.by(1)
+
+        expect(job_args).to match_array(
+          [[node.id, '/other/test.mp4']]
+        )
       end
     end
 
     context 'when job for preview enqueued with an error' do
       let(:video) do
-        create :photo, :video, storage_filename: 'test.mp4', preview_filename: 'test.jpg', yandex_token: node
+        create :photo,
+               :video,
+               storage_filename: 'test.mp4',
+               preview_filename: 'test.jpg',
+               video_preview_filename: 'test.preview.mp4',
+               yandex_token: node
       end
 
       before do
         allow(Yandex::RemoveFileJob).to receive(:perform_async).and_call_original
-        allow(Yandex::RemoveFileJob).to receive(:perform_async).with(node.id, '/other/test.jpg').and_raise('boom!')
+        allow(Yandex::RemoveFileJob).to receive(:perform_async).with(
+          node.id,
+          '/other/test.preview.mp4'
+        ).and_raise('boom!')
       end
 
       it do

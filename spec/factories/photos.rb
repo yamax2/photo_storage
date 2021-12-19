@@ -17,10 +17,16 @@ FactoryBot.define do
 
     trait :video do
       content_type { 'video/mp4' }
+
       preview_size { 100 }
       preview_filename { 'test.mp4.jpg' }
       preview_md5 { Digest::MD5.hexdigest(SecureRandom.hex(32)) }
       preview_sha256 { Digest::SHA256.hexdigest(SecureRandom.hex(32)) }
+
+      video_preview_size { 200 }
+      video_preview_filename { 'test.preview.mp4' }
+      video_preview_md5 { Digest::MD5.hexdigest(SecureRandom.hex(32)) }
+      video_preview_sha256 { Digest::SHA256.hexdigest(SecureRandom.hex(32)) }
     end
   end
 end

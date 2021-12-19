@@ -1,7 +1,14 @@
 # frozen_string_literal: true
 
 RSpec.describe Videos::StoreService do
-  let(:video) { build :photo, :video, original_filename: 'test.mp4' }
+  let(:video) do
+    build :photo,
+          :video,
+          original_filename: 'test.mp4',
+          preview_filename: nil,
+          video_preview_filename: nil
+  end
+
   let!(:node) { create :'yandex/token', active: true }
   let(:hex) { '84be4315c54a8cafa09a74a45d60936ff7c2df14' }
 
@@ -17,7 +24,8 @@ RSpec.describe Videos::StoreService do
     expect(video).to have_attributes(
       yandex_token: node,
       storage_filename: "video#{hex}.mp4",
-      preview_filename: "#{video.storage_filename}.jpg"
+      preview_filename: "#{video.storage_filename}.jpg",
+      video_preview_filename: 'video84be4315c54a8cafa09a74a45d60936ff7c2df14.preview.mp4'
     )
   end
 end

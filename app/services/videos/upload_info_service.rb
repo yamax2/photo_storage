@@ -15,15 +15,20 @@ module Videos
 
       content[:video] = upload_url_for(model.storage_filename) unless @skip_original
       content[:preview] = upload_url_for(model.preview_filename)
+      content[:video_preview] = upload_url_for(model.video_preview_filename)
 
+      generate_secret(content)
+    end
+
+    private
+
+    def generate_secret(content)
       encryptor = new_cipher
 
       Base64.encode64(
         encryptor.update(content.to_json) + encryptor.final
       ).gsub(/[[:space:]]/, '')
     end
-
-    private
 
     def new_cipher
       OpenSSL::Cipher.new('aes-256-cbc').encrypt.tap do |cipher|

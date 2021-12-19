@@ -5,10 +5,13 @@ RSpec.describe Yandex::ReviseOtherDirService do
   let!(:video) do
     create :photo, :video, storage_filename: 'VID_20211104_121243.mp4',
                            preview_filename: 'VID_20211104_121243.mp4.jpg',
+                           video_preview_filename: 'video4fbae93516ef627ee23a5269cb9277932e48e2c3.preview.mp4',
                            size: 60_518_940,
                            preview_size: 360_580,
+                           video_preview_size: 6_958_704,
                            md5: '4c863a1f2f92740565a0bf0919598893',
                            preview_md5: 'ec22d5b206a64036b37a8d66c3e6a3c6',
+                           video_preview_md5: 'c3ec1da49730da2d428ab2f986f3aac7',
                            yandex_token: token
   end
 
@@ -99,8 +102,13 @@ RSpec.describe Yandex::ReviseOtherDirService do
         expect(service_context).to be_a_success
 
         expect(service_context.errors.keys).to eq(["photo:#{video1.id}"])
-        expect(service_context.errors["photo:#{video1.id}"]).
-          to match_array(['not found on the remote storage', 'preview not found on the remote storage'])
+        expect(service_context.errors["photo:#{video1.id}"]).to match_array(
+          [
+            'not found on the remote storage',
+            'test.mp4.jpg not found on the remote storage',
+            'test.preview.mp4 not found on the remote storage'
+          ]
+        )
       end
     end
 
@@ -112,7 +120,13 @@ RSpec.describe Yandex::ReviseOtherDirService do
         expect(service_context).to be_a_success
 
         expect(service_context.errors.keys).to eq([nil])
-        expect(service_context.errors[nil]).to match_array(%w[VID_20211104_121243.mp4 VID_20211104_121243.mp4.jpg])
+        expect(service_context.errors[nil]).to match_array(
+          %w[
+            VID_20211104_121243.mp4
+            VID_20211104_121243.mp4.jpg
+            video4fbae93516ef627ee23a5269cb9277932e48e2c3.preview.mp4
+          ]
+        )
       end
     end
 
@@ -120,10 +134,13 @@ RSpec.describe Yandex::ReviseOtherDirService do
       let!(:video) do
         create :photo, :video, storage_filename: 'VID_20211104_121243.mp4',
                                preview_filename: 'VID_20211104_121243.mp4.jpg',
+                               video_preview_filename: 'video4fbae93516ef627ee23a5269cb9277932e48e2c3.preview.mp4',
                                size: 60_518_941,
                                preview_size: 360_581,
+                               video_preview_size: 6_958_701,
                                md5: '4c863a1f2f92740565a0bf0919598891',
                                preview_md5: 'ec22d5b206a64036b37a8d66c3e6a3c5',
+                               video_preview_md5: 'c3ec1da49730da2d428ab2f986f3aac8',
                                yandex_token: token
       end
 
@@ -131,8 +148,16 @@ RSpec.describe Yandex::ReviseOtherDirService do
         expect(service_context).to be_a_success
 
         expect(service_context.errors.keys).to eq(["photo:#{video.id}"])
-        expect(service_context.errors["photo:#{video.id}"]).
-          to match_array(['size mismatch', 'etag mismatch', 'preview size mismatch', 'preview etag mismatch'])
+        expect(service_context.errors["photo:#{video.id}"]).to match_array(
+          [
+            'size mismatch',
+            'etag mismatch',
+            'VID_20211104_121243.mp4.jpg size mismatch',
+            'VID_20211104_121243.mp4.jpg etag mismatch',
+            'video4fbae93516ef627ee23a5269cb9277932e48e2c3.preview.mp4 size mismatch',
+            'video4fbae93516ef627ee23a5269cb9277932e48e2c3.preview.mp4 etag mismatch'
+          ]
+        )
       end
     end
 
@@ -140,10 +165,13 @@ RSpec.describe Yandex::ReviseOtherDirService do
       let!(:video) do
         create :photo, :video, storage_filename: 'VID_20211104_121243.mp4',
                                preview_filename: 'VID_20211104_121243.mp4.jpeg',
+                               video_preview_filename: 'video4fbae93516ef627ee23a5269cb9277932e48e2c3.preview.mp4',
                                size: 60_518_940,
                                preview_size: 360_580,
+                               video_preview_size: 6_958_704,
                                md5: '4c863a1f2f92740565a0bf0919598893',
                                preview_md5: 'ec22d5b206a64036b37a8d66c3e6a3c6',
+                               video_preview_md5: 'c3ec1da49730da2d428ab2f986f3aac7',
                                yandex_token: token
       end
 
@@ -151,8 +179,34 @@ RSpec.describe Yandex::ReviseOtherDirService do
         expect(service_context).to be_a_success
 
         expect(service_context.errors.keys).to eq(["photo:#{video.id}", nil])
-        expect(service_context.errors["photo:#{video.id}"]).to match_array(['preview not found on the remote storage'])
+        expect(service_context.errors["photo:#{video.id}"]).
+          to match_array(['VID_20211104_121243.mp4.jpeg not found on the remote storage'])
         expect(service_context.errors[nil]).to match_array(%w[VID_20211104_121243.mp4.jpg])
+      end
+    end
+
+    context 'when video preview does not exist on a remote storage' do
+      let!(:video) do
+        create :photo, :video, storage_filename: 'VID_20211104_121243.mp4',
+                               preview_filename: 'VID_20211104_121243.mp4.jpg',
+                               video_preview_filename: '1.preview.mp4',
+                               size: 60_518_940,
+                               preview_size: 360_580,
+                               video_preview_size: 6_958_704,
+                               md5: '4c863a1f2f92740565a0bf0919598893',
+                               preview_md5: 'ec22d5b206a64036b37a8d66c3e6a3c6',
+                               video_preview_md5: 'c3ec1da49730da2d428ab2f986f3aac7',
+                               yandex_token: token
+      end
+
+      it do
+        expect(service_context).to be_a_success
+
+        expect(service_context.errors.keys).to eq(["photo:#{video.id}", nil])
+        expect(service_context.errors["photo:#{video.id}"]).
+          to match_array(['1.preview.mp4 not found on the remote storage'])
+        expect(service_context.errors[nil]).
+          to match_array(%w[video4fbae93516ef627ee23a5269cb9277932e48e2c3.preview.mp4])
       end
     end
 
