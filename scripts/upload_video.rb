@@ -26,7 +26,7 @@ require 'yaml'
 # rubocop:disable Metrics/MethodLength,Style/FormatStringToken
 Conf = Struct.new(:host, :secret, :auth) do
   def load!
-    config = "#{ENV['HOME']}/.photostorage.dev"
+    config = "#{ENV['HOME']}/.photostorage"
 
     raise "Config file not found #{config}" unless File.exist?(config)
 
@@ -87,7 +87,7 @@ class VideoMetadata
     model = general.dig(:extra, :com_android_model)
 
     {
-      name: name,
+      name: File.basename(name, '.*'),
       original_filename: name,
       original_timestamp: parse_timestamp(general[:Tagged_Date] || general[:Encoded_Date]),
       width: video.fetch(:Width).to_i,
