@@ -79,19 +79,22 @@ class VideoMetadata
 
   private
 
-  def upload_request_body(general, video) # rubocop:disable Metrics/AbcSize
+  def upload_request_body(general, video) # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity
     name = File.basename(filename)
     lat_long = general.dig(:extra, :xyz) || general.dig(:extra, :location)
 
     make = general.dig(:extra, :com_android_manufacturer)
     model = general.dig(:extra, :com_android_model)
 
+    dimensions = [video.fetch(:Width).to_i, video.fetch(:Height).to_i]
+    dimensions.reverse! if [90, 270].include?(video[:Rotation].to_i)
+
     {
       name: File.basename(name, '.*'),
       original_filename: name,
       original_timestamp: parse_timestamp(general[:Tagged_Date] || general[:Encoded_Date]),
-      width: video.fetch(:Width).to_i,
-      height: video.fetch(:Height).to_i,
+      width: dimensions.first,
+      height: dimensions.last,
       content_type: CONTENT_TYPES_BY_EXT.fetch(general.fetch(:FileExtension)),
       lat_long: lat_long ? lat_long.gsub(/[^0-9.]/, ' ').to_s.strip.split.map(&:to_f) : nil,
       md5: md5(filename),
@@ -103,6 +106,7 @@ class VideoMetadata
       video_preview_md5: md5(video_preview_file.path),
       video_preview_sha256: sha256(video_preview_file.path),
       video_preview_size: video_preview_file.size,
+      duration: video.fetch(:Duration).to_f,
       tz: @timezone,
       exif: make && model ? {make: make, model: model} : nil
     }

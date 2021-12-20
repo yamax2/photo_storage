@@ -37,7 +37,7 @@ module Api
               :name, :rubric_id, :content_type, :original_filename, :original_timestamp, :width, :height,
               :md5, :sha256, :preview_md5, :preview_sha256, :video_preview_md5, :video_preview_sha256,
               :size, :preview_size, :video_preview_size,
-              :tz, lat_long: [], exif: %i[make model]
+              :tz, :duration, lat_long: [], exif: %i[make model]
             )
         end
 
@@ -45,6 +45,7 @@ module Api
           video_params.tap do |par|
             par[:preview_size] = par[:preview_size].to_i
             par[:video_preview_size] = par[:video_preview_size].to_i
+            par[:duration] = par[:duration].to_f if par[:duration].present?
           end
         end
 

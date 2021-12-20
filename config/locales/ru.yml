@@ -201,6 +201,7 @@ ru:
       camera: Камера
       created_at: Загружено
       download: Скачать
+      duration: Длительность
       edit: Редактировать
       original_filename: Имя файла
       original_timestamp: Дата съёмки
@@ -243,6 +244,7 @@ ru:
       days: '%{days}дн.'
       hours: '%{hours}ч.'
       minutes: '%{minutes}мин.'
+      seconds: '%{seconds}сек.'
   views:
     pagination:
       first: Первая страница

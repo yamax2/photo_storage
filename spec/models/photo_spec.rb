@@ -58,6 +58,7 @@ RSpec.describe Photo do
     it { is_expected.to validate_absence_of(:video_preview_size) }
     it { is_expected.to validate_absence_of(:video_preview_md5) }
     it { is_expected.to validate_absence_of(:video_preview_sha256) }
+    it { is_expected.to validate_absence_of(:duration) }
   end
 
   describe 'video validations' do

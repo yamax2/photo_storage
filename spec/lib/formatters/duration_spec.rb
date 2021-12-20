@@ -50,4 +50,20 @@ RSpec.describe Formatters::Duration do
 
     it { is_expected.to eq('1дн.') }
   end
+
+  context 'when seconds' do
+    subject { described_class.new(duration, include_seconds: true).call }
+
+    let(:duration) { 125.seconds }
+
+    it { is_expected.to eq('02мин. 05сек.') }
+  end
+
+  context 'when mode with seconds but value without seconds' do
+    subject { described_class.new(duration, include_seconds: true).call }
+
+    let(:duration) { 120.seconds }
+
+    it { is_expected.to eq('02мин.') }
+  end
 end

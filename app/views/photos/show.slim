@@ -104,6 +104,14 @@
               = t('.camera')
             td
               = "#{current.exif['make']} #{current.exif['model']}"
+
+        - if current.duration.present?
+          tr
+            th
+              = t('.duration')
+            td
+              = Formatters::Duration.new(current.duration, include_seconds: true).call
+
         tr
           th
             = t('.created_at')

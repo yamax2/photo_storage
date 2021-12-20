@@ -34,7 +34,8 @@ RSpec.describe Api::V1::Admin::VideosController, type: :request do
         exif: {'make' => 'Sony', 'model' => 'Test'},
         width: 1_024,
         height: 768,
-        tz: 'Europe/Moscow'
+        tz: 'Europe/Moscow',
+        duration: '120.55'
       }
     end
 
@@ -58,7 +59,8 @@ RSpec.describe Api::V1::Admin::VideosController, type: :request do
             storage_filename: String,
             video_preview_filename: String,
             lat_long: ActiveRecord::Point.new(10.5, 11.65),
-            original_timestamp: Time.zone.local(2021, 11, 4, 7, 12, 43)
+            original_timestamp: Time.zone.local(2021, 11, 4, 7, 12, 43),
+            duration: 120.55
           )
         )
 

@@ -23,7 +23,7 @@ class Photo < ApplicationRecord
                             optional: true
 
   store_accessor :props,
-                 :rotated, :effects, :external_info,
+                 :rotated, :effects, :external_info, :duration,
                  :preview_filename, :preview_size, :preview_md5, :preview_sha256,
                  :video_preview_filename, :video_preview_size, :video_preview_md5, :video_preview_sha256
 
@@ -43,7 +43,7 @@ class Photo < ApplicationRecord
             presence: true, numericality: {only_integer: true, greater_than: 0}, if: :video?
   validates :preview_md5, :video_preview_md5, presence: true, length: {is: 32}, if: :video?
   validates :preview_sha256, :video_preview_sha256, presence: true, length: {is: 64}, if: :video?
-  validates :preview_filename, :preview_size, :preview_md5, :preview_sha256,
+  validates :duration, :preview_filename, :preview_size, :preview_md5, :preview_sha256,
             :video_preview_filename, :video_preview_size, :video_preview_md5, :video_preview_sha256,
             absence: true, unless: :video?
 
