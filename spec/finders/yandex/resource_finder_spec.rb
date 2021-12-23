@@ -64,7 +64,13 @@ RSpec.describe Yandex::ResourceFinder do
     let!(:photo) { create :photo, yandex_token: token, storage_filename: 'test', size: 12 }
     let!(:track) { create :track, yandex_token: token, storage_filename: 'test', size: 10 }
     let!(:video) do
-      create :photo, :video, yandex_token: token, storage_filename: 'test', size: 500, preview_size: 200
+      create :photo,
+             :video,
+             yandex_token: token,
+             storage_filename: 'test',
+             size: 500,
+             preview_size: 200,
+             video_preview_size: 300
     end
 
     it do
@@ -75,9 +81,9 @@ RSpec.describe Yandex::ResourceFinder do
 
       expect(result.first).to have_attributes(
         photo_count: 1,
-        other_count: 3,
+        other_count: 4,
         photo_size: 12.0,
-        other_size: 710.0
+        other_size: 1_010.0
       )
     end
   end
@@ -86,7 +92,13 @@ RSpec.describe Yandex::ResourceFinder do
     before do
       create :photo, yandex_token: token, storage_filename: 'test', size: 12
       create :track, yandex_token: other_token, storage_filename: 'test', size: 10
-      create :photo, :video, yandex_token: other_token, size: 100, storage_filename: 'test', preview_size: 50
+      create :photo,
+             :video,
+             yandex_token: other_token,
+             size: 100,
+             storage_filename: 'test',
+             preview_size: 50,
+             video_preview_size: 200
     end
 
     it do
@@ -101,9 +113,9 @@ RSpec.describe Yandex::ResourceFinder do
 
       expect(result.last).to have_attributes(
         photo_count: nil,
-        other_count: 3,
+        other_count: 4,
         photo_size: nil,
-        other_size: 160
+        other_size: 360
       )
     end
   end

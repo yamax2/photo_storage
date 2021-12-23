@@ -40,18 +40,21 @@ module Yandex
     end
 
     def resources_query
-      union_all(
+      union_all \
         resource_query(Photo.images, 'photo', Photo.arel_table[:size]),
         resource_query(Photo.videos, 'other', Photo.arel_table[:size]),
-        resource_query(Photo.videos, 'other', Arel.sql("(photos.props->>'preview_size')::int")),
+        resource_query(Photo.videos, 'other', "(photos.props->>'preview_size')::int"),
+        resource_query(Photo.videos, 'other', "(photos.props->>'video_preview_size')::int"),
         resource_query(Track.all, 'other', Track.arel_table[:size])
-      )
     end
 
     def resource_query(scope, resource_name, size_attr)
+      attr = size_attr
+      attr = Arel.sql(attr) if attr.is_a?(String)
+
       scope.uploaded.select(
         scope.arel_table[:yandex_token_id].as('id'),
-        size_attr.sum.as('size'),
+        attr.sum.as('size'),
         Arel.star.count.as('count'),
         Arel::Nodes::Quoted.new(resource_name).as('resource')
       ).group(:yandex_token_id).arel
