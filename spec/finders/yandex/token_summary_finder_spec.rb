@@ -6,7 +6,7 @@ RSpec.describe Yandex::TokenSummaryFinder do
   let!(:token1) { create :'yandex/token' }
   let!(:token2) { create :'yandex/token' }
   let(:last_upload_at) do
-    scope.map { |x| x.slice(:id, :last_upload_at).values }.to_h
+    scope.to_h { |x| x.slice(:id, :last_upload_at).values }
   end
 
   let(:current_time) { Time.zone.local(2017, 1, 1, 15, 45, 55) }

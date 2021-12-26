@@ -30,7 +30,7 @@ Rails.application.configure do
         if photo.height > 1_140
           photo.width * 1_140 / photo.height
         else
-          photo.height
+          photo.width
         end
 
       size = 2_000 if size > 2_000

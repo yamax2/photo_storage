@@ -12,6 +12,12 @@ default: &default
       effects:
         - scaleX(-1)
 
+    - make: samsung
+      model: SM-G996B
+      dimension: 2944
+      effects:
+        - scaleX(-1)
+
 development:
   <<: *default
 
