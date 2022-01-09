@@ -21,7 +21,6 @@ gem 'font-awesome-rails'
 gem 'jquery-rails'
 gem 'jquery-simplecolorpicker-rails'
 gem 'leaflet-rails'
-gem 'momentjs-rails', '< 2.29' # temporary, https://github.com/derekprior/momentjs-rails/issues/61
 gem 'slim-rails', '>= 3.2'
 
 gem 'draper', '>= 3.1'
