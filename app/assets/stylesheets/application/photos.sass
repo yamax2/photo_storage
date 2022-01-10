@@ -32,6 +32,7 @@
 
 #throbber
   display: none
+  position: absolute
 
 #mainimg
   &.loading
@@ -120,7 +121,10 @@
     justify-content: center
 
   a.photo-arrow
-    display: none
+    visibility: hidden
+
+    &.loaded
+      visibility: visible
 
   .photo-arrow
     cursor: pointer

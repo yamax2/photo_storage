@@ -43,13 +43,13 @@ $(document)
       clearTimeout loadTimeout
 
       $('#throbber').hide()
-      $('a.photo-arrow').show()
+      $('a.photo-arrow').addClass('loaded')
       $(this).removeClass('loading')
 
     if $('#main_video').length > 0
       player = videojs('main_video', {controlBar: {pictureInPictureToggle: false}})
       player.ready ->
-        $('a.photo-arrow').show()
+        $('a.photo-arrow').addClass('loaded')
 
     clearTimeout(nextPageTimeout) if nextPageTimeout?
     $link = $('a.photo-arrow-right')
