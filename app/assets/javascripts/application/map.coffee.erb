@@ -54,6 +54,10 @@ $(document)
               startIconUrl: '<%= image_url('pin-icon-start.png') %>'
               endIconUrl: '<%= image_url('pin-icon-end.png') %>'
               shadowUrl: '<%= image_url('pin-shadow.png') %>'
+              iconSize: [16, 22]
+              shadowSize: [25, 25]
+              iconAnchor: [8, 22]
+              shadowAnchor: [8, 22]
             polyline_options:
               color: track.color
           ).on('loaded', ((e) ->
