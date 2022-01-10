@@ -63,6 +63,7 @@
           source*{src: current.proxy_url(:video_preview), type: current.content_type}
       - else
         - transform = current.css_transform
+        = image_tag image_url('throbber.gif'), id: 'throbber'
         = image_tag current.proxy_url(preview_id),
                     id: 'mainimg',
                     style: transform ? "transform: #{transform}" : nil

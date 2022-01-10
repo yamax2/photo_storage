@@ -34,8 +34,17 @@ $(document)
       player = null
 
   .on 'turbolinks:load', ->
+    loadTimeout = setTimeout ->
+      $('#throbber').show()
+      $(this).addClass('loading')
+    , 100
+
     $('#mainimg').on 'load', ->
+      clearTimeout loadTimeout
+
+      $('#throbber').hide()
       $('a.photo-arrow').show()
+      $(this).removeClass('loading')
 
     if $('#main_video').length > 0
       player = videojs('main_video', {controlBar: {pictureInPictureToggle: false}})
