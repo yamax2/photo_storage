@@ -129,7 +129,7 @@ class VideoMetadata
   end
 
   def make_video_preview(path)
-    `ffmpeg -y -i #{filename} -vf scale=1920:1080 -c:v libx264 -c:a copy -crf 25 #{path}`
+    `ffmpeg -y -i #{filename} -vf scale="trunc(oh*a/2)*2:1080" -c:v libx264 -c:a copy -crf 25 #{path}`
   end
 
   def md5(filepath)
