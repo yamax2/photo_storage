@@ -23,11 +23,22 @@ module Api
       def find_objects
         @listing = Rubrics::Listing.new(
           params[:id],
+          listing_params
+        ).to_a
+      end
+
+      def listing_params
+        {
           offset: params[:offset].to_i,
           limit: params[:limit].to_i,
-          only_with_geo_tags: params[:only_with_geo_tags],
-          desc_order: params[:desc_order]
-        ).to_a
+          only_with_geo_tags: to_bool(params[:only_with_geo_tags]),
+          only_videos: to_bool(params[:only_videos]),
+          desc_order: to_bool(params[:desc_order])
+        }
+      end
+
+      def to_bool(value)
+        ActiveModel::Type::Boolean.new.cast(value)
       end
     end
   end

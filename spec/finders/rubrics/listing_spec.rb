@@ -200,6 +200,15 @@ RSpec.describe Rubrics::Listing do
     end
   end
 
+  context 'when only_videos option for root' do
+    let(:rubric_id) { nil }
+    let(:opts) { {only_videos: true} }
+
+    it do
+      expect { listing }.to raise_error(/only_videos/)
+    end
+  end
+
   context 'when only_with_geo_tags option' do
     let(:rubric_id) { rubric6_only_deep.id }
     let(:opts) { {only_with_geo_tags: true} }
@@ -217,6 +226,43 @@ RSpec.describe Rubrics::Listing do
       expect(actual_models.keys).to match_array(%w[Photo])
 
       expect(actual_models['Photo']).to match_array([another_photo.id])
+    end
+  end
+
+  context 'when only_videos option' do
+    let(:rubric_id) { rubric6_only_deep.id }
+    let(:opts) { {only_videos: true} }
+
+    let!(:video) { create :photo, :video, rubric_id: rubric_id, storage_filename: '1.mp4', yandex_token: token }
+
+    before do
+      create :photo, rubric_id: rubric_id, storage_filename: '1.jpg', yandex_token: token
+    end
+
+    it do
+      expect(actual_models.keys).to match_array(%w[Photo Rubric])
+
+      expect(actual_models['Photo']).to match_array([video.id])
+    end
+  end
+
+  context 'when only_videos and only_with_geo_tags options' do
+    let(:rubric_id) { rubric6_only_deep.id }
+    let(:opts) { {only_videos: true, only_with_geo_tags: true} }
+
+    let!(:video) do
+      create :photo, :video, rubric_id: rubric_id, storage_filename: '1.mp4', yandex_token: token, lat_long: [1, 2]
+    end
+
+    before do
+      create :photo, rubric_id: rubric_id, storage_filename: '1.jpg', yandex_token: token
+      create :photo, :video, rubric_id: rubric_id, storage_filename: '2.mp4', yandex_token: token
+    end
+
+    it do
+      expect(actual_models.keys).to match_array(%w[Photo])
+
+      expect(actual_models['Photo']).to match_array([video.id])
     end
   end
 

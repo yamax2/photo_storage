@@ -11,8 +11,11 @@ module Rubrics
     def initialize(rubric_id = nil, opts = {})
       @rubric_id = rubric_id
       @only_with_geo_tags = opts.fetch(:only_with_geo_tags, false)
+      @only_videos = opts.fetch(:only_videos, false)
 
-      raise 'only_with_geo_tags allowed only for rubric' if @only_with_geo_tags && @rubric_id.nil?
+      if @rubric_id.nil? && (@only_with_geo_tags || @only_videos)
+        raise 'only_with_geo_tags and only_videos are allowed only for rubric'
+      end
 
       @limit = opts.fetch(:limit, 0)
       @offset = opts.fetch(:offset, 0)
@@ -76,6 +79,16 @@ module Rubrics
     end
 
     def photos_scope
+      current = photos_base_scope
+      current = current.videos if @only_videos
+
+      current.select(
+        '0 photos_count', '0 rubrics_count', '1 model_index',
+        "#{Photo.connection.quote('Photo')} model_type"
+      )
+    end
+
+    def photos_base_scope
       photos = Photo.arel_table
 
       PhotosFinder.call(
@@ -83,9 +96,6 @@ module Rubrics
         columns: COLUMNS.map { |attr| photos[attr] },
         only_with_geo_tags: @only_with_geo_tags,
         desc_order: @desc_order
-      ).select(
-        '0 photos_count', '0 rubrics_count', '1 model_index',
-        "#{Photo.connection.quote('Photo')} model_type"
       )
     end
   end

@@ -178,6 +178,22 @@ RSpec.describe Api::V1::RubricsController, type: :request do
         end
       end
 
+      context 'when only_videos' do
+        before { get api_v1_rubric_url(id: root_rubric.id, only_videos: true) }
+
+        it do
+          expect(response).to have_http_status(:ok)
+
+          expect(json.map { |x| [x['id'], x['model_type']] }).to eq(
+            [
+              [another_rubric.id, 'Rubric'],
+              [rubric.id, 'Rubric'],
+              [photo2.id, 'Photo']
+            ]
+          )
+        end
+      end
+
       context 'when offset and only_with_geo_tags' do
         before { get api_v1_rubric_url(id: root_rubric.id, only_with_geo_tags: true, offset: 5) }
 

@@ -228,6 +228,7 @@ ru:
       admin: Управление
       older_first: Сначала старые
       newer_first: Сначала новые
+      only_videos: Только видео
       summary:
         started_at: Начало путешествия
         finished_at: Окончание путешествия

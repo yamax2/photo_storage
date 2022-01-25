@@ -28,6 +28,9 @@
 
     - if with_photos?
       .photo-header-buttons
+        = label_tag do
+          = check_box_tag :only_videos, false
+          = t('.only_videos')
         = select_tag :photos_order_id,
                      options_for_select([[t('.older_first'), false], [t('.newer_first'), true]], @rubric.desc_order?)
 

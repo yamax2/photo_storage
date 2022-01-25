@@ -10,12 +10,17 @@ loadPhotos = ($photos) ->
 
   url = new URL(window.location)
   descOrder = url.searchParams.get('desc_order')
+  onlyVideos = url.searchParams.get('only_videos')
 
   $orderId = $('#photos_order_id')
   $orderId.val(descOrder) if descOrder?
 
+  $onlyVideos = $('#only_videos')
+  $onlyVideos.prop('checked', onlyVideos == 'true')
+
   url = "#{$photos.attr('data-url')}?limit=#{limit}&offset=#{offset}"
   url += '&desc_order=true' if $orderId.val() == 'true'
+  url += '&only_videos=true' if onlyVideos == 'true'
 
   $.get url, (response) ->
     if response.length > 0
@@ -80,7 +85,13 @@ $(document)
       loadPhotos($photos) if renders.length == 1
 
   .on 'change', '#photos_order_id', ->
-      url = new URL(window.location)
-      url.searchParams.set('desc_order', $(this).val())
+    url = new URL(window.location)
+    url.searchParams.set('desc_order', $(this).val())
 
-      Turbolinks.visit url
+    Turbolinks.visit url
+
+  .on 'change', '#only_videos', ->
+    url = new URL(window.location)
+    url.searchParams.set('only_videos', $(this).prop('checked'))
+
+    Turbolinks.visit url
