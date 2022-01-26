@@ -9,18 +9,18 @@ loadPhotos = ($photos) ->
   limit = $loader.attr('data-limit') || 10
 
   url = new URL(window.location)
-  descOrder = url.searchParams.get('desc_order')
-  onlyVideos = url.searchParams.get('only_videos')
+  descOrder = url.searchParams.get('desc_order') == 'true'
+  onlyVideos = url.searchParams.get('only_videos') == 'true'
 
   $orderId = $('#photos_order_id')
-  $orderId.val(descOrder) if descOrder?
+  $orderId.val('true') if descOrder
 
   $onlyVideos = $('#only_videos')
-  $onlyVideos.prop('checked', onlyVideos == 'true')
+  $onlyVideos.prop('checked', onlyVideos)
 
   url = "#{$photos.attr('data-url')}?limit=#{limit}&offset=#{offset}"
-  url += '&desc_order=true' if $orderId.val() == 'true'
-  url += '&only_videos=true' if onlyVideos == 'true'
+  url += '&desc_order=true' if descOrder
+  url += '&only_videos=true' if onlyVideos
 
   $.get url, (response) ->
     if response.length > 0
@@ -46,8 +46,11 @@ loadPhotos = ($photos) ->
         video_content = ""
         video_content = "<div class=\"video-icon\"></div>" if photo.properties.video
 
+        target = ""
+        target = "target=\"_blank\"" if onlyVideos
+
         html += "<a title=\"#{photo.name}\" class=\"photo\" style=\"#{style}\" href=\"#{photo.url}\" " +
-                "id=\"llink_#{photo.id}\">" +
+                "#{target} id=\"llink_#{photo.id}\">" +
                 "<img id=\"lphoto_#{photo.id}\" src=\"#{photo.preview}\" style=\"#{imgStyle}\"" +
                 " onload=\"$(this).parent().addClass('loaded')\">" +
                 "<div class=\"photo-name\"><span>#{photo.name}</span></div>" + video_content + "</a>"
