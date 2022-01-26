@@ -1,6 +1,6 @@
 GIT
-  remote: https://github.com/yamax2/gpx.git
-  revision: 7841b9fd20a5af1f1e3cda2466ce8ca6e5ca392c
+  remote: https://github.com/dougfales/gpx.git
+  revision: 0b6746e5e6adf466500d4dfb2cefe9be5b7d3685
   specs:
     gpx (1.0.0)
       nokogiri (~> 1.7)
@@ -239,7 +239,7 @@ GEM
     pry-rails (0.3.9)
       pry (>= 0.10.4)
     public_suffix (4.0.6)
-    puma (5.5.2)
+    puma (5.6.0)
       nio4r (~> 2.0)
     raabro (1.4.0)
     racc (1.6.0)
