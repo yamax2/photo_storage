@@ -9,17 +9,17 @@ loadPhotos = ($photos) ->
   limit = $loader.attr('data-limit') || 10
 
   url = new URL(window.location)
-  descOrder = url.searchParams.get('desc_order') == 'true'
+  descOrder = url.searchParams.get('desc_order')
   onlyVideos = url.searchParams.get('only_videos') == 'true'
 
   $orderId = $('#photos_order_id')
-  $orderId.val('true') if descOrder
+  $orderId.val(descOrder) if descOrder?
 
   $onlyVideos = $('#only_videos')
   $onlyVideos.prop('checked', onlyVideos)
 
   url = "#{$photos.attr('data-url')}?limit=#{limit}&offset=#{offset}"
-  url += '&desc_order=true' if descOrder
+  url += '&desc_order=true' if $orderId.val() == 'true'
   url += '&only_videos=true' if onlyVideos
 
   $.get url, (response) ->
