@@ -295,12 +295,19 @@ RSpec.describe Api::V1::RubricsController, type: :request do
 
       before do
         create :photo, rubric: rubric, storage_filename: 'test.jpg', lat_long: [1, 2], yandex_token: token
-        create :track, rubric: rubric, storage_filename: 'test.gpx', yandex_token: token
-
-        get summary_api_v1_rubric_url(id: rubric.id)
       end
 
-      it { expect(json['bounds']).not_to be_empty }
+      context 'when photos and videos' do
+        before { get summary_api_v1_rubric_url(id: rubric.id) }
+
+        it { expect(json['bounds']).not_to be_empty }
+      end
+
+      context 'when only videos' do
+        before { get summary_api_v1_rubric_url(id: rubric.id, only_videos: true) }
+
+        it { expect(json['bounds']).to be_blank }
+      end
     end
 
     context 'when without bounds' do

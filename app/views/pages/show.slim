@@ -51,8 +51,8 @@
             = @summary.public_send(attr)
 
 - if @rubric
-  .page-map-content*{data: {url: summary_api_v1_rubric_path(@rubric),
-     photos_url: api_v1_rubric_path(@rubric, only_with_geo_tags: true),
+  .page-map-content*{data: {url: summary_api_v1_rubric_path(@rubric, only_videos: params[:only_videos]),
+     photos_url: api_v1_rubric_path(@rubric, only_with_geo_tags: true, only_videos: params[:only_videos]),
      tracks_url: @rubric.tracks_count.zero? ? nil : api_v1_rubric_tracks_path(@rubric),
      center: Rails.application.config.default_map_center, tile_layer: Leaflet.tile_layer,
      attribution: Leaflet.attribution}}
