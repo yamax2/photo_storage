@@ -37,7 +37,7 @@ PHOTOSTORAGE_ADDITIONAL_TIMEZONES # добавочные тайм-зоны дл�
 
 ## Запуск приложения
 ```bash
-docker-compose -d up
+docker-compose up -d
 ```
 
 открываем в браузере http://photos.localhost:8080
