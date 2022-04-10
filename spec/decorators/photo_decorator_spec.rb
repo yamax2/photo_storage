@@ -103,6 +103,6 @@ RSpec.describe PhotoDecorator do
   describe '#turned?' do
     let(:photo) { create :photo, yandex_token: nil, local_filename: 'test', rotated: 1 }
 
-    it { expect(decorated_photo.turned?).to eq(true) }
+    it { expect(decorated_photo.turned?).to be(true) }
   end
 end

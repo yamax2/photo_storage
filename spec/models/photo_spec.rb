@@ -396,7 +396,7 @@ RSpec.describe Photo do
         context "when content_type is #{type}" do
           let(:content_type) { type }
 
-          it { is_expected.to eq(true) }
+          it { is_expected.to be(true) }
         end
       end
     end
@@ -404,13 +404,13 @@ RSpec.describe Photo do
     context 'when empty content_type' do
       let(:content_type) { nil }
 
-      it { is_expected.to eq(false) }
+      it { is_expected.to be(false) }
     end
 
     context 'when photo' do
       let(:content_type) { 'image/png' }
 
-      it { is_expected.to eq(false) }
+      it { is_expected.to be(false) }
     end
   end
 
@@ -424,7 +424,7 @@ RSpec.describe Photo do
         context "when content_type is #{type}" do
           let(:content_type) { type }
 
-          it { is_expected.to eq(true) }
+          it { is_expected.to be(true) }
         end
       end
     end
@@ -432,13 +432,13 @@ RSpec.describe Photo do
     context 'when empty content_type' do
       let(:content_type) { nil }
 
-      it { is_expected.to eq(false) }
+      it { is_expected.to be(false) }
     end
 
     context 'when not a jpeg' do
       let(:content_type) { 'image/png' }
 
-      it { is_expected.to eq(false) }
+      it { is_expected.to be(false) }
     end
   end
 end

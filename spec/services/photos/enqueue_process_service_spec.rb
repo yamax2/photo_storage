@@ -29,7 +29,7 @@ RSpec.describe Photos::EnqueueProcessService do
     it do
       expect { service_context }.to change(photo, :persisted?).from(false).to(true)
 
-      expect(File.exist?(photo.tmp_local_filename)).to eq(true)
+      expect(File.exist?(photo.tmp_local_filename)).to be(true)
       expect(service_context).to be_a_success
 
       expect(photo).to be_valid
@@ -46,7 +46,7 @@ RSpec.describe Photos::EnqueueProcessService do
 
     it do
       expect(service_context).to be_a_failure
-      expect(File.exist?(photo.tmp_local_filename)).to eq(true)
+      expect(File.exist?(photo.tmp_local_filename)).to be(true)
 
       expect(photo).not_to be_valid
       expect(photo).not_to be_persisted

@@ -111,7 +111,7 @@ RSpec.describe Api::V1::Admin::UploadsController do
 
         it do
           expect(response).to have_http_status(:unprocessable_entity)
-          expect(File.exist?(local_file)).to eq(false)
+          expect(File.exist?(local_file)).to be(false)
           expect(json).to be_empty
         end
       end

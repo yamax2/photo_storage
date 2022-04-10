@@ -1,4 +1,7 @@
 # frozen_string_literal: true
 
-Redis.current = Redis.new(Rails.application.config.redis)
-RedisClassy.redis = Redis.current
+# FIXME: temporary
+Redis.silence_deprecations = true
+
+redis = Redis.new(Rails.application.config.redis)
+RedisClassy.redis = redis

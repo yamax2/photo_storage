@@ -109,19 +109,4 @@ RSpec.describe Tracks::LoadInfoService do
       expect(track.bounds).to eq(correct_bounds)
     end
   end
-
-  context 'when corrupted file' do
-    before do
-      FileUtils.mkdir_p(tmp_dir)
-      FileUtils.cp('spec/fixtures/test2.gpx', tmp_dir.join('test.gpx'))
-    end
-
-    after { FileUtils.rm_f(tmp_dir.join('test.gpx')) }
-
-    let(:track) { create :track, local_filename: 'test.gpx' }
-
-    it do
-      expect { service_context }.to raise_error(ArgumentError)
-    end
-  end
 end

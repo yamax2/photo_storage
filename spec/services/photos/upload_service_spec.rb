@@ -57,7 +57,7 @@ RSpec.describe Photos::UploadService do
       it do
         expect(service_context).to be_a_failure
         expect(service_context.message).to eq('active token not found')
-        expect(File.exist?(tmp_file)).to eq(true)
+        expect(File.exist?(tmp_file)).to be(true)
       end
     end
 
@@ -73,7 +73,7 @@ RSpec.describe Photos::UploadService do
           and change(photo, :yandex_token_id).from(nil).to(yandex_token.id)
 
         expect(service_context).to be_a_success
-        expect(File.exist?(tmp_file)).to eq(false)
+        expect(File.exist?(tmp_file)).to be(false)
         expect(photo).not_to be_changed
       end
     end
@@ -90,7 +90,7 @@ RSpec.describe Photos::UploadService do
           and change(photo, :yandex_token_id).from(nil).to(yandex_token.id)
 
         expect(service_context).to be_a_success
-        expect(File.exist?(tmp_file)).to eq(false)
+        expect(File.exist?(tmp_file)).to be(false)
         expect(photo).not_to be_changed
       end
     end
@@ -102,7 +102,7 @@ RSpec.describe Photos::UploadService do
 
       it do
         expect(service_context).to be_a_success
-        expect(File.exist?(tmp_file)).to eq(false)
+        expect(File.exist?(tmp_file)).to be(false)
         expect(photo).not_to be_changed
       end
     end

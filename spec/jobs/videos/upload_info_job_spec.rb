@@ -28,7 +28,7 @@ RSpec.describe Videos::UploadInfoJob do
     it do
       expect { run! }.not_to raise_error
 
-      expect(RedisClassy.exists?(key)).to eq(false)
+      expect(RedisClassy.exists?(key)).to be(false)
     end
   end
 
@@ -38,7 +38,7 @@ RSpec.describe Videos::UploadInfoJob do
     it do
       expect { run! }.not_to raise_error
 
-      expect(RedisClassy.exists?(key)).to eq(false)
+      expect(RedisClassy.exists?(key)).to be(false)
     end
   end
 

@@ -49,7 +49,7 @@ RSpec.describe Tracks::UploadService do
           and change(track, :local_filename).from(String).to(nil).
           and change(track, :yandex_token_id).from(nil).to(yandex_token.id)
 
-        expect(File.exist?(tmp_file)).to eq(false)
+        expect(File.exist?(tmp_file)).to be(false)
         expect(track).not_to be_changed
       end
     end

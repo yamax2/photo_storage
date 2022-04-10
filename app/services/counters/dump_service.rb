@@ -28,9 +28,9 @@ module Counters
     def dump_counter(model)
       key = key_for(model.id)
 
-      value = redis.multi do
-        redis.getset(key, 0)
-        redis.expire(key, LOADED_COUNTER_TTL)
+      value = redis.multi do |r|
+        r.getset(key, 0)
+        r.expire(key, LOADED_COUNTER_TTL)
       end.first
 
       # when db fails?

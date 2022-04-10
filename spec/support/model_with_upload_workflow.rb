@@ -88,7 +88,7 @@ RSpec.shared_context 'model with upload workflow' do |factory|
       let(:token) { create :'yandex/token' }
       let(:model) { create factory, local_filename: nil, storage_filename: 'zozo', yandex_token: token }
 
-      it { is_expected.to eq(false) }
+      it { is_expected.to be(false) }
     end
 
     context 'when local_filename is not empty' do
@@ -104,11 +104,11 @@ RSpec.shared_context 'model with upload workflow' do |factory|
           FileUtils.rm_f Rails.root.join('tmp/files/test.txt')
         end
 
-        it { is_expected.to eq(true) }
+        it { is_expected.to be(true) }
       end
 
       context 'and file does not exist' do
-        it { is_expected.to eq(false) }
+        it { is_expected.to be(false) }
       end
     end
   end
@@ -136,7 +136,7 @@ RSpec.shared_context 'model with upload workflow' do |factory|
       before { model.update!(name: 'test1') }
 
       it do
-        expect(File.exist?(tmp_file)).to eq(true)
+        expect(File.exist?(tmp_file)).to be(true)
       end
     end
 
@@ -147,7 +147,7 @@ RSpec.shared_context 'model with upload workflow' do |factory|
         before { action! }
 
         it do
-          expect(File.exist?(tmp_file)).to eq(false)
+          expect(File.exist?(tmp_file)).to be(false)
         end
       end
 

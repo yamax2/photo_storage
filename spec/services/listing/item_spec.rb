@@ -65,7 +65,7 @@ RSpec.describe Listing::Item do
           rubrics_count: 20
         )
 
-        expect(item.video?).to eq(false)
+        expect(item.video?).to be(false)
       end
     end
 
@@ -152,19 +152,19 @@ RSpec.describe Listing::Item do
     context 'when photo' do
       let(:model_type) { 'Photo' }
 
-      it { is_expected.to eq(false) }
+      it { is_expected.to be(false) }
     end
 
     context 'when rubric' do
       let(:model_type) { 'Rubric' }
 
-      it { is_expected.to eq(true) }
+      it { is_expected.to be(true) }
     end
 
     context 'when wrong type' do
       let(:model_type) { 'Wrong' }
 
-      it { is_expected.to eq(false) }
+      it { is_expected.to be(false) }
     end
   end
 
@@ -179,7 +179,7 @@ RSpec.describe Listing::Item do
     end
 
     it do
-      expect(item.video?).to eq(true)
+      expect(item.video?).to be(true)
       expect(item.preview_filename).to eq('1.jpg')
     end
   end
@@ -193,7 +193,7 @@ RSpec.describe Listing::Item do
   describe '#turned?' do
     let(:attrs) { default_photo_attrs }
 
-    it { expect(item.turned?).to eq(true) }
+    it { expect(item.turned?).to be(true) }
   end
 
   describe '#rotated' do
