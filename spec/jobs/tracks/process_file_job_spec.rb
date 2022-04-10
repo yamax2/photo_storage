@@ -5,7 +5,7 @@ RSpec.describe Tracks::ProcessFileJob do
     let(:track) { create :track, local_filename: 'zozo' }
 
     it do
-      expect(Tracks::Process).to receive(:call!).with(track: track, storage_filename: 'test')
+      expect(Tracks::Process).to receive(:call!).with(track:, storage_filename: 'test')
 
       expect { described_class.new.perform(track.id, 'test') }.not_to raise_error
     end

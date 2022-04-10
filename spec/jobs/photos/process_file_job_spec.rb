@@ -5,7 +5,7 @@ RSpec.describe Photos::ProcessFileJob do
     let(:photo) { create :photo, local_filename: 'zozo' }
 
     it do
-      expect(Photos::Process).to receive(:call!).with(photo: photo, storage_filename: 'test')
+      expect(Photos::Process).to receive(:call!).with(photo:, storage_filename: 'test')
 
       expect { described_class.new.perform(photo.id, 'test') }.not_to raise_error
     end

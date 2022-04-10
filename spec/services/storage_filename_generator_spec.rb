@@ -6,7 +6,7 @@ RSpec.describe StorageFilenameGenerator do
   end
 
   context 'when photo partition mode' do
-    let(:photo) { build_stubbed(:photo, id: id, original_filename: '1.jpg') }
+    let(:photo) { build_stubbed(:photo, id:, original_filename: '1.jpg') }
     let(:result) { described_class.new(photo).call }
 
     context 'when id = 1' do

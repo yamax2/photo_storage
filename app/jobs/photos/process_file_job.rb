@@ -8,7 +8,7 @@ module Photos
       photo = Photo.find(photo_id)
 
       Photos::Process.call!(
-        photo: photo,
+        photo:,
         storage_filename: new_storage_filename
       )
     end

@@ -156,7 +156,7 @@ RSpec.describe Api::V1::Admin::VideosController, type: :request do
 
     context 'when with auth' do
       let(:request_proc) do
-        ->(headers) { post api_v1_admin_videos_url(video: {original_filename: 'test'}), headers: headers }
+        ->(headers) { post api_v1_admin_videos_url(video: {original_filename: 'test'}), headers: }
       end
 
       it_behaves_like 'admin restricted route', api: true
@@ -214,7 +214,7 @@ RSpec.describe Api::V1::Admin::VideosController, type: :request do
       let(:video) { create :photo, :video, storage_filename: 'test.mp4', yandex_token: node }
 
       let(:request_proc) do
-        ->(headers) { get api_v1_admin_video_url(video), headers: headers }
+        ->(headers) { get api_v1_admin_video_url(video), headers: }
       end
 
       it_behaves_like 'admin restricted route', api: true

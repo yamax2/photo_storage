@@ -36,7 +36,7 @@ RSpec.describe Admin::PhotosController, type: :request do
     context 'when request with auth' do
       let(:token) { create :'yandex/token' }
       let(:photo) { create :photo, storage_filename: 'test', yandex_token: token }
-      let(:request_proc) { ->(headers) { get edit_admin_photo_url(id: photo.id), headers: headers } }
+      let(:request_proc) { ->(headers) { get edit_admin_photo_url(id: photo.id), headers: } }
 
       it_behaves_like 'admin restricted route'
     end
@@ -175,7 +175,7 @@ RSpec.describe Admin::PhotosController, type: :request do
     context 'when request with auth' do
       let(:token) { create :'yandex/token' }
       let(:photo) { create :photo, storage_filename: 'test', yandex_token: token }
-      let(:request_proc) { ->(headers) { put admin_photo_url(id: photo.id, photo: {name: 'test'}), headers: headers } }
+      let(:request_proc) { ->(headers) { put admin_photo_url(id: photo.id, photo: {name: 'test'}), headers: } }
 
       it_behaves_like 'admin restricted route'
     end
@@ -219,7 +219,7 @@ RSpec.describe Admin::PhotosController, type: :request do
     context 'when request with auth' do
       let(:token) { create :'yandex/token' }
       let(:photo) { create :photo, storage_filename: 'test', yandex_token: token }
-      let(:request_proc) { ->(headers) { delete admin_photo_url(id: photo.id), headers: headers } }
+      let(:request_proc) { ->(headers) { delete admin_photo_url(id: photo.id), headers: } }
 
       it_behaves_like 'admin restricted route'
     end

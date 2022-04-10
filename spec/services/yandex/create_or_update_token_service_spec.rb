@@ -2,7 +2,7 @@
 
 RSpec.describe Yandex::CreateOrUpdateTokenService do
   let(:code) { '5851358' }
-  let(:service_context) { described_class.call!(code: code) }
+  let(:service_context) { described_class.call!(code:) }
 
   context 'when token does not exist' do
     subject(:update!) do

@@ -2,7 +2,7 @@
 
 RSpec.describe Photos::EnqueueProcessService do
   let(:rubric) { create :rubric }
-  let(:photo) { build :photo, :real, name: 'test', rubric: rubric }
+  let(:photo) { build :photo, :real, name: 'test', rubric: }
 
   let(:service_context) { described_class.call(model: photo, uploaded_io: image) }
 

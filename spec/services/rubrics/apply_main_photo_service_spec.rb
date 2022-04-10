@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 RSpec.describe Rubrics::ApplyMainPhotoService do
-  let(:service_context) { described_class.call(photo: photo, rubric: rubric) }
+  let(:service_context) { described_class.call(photo:, rubric:) }
 
   context 'when wrong rubric' do
     let(:rubric) { create :rubric }
@@ -16,7 +16,7 @@ RSpec.describe Rubrics::ApplyMainPhotoService do
 
   context 'when rubric without parent' do
     let(:rubric) { create :rubric }
-    let(:photo) { create :photo, local_filename: 'test', rubric: rubric }
+    let(:photo) { create :photo, local_filename: 'test', rubric: }
 
     it do
       expect { service_context }.to change { rubric.reload.main_photo }.from(nil).to(photo)
@@ -27,7 +27,7 @@ RSpec.describe Rubrics::ApplyMainPhotoService do
 
   context 'when rubric with parents' do
     let(:some_photo) { create :photo, local_filename: 'test', rubric: rubric2 }
-    let(:photo) { create :photo, local_filename: 'test', rubric: rubric }
+    let(:photo) { create :photo, local_filename: 'test', rubric: }
 
     let(:rubric1) { create :rubric }
     let(:rubric2) { create :rubric, rubric: rubric1 }

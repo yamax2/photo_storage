@@ -12,7 +12,7 @@ RSpec.describe Photos::LoadInfoService do
     end
 
     photo.save!
-    described_class.call!(photo: photo)
+    described_class.call!(photo:)
     photo.reload
   end
 

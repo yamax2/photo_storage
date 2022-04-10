@@ -64,8 +64,8 @@ module Api
           end
         end
 
-        def with_redis_transaction(&block)
-          Sidekiq.redis { |redis| redis.multi(&block) }
+        def with_redis_transaction(&)
+          Sidekiq.redis { |redis| redis.multi(&) }
         end
 
         def info_redis_key

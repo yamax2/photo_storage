@@ -37,7 +37,7 @@ module Api
         def enqueue_process
           "::#{@model.class.to_s.pluralize}::EnqueueProcessService".constantize.call(
             model: @model,
-            uploaded_io: uploaded_io
+            uploaded_io:
           )
         end
 

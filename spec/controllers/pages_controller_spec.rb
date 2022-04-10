@@ -22,7 +22,7 @@ RSpec.describe PagesController, type: :request do
           create :rubric
           create :rubric, rubric: rubric
 
-          create(:photo, rubric: rubric, yandex_token: token, storage_filename: 'test')
+          create(:photo, rubric:, yandex_token: token, storage_filename: 'test')
 
           get root_url
         end
@@ -83,7 +83,7 @@ RSpec.describe PagesController, type: :request do
       end
 
       context 'and with sub rubric with published photo' do
-        let(:sub_rubric) { create :rubric, rubric: rubric }
+        let(:sub_rubric) { create :rubric, rubric: }
 
         before do
           create :photo, storage_filename: 'test', rubric: sub_rubric, yandex_token: token
@@ -117,7 +117,7 @@ RSpec.describe PagesController, type: :request do
       end
 
       context 'and with sub rubric with published photo but with zero counter' do
-        let(:other_rubric) { create :rubric, rubric: rubric }
+        let(:other_rubric) { create :rubric, rubric: }
 
         before do
           create :photo, storage_filename: 'test', rubric: other_rubric, yandex_token: token

@@ -17,8 +17,8 @@ module Cart
       clear_incorrect
     end
 
-    def self.call(rubric_id, &block)
-      new(rubric_id).call(&block)
+    def self.call(rubric_id, &)
+      new(rubric_id).call(&)
     end
 
     private
@@ -29,10 +29,10 @@ module Cart
       redis.srem(key, ids.to_a) if ids.any?
     end
 
-    def each_photo(&block)
+    def each_photo(&)
       Photo.
         where(id: ids, rubric_id: @rubric_id).
-        each_instance(with_hold: true, &block)
+        each_instance(with_hold: true, &)
     end
 
     def ids

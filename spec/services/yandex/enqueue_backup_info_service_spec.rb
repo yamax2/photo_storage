@@ -5,7 +5,7 @@ RSpec.describe Yandex::EnqueueBackupInfoService do
   let(:token) { create :'yandex/token', dir: '/test', other_dir: '/other', access_token: API_ACCESS_TOKEN }
 
   let(:resource) { :photo }
-  let(:service_context) { described_class.call!(token: token, resource: resource) }
+  let(:service_context) { described_class.call!(token:, resource:) }
   let(:redis_key) { "backup_info:#{token.id}:photo" }
 
   context 'when info presents' do

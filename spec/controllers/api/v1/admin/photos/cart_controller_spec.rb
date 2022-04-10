@@ -39,7 +39,7 @@ RSpec.describe Api::V1::Admin::Photos::CartController, type: :request do
 
     context 'when with auth' do
       let(:photo) { create :photo, local_filename: 'test' }
-      let(:request_proc) { ->(headers) { post api_v1_admin_photos_cart_url(photo_id: photo.id), headers: headers } }
+      let(:request_proc) { ->(headers) { post api_v1_admin_photos_cart_url(photo_id: photo.id), headers: } }
 
       it_behaves_like 'admin restricted route', api: true
     end
@@ -79,7 +79,7 @@ RSpec.describe Api::V1::Admin::Photos::CartController, type: :request do
 
     context 'when with auth' do
       let(:photo) { create :photo, local_filename: 'test' }
-      let(:request_proc) { ->(headers) { delete api_v1_admin_photos_cart_url(photo_id: photo.id), headers: headers } }
+      let(:request_proc) { ->(headers) { delete api_v1_admin_photos_cart_url(photo_id: photo.id), headers: } }
 
       it_behaves_like 'admin restricted route', api: true
     end

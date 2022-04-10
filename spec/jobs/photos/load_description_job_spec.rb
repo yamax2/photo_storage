@@ -10,6 +10,6 @@ RSpec.describe Photos::LoadDescriptionJob do
   end
 
   it do
-    expect(Photos::LoadDescriptionService).to have_received(:call!).with(photo: photo)
+    expect(Photos::LoadDescriptionService).to have_received(:call!).with(photo:)
   end
 end

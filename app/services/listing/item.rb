@@ -38,8 +38,8 @@ module Listing
       value = Array.wrap(@values.fetch(:name))
 
       if rubric?
-        value << I18n.t('rubrics.name.rubrics_count_text', rubrics_count: rubrics_count) if rubrics_count.to_i.positive?
-        value << I18n.t('rubrics.name.photos_count_text', photos_count: photos_count) if photos_count.to_i.positive?
+        value << I18n.t('rubrics.name.rubrics_count_text', rubrics_count:) if rubrics_count.to_i.positive?
+        value << I18n.t('rubrics.name.photos_count_text', photos_count:) if photos_count.to_i.positive?
       end
 
       @name = value.join(', ')
@@ -47,7 +47,7 @@ module Listing
 
     def image_size(apply_rotation: false)
       if size?
-        image_props.image_size(:thumb, apply_rotation: apply_rotation)
+        image_props.image_size(:thumb, apply_rotation:)
       else
         DEFAULT_SIZE
       end

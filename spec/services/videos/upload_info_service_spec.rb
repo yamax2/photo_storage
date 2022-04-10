@@ -20,7 +20,7 @@ RSpec.describe Videos::UploadInfoService do
 
   context 'when mode with original file' do
     subject(:info) do
-      VCR.use_cassette('video_upload_info') { described_class.new(video, secret: secret).call }
+      VCR.use_cassette('video_upload_info') { described_class.new(video, secret:).call }
     end
 
     it do
@@ -35,7 +35,7 @@ RSpec.describe Videos::UploadInfoService do
   context 'when mode without an original file' do
     subject(:info) do
       VCR.use_cassette('video_upload_info_simple') do
-        described_class.new(video, skip_original: true, secret: secret).call
+        described_class.new(video, skip_original: true, secret:).call
       end
     end
 

@@ -44,7 +44,7 @@ RSpec.describe Track do
 
     context 'when track is published' do
       let(:token) { create :'yandex/token' }
-      let(:track) { build :track, storage_filename: 'test', bounds: bounds, yandex_token: token }
+      let(:track) { build :track, storage_filename: 'test', bounds:, yandex_token: token }
 
       context 'when empty bounds' do
         let(:bounds) { [] }

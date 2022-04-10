@@ -20,7 +20,7 @@ RSpec.describe Yandex::RefreshTokenJob do
   end
 
   context 'when token does not exist' do
-    let(:token) { Struct.new(:id).new(id: 1) }
+    let(:token) { Struct.new(:id).new({id: 1}) }
 
     it do
       expect { described_class.new.perform(token.id) }.to raise_error(ActiveRecord::RecordNotFound)

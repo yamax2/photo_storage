@@ -50,7 +50,7 @@ RSpec.describe Admin::RubricsController, type: :request do
     end
 
     context 'when with auth' do
-      let(:request_proc) { ->(headers) { post admin_rubrics_url(rubric: {name: 'test'}), headers: headers } }
+      let(:request_proc) { ->(headers) { post admin_rubrics_url(rubric: {name: 'test'}), headers: } }
 
       it_behaves_like 'admin restricted route'
     end
@@ -96,7 +96,7 @@ RSpec.describe Admin::RubricsController, type: :request do
     context 'when with auth' do
       let(:rubric) { create :rubric }
 
-      let(:request_proc) { ->(headers) { delete admin_rubric_url(id: rubric.id), headers: headers } }
+      let(:request_proc) { ->(headers) { delete admin_rubric_url(id: rubric.id), headers: } }
 
       it_behaves_like 'admin restricted route'
     end
@@ -170,7 +170,7 @@ RSpec.describe Admin::RubricsController, type: :request do
     end
 
     context 'when with auth' do
-      let(:request_proc) { ->(headers) { get admin_rubrics_url, headers: headers } }
+      let(:request_proc) { ->(headers) { get admin_rubrics_url, headers: } }
 
       it_behaves_like 'admin restricted route'
     end
@@ -208,7 +208,7 @@ RSpec.describe Admin::RubricsController, type: :request do
     end
 
     context 'when with auth' do
-      let(:request_proc) { ->(headers) { get new_admin_rubric_url, headers: headers } }
+      let(:request_proc) { ->(headers) { get new_admin_rubric_url, headers: } }
 
       it_behaves_like 'admin restricted route'
     end
@@ -272,7 +272,7 @@ RSpec.describe Admin::RubricsController, type: :request do
 
     context 'when with auth' do
       let(:request_proc) do
-        ->(headers) { put admin_rubric_url(id: rubric.id, rubric: {name: 'text 1'}), headers: headers }
+        ->(headers) { put admin_rubric_url(id: rubric.id, rubric: {name: 'text 1'}), headers: }
       end
 
       it_behaves_like 'admin restricted route'
@@ -300,7 +300,7 @@ RSpec.describe Admin::RubricsController, type: :request do
 
     context 'when with auth' do
       let(:rubric) { create :rubric }
-      let(:request_proc) { ->(headers) { get edit_admin_rubric_url(id: rubric.id), headers: headers } }
+      let(:request_proc) { ->(headers) { get edit_admin_rubric_url(id: rubric.id), headers: } }
 
       it_behaves_like 'admin restricted route'
     end
@@ -342,7 +342,7 @@ RSpec.describe Admin::RubricsController, type: :request do
     context 'when with auth' do
       let(:rubric) { create :rubric }
       let(:request_proc) do
-        ->(headers) { get warm_up_admin_rubric_url(id: rubric.id, size: 'preview'), headers: headers }
+        ->(headers) { get warm_up_admin_rubric_url(id: rubric.id, size: 'preview'), headers: }
       end
 
       it_behaves_like 'admin restricted route'

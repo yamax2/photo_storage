@@ -57,7 +57,7 @@ RSpec.describe Admin::Yandex::TokensController, type: :request do
     end
 
     context 'when with auth' do
-      let(:request_proc) { ->(headers) { get admin_yandex_tokens_url, headers: headers } }
+      let(:request_proc) { ->(headers) { get admin_yandex_tokens_url, headers: } }
 
       it_behaves_like 'admin restricted route'
     end
@@ -91,7 +91,7 @@ RSpec.describe Admin::Yandex::TokensController, type: :request do
 
     context 'when with auth' do
       let(:token) { create :'yandex/token' }
-      let(:request_proc) { ->(headers) { get refresh_admin_yandex_token_url(id: token.id), headers: headers } }
+      let(:request_proc) { ->(headers) { get refresh_admin_yandex_token_url(id: token.id), headers: } }
 
       it_behaves_like 'admin restricted route'
     end
@@ -121,7 +121,7 @@ RSpec.describe Admin::Yandex::TokensController, type: :request do
 
     context 'when with auth' do
       let(:token) { create :'yandex/token' }
-      let(:request_proc) { ->(headers) { delete admin_yandex_token_url(id: token.id), headers: headers } }
+      let(:request_proc) { ->(headers) { delete admin_yandex_token_url(id: token.id), headers: } }
 
       it_behaves_like 'admin restricted route'
     end
@@ -179,7 +179,7 @@ RSpec.describe Admin::Yandex::TokensController, type: :request do
     context 'when with auth' do
       let(:token) { create :'yandex/token' }
       let(:request_proc) do
-        ->(headers) { put admin_yandex_token_url(id: token.id, yandex_token: {dir: '/my_dir'}), headers: headers }
+        ->(headers) { put admin_yandex_token_url(id: token.id, yandex_token: {dir: '/my_dir'}), headers: }
       end
 
       it_behaves_like 'admin restricted route'
@@ -209,7 +209,7 @@ RSpec.describe Admin::Yandex::TokensController, type: :request do
 
     context 'when with auth' do
       let(:token) { create :'yandex/token' }
-      let(:request_proc) { ->(headers) { get edit_admin_yandex_token_url(id: token.id), headers: headers } }
+      let(:request_proc) { ->(headers) { get edit_admin_yandex_token_url(id: token.id), headers: } }
 
       it_behaves_like 'admin restricted route'
     end

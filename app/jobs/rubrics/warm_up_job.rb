@@ -28,7 +28,7 @@ module Rubrics
     def warm_up_photo(photo, photo_size)
       path = photo.proxy_url(photo_size)
       url = Addressable::URI.new(
-        scheme: default_url_options.fetch(:protocol), host: default_url_options.fetch(:host), path: path
+        scheme: default_url_options.fetch(:protocol), host: default_url_options.fetch(:host), path:
       )
 
       HTTP.

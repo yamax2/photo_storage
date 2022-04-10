@@ -14,7 +14,7 @@ module Tracks
         duration: gpx.moving_duration,
         started_at: calc_time(:min),
         finished_at: calc_time(:max),
-        bounds: bounds
+        bounds:
       )
     end
 

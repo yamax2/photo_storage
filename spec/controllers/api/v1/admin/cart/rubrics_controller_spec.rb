@@ -21,7 +21,7 @@ RSpec.describe Api::V1::Admin::Cart::RubricsController, type: :request do
     end
 
     context 'when with auth' do
-      let(:request_proc) { ->(headers) { get api_v1_admin_cart_rubrics_url, headers: headers } }
+      let(:request_proc) { ->(headers) { get api_v1_admin_cart_rubrics_url, headers: } }
 
       it_behaves_like 'admin restricted route', api: true
     end

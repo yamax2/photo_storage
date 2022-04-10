@@ -6,7 +6,7 @@ RSpec.describe Listing::Item do
   let(:photo) do
     create :photo,
            yandex_token: token,
-           rubric: rubric,
+           rubric:,
            storage_filename: 'test.jpg',
            width: 100,
            height: 200,
@@ -142,7 +142,7 @@ RSpec.describe Listing::Item do
 
     let(:attrs) do
       photo.attributes.merge!(
-        model_type: model_type,
+        model_type:,
         photos_count: 0,
         rubrics_count: 0,
         yandex_token: token
@@ -218,7 +218,7 @@ RSpec.describe Listing::Item do
       let(:photo) do
         create :photo,
                yandex_token: token,
-               rubric: rubric,
+               rubric:,
                storage_filename: 'test.jpg',
                effects: %w[scaleX(-1)]
       end

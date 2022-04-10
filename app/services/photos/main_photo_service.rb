@@ -27,8 +27,8 @@ module Photos
       apply_main_photo_for(current_rubric.rubric)
     end
 
-    def with_lock(id, &block)
-      RedisMutex.with_lock("rubric_update:#{id}", block: 30.seconds, expire: 3.minutes, &block)
+    def with_lock(id, &)
+      RedisMutex.with_lock("rubric_update:#{id}", block: 30.seconds, expire: 3.minutes, &)
     end
   end
 end

@@ -14,7 +14,7 @@ module Videos
       storage_filename = ::StorageFilenameGenerator.call(model, partition: false, prefix: :video)
 
       model.assign_attributes(
-        storage_filename: storage_filename,
+        storage_filename:,
         preview_filename: "#{storage_filename}.jpg",
         video_preview_filename: "#{File.basename(storage_filename, '.*')}.preview#{File.extname(storage_filename)}"
       )

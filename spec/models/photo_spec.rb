@@ -91,7 +91,7 @@ RSpec.describe Photo do
 
     before do
       described_class::ALLOWED_CONTENT_TYPES.each do |content_type|
-        model = build(:photo, content_type: content_type, yandex_token: token, storage_filename: 'test')
+        model = build(:photo, content_type:, yandex_token: token, storage_filename: 'test')
 
         if model.video?
           model.assign_attributes(
@@ -118,7 +118,7 @@ RSpec.describe Photo do
   end
 
   describe 'effects validation' do
-    subject(:photo) { build :photo, effects: effects, local_filename: '1.jpg' }
+    subject(:photo) { build :photo, effects:, local_filename: '1.jpg' }
 
     context 'when value is not an array' do
       let(:effects) { '   ' }
@@ -210,7 +210,7 @@ RSpec.describe Photo do
           preview_filename: '  ',
           video_preview_filename: nil,
           yandex_token: node,
-          rubric: rubric
+          rubric:
         ).tap { |video| video.save(validate: false) }
       end
 
@@ -257,7 +257,7 @@ RSpec.describe Photo do
     before { allow(Cart::PhotoService).to receive(:call!) }
 
     let(:rubric) { create :rubric }
-    let(:photo) { create :photo, local_filename: 'test', rubric: rubric }
+    let(:photo) { create :photo, local_filename: 'test', rubric: }
 
     context 'when try to change name' do
       before do
@@ -281,7 +281,7 @@ RSpec.describe Photo do
       it do
         expect(photo.rubric).to eq(new_rubric)
         expect(::Cart::PhotoService).
-          to have_received(:call!).with(photo: photo, remove: true).once
+          to have_received(:call!).with(photo:, remove: true).once
       end
     end
 
@@ -291,12 +291,12 @@ RSpec.describe Photo do
       it do
         expect(photo).not_to be_persisted
         expect(::Cart::PhotoService).
-          to have_received(:call!).with(photo: photo, remove: true).once
+          to have_received(:call!).with(photo:, remove: true).once
       end
     end
 
     context 'when try to change rubric for a new photo' do
-      let(:photo) { build :photo, local_filename: 'test', rubric: rubric }
+      let(:photo) { build :photo, local_filename: 'test', rubric: }
       let(:new_rubric) { create :rubric }
 
       before do
@@ -389,7 +389,7 @@ RSpec.describe Photo do
   describe '#video?' do
     subject(:video?) { photo.video? }
 
-    let(:photo) { build :photo, content_type: content_type }
+    let(:photo) { build :photo, content_type: }
 
     context 'when video' do
       described_class::VIDEO_CONTENT_TYPES.each do |type|
@@ -417,7 +417,7 @@ RSpec.describe Photo do
   describe '#jpeg?' do
     subject(:jpeg?) { photo.jpeg? }
 
-    let(:photo) { build :photo, content_type: content_type }
+    let(:photo) { build :photo, content_type: }
 
     context 'when jpeg' do
       described_class::JPEG_CONTENT_TYPES.each do |type|

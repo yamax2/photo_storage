@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 RSpec.describe Photos::UploadService do
-  let(:service_context) { described_class.call(photo: photo) }
+  let(:service_context) { described_class.call(photo:) }
 
   before { FileUtils.mkdir_p(Rails.root.join('tmp/files')) }
 
@@ -119,7 +119,7 @@ RSpec.describe Photos::UploadService do
 
     context 'and remote filename generated externally' do
       let(:storage_filename) { 'new_filename' }
-      let(:service_context) { described_class.call(photo: photo, storage_filename: storage_filename) }
+      let(:service_context) { described_class.call(photo:, storage_filename:) }
 
       before { stub_request(:any, /webdav.yandex.ru/).to_return(body: '') }
 

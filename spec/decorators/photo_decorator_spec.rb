@@ -29,7 +29,7 @@ RSpec.describe PhotoDecorator do
                width: 5_152,
                height: 3_864,
                original_filename: 'test.jpg',
-               rotated: rotated
+               rotated:
       end
 
       context 'when original size' do

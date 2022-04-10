@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
 RSpec.describe Photos::MainPhotoService do
-  let(:service_context) { described_class.call(photo: photo) }
+  let(:service_context) { described_class.call(photo:) }
 
   let(:rubric) { create :rubric }
   let(:token) { create :'yandex/token' }
-  let(:photo) { create :photo, storage_filename: 'test', rubric: rubric, yandex_token: token }
+  let(:photo) { create :photo, storage_filename: 'test', rubric:, yandex_token: token }
 
   context 'when root rubric' do
     context 'and rubric without main photo' do

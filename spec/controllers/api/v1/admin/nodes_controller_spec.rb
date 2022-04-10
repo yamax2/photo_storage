@@ -9,7 +9,7 @@ RSpec.describe Api::V1::Admin::NodesController, type: :request do
     let(:node) { create :'yandex/token' }
 
     context 'when with auth' do
-      let(:request_proc) { ->(headers) { get api_v1_admin_node_url(node.id), headers: headers } }
+      let(:request_proc) { ->(headers) { get api_v1_admin_node_url(node.id), headers: } }
 
       it_behaves_like 'admin restricted route', api: true
     end

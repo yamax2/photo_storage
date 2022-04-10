@@ -9,7 +9,7 @@ module Yandex
       token = Token.find(token_id)
 
       RedisMutex.with_lock("yandex_token:#{token_id}:refresh", block: 30.seconds, expire: 10.minutes) do
-        RefreshToken.call!(token: token)
+        RefreshToken.call!(token:)
       end
     end
   end

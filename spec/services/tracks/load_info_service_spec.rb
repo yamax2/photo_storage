@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 RSpec.describe Tracks::LoadInfoService do
-  let(:service_context) { described_class.call(track: track) }
+  let(:service_context) { described_class.call(track:) }
   let(:tmp_dir) { Rails.root.join('tmp/files') }
 
   before { FileUtils.rm_f(tmp_dir.join('test.gpx')) }

@@ -12,7 +12,7 @@ RSpec.describe Admin::DashboardController, type: :request do
     end
 
     context 'when request with auth' do
-      let(:request_proc) { ->(headers) { get admin_root_url, headers: headers } }
+      let(:request_proc) { ->(headers) { get admin_root_url, headers: } }
 
       it_behaves_like 'admin restricted route'
     end

@@ -30,7 +30,7 @@ RSpec.describe Api::V1::TracksController, type: :request do
 
       let!(:track2) do
         create :track, storage_filename: 'test2.gpx',
-                       rubric: rubric,
+                       rubric:,
                        yandex_token: token,
                        duration: 2.hours + 59.minutes,
                        distance: 200,
@@ -42,7 +42,7 @@ RSpec.describe Api::V1::TracksController, type: :request do
 
       let!(:track3) do
         create :track, storage_filename: 'test3.gpx',
-                       rubric: rubric,
+                       rubric:,
                        yandex_token: token,
                        duration: 50.minutes,
                        distance: 30,

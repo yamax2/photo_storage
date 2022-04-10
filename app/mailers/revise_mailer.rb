@@ -6,7 +6,7 @@ class ReviseMailer < ApplicationMailer
 
     @info = info
 
-    mail subject: t('views.revise_mailer.failed.subject', token_id: token_id, dir: dir),
+    mail subject: t('views.revise_mailer.failed.subject', token_id:, dir:),
          to: admin_emails
   end
 end

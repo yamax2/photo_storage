@@ -54,7 +54,7 @@ RSpec.describe Admin::Rubrics::PositionsController, type: :request do
     end
 
     context 'when with auth' do
-      let(:request_proc) { ->(headers) { post admin_rubrics_positions_url(data: '1,2,5'), headers: headers } }
+      let(:request_proc) { ->(headers) { post admin_rubrics_positions_url(data: '1,2,5'), headers: } }
 
       it_behaves_like 'admin restricted route'
     end
@@ -138,7 +138,7 @@ RSpec.describe Admin::Rubrics::PositionsController, type: :request do
       end
 
       context 'and one rubric exists' do
-        let!(:rubric1) { create :rubric, rubric: rubric }
+        let!(:rubric1) { create :rubric, rubric: }
 
         before { get admin_rubrics_positions_url(id: rubric.id) }
 
@@ -150,8 +150,8 @@ RSpec.describe Admin::Rubrics::PositionsController, type: :request do
       end
 
       context 'and two rubrics exist' do
-        let!(:rubric1) { create :rubric, rubric: rubric, ord: 1 }
-        let!(:rubric2) { create :rubric, rubric: rubric, ord: 2 }
+        let!(:rubric1) { create :rubric, rubric:, ord: 1 }
+        let!(:rubric2) { create :rubric, rubric:, ord: 2 }
 
         before { get admin_rubrics_positions_url(id: rubric.id) }
 
@@ -165,7 +165,7 @@ RSpec.describe Admin::Rubrics::PositionsController, type: :request do
     end
 
     context 'when with auth' do
-      let(:request_proc) { ->(headers) { get admin_rubrics_positions_url, headers: headers } }
+      let(:request_proc) { ->(headers) { get admin_rubrics_positions_url, headers: } }
 
       it_behaves_like 'admin restricted route'
     end

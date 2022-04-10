@@ -5,7 +5,7 @@ RSpec.describe Photos::ChangeMainPhotoService do
     Photo.where(id: photo.id).update_all(rubric_id: new_rubric.id)
     photo.reload
 
-    described_class.call!(photo: photo)
+    described_class.call!(photo:)
   end
 
   let(:old_rubric) { create :rubric }

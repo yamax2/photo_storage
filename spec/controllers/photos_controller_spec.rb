@@ -8,7 +8,7 @@ RSpec.describe PhotosController, type: :request do
       create :photo,
              storage_filename: 'test',
              yandex_token: token,
-             rubric: rubric,
+             rubric:,
              width: 4_096,
              height: 3_072,
              views: 10

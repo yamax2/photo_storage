@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 RSpec.describe Rubrics::FilterFinder do
-  subject(:result) { described_class.call(name_part: name_part) }
+  subject(:result) { described_class.call(name_part:) }
 
   let!(:rubric1) { create :rubric, name: 'my first root rubric' }
   let!(:rubric2) { create :rubric, name: 'my second root rubric' }

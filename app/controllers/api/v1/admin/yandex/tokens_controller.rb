@@ -8,7 +8,7 @@ module Api
           # dumb api for my NAS :-)
           def index
             @resources = resource_scope.active.each_with_object([]) do |token, memo|
-              resource = {token: token}
+              resource = {token:}
 
               # photos always last element
               memo << resource.merge(type: :other) if token.other_count.present?

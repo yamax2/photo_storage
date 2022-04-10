@@ -37,7 +37,7 @@ RSpec.describe Admin::TracksController, type: :request do
     context 'when with auth' do
       let(:track) { create :track, local_filename: 'test' }
       let(:request_proc) do
-        ->(headers) { delete admin_rubric_track_url(rubric_id: track.rubric_id, id: track.id), headers: headers }
+        ->(headers) { delete admin_rubric_track_url(rubric_id: track.rubric_id, id: track.id), headers: }
       end
 
       it_behaves_like 'admin restricted route'
@@ -78,7 +78,7 @@ RSpec.describe Admin::TracksController, type: :request do
     context 'when with auth' do
       let(:track) { create :track, local_filename: 'test' }
       let(:request_proc) do
-        ->(headers) { get edit_admin_rubric_track_url(rubric_id: track.rubric_id, id: track.id), headers: headers }
+        ->(headers) { get edit_admin_rubric_track_url(rubric_id: track.rubric_id, id: track.id), headers: }
       end
 
       it_behaves_like 'admin restricted route'
@@ -95,7 +95,7 @@ RSpec.describe Admin::TracksController, type: :request do
     context 'when correct rubric' do
       let(:rubric) { create :rubric }
 
-      before { create_list :track, 30, rubric: rubric, local_filename: 'test' }
+      before { create_list :track, 30, rubric:, local_filename: 'test' }
 
       context 'and first page' do
         before { get admin_rubric_tracks_url(rubric_id: rubric.id) }
@@ -128,7 +128,7 @@ RSpec.describe Admin::TracksController, type: :request do
       end
 
       context 'when filter' do
-        let!(:my_track) { create :track, name: 'zozo', rubric: rubric, local_filename: 'test' }
+        let!(:my_track) { create :track, name: 'zozo', rubric:, local_filename: 'test' }
 
         before { get admin_rubric_tracks_url(rubric_id: rubric.id, q: {name_cont: 'zo'}) }
 
@@ -142,7 +142,7 @@ RSpec.describe Admin::TracksController, type: :request do
 
     context 'when auth' do
       let(:rubric) { create :rubric }
-      let(:request_proc) { ->(headers) { get admin_rubric_tracks_url(rubric_id: rubric.id), headers: headers } }
+      let(:request_proc) { ->(headers) { get admin_rubric_tracks_url(rubric_id: rubric.id), headers: } }
 
       it_behaves_like 'admin restricted route'
     end
@@ -227,7 +227,7 @@ RSpec.describe Admin::TracksController, type: :request do
 
       let(:request_proc) do
         lambda do |headers|
-          put admin_rubric_track_url(rubric_id: track.rubric_id, id: track.id, track: {name: 'zozo'}), headers: headers
+          put admin_rubric_track_url(rubric_id: track.rubric_id, id: track.id, track: {name: 'zozo'}), headers:
         end
       end
 

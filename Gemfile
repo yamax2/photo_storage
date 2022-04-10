@@ -2,10 +2,9 @@
 
 source 'https://rubygems.org'
 
-gem 'irb', require: false
 gem 'pg'
 gem 'puma', '>= 4.3'
-gem 'rails', '~> 6.1'
+gem 'rails', '~> 7.0'
 gem 'sass-rails', '>= 5.0'
 gem 'sprockets-rails', '>= 3.4'
 gem 'uglifier', '>= 1.3.0'

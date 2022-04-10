@@ -11,7 +11,7 @@ module Photos
     def perform(photo_id)
       photo = Photo.find(photo_id)
 
-      LoadDescriptionService.call!(photo: photo)
+      LoadDescriptionService.call!(photo:)
     end
   end
 end

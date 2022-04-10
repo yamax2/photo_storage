@@ -8,7 +8,7 @@ module Rubrics
     end
 
     def self.call(name_part:)
-      new(name_part: name_part).call
+      new(name_part:).call
     end
 
     def call

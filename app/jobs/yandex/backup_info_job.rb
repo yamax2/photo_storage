@@ -11,8 +11,8 @@ module Yandex
       token = Yandex::Token.find(token_id)
 
       info = BackupInfoService.call!(
-        token: token,
-        resource: resource,
+        token:,
+        resource:,
         backup_secret: Rails.application.credentials.backup_secret
       ).info
 

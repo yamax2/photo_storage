@@ -8,7 +8,7 @@ module Tracks
       track = Track.find(track_id)
 
       Tracks::Process.call!(
-        track: track,
+        track:,
         storage_filename: new_storage_filename
       )
     end

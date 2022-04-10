@@ -5,7 +5,7 @@ RSpec.describe Photos::EnqueueLoadDescriptionService do
     allow(Photos::LoadDescriptionJob).to receive(:perform_async)
   end
 
-  let(:service_context) { described_class.call!(photo: photo) }
+  let(:service_context) { described_class.call!(photo:) }
 
   context 'when photo without description' do
     context 'and has lat_long' do

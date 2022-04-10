@@ -4,8 +4,8 @@ RSpec.describe Yandex::RefreshTokenService do
   before { Timecop.freeze(2020, 1, 1) }
 
   let(:valid_till) { 1.day.from_now }
-  let(:token) { create :'yandex/token', refresh_token: API_REFRESH_TOKEN, valid_till: valid_till }
-  let(:service_context) { described_class.call!(token: token) }
+  let(:token) { create :'yandex/token', refresh_token: API_REFRESH_TOKEN, valid_till: }
+  let(:service_context) { described_class.call!(token:) }
 
   after { Timecop.return }
 

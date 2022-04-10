@@ -294,7 +294,7 @@ RSpec.describe Api::V1::RubricsController, type: :request do
       let(:token) { create :'yandex/token' }
 
       before do
-        create :photo, rubric: rubric, storage_filename: 'test.jpg', lat_long: [1, 2], yandex_token: token
+        create :photo, rubric:, storage_filename: 'test.jpg', lat_long: [1, 2], yandex_token: token
       end
 
       context 'when photos and videos' do

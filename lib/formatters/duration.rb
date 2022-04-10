@@ -26,8 +26,8 @@ module Formatters
     def format_duration_text(days, hours, minutes, seconds)
       result = []
 
-      result << I18n.t('tracks.duration.days', days: days) if days.positive?
-      result << I18n.t('tracks.duration.hours', hours: hours) if hours.positive?
+      result << I18n.t('tracks.duration.days', days:) if days.positive?
+      result << I18n.t('tracks.duration.hours', hours:) if hours.positive?
       result << I18n.t('tracks.duration.minutes', minutes: minutes.to_s.rjust(2, '0')) if minutes.positive?
       result << I18n.t('tracks.duration.seconds', seconds: @seconds.to_s.rjust(2, '0')) if seconds&.positive?
 

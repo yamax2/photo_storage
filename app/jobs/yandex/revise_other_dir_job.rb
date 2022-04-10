@@ -6,7 +6,7 @@ module Yandex
 
     def perform(token_id)
       token = Yandex::Token.find(token_id)
-      service = ReviseOtherDirService.call!(token: token)
+      service = ReviseOtherDirService.call!(token:)
 
       ReviseMailer.delay.failed(token.other_dir, token_id, service.errors) if service.errors.present?
     end

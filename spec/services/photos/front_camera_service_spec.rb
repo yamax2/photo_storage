@@ -5,8 +5,8 @@ RSpec.describe Photos::FrontCameraService do
     allow(Rails.application.config).to receive(:front_cameras).and_return(config)
   end
 
-  let(:photo) { build :photo, exif: exif, width: 2_000, height: 1_000, local_filename: 'test.jpg' }
-  let(:service_context) { described_class.call(photo: photo) }
+  let(:photo) { build :photo, exif:, width: 2_000, height: 1_000, local_filename: 'test.jpg' }
+  let(:service_context) { described_class.call(photo:) }
   let(:exif) { {make: 'HUAWEI', model: 'CLT-L29'} }
 
   context 'when without config' do

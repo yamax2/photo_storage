@@ -38,7 +38,7 @@ RSpec.describe Yandex::ReviseOtherDirService do
 
   context 'when dir does not exists' do
     subject(:service_context) do
-      VCR.use_cassette('yandex_revise_others_wrong_dir') { described_class.call!(token: token) }
+      VCR.use_cassette('yandex_revise_others_wrong_dir') { described_class.call!(token:) }
     end
 
     let(:token) { create :'yandex/token', other_dir: '/other1', access_token: API_ACCESS_TOKEN }
@@ -53,7 +53,7 @@ RSpec.describe Yandex::ReviseOtherDirService do
 
   context 'when dir exists' do
     subject(:service_context) do
-      VCR.use_cassette('yandex_revise_other_dir') { described_class.call!(token: token) }
+      VCR.use_cassette('yandex_revise_other_dir') { described_class.call!(token:) }
     end
 
     context 'when track does not exist in database' do

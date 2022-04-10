@@ -16,7 +16,7 @@ RSpec.describe Api::V1::Admin::UploadsController do
       let(:rubric) { create :rubric }
       let(:content) { fixture_file_upload('spec/fixtures/test.txt', 'text/plain') }
 
-      before { post :create, params: {rubric_id: rubric.id, content: content}, xhr: true }
+      before { post :create, params: {rubric_id: rubric.id, content:}, xhr: true }
 
       it do
         expect(response).to have_http_status(:unprocessable_entity)
@@ -28,7 +28,7 @@ RSpec.describe Api::V1::Admin::UploadsController do
       let(:rubric) { create :rubric }
       let(:content) { fixture_file_upload('spec/fixtures/test.txt', 'video/mp4') }
 
-      before { post :create, params: {rubric_id: rubric.id, content: content}, xhr: true }
+      before { post :create, params: {rubric_id: rubric.id, content:}, xhr: true }
 
       it do
         expect(response).to have_http_status(:unprocessable_entity)
@@ -42,7 +42,7 @@ RSpec.describe Api::V1::Admin::UploadsController do
       let(:request_proc) do
         lambda do |headers|
           request.headers.merge!(headers)
-          post :create, params: {rubric_id: rubric.id, content: content}, xhr: true
+          post :create, params: {rubric_id: rubric.id, content:}, xhr: true
         end
       end
 
@@ -54,13 +54,13 @@ RSpec.describe Api::V1::Admin::UploadsController do
 
       context 'when wrong rubric' do
         it do
-          expect { post :create, params: {rubric_id: 1, content: content}, xhr: true }.
+          expect { post :create, params: {rubric_id: 1, content:}, xhr: true }.
             to raise_error(ActiveRecord::RecordNotFound)
         end
       end
 
       context 'when without rubric_id param' do
-        subject(:upload!) { post :create, params: {content: content}, xhr: true }
+        subject(:upload!) { post :create, params: {content:}, xhr: true }
 
         it do
           expect { upload! }.to raise_error(ActionController::ParameterMissing).with_message(/rubric_id/)
@@ -76,7 +76,7 @@ RSpec.describe Api::V1::Admin::UploadsController do
         end
 
         context 'when without external info' do
-          before { post :create, params: {rubric_id: rubric.id, content: content}, xhr: true }
+          before { post :create, params: {rubric_id: rubric.id, content:}, xhr: true }
 
           it do
             expect(response).to have_http_status(:ok)
@@ -85,7 +85,7 @@ RSpec.describe Api::V1::Admin::UploadsController do
         end
 
         context 'when with external info' do
-          before { post :create, params: {rubric_id: rubric.id, content: content, external_info: 'test'}, xhr: true }
+          before { post :create, params: {rubric_id: rubric.id, content:, external_info: 'test'}, xhr: true }
 
           it do
             expect(response).to have_http_status(:ok)
@@ -104,7 +104,7 @@ RSpec.describe Api::V1::Admin::UploadsController do
 
         before do
           allow_any_instance_of(klass).to receive(:valid?).and_return(false) # rubocop:disable RSpec/AnyInstance
-          post :create, params: {rubric_id: rubric.id, content: content}, xhr: true
+          post :create, params: {rubric_id: rubric.id, content:}, xhr: true
         end
 
         after { FileUtils.rm_f(local_file) }

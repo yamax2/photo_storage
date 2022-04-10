@@ -8,7 +8,7 @@ RSpec.describe Rubrics::MapBoundsService do
   context 'when rubric without uploaded tracks and photos' do
     before do
       create :photo, rubric: rubric, local_filename: 'test.jpg', lat_long: [1, 2]
-      create :track, rubric: rubric, local_filename: 'test.gpx'
+      create :track, rubric:, local_filename: 'test.gpx'
     end
 
     it do
@@ -28,7 +28,7 @@ RSpec.describe Rubrics::MapBoundsService do
       create :photo, :video, rubric: rubric, storage_filename: '1.mp4', lat_long: [5, 1], yandex_token: token
 
       create :track, rubric: rubric, storage_filename: 'test.gpx', yandex_token: token
-      create :track, rubric: rubric, storage_filename: 'test.gpx', yandex_token: token
+      create :track, rubric:, storage_filename: 'test.gpx', yandex_token: token
     end
 
     context 'when photos and videos' do

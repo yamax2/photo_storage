@@ -3,7 +3,7 @@
 RSpec.describe Yandex::RefreshQuotaService do
   let(:redis) { RedisClassy.redis }
   let(:token) { create :'yandex/token', access_token: API_ACCESS_TOKEN }
-  let(:service_context) { described_class.call!(token: token) }
+  let(:service_context) { described_class.call!(token:) }
 
   before do
     redis.hset('yandex_tokens_usage', token.id, 100.megabytes)

@@ -42,7 +42,7 @@ module Yandex
         return
       end
 
-      return if (er = match_preview_info(filename, dav_info, md5: md5, size: size)).blank?
+      return if (er = match_preview_info(filename, dav_info, md5:, size:)).blank?
 
       (errors[id] ||= []).concat(er)
     end

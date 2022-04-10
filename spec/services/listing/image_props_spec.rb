@@ -76,7 +76,7 @@ RSpec.describe Listing::ImageProps do
   describe '#css_transform' do
     let(:effects) { nil }
     let(:photo) do
-      build :photo, width: 1_000, height: 2_000, local_filename: 'test', rotated: rotated, effects: effects
+      build :photo, width: 1_000, height: 2_000, local_filename: 'test', rotated:, effects:
     end
 
     context 'when photo is not rotated and without effects' do
@@ -106,7 +106,7 @@ RSpec.describe Listing::ImageProps do
   end
 
   describe '#turned?' do
-    let(:photo) { build :photo, width: 1_000, height: 2_000, local_filename: 'test', rotated: rotated }
+    let(:photo) { build :photo, width: 1_000, height: 2_000, local_filename: 'test', rotated: }
 
     shared_examples 'turned? for photo' do |value, turned|
       let(:rotated) { value }

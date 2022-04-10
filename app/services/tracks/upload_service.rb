@@ -47,7 +47,7 @@ module Tracks
 
     def update_track
       track.update!(
-        storage_filename: storage_filename,
+        storage_filename:,
         yandex_token: token_for_upload,
         local_filename: nil
       )

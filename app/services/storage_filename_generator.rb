@@ -24,7 +24,7 @@ class StorageFilenameGenerator
   end
 
   def self.call(model, partition: true, prefix: nil)
-    new(model, partition: partition, prefix: prefix).call
+    new(model, partition:, prefix:).call
   end
 
   private

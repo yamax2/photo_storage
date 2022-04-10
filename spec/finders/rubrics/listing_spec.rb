@@ -233,10 +233,10 @@ RSpec.describe Rubrics::Listing do
     let(:rubric_id) { rubric6_only_deep.id }
     let(:opts) { {only_videos: true} }
 
-    let!(:video) { create :photo, :video, rubric_id: rubric_id, storage_filename: '1.mp4', yandex_token: token }
+    let!(:video) { create :photo, :video, rubric_id:, storage_filename: '1.mp4', yandex_token: token }
 
     before do
-      create :photo, rubric_id: rubric_id, storage_filename: '1.jpg', yandex_token: token
+      create :photo, rubric_id:, storage_filename: '1.jpg', yandex_token: token
     end
 
     it do
@@ -251,12 +251,12 @@ RSpec.describe Rubrics::Listing do
     let(:opts) { {only_videos: true, only_with_geo_tags: true} }
 
     let!(:video) do
-      create :photo, :video, rubric_id: rubric_id, storage_filename: '1.mp4', yandex_token: token, lat_long: [1, 2]
+      create :photo, :video, rubric_id:, storage_filename: '1.mp4', yandex_token: token, lat_long: [1, 2]
     end
 
     before do
       create :photo, rubric_id: rubric_id, storage_filename: '1.jpg', yandex_token: token
-      create :photo, :video, rubric_id: rubric_id, storage_filename: '2.mp4', yandex_token: token
+      create :photo, :video, rubric_id:, storage_filename: '2.mp4', yandex_token: token
     end
 
     it do

@@ -24,7 +24,7 @@ RSpec.describe Yandex::ReviseDirService do
 
   context 'when dir exists' do
     subject(:service_context) do
-      VCR.use_cassette('yandex_revise_dir') { described_class.call!(dir: dir, token: token) }
+      VCR.use_cassette('yandex_revise_dir') { described_class.call!(dir:, token:) }
     end
 
     context 'when photo does not exist in database' do
@@ -92,7 +92,7 @@ RSpec.describe Yandex::ReviseDirService do
 
   context 'when dir does not exist' do
     subject(:service_context) do
-      VCR.use_cassette('yandex_revise_wrong_dir') { described_class.call!(dir: dir, token: token) }
+      VCR.use_cassette('yandex_revise_wrong_dir') { described_class.call!(dir:, token:) }
     end
 
     let(:dir) { '011/013/' }

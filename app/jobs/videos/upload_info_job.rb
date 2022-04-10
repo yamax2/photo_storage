@@ -10,7 +10,7 @@ module Videos
     def perform(video_id, redis_key, skip_original)
       return if (video = Photo.videos.find_by(id: video_id)).nil?
 
-      info = UploadInfoService.new(video, skip_original: skip_original).call
+      info = UploadInfoService.new(video, skip_original:).call
 
       RedisClassy.redis.set(
         redis_key,

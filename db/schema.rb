@@ -10,8 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_19_184303) do
-
+ActiveRecord::Schema[7.0].define(version: 2021_06_19_184303) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -25,13 +24,13 @@ ActiveRecord::Schema.define(version: 2021_06_19_184303) do
     t.jsonb "exif"
     t.point "lat_long"
     t.string "original_filename", limit: 512, null: false
-    t.datetime "original_timestamp"
+    t.datetime "original_timestamp", precision: nil
     t.bigint "size", default: 0, null: false
     t.string "content_type", limit: 30, null: false
     t.integer "width", default: 0, null: false
     t.integer "height", default: 0, null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.string "md5", limit: 32, null: false
     t.string "sha256", limit: 64, null: false
     t.bigint "views", default: 0, null: false
@@ -46,8 +45,8 @@ ActiveRecord::Schema.define(version: 2021_06_19_184303) do
     t.string "name", limit: 100, null: false
     t.text "description"
     t.bigint "rubric_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.bigint "rubrics_count", default: 0, null: false
     t.bigint "photos_count", default: 0, null: false
     t.bigint "main_photo_id"
@@ -71,13 +70,13 @@ ActiveRecord::Schema.define(version: 2021_06_19_184303) do
     t.bigint "size", default: 0, null: false
     t.decimal "duration", default: "0.0", null: false
     t.decimal "distance", default: "0.0", null: false
-    t.datetime "started_at"
+    t.datetime "started_at", precision: nil
     t.point "bounds", default: [], null: false, array: true
     t.text "color", default: "red", null: false
     t.text "external_info"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.datetime "finished_at"
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
+    t.datetime "finished_at", precision: nil
     t.index ["md5", "sha256"], name: "uq_tracks", unique: true
     t.index ["rubric_id"], name: "index_tracks_on_rubric_id"
     t.index ["yandex_token_id"], name: "index_tracks_on_yandex_token_id", where: "(yandex_token_id IS NOT NULL)"
@@ -87,16 +86,16 @@ ActiveRecord::Schema.define(version: 2021_06_19_184303) do
     t.string "user_id", limit: 20, null: false
     t.string "login", limit: 255, null: false
     t.string "access_token", limit: 100, null: false
-    t.datetime "valid_till", null: false
+    t.datetime "valid_till", precision: nil, null: false
     t.string "refresh_token", limit: 100, null: false
     t.string "dir", limit: 255
     t.string "other_dir", limit: 255
     t.boolean "active", default: false
     t.bigint "used_space", default: 0, null: false
     t.bigint "total_space", default: 0, null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.datetime "last_archived_at"
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
+    t.datetime "last_archived_at", precision: nil
     t.index ["user_id"], name: "index_yandex_tokens_on_user_id", unique: true
   end
 

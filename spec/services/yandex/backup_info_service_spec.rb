@@ -24,14 +24,14 @@ RSpec.describe Yandex::BackupInfoService do
     let(:backup_secret) { nil }
 
     it do
-      expect { described_class.call!(token: token, resource: :photo, backup_secret: backup_secret) }.
+      expect { described_class.call!(token:, resource: :photo, backup_secret:) }.
         to raise_error(/backup secret/)
     end
   end
 
   context 'when wrong resource' do
     it do
-      expect { described_class.call!(token: token, resource: :wrong, backup_secret: backup_secret) }.
+      expect { described_class.call!(token:, resource: :wrong, backup_secret:) }.
         to raise_error(described_class::WrongResourceError, 'wrong resource passed: "wrong"')
     end
   end
@@ -39,7 +39,7 @@ RSpec.describe Yandex::BackupInfoService do
   context 'when photos' do
     subject(:encoded_string) do
       VCR.use_cassette('yandex_download_url_photos') do
-        described_class.call!(token: token, resource: :photo, backup_secret: backup_secret).info
+        described_class.call!(token:, resource: :photo, backup_secret:).info
       end
     end
 
@@ -53,7 +53,7 @@ RSpec.describe Yandex::BackupInfoService do
   context 'when other' do
     subject(:encoded_string) do
       VCR.use_cassette('yandex_download_url_other') do
-        described_class.call!(token: token, resource: 'other', backup_secret: backup_secret).info
+        described_class.call!(token:, resource: 'other', backup_secret:).info
       end
     end
 
@@ -68,7 +68,7 @@ RSpec.describe Yandex::BackupInfoService do
     let(:token) { create :'yandex/token', dir: nil }
 
     it do
-      expect { described_class.call!(token: token, resource: :photo, backup_secret: backup_secret) }.
+      expect { described_class.call!(token:, resource: :photo, backup_secret:) }.
         to raise_error("no dir for photo for token #{token.id}")
     end
   end

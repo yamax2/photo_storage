@@ -6,7 +6,7 @@ module Yandex
     sidekiq_options queue: :tokens
 
     def perform(code)
-      CreateOrUpdateTokenService.call!(code: code)
+      CreateOrUpdateTokenService.call!(code:)
     end
   end
 end

@@ -18,12 +18,12 @@ module Rubrics
     private
 
     def bounds_query
-      scope = Photo.where(rubric_id: rubric_id).uploaded.where.not(lat_long: nil)
+      scope = Photo.where(rubric_id:).uploaded.where.not(lat_long: nil)
       scope = scope.videos if only_videos
 
       [
         scope.select('lat_long[0] lat, lat_long[1] long'),
-        Track.where(rubric_id: rubric_id).uploaded.joins(', unnest(bounds) points').select('points[0], points[1]')
+        Track.where(rubric_id:).uploaded.joins(', unnest(bounds) points').select('points[0], points[1]')
       ].map(&:to_sql).join(' UNION ALL ')
     end
   end

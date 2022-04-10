@@ -14,7 +14,7 @@ RSpec.describe Rubrics::TracksSummaryService do
   context 'when some tracks exist' do
     let(:rubric_id) { rubric.id }
     let(:rubric) { create :rubric }
-    let(:another_rubric) { create :rubric, rubric: rubric }
+    let(:another_rubric) { create :rubric, rubric: }
 
     before do
       create :track, duration: 30.hours, distance: 20_000, local_filename: '3.gpx', rubric: another_rubric
@@ -27,7 +27,7 @@ RSpec.describe Rubrics::TracksSummaryService do
                duration: 3.hours,
                distance: 200,
                local_filename: '2.gpx',
-               rubric: rubric,
+               rubric:,
                finished_at: sample_time
       end
 
@@ -57,7 +57,7 @@ RSpec.describe Rubrics::TracksSummaryService do
                duration: 3.hours,
                distance: 200,
                local_filename: '2.gpx',
-               rubric: rubric,
+               rubric:,
                started_at: sample_time + 12.hours,
                finished_at: sample_time + 15.hours
       end

@@ -148,7 +148,7 @@ RSpec.describe Api::V1::Admin::Yandex::TokensController, type: :request do
     end
 
     context 'when with auth' do
-      let(:request_proc) { ->(headers) { get api_v1_admin_yandex_tokens_url, headers: headers } }
+      let(:request_proc) { ->(headers) { get api_v1_admin_yandex_tokens_url, headers: } }
 
       it_behaves_like 'admin restricted route', api: true
     end
@@ -261,7 +261,7 @@ RSpec.describe Api::V1::Admin::Yandex::TokensController, type: :request do
       end
 
       let(:request_proc) do
-        ->(headers) { get api_v1_admin_yandex_token_url(id: token.id, resource: :photo), headers: headers }
+        ->(headers) { get api_v1_admin_yandex_token_url(id: token.id, resource: :photo), headers: }
       end
 
       it_behaves_like 'admin restricted route', api: true
@@ -307,7 +307,7 @@ RSpec.describe Api::V1::Admin::Yandex::TokensController, type: :request do
     end
 
     context 'when with auth' do
-      let(:request_proc) { ->(headers) { get touch_api_v1_admin_yandex_token_url(token.id), headers: headers } }
+      let(:request_proc) { ->(headers) { get touch_api_v1_admin_yandex_token_url(token.id), headers: } }
 
       it_behaves_like 'admin restricted route', api: true
     end
