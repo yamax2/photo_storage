@@ -108,7 +108,7 @@ class VideoMetadata
       video_preview_size: video_preview_file.size,
       duration: video.fetch(:Duration).to_f,
       tz: @timezone,
-      exif: make && model ? {make:, model:} : nil
+      exif: make && model ? {make: model, model: model} : nil
     }
   end
 
@@ -158,7 +158,7 @@ class NewVideo
   end
 
   def create(body)
-    request_body = body.merge(rubric_id:)
+    request_body = body.merge(rubric_id: rubric_id)
     response, err, status = Open3.capture3(generate_curl(request_body))
 
     raise NotCreatedError, err unless status.success?

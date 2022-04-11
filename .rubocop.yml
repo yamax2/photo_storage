@@ -8,8 +8,6 @@ AllCops:
   NewCops: enable
   Exclude:
     - 'db/schema.rb'
-    - 'config/**/*'
-    - 'lib/tasks/**/*'
     - 'bin/**/*'
     - '.pryrc'
     - 'vendor/bundle/**/*'
@@ -45,6 +43,7 @@ Style/LambdaCall:
 Metrics/BlockLength:
   Exclude:
     - spec/**/*
+    - config/**/*
 
 Metrics/AbcSize:
   Exclude:
@@ -81,3 +80,7 @@ Rails/NotNullColumn:
 
 Style/ParallelAssignment:
   Enabled: false
+
+Style/HashSyntax:
+  Exclude:
+    - scripts/upload_video.rb
