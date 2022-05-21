@@ -1,4 +1,4 @@
-version: '3.7'
+version: '3.9'
 
 services:
   app: &app
@@ -82,6 +82,8 @@ services:
     networks:
       - default
       - frontend
+    # deploy:
+    #  replicas: 2
     dns: $DIP_DNS
     environment:
       - VIRTUAL_HOST=photostorage.$DOCKER_TLD

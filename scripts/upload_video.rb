@@ -26,7 +26,7 @@ require 'yaml'
 # rubocop:disable Metrics/MethodLength,Style/FormatStringToken
 Conf = Struct.new(:host, :secret, :auth) do
   def load!
-    config = "#{ENV['HOME']}/.photostorage"
+    config = "#{Dir.home}/.photostorage"
 
     raise "Config file not found #{config}" unless File.exist?(config)
 

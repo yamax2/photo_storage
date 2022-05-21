@@ -30,7 +30,7 @@ jobs:
           - 5432/tcp
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Set up Ruby
         # To automatically get bug fixes and new Ruby versions for ruby/setup-ruby,
@@ -58,12 +58,12 @@ jobs:
           DATABASE_URL: "postgresql://postgres@localhost:${{ job.services.postgres.ports['5432'] }}/photos"
 
       - name: Install Go
-        uses: actions/setup-go@v2
+        uses: actions/setup-go@v3
         with:
           go-version: 1.17
 
       - name: Prepare go
-        run: sudo apt install -y libvips-dev
+        run: sudo apt install -y --no-install-recommends libvips-dev
 
       - name: Test Proxy Service
         run: cd proxy_service && go test -v ./...

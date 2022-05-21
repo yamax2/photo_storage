@@ -84,3 +84,6 @@ Style/ParallelAssignment:
 Style/HashSyntax:
   Exclude:
     - scripts/upload_video.rb
+
+RSpec/ChangeByZero:
+  Enabled: false
