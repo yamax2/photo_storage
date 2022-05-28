@@ -8,7 +8,7 @@ on:
 
 jobs:
   test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     env:
       TZ: Asia/Yekaterinburg
       PHOTOSTORAGE_SMTP_USER: auto@tretyakov-ma.ru
@@ -60,7 +60,7 @@ jobs:
       - name: Install Go
         uses: actions/setup-go@v3
         with:
-          go-version: 1.17
+          go-version: 1.18
 
       - name: Prepare go
         run: sudo apt install -y --no-install-recommends libvips-dev
