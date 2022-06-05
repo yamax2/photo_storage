@@ -4,7 +4,7 @@ module Photos
   class UploadService
     include ::Interactor
 
-    delegate :photo, :storage_filename, to: :context
+    delegate :photo, :storage_filename, to: :context, private: true
 
     def call
       return if photo.storage_filename.present?
@@ -77,7 +77,7 @@ module Photos
     def upload_file
       client.put(
         local_file,
-        "#{token_for_upload.dir}/#{storage_filename}",
+        [token_for_upload.dir, storage_filename].join('/'),
         size: photo.size,
         etag: photo.md5,
         sha256: photo.sha256
@@ -94,7 +94,8 @@ module Photos
       photo.update!(
         storage_filename:,
         yandex_token: token_for_upload,
-        local_filename: nil
+        local_filename: nil,
+        folder_index: token_for_upload.photos_folder_index
       )
 
       FileUtils.rm_f(local_file)

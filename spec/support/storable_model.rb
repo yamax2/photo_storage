@@ -11,6 +11,7 @@ RSpec.shared_examples 'storable model' do
     it { is_expected.to have_db_column(:md5).of_type(:string).with_options(null: false, limit: 32) }
     it { is_expected.to have_db_column(:sha256).of_type(:string).with_options(null: false, limit: 64) }
     it { is_expected.to have_db_column(:original_filename).of_type(:string).with_options(null: false, limit: 512) }
+    it { is_expected.to have_db_column(:folder_index).of_type(:integer).with_options(null: false, default: 0) }
 
     it { is_expected.to have_db_index(:yandex_token_id) }
     it { is_expected.to have_db_index(%i[md5 sha256]).unique }

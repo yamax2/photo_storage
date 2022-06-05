@@ -25,7 +25,7 @@ module Yandex
 
     private
 
-    delegate :redis, to: RedisClassy
+    delegate :redis, to: RedisClassy, private: true
 
     def redis_key
       @redis_key ||= "backup_info:#{token.id}:#{resource}"

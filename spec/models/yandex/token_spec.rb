@@ -20,6 +20,8 @@ RSpec.describe Yandex::Token do
     it { is_expected.to have_db_column(:updated_at).of_type(:datetime).with_options(null: false) }
 
     it { is_expected.to have_db_column(:last_archived_at).of_type(:datetime) }
+    it { is_expected.to have_db_column(:photos_folder_index).of_type(:integer).with_options(default: 0, null: false) }
+    it { is_expected.to have_db_column(:other_folder_index).of_type(:integer).with_options(default: 0, null: false) }
   end
 
   describe 'validations' do

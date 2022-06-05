@@ -2,6 +2,7 @@
 
 class StorageFilenameGenerator
   PARTITION_SIZE = 500
+  private_constant :PARTITION_SIZE
 
   attr_reader :model, :prefix
 

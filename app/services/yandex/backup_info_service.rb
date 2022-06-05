@@ -14,7 +14,7 @@ module Yandex
       other: :other_dir
     }.with_indifferent_access.freeze
 
-    delegate :token, :resource, :info, :backup_secret, to: :context
+    delegate :token, :resource, :info, :backup_secret, to: :context, private: true
 
     def call
       validate

@@ -10,7 +10,7 @@ module Api
             @resources = resource_scope.active.each_with_object([]) do |token, memo|
               resource = {token:}
 
-              # photos always last element
+              # photos are always last element
               memo << resource.merge(type: :other) if token.other_count.present?
               memo << resource.merge(type: :photo) if token.photo_count.present?
             end
