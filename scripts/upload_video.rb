@@ -175,9 +175,9 @@ class NewVideo
   private
 
   def generate_curl(request_body)
-    "curl -sL -w '|%{http_code}' '#{Conf.host}/api/v1/admin/videos' -u \"#{Conf.auth}\"" \
-      " -H 'Content-Type: application/json'" \
-      " -d '{\"temporary_uploaded_filename\": \"#{uploaded_original}\", \"video\": #{request_body.to_json}'}"
+    "curl -sL -w '|%{http_code}' '#{Conf.host}/api/v1/admin/videos' -u \"#{Conf.auth}\" " \
+      "-H 'Content-Type: application/json' " \
+      "-d '{\"temporary_uploaded_filename\": \"#{uploaded_original}\", \"video\": #{request_body.to_json}'}"
   end
 end
 
