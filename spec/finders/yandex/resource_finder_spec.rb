@@ -92,6 +92,7 @@ RSpec.describe Yandex::ResourceFinder do
     before do
       create :photo, yandex_token: token, storage_filename: 'test', size: 12
       create :track, yandex_token: other_token, storage_filename: 'test', size: 10
+
       create :photo,
              :video,
              yandex_token: other_token,
@@ -116,6 +117,55 @@ RSpec.describe Yandex::ResourceFinder do
         other_count: 4,
         photo_size: nil,
         other_size: 360
+      )
+    end
+  end
+
+  context 'when some published resources with different folder_index' do
+    before do
+      create :photo, yandex_token: token, storage_filename: 'test', size: 12
+      create :photo, yandex_token: token, storage_filename: 'test', size: 20, folder_index: 1
+
+      create :track, yandex_token: other_token, storage_filename: 'test', size: 10
+
+      create :photo,
+             :video,
+             yandex_token: token,
+             storage_filename: 'test',
+             size: 500,
+             preview_size: 200,
+             video_preview_size: 300,
+             folder_index: 1
+    end
+
+    it do
+      expect(result.to_a.size).to eq(3)
+
+      expect(result.first).to have_attributes(
+        id: token.id,
+        folder_index: 0,
+        photo_count: 1.0,
+        photo_size: 12,
+        other_count: nil,
+        other_size: nil
+      )
+
+      expect(result.second).to have_attributes(
+        id: token.id,
+        folder_index: 1,
+        photo_size: 20.0,
+        photo_count: 1.0,
+        other_size: 1000.0,
+        other_count: 3.0
+      )
+
+      expect(result.last).to have_attributes(
+        id: other_token.id,
+        folder_index: 0,
+        photo_size: nil,
+        photo_count: nil,
+        other_size: 10.0,
+        other_count: 1.0
       )
     end
   end

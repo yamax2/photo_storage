@@ -3,13 +3,16 @@
 module Yandex
   # finds resources for backup
   class ResourceFinder
-    def call
+    def call # rubocop:disable Metrics/MethodLength
       table = Arel::Table.new('resources')
 
-      Token.joins(info_query(table)).
-        group(:id, table[:id]).order(:id).
+      Token.
+        joins(info_query(table)).
+        group(:id, table[:id], table[:folder_index]).
+        order(:id, :folder_index).
         select(
           Token.arel_table[Arel.star],
+          table[:folder_index],
           group_case(table, 'other', :size),
           group_case(table, 'other', :count),
           group_case(table, 'photo', :size),
@@ -48,16 +51,17 @@ module Yandex
         resource_query(Track.all, 'other', Track.arel_table[:size])
     end
 
-    def resource_query(scope, resource_name, size_attr)
+    def resource_query(scope, resource_name, size_attr) # rubocop:disable Metrics/AbcSize
       attr = size_attr
       attr = Arel.sql(attr) if attr.is_a?(String)
 
       scope.uploaded.select(
         scope.arel_table[:yandex_token_id].as('id'),
+        scope.arel_table[:folder_index].as('folder_index'),
         attr.sum.as('size'),
         Arel.star.count.as('count'),
         Arel::Nodes::Quoted.new(resource_name).as('resource')
-      ).group(:yandex_token_id).arel
+      ).group(:yandex_token_id, :folder_index).arel
     end
 
     def union_all(*queries)
