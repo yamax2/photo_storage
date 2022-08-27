@@ -44,7 +44,7 @@ module Admin
       end
 
       def token_params
-        params.require(:yandex_token).permit(:dir, :other_dir, :active)
+        params.require(:yandex_token).permit(:dir, :other_dir, :active, :photos_folder_index, :other_folder_index)
       end
     end
   end

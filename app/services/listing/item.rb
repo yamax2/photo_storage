@@ -14,6 +14,7 @@ module Listing
       height
       lat_long
       props
+      folder_index
       rubric_id
       model_type
       photos_count

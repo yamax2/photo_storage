@@ -44,6 +44,11 @@ RSpec.describe Yandex::Token do
 
     it { is_expected.to validate_presence_of(:used_space) }
     it { is_expected.to validate_presence_of(:total_space) }
+
+    it { is_expected.to validate_presence_of(:photos_folder_index) }
+    it { is_expected.to validate_presence_of(:other_folder_index) }
+    it { is_expected.to validate_numericality_of(:photos_folder_index).is_greater_than_or_equal_to(0).only_integer }
+    it { is_expected.to validate_numericality_of(:other_folder_index).is_greater_than_or_equal_to(0).only_integer }
   end
 
   describe 'associations' do

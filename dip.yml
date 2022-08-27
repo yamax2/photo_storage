@@ -76,11 +76,6 @@ interaction:
     compose_run_options: [no-deps]
 
 provision:
-  - docker pull ruby:${DOCKER_RUBY_VERSION}-alpine
-  - docker pull postgres:${POSTGRES_IMAGE_TAG}-alpine
-  - docker pull redis:${REDIS_IMAGE_TAG}-alpine
-  - docker pull golang:${DOCKER_GO_VERSION}-alpine
-  - docker pull golang:${DOCKER_GO_VERSION}
   - ./docker/prepare_env.sh
   - docker volume create --name bundler_data
   - dip compose up -d db

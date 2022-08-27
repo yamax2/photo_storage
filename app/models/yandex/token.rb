@@ -11,6 +11,8 @@ module Yandex
     validates :login, presence: true, length: {maximum: 255}
     validates :access_token, :refresh_token, presence: true, length: {maximum: 100}
     validates :dir, :other_dir, length: {maximum: 255}
+    validates :photos_folder_index, :other_folder_index,
+              presence: true, numericality: {only_integer: true, greater_than_or_equal_to: 0}
 
     validates :dir, :other_dir, presence: true, if: :active?
     validate :dir_names

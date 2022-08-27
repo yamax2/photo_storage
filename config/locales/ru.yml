@@ -42,6 +42,8 @@ ru:
         updated_at: Обновлён
         last_archived_at: Резервное копирование
         last_upload_at: Последняя загрузка
+        photos_folder_index: Индекс папки фото
+        other_folder_index: Индекс папки прочего
     errors:
       models:
         photo:

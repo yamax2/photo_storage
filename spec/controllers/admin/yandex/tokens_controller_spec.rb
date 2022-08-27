@@ -132,12 +132,28 @@ RSpec.describe Admin::Yandex::TokensController, type: :request do
       let(:token) { create :'yandex/token' }
 
       before do
-        put admin_yandex_token_url(id: token.id, yandex_token: {dir: '/my_dir', other_dir: '/other_dir', active: true})
+        put admin_yandex_token_url(
+          id: token.id,
+          yandex_token: {
+            dir: '/my_dir',
+            other_dir: '/other_dir',
+            active: true,
+            photos_folder_index: 2,
+            other_folder_index: 1
+          }
+        )
       end
 
       it do
         expect(assigns(:token)).to eq(token)
-        expect(assigns(:token)).to have_attributes(active: true, dir: '/my_dir', other_dir: '/other_dir')
+        expect(assigns(:token)).to have_attributes(
+          active: true,
+          dir: '/my_dir',
+          other_dir: '/other_dir',
+          photos_folder_index: 2,
+          other_folder_index: 1
+        )
+
         expect(response).to redirect_to(admin_yandex_tokens_path)
       end
     end

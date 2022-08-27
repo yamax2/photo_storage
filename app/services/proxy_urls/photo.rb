@@ -64,7 +64,7 @@ module ProxyUrls
 
       Rails.application.routes.url_helpers.public_send(
         proxy_method(size, dimensions),
-        "#{yandex_token.other_dir.sub(%r{^/}, '')}/#{actual_filename}",
+        "#{dir_with_index(:other_dir)}/#{actual_filename}",
         params_for_size(size, dimensions&.first)
       )
     end
@@ -72,13 +72,21 @@ module ProxyUrls
     def photo_url(size, dimensions)
       Rails.application.routes.url_helpers.public_send(
         proxy_method(size, dimensions),
-        "#{yandex_token.dir.sub(%r{^/}, '')}/#{storage_filename}",
+        "#{dir_with_index(:dir)}/#{storage_filename}",
         params_for_size(size, dimensions&.first)
       )
     end
 
     def original?(size)
       size == :original
+    end
+
+    def dir_with_index(dir_type)
+      dir = yandex_token.public_send(dir_type).sub(%r{^/}, '')
+
+      return dir unless model.folder_index.nonzero?
+
+      "#{dir}#{model.folder_index}"
     end
   end
 end

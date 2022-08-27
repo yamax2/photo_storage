@@ -34,7 +34,9 @@ RSpec.describe Rubrics::Listing do
   let!(:photo_for_rubric1) { create :photo, rubric: rubric1_empty, local_filename: '1.jpg' }
 
   # uploaded deep
-  let!(:photo_for_rubric7) { create :photo, rubric: rubric7_sub, storage_filename: '1.jpg', yandex_token: token }
+  let!(:photo_for_rubric7) do
+    create :photo, rubric: rubric7_sub, storage_filename: '1.jpg', yandex_token: token, folder_index: 1
+  end
 
   # uploaded without avatar
   let!(:photo_for_rubric5) do
@@ -62,7 +64,8 @@ RSpec.describe Rubrics::Listing do
         model_type: 'Rubric',
         rubric_id: nil,
         photos_count: 0,
-        rubrics_count: 1
+        rubrics_count: 1,
+        folder_index: 1
       )
 
       expect(listing.first.yandex_token).to eq(token)
@@ -75,7 +78,8 @@ RSpec.describe Rubrics::Listing do
         model_type: 'Rubric',
         rubric_id: nil,
         photos_count: 1,
-        rubrics_count: 0
+        rubrics_count: 0,
+        folder_index: nil
       )
 
       expect(listing.third).to have_attributes(
@@ -86,7 +90,8 @@ RSpec.describe Rubrics::Listing do
         model_type: 'Rubric',
         rubric_id: nil,
         photos_count: 1,
-        rubrics_count: 0
+        rubrics_count: 0,
+        folder_index: 0
       )
 
       expect(listing.third.yandex_token).to eq(token)
@@ -99,7 +104,8 @@ RSpec.describe Rubrics::Listing do
         model_type: 'Rubric',
         rubric_id: nil,
         photos_count: 1,
-        rubrics_count: 0
+        rubrics_count: 0,
+        folder_index: nil
       )
 
       expect(actual_models).not_to include('Photo')
@@ -126,7 +132,8 @@ RSpec.describe Rubrics::Listing do
         model_type: 'Rubric',
         rubric_id: rubric6_only_deep.id,
         photos_count: 1,
-        rubrics_count: 0
+        rubrics_count: 0,
+        folder_index: 1
       )
     end
   end
@@ -145,7 +152,8 @@ RSpec.describe Rubrics::Listing do
         model_type: 'Photo',
         rubric_id: rubric2_with_photo_and_avatar.id,
         photos_count: 0,
-        rubrics_count: 0
+        rubrics_count: 0,
+        folder_index: 0
       )
     end
   end

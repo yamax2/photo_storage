@@ -25,7 +25,8 @@ RSpec.describe Listing::Item do
       lat_long: nil,
       props: nil,
       storage_filename: nil,
-      yandex_token_id: nil
+      yandex_token_id: nil,
+      folder_index: nil
     )
   end
 
@@ -62,7 +63,8 @@ RSpec.describe Listing::Item do
           rubric_id: rubric.id,
           model_type: 'Photo',
           photos_count: 10,
-          rubrics_count: 20
+          rubrics_count: 20,
+          folder_index: 0
         )
 
         expect(item.video?).to be(false)
@@ -145,7 +147,8 @@ RSpec.describe Listing::Item do
         model_type:,
         photos_count: 0,
         rubrics_count: 0,
-        yandex_token: token
+        yandex_token: token,
+        folder_index: nil
       )
     end
 

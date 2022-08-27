@@ -40,6 +40,18 @@
               small.form-text.text-muted
                 = t('.other_dir_hint')
 
+          .row.form-group
+            .col.col-md-3
+              = f.label :photos_folder_index
+            .col-12.col-md-9
+              = f.text_field :photos_folder_index, class: 'form-control'
+
+          .row.form-group
+            .col.col-md-3
+              = f.label :other_folder_index
+            .col-12.col-md-9
+              = f.text_field :other_folder_index, class: 'form-control'
+
         .card-footer.action-buttons
           = button_tag class: 'btn btn-primary btn-sm' do
             .fa.fa-dot-circle-o
