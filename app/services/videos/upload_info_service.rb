@@ -11,6 +11,8 @@ module Videos
     end
 
     def call
+      create_remote_dir
+
       content = {}
 
       content[:video] = upload_url_for(model.storage_filename) unless @skip_original
@@ -21,6 +23,16 @@ module Videos
     end
 
     private
+
+    def dav_client
+      @dav_client ||= ::YandexClient::Dav[model.yandex_token.access_token]
+    end
+
+    def create_remote_dir
+      dav_client.propfind(dir_with_index)
+    rescue ::YandexClient::NotFoundError
+      dav_client.mkcol(dir_with_index)
+    end
 
     def generate_secret(content)
       encryptor = new_cipher
@@ -38,10 +50,21 @@ module Videos
     end
 
     def upload_url_for(filename)
+      ::YandexClient::Disk[model.yandex_token.access_token].
+        upload_url([dir_with_index, filename].join('/'), overwrite: true)
+    end
+
+    def dir_with_index
+      return @dir_with_index if defined?(@dir_with_index)
+
       node = model.yandex_token
 
-      ::YandexClient::Disk[node.access_token].
-        upload_url([node.other_dir, filename].join('/'), overwrite: true)
+      @dir_with_index =
+        if model.folder_index.nonzero?
+          "#{node.other_dir}#{model.folder_index}"
+        else
+          node.other_dir
+        end
     end
   end
 end

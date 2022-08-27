@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: propfind
-    uri: https://webdav.yandex.ru/other_test
+    uri: https://webdav.yandex.ru/other_test3
     body:
       encoding: UTF-8
       string: <?xml version="1.0" encoding="utf-8"?><propfind xmlns="DAV:"></propfind>
@@ -29,9 +29,9 @@ http_interactions:
       Connection:
       - close
       Date:
-      - Sat, 27 Aug 2022 10:14:11 GMT
+      - Sat, 27 Aug 2022 10:16:58 GMT
       Yandex-Cloud-Request-Id:
-      - dav-fc3b258dcae77b931bcbb0993897ad68-52xfwvdbfp7dqot4
+      - dav-4fbfbc32ec6af3620a8ab1e97ee43728-gpj5hkbmuqx43w5f
       Yandex-Uid:
       - '1259373998'
       X-Frame-Options:
@@ -45,10 +45,10 @@ http_interactions:
     body:
       encoding: ASCII-8BIT
       base64_string: ''
-  recorded_at: Sat, 27 Aug 2022 10:14:11 GMT
+  recorded_at: Sat, 27 Aug 2022 10:16:58 GMT
 - request:
     method: mkcol
-    uri: https://webdav.yandex.ru/other_test
+    uri: https://webdav.yandex.ru/other_test3
     body:
       encoding: UTF-8
       string: ''
@@ -69,9 +69,9 @@ http_interactions:
       Connection:
       - close
       Date:
-      - Sat, 27 Aug 2022 10:14:11 GMT
+      - Sat, 27 Aug 2022 10:16:58 GMT
       Yandex-Cloud-Request-Id:
-      - dav-607132a15da14f742ce30a25bc950e0a-26hmhwt43wepvdwz
+      - dav-ffa42794ff4ef992a5655ee52bb5e26c-55uv6orwabvuix2u
       Yandex-Uid:
       - '1259373998'
       X-Frame-Options:
@@ -85,10 +85,10 @@ http_interactions:
     body:
       encoding: ASCII-8BIT
       base64_string: ''
-  recorded_at: Sat, 27 Aug 2022 10:14:11 GMT
+  recorded_at: Sat, 27 Aug 2022 10:16:58 GMT
 - request:
     method: get
-    uri: https://cloud-api.yandex.net/v1/disk/resources/upload?overwrite=true&path=/other_test/test.mp4.jpg
+    uri: https://cloud-api.yandex.net/v1/disk/resources/upload?overwrite=true&path=/other_test3/test.mp4
     body:
       encoding: UTF-8
       string: ''
@@ -109,7 +109,56 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Sat, 27 Aug 2022 10:14:12 GMT
+      - Sat, 27 Aug 2022 10:16:59 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Content-Length:
+      - '243'
+      Connection:
+      - close
+      Vary:
+      - Accept-Encoding
+      Access-Control-Allow-Methods:
+      - PUT, POST, GET, OPTIONS
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Yandex-Cloud-Request-Id:
+      - rest-8d812e886ed7aefef699055beb3b3e2c-api25h
+      Cache-Control:
+      - no-cache
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Headers:
+      - Accept-Language, Accept, X-Uid, X-HTTP-Method, X-Requested-With, Content-Type,
+        Authorization
+    body:
+      encoding: UTF-8
+      string: '{"operation_id":"3ee0393720166974256598e61929ac8242f9d7349fa6e366e79f84837f8f8846","href":"https://uploader26o.disk.yandex.net:443/upload-target/20220827T131659.274.utd.70fzc4jroe631o5l2of9ygd0w-k26o.14318884","method":"PUT","templated":false}'
+  recorded_at: Sat, 27 Aug 2022 10:16:59 GMT
+- request:
+    method: get
+    uri: https://cloud-api.yandex.net/v1/disk/resources/upload?overwrite=true&path=/other_test3/test.mp4.jpg
+    body:
+      encoding: UTF-8
+      string: ''
+    headers:
+      Authorization:
+      - OAuth <TOKEN>
+      Connection:
+      - close
+      Host:
+      - cloud-api.yandex.net
+      User-Agent:
+      - http.rb/5.1.0
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Sat, 27 Aug 2022 10:16:59 GMT
       Content-Type:
       - application/json; charset=utf-8
       Content-Length:
@@ -123,7 +172,7 @@ http_interactions:
       Access-Control-Allow-Credentials:
       - 'true'
       Yandex-Cloud-Request-Id:
-      - rest-829354e74d217463cd9ed31eef5b11d1-api24v
+      - rest-d281ea78ec8bd1a3bc3920011c3c426c-api34v
       Cache-Control:
       - no-cache
       Access-Control-Allow-Origin:
@@ -133,11 +182,11 @@ http_interactions:
         Authorization
     body:
       encoding: UTF-8
-      string: '{"operation_id":"4b19550a01940b1a3dd47aada91f9fdb2b8d6411da0a1f8eb13e2c1519db3108","href":"https://uploader36o.disk.yandex.net:443/upload-target/20220827T131412.302.utd.a3fpnsdf6g6u1vvvfw1u7zigl-k36o.4657446","method":"PUT","templated":false}'
-  recorded_at: Sat, 27 Aug 2022 10:14:12 GMT
+      string: '{"operation_id":"e566b6e4325e8405fd8d0f2410a723d13991a8c3d78dbfb42fd8dce227a2431e","href":"https://uploader10o.disk.yandex.net:443/upload-target/20220827T131659.746.utd.8uiz8qvsscc95ll410rru1nqs-k10o.2218846","method":"PUT","templated":false}'
+  recorded_at: Sat, 27 Aug 2022 10:16:59 GMT
 - request:
     method: get
-    uri: https://cloud-api.yandex.net/v1/disk/resources/upload?overwrite=true&path=/other_test/test.preview.mp4
+    uri: https://cloud-api.yandex.net/v1/disk/resources/upload?overwrite=true&path=/other_test3/test.preview.mp4
     body:
       encoding: UTF-8
       string: ''
@@ -158,11 +207,11 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Sat, 27 Aug 2022 10:14:12 GMT
+      - Sat, 27 Aug 2022 10:17:00 GMT
       Content-Type:
       - application/json; charset=utf-8
       Content-Length:
-      - '241'
+      - '238'
       Connection:
       - close
       Vary:
@@ -172,7 +221,7 @@ http_interactions:
       Access-Control-Allow-Credentials:
       - 'true'
       Yandex-Cloud-Request-Id:
-      - rest-1d3cf2a4762e462cc41e859a45e0910b-api30e
+      - rest-f0b130644938c80fdfb1aa89b5efffeb-api07e
       Cache-Control:
       - no-cache
       Access-Control-Allow-Origin:
@@ -182,6 +231,6 @@ http_interactions:
         Authorization
     body:
       encoding: UTF-8
-      string: '{"operation_id":"04b76faa2f3e7af5707906eafc165d31b9004df0140c08b5d5d9e494af831055","href":"https://uploader6v.disk.yandex.net:443/upload-target/20220827T131412.739.utd.6yb1sdtm6ct4k4g9a9lwoa8ui-k6v.14475498","method":"PUT","templated":false}'
-  recorded_at: Sat, 27 Aug 2022 10:14:12 GMT
+      string: '{"operation_id":"85202d70ab946935e3045791b114a12306198f190c534119aca476ec59718d61","href":"https://uploader40o.disk.yandex.net:443/upload-target/20220827T131700.379.utd.wnpg6hiqm8noezyhp7f3dca-k40o.94771","method":"PUT","templated":false}'
+  recorded_at: Sat, 27 Aug 2022 10:17:00 GMT
 recorded_with: VCR 6.1.0

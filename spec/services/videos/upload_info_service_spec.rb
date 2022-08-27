@@ -2,8 +2,9 @@
 
 RSpec.describe Videos::UploadInfoService do
   let(:secret) { 'very_secret' }
-  let(:node) { create :'yandex/token', other_dir: '/other_dev', access_token: API_ACCESS_TOKEN }
-  let(:video) { create :photo, :video, storage_filename: 'test.mp4', yandex_token: node, size: 2_000 }
+  let(:node) { create :'yandex/token', other_dir: '/other_test', access_token: API_ACCESS_TOKEN }
+  let(:folder_index) { 0 }
+  let(:video) { create :photo, :video, storage_filename: 'test.mp4', yandex_token: node, size: 2_000, folder_index: }
 
   let(:decoded_info) do
     src = Base64.decode64(info)
@@ -22,6 +23,22 @@ RSpec.describe Videos::UploadInfoService do
     subject(:info) do
       VCR.use_cassette('video_upload_info') { described_class.new(video, secret:).call }
     end
+
+    it do
+      expect(info).to be_a(String)
+
+      expect(decoded_info.fetch('video')).to include('disk.yandex.net')
+      expect(decoded_info.fetch('preview')).to include('disk.yandex.net')
+      expect(decoded_info.fetch('video_preview')).to include('disk.yandex.net')
+    end
+  end
+
+  context 'when folder_index is greater than zero' do
+    subject(:info) do
+      VCR.use_cassette('video_upload_folder_index') { described_class.new(video, secret:).call }
+    end
+
+    let(:folder_index) { 3 }
 
     it do
       expect(info).to be_a(String)
