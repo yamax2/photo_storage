@@ -4,7 +4,7 @@ module Photos
   class UploadService
     include ::Interactor
 
-    delegate :photo, :storage_filename, to: :context, private: true
+    delegate :photo, :storage_filename, :folder_index, to: :context, private: true
 
     def call
       return if photo.storage_filename.present?
@@ -12,6 +12,7 @@ module Photos
       validate_upload
 
       context.storage_filename ||= StorageFilenameGenerator.call(photo)
+      context.folder_index = token_for_upload.photos_folder_index
 
       create_remote_dirs
       upload_file
@@ -52,7 +53,7 @@ module Photos
     def remote_path
       return @remote_path if defined?(@remote_path)
 
-      @remote_path = token_for_upload.dir.split('/') + storage_filename.split('/')
+      @remote_path = dir_with_index.split('/').concat(storage_filename.split('/'))
 
       @remote_path.pop
       @remote_path.delete_if(&:empty?)
@@ -77,7 +78,7 @@ module Photos
     def upload_file
       client.put(
         local_file,
-        [token_for_upload.dir, storage_filename].join('/'),
+        [dir_with_index, storage_filename].join('/'),
         size: photo.size,
         etag: photo.md5,
         sha256: photo.sha256
@@ -95,10 +96,19 @@ module Photos
         storage_filename:,
         yandex_token: token_for_upload,
         local_filename: nil,
-        folder_index: token_for_upload.photos_folder_index
+        folder_index:
       )
 
       FileUtils.rm_f(local_file)
+    end
+
+    def dir_with_index
+      @dir_with_index ||=
+        if folder_index.nonzero?
+          "#{token_for_upload.dir}#{folder_index}"
+        else
+          token_for_upload.dir
+        end
     end
   end
 end

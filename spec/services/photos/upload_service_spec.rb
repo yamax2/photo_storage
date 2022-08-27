@@ -51,7 +51,7 @@ RSpec.describe Photos::UploadService do
       photo.save!
     end
 
-    context 'and active token does not exist' do
+    context 'when active token does not exist' do
       let(:yandex_token) { nil }
 
       it do
@@ -61,7 +61,7 @@ RSpec.describe Photos::UploadService do
       end
     end
 
-    context 'and to a new folder' do
+    context 'when to a new folder' do
       subject(:upload!) do
         VCR.use_cassette('photo_upload_new_folder') { service_context }
       end
@@ -78,7 +78,7 @@ RSpec.describe Photos::UploadService do
       end
     end
 
-    context 'and to a new sub_folder' do
+    context 'when to a new sub_folder' do
       subject(:upload!) do
         VCR.use_cassette('photo_upload_new_sub_folder') { service_context }
       end
@@ -87,7 +87,8 @@ RSpec.describe Photos::UploadService do
         expect { upload! }.
           to change(photo, :storage_filename).from(nil).to(String).
           and change(photo, :local_filename).from(String).to(nil).
-          and change(photo, :yandex_token_id).from(nil).to(yandex_token.id)
+          and change(photo, :yandex_token_id).from(nil).to(yandex_token.id).
+          and change(photo, :folder_index).by(0)
 
         expect(service_context).to be_a_success
         expect(File.exist?(tmp_file)).to be(false)
@@ -95,7 +96,7 @@ RSpec.describe Photos::UploadService do
       end
     end
 
-    context 'and to an existing folder' do
+    context 'when to an existing folder' do
       before do
         VCR.use_cassette('photo_upload_old_folder') { service_context }
       end
@@ -107,7 +108,32 @@ RSpec.describe Photos::UploadService do
       end
     end
 
-    context 'and api is unreachable' do
+    context 'when folder_index is greater than zero' do
+      subject(:upload!) do
+        VCR.use_cassette('photo_upload_with_index') { service_context }
+      end
+
+      let(:yandex_token) do
+        create :'yandex/token', access_token: API_ACCESS_TOKEN,
+                                active: true,
+                                dir: '/test_photos',
+                                other_dir: '/other_dir',
+                                photos_folder_index: 1
+      end
+
+      it do
+        expect { upload! }.
+          to change(photo, :storage_filename).from(nil).to(String).
+          and change(photo, :local_filename).from(String).to(nil).
+          and change(photo, :yandex_token_id).from(nil).to(yandex_token.id).
+          and change(photo, :folder_index).by(1)
+
+        expect(service_context).to be_a_success
+        expect(File.exist?(tmp_file)).to be(false)
+      end
+    end
+
+    context 'when api is unreachable' do
       before { stub_request(:any, /webdav.yandex.ru/).to_timeout }
 
       after { FileUtils.rm_f(tmp_file) }
@@ -117,7 +143,7 @@ RSpec.describe Photos::UploadService do
       end
     end
 
-    context 'and remote filename generated externally' do
+    context 'when remote filename generated externally' do
       let(:storage_filename) { 'new_filename' }
       let(:service_context) { described_class.call(photo:, storage_filename:) }
 

@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: propfind
-    uri: https://webdav.yandex.ru/other
+    uri: https://webdav.yandex.ru/other2
     body:
       encoding: UTF-8
       string: <?xml version="1.0" encoding="utf-8"?><propfind xmlns="DAV:"></propfind>
@@ -29,9 +29,9 @@ http_interactions:
       Connection:
       - close
       Date:
-      - Sat, 27 Aug 2022 09:34:46 GMT
+      - Sat, 27 Aug 2022 09:33:39 GMT
       Yandex-Cloud-Request-Id:
-      - dav-502d4e6382be485eb4e6a7f26efab914-yz4qsvsqa7tlusdf
+      - dav-7a1b38705b52ab4040e1f82f172e5dea-y4ptz64yp5f254bm
       Yandex-Uid:
       - '1259373998'
       X-Frame-Options:
@@ -45,10 +45,10 @@ http_interactions:
     body:
       encoding: ASCII-8BIT
       base64_string: ''
-  recorded_at: Sat, 27 Aug 2022 09:34:46 GMT
+  recorded_at: Sat, 27 Aug 2022 09:33:39 GMT
 - request:
     method: mkcol
-    uri: https://webdav.yandex.ru/other
+    uri: https://webdav.yandex.ru/other2
     body:
       encoding: UTF-8
       string: ''
@@ -69,9 +69,9 @@ http_interactions:
       Connection:
       - close
       Date:
-      - Sat, 27 Aug 2022 09:34:46 GMT
+      - Sat, 27 Aug 2022 09:33:39 GMT
       Yandex-Cloud-Request-Id:
-      - dav-24735545957321dbc41d74c4c35d7526-pkbdb5kv4aihvji7
+      - dav-32e81a4609602324ba14e841e5a2425c-26hmhwt43wepvdwz
       Yandex-Uid:
       - '1259373998'
       X-Frame-Options:
@@ -85,10 +85,10 @@ http_interactions:
     body:
       encoding: ASCII-8BIT
       base64_string: ''
-  recorded_at: Sat, 27 Aug 2022 09:34:47 GMT
+  recorded_at: Sat, 27 Aug 2022 09:33:40 GMT
 - request:
     method: put
-    uri: https://webdav.yandex.ru/other/36894942206a2a4eeb5015938089a066720bd919f27.gpx
+    uri: https://webdav.yandex.ru/other2/36894942206a2a4eeb5015938089a066720bd919f27.gpx
     body:
       encoding: UTF-8
       string: "<?xml version='1.0' encoding='UTF-8' standalone='yes' ?>\r\n<gpx version=\"1.1\"
@@ -18533,9 +18533,9 @@ http_interactions:
       Authorization:
       - OAuth <TOKEN>
       Etag:
-      - 2b1454c96a3af4a01af365c3452ee3bd
+      - 26853c3528690138454e51e0a27c1df7
       Sha256:
-      - c93c344c994618857d80d321838746d58ac877dff7e8dac842e0b8182535349b
+      - 92f9e7e25b280d6a8ceadc1975ad3bdc6d0f2e2b4880e829d6a770ca4f3568f2
       Expect:
       - 100-continue
       Content-Length:
@@ -18554,9 +18554,9 @@ http_interactions:
       Connection:
       - close
       Date:
-      - Sat, 27 Aug 2022 09:34:47 GMT
+      - Sat, 27 Aug 2022 09:33:40 GMT
       Yandex-Cloud-Request-Id:
-      - dav-0863da2364361e880d677c7c6c041ea0-matatip5gfu5s4u2
+      - dav-3ae06b184cb6dd5e0abc7117288ea984-pkft5yrty25hyqh4
       Yandex-Uid:
       - '1259373998'
       X-Frame-Options:
@@ -18566,11 +18566,11 @@ http_interactions:
       X-Content-Type-Options:
       - nosniff
       Location:
-      - "/disk/other/36894942206a2a4eeb5015938089a066720bd919f27.gpx"
+      - "/disk/other2/36894942206a2a4eeb5015938089a066720bd919f27.gpx"
       Server:
       - Jetty(9.4.11.v20180605)
     body:
       encoding: ASCII-8BIT
       base64_string: ''
-  recorded_at: Sat, 27 Aug 2022 09:34:59 GMT
+  recorded_at: Sat, 27 Aug 2022 09:33:52 GMT
 recorded_with: VCR 6.1.0

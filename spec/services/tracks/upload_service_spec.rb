@@ -41,20 +41,42 @@ RSpec.describe Tracks::UploadService do
       track.save!
     end
 
-    context 'and success' do
+    context 'when success' do
       subject(:upload!) { VCR.use_cassette('track_upload1') { service_context } }
 
       it do
         expect { upload! }.to change(track, :storage_filename).from(nil).to(String).
           and change(track, :local_filename).from(String).to(nil).
-          and change(track, :yandex_token_id).from(nil).to(yandex_token.id)
+          and change(track, :yandex_token_id).from(nil).to(yandex_token.id).
+          and change(track, :folder_index).by(0)
 
         expect(File.exist?(tmp_file)).to be(false)
         expect(track).not_to be_changed
       end
     end
 
-    context 'and active token does not exist' do
+    context 'when folder_index is greater than zero' do
+      subject(:upload!) { VCR.use_cassette('track_upload_folder_index') { service_context } }
+
+      let(:yandex_token) do
+        create :'yandex/token', access_token: API_ACCESS_TOKEN,
+                                active: true,
+                                dir: '/test_photos',
+                                other_dir: '/other',
+                                other_folder_index: 2
+      end
+
+      it do
+        expect { upload! }.to change(track, :storage_filename).from(nil).to(String).
+          and change(track, :local_filename).from(String).to(nil).
+          and change(track, :yandex_token_id).from(nil).to(yandex_token.id).
+          and change(track, :folder_index).from(0).to(2)
+
+        expect(File.exist?(tmp_file)).to be(false)
+      end
+    end
+
+    context 'when active token does not exist' do
       let(:yandex_token) { nil }
 
       it do
@@ -63,7 +85,7 @@ RSpec.describe Tracks::UploadService do
       end
     end
 
-    context 'and api is unreachable' do
+    context 'when api is unreachable' do
       before { stub_request(:any, /webdav.yandex.ru/).to_timeout }
 
       after { FileUtils.rm_f(tmp_file) }
@@ -73,7 +95,7 @@ RSpec.describe Tracks::UploadService do
       end
     end
 
-    context 'and remote filename generated externally' do
+    context 'when remote filename generated externally' do
       let(:storage_filename) { 'new_filename' }
       let(:service_context) { described_class.call(track:, storage_filename:) }
 

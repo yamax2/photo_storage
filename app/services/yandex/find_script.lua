@@ -20,5 +20,6 @@ end
 if table.getn(result) > 0 then
   local id = math.min(unpack(result))
   redis.call("HINCRBY", KEYS[1], id, ARGV[2])
+
   return id
 end
