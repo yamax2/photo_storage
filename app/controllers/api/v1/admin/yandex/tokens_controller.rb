@@ -18,11 +18,12 @@ module Api
 
           def show
             @resource = params.require(:resource)
-            @token = resource_scope.find(params[:id])
+            @token = current_token
 
             @info = ::Yandex::EnqueueBackupInfoService.call!(
               token: @token,
               resource: @resource,
+              folder_index: @token.folder_index,
               backup_secret: Rails.application.credentials.backup_secret
             ).info
 
@@ -44,6 +45,13 @@ module Api
 
           def resource_scope
             ::Yandex::ResourceFinder.call
+          end
+
+          def current_token
+            resource_scope.where(
+              id: params[:id],
+              resources: {folder_index: params.require(:folder_index)}
+            ).first!
           end
         end
       end

@@ -55,15 +55,11 @@ module Videos
     end
 
     def dir_with_index
-      return @dir_with_index if defined?(@dir_with_index)
-
-      node = model.yandex_token
-
-      @dir_with_index =
+      @dir_with_index ||=
         if model.folder_index.nonzero?
-          "#{node.other_dir}#{model.folder_index}"
+          "#{model.yandex_token.other_dir}#{model.folder_index}"
         else
-          node.other_dir
+          model.yandex_token.other_dir
         end
     end
   end

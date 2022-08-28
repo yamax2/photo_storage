@@ -1,0 +1,178 @@
+---
+http_interactions:
+- request:
+    method: propfind
+    uri: https://webdav.yandex.ru/test11
+    body:
+      encoding: UTF-8
+      string: <?xml version="1.0" encoding="utf-8"?><propfind xmlns="DAV:"></propfind>
+    headers:
+      Authorization:
+      - OAuth <TOKEN>
+      Depth:
+      - '1'
+      Content-Type:
+      - application/x-www-form-urlencoded
+      Content-Length:
+      - '72'
+      Connection:
+      - close
+      Host:
+      - webdav.yandex.ru
+      User-Agent:
+      - http.rb/5.1.0
+  response:
+    status:
+      code: 404
+      message: Not Found
+    headers:
+      Connection:
+      - close
+      Date:
+      - Sat, 27 Aug 2022 19:16:00 GMT
+      Yandex-Cloud-Request-Id:
+      - dav-d751978c7a939ffc5bc454430aa13958-5v5womzu25d5s2yf
+      Yandex-Uid:
+      - '1259373998'
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Content-Type-Options:
+      - nosniff
+      Server:
+      - Jetty(9.4.11.v20180605)
+    body:
+      encoding: ASCII-8BIT
+      base64_string: ''
+  recorded_at: Sat, 27 Aug 2022 19:16:00 GMT
+- request:
+    method: mkcol
+    uri: https://webdav.yandex.ru/test11
+    body:
+      encoding: UTF-8
+      string: ''
+    headers:
+      Authorization:
+      - OAuth <TOKEN>
+      Connection:
+      - close
+      Host:
+      - webdav.yandex.ru
+      User-Agent:
+      - http.rb/5.1.0
+  response:
+    status:
+      code: 201
+      message: Created
+    headers:
+      Connection:
+      - close
+      Date:
+      - Sat, 27 Aug 2022 19:16:00 GMT
+      Yandex-Cloud-Request-Id:
+      - dav-11987d27d0bb6536f798c652793a52ca-jd6da2wf7b4jdgtf
+      Yandex-Uid:
+      - '1259373998'
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Content-Type-Options:
+      - nosniff
+      Server:
+      - Jetty(9.4.11.v20180605)
+    body:
+      encoding: ASCII-8BIT
+      base64_string: ''
+  recorded_at: Sat, 27 Aug 2022 19:16:00 GMT
+- request:
+    method: get
+    uri: https://cloud-api.yandex.net/v1/disk/resources/download?path=/test11
+    body:
+      encoding: UTF-8
+      string: ''
+    headers:
+      Authorization:
+      - OAuth <TOKEN>
+      Connection:
+      - close
+      Host:
+      - cloud-api.yandex.net
+      User-Agent:
+      - http.rb/5.1.0
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Sat, 27 Aug 2022 19:16:01 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Content-Length:
+      - '273'
+      Connection:
+      - close
+      Vary:
+      - Accept-Encoding
+      Access-Control-Allow-Methods:
+      - GET, OPTIONS
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Yandex-Cloud-Request-Id:
+      - rest-230f5ec15d5a009ac75baa507d3610e7-api21v
+      Cache-Control:
+      - no-cache
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Headers:
+      - Accept-Language, Accept, X-Uid, X-HTTP-Method, X-Requested-With, Content-Type,
+        Authorization
+    body:
+      encoding: UTF-8
+      string: '{"href":"https://downloader.disk.yandex.ru/zip/6807b779fdacb11005e3ecdc97a1a0bfcafe2eaf2237a3bc2037605535335055/630a6de9/L2Rpc2svdGVzdDEx?uid=1259373998&filename=test11.zip&disposition=attachment&hash=&limit=0&owner_uid=1259373998&tknv=v2","method":"GET","templated":false}'
+  recorded_at: Sat, 27 Aug 2022 19:16:01 GMT
+- request:
+    method: delete
+    uri: https://webdav.yandex.ru/test11
+    body:
+      encoding: UTF-8
+      string: ''
+    headers:
+      Authorization:
+      - OAuth <TOKEN>
+      Connection:
+      - close
+      Host:
+      - webdav.yandex.ru
+      User-Agent:
+      - http.rb/5.1.0
+  response:
+    status:
+      code: 204
+      message: No Content
+    headers:
+      Connection:
+      - close
+      Date:
+      - Sat, 27 Aug 2022 19:16:01 GMT
+      Yandex-Cloud-Request-Id:
+      - dav-5f3ceeeb9fb176771eaad49dec46385b-55uv6orwabvuix2u
+      Yandex-Uid:
+      - '1259373998'
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Content-Type-Options:
+      - nosniff
+      Server:
+      - Jetty(9.4.11.v20180605)
+    body:
+      encoding: ASCII-8BIT
+      base64_string: ''
+  recorded_at: Sat, 27 Aug 2022 19:16:02 GMT
+recorded_with: VCR 6.1.0

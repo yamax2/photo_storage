@@ -14,7 +14,7 @@ module Yandex
       other: :other_dir
     }.with_indifferent_access.freeze
 
-    delegate :token, :resource, :info, :backup_secret, to: :context, private: true
+    delegate :token, :folder_index, :resource, :info, :backup_secret, to: :context, private: true
 
     def call
       validate
@@ -32,9 +32,16 @@ module Yandex
     end
 
     def path
-      @path ||= token.public_send(RESOURCE_DIRS.fetch(resource))
-    rescue KeyError
-      raise WrongResourceError, "wrong resource passed: \"#{resource}\""
+      return @path if defined?(@path)
+
+      begin
+        @path = token.public_send(RESOURCE_DIRS.fetch(resource))
+        @path = "#{@path}#{folder_index}" if @path.present? && folder_index.nonzero?
+
+        @path
+      rescue KeyError
+        raise WrongResourceError, "wrong resource passed: \"#{resource}\""
+      end
     end
 
     def new_cipher
@@ -45,6 +52,8 @@ module Yandex
     end
 
     def validate
+      context.folder_index ||= 0
+
       raise 'backup secret not found in credentials' if backup_secret.blank?
       raise "no dir for #{resource} for token #{token.id}" if path.blank?
     end

@@ -5,8 +5,9 @@ RSpec.describe Yandex::EnqueueBackupInfoService do
   let(:token) { create :'yandex/token', dir: '/test', other_dir: '/other', access_token: API_ACCESS_TOKEN }
 
   let(:resource) { :photo }
-  let(:service_context) { described_class.call!(token:, resource:) }
-  let(:redis_key) { "backup_info:#{token.id}:photo" }
+  let(:folder_index) { 9 }
+  let(:service_context) { described_class.call!(token:, resource:, folder_index:) }
+  let(:redis_key) { "backup_info:#{token.id}:photo:#{folder_index}" }
 
   context 'when info presents' do
     before { redis.set(redis_key, 'test') }
@@ -33,7 +34,7 @@ RSpec.describe Yandex::EnqueueBackupInfoService do
 
   context 'when a new job is required' do
     it do
-      expect(Yandex::BackupInfoJob).to receive(:perform_async).with(token.id, :photo, redis_key)
+      expect(Yandex::BackupInfoJob).to receive(:perform_async).with(token.id, :photo, folder_index, redis_key)
 
       expect { service_context }.to change { redis.type(redis_key) }.from('none').to('string')
 

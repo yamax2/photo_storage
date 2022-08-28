@@ -141,7 +141,7 @@ RSpec.describe Yandex::ResourceFinder do
     it do
       expect(result.to_a.size).to eq(3)
 
-      expect(result.first).to have_attributes(
+      expect(result.second).to have_attributes(
         id: token.id,
         folder_index: 0,
         photo_count: 1.0,
@@ -150,7 +150,7 @@ RSpec.describe Yandex::ResourceFinder do
         other_size: nil
       )
 
-      expect(result.second).to have_attributes(
+      expect(result.first).to have_attributes(
         id: token.id,
         folder_index: 1,
         photo_size: 20.0,

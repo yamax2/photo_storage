@@ -45,8 +45,34 @@ RSpec.describe Yandex::BackupInfoService do
 
     it do
       expect(encoded_string).not_to be_empty
-
       expect(decoded_string).to include('https://downloader.disk.yandex.ru/zip/', 'test.zip', token.access_token)
+
+      expect(WebMock).to have_requested(:get, 'https://cloud-api.yandex.net/v1/disk/resources/download?path=/test')
+    end
+  end
+
+  context 'when photos and folder_index is greater than zero' do
+    subject(:encoded_string) do
+      VCR.use_cassette('yandex_download_url_photos2') do
+        client = ::YandexClient::Dav[token.access_token]
+        begin
+          client.propfind('/test11')
+        rescue ::YandexClient::NotFoundError
+          client.mkcol('/test11')
+        end
+
+        result = described_class.call!(token:, resource: :photo, backup_secret:, folder_index: 11).info
+        client.delete('/test11')
+
+        result
+      end
+    end
+
+    it do
+      expect(encoded_string).not_to be_empty
+      expect(decoded_string).to include('https://downloader.disk.yandex.ru/zip/', 'test11.zip', token.access_token)
+
+      expect(WebMock).to have_requested(:get, 'https://cloud-api.yandex.net/v1/disk/resources/download?path=/test11')
     end
   end
 
@@ -61,6 +87,32 @@ RSpec.describe Yandex::BackupInfoService do
       expect(encoded_string).not_to be_empty
 
       expect(decoded_string).to include('https://downloader.disk.yandex.ru/zip/', 'other.zip', token.access_token)
+    end
+  end
+
+  context 'when other and folder_index is greater than zero' do
+    subject(:encoded_string) do
+      VCR.use_cassette('yandex_download_url_other2') do
+        client = ::YandexClient::Dav[token.access_token]
+        begin
+          client.propfind('/other12')
+        rescue ::YandexClient::NotFoundError
+          client.mkcol('/other12')
+        end
+
+        result = described_class.call!(token:, resource: :other, backup_secret:, folder_index: 12).info
+        client.delete('/other12')
+
+        result
+      end
+    end
+
+    it do
+      expect(encoded_string).not_to be_empty
+
+      expect(decoded_string).to include('https://downloader.disk.yandex.ru/zip/', 'other12.zip', token.access_token)
+
+      expect(WebMock).to have_requested(:get, 'https://cloud-api.yandex.net/v1/disk/resources/download?path=/other12')
     end
   end
 

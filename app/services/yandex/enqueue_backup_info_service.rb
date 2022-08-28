@@ -7,7 +7,7 @@ module Yandex
     INFO_KEY_TTL = 5.minutes
     private_constant :INFO_KEY_TTL
 
-    delegate :token, :resource, :info, to: :context
+    delegate :token, :resource, :folder_index, :info, to: :context
 
     def call
       unless BackupInfoService::RESOURCE_DIRS.key?(resource)
@@ -28,7 +28,7 @@ module Yandex
     delegate :redis, to: RedisClassy, private: true
 
     def redis_key
-      @redis_key ||= "backup_info:#{token.id}:#{resource}"
+      @redis_key ||= "backup_info:#{token.id}:#{resource}:#{folder_index}"
     end
 
     def try_to_enqueue_job
@@ -37,6 +37,7 @@ module Yandex
       BackupInfoJob.perform_async(
         token.id,
         resource,
+        folder_index || 0,
         redis_key
       )
     end

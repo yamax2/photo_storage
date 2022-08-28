@@ -7,12 +7,13 @@ module Yandex
 
     INFO_KEY_TTL = 1.minute
 
-    def perform(token_id, resource, redis_key)
+    def perform(token_id, resource, folder_index, redis_key)
       token = Yandex::Token.find(token_id)
 
       info = BackupInfoService.call!(
         token:,
         resource:,
+        folder_index:,
         backup_secret: Rails.application.credentials.backup_secret
       ).info
 

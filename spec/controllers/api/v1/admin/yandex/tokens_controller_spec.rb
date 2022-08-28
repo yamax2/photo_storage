@@ -34,6 +34,7 @@ RSpec.describe Api::V1::Admin::Yandex::TokensController, type: :request do
     context 'when photos' do
       before do
         create :photo, yandex_token: token, storage_filename: 'test'
+        create :photo, yandex_token: token, storage_filename: 'test1', folder_index: 1
 
         get api_v1_admin_yandex_tokens_url
       end
@@ -46,7 +47,14 @@ RSpec.describe Api::V1::Admin::Yandex::TokensController, type: :request do
             {
               'id' => token.id,
               'login' => token.login,
-              'type' => 'photo'
+              'type' => 'photo',
+              'folder_index' => 1
+            },
+            {
+              'id' => token.id,
+              'login' => token.login,
+              'type' => 'photo',
+              'folder_index' => 0
             }
           ]
         )
@@ -56,6 +64,7 @@ RSpec.describe Api::V1::Admin::Yandex::TokensController, type: :request do
     context 'when photos and videos' do
       before do
         create :photo, yandex_token: token, storage_filename: 'test'
+        create :photo, yandex_token: token, storage_filename: 'test', folder_index: 1
         create :photo, :video, yandex_token: token, storage_filename: 'test'
 
         get api_v1_admin_yandex_tokens_url
@@ -69,12 +78,20 @@ RSpec.describe Api::V1::Admin::Yandex::TokensController, type: :request do
             {
               'id' => token.id,
               'login' => token.login,
-              'type' => 'photo'
+              'type' => 'photo',
+              'folder_index' => 1
             },
             {
               'id' => token.id,
               'login' => token.login,
-              'type' => 'other'
+              'type' => 'photo',
+              'folder_index' => 0
+            },
+            {
+              'id' => token.id,
+              'login' => token.login,
+              'type' => 'other',
+              'folder_index' => 0
             }
           ]
         )
@@ -85,6 +102,7 @@ RSpec.describe Api::V1::Admin::Yandex::TokensController, type: :request do
       before do
         create :photo, yandex_token: token, storage_filename: 'test'
         create :track, yandex_token: token, storage_filename: 'test'
+        create :track, yandex_token: token, storage_filename: 'test', folder_index: 1
 
         get api_v1_admin_yandex_tokens_url
       end
@@ -94,12 +112,20 @@ RSpec.describe Api::V1::Admin::Yandex::TokensController, type: :request do
           {
             'id' => token.id,
             'login' => token.login,
-            'type' => 'other'
+            'type' => 'other',
+            'folder_index' => 1
           },
           {
             'id' => token.id,
             'login' => token.login,
-            'type' => 'photo'
+            'type' => 'other',
+            'folder_index' => 0
+          },
+          {
+            'id' => token.id,
+            'login' => token.login,
+            'type' => 'photo',
+            'folder_index' => 0
           }
         ]
       end
@@ -117,17 +143,20 @@ RSpec.describe Api::V1::Admin::Yandex::TokensController, type: :request do
           {
             'id' => token.id,
             'login' => token.login,
-            'type' => 'photo'
+            'type' => 'photo',
+            'folder_index' => 0
           },
           {
             'id' => another_token.id,
             'login' => another_token.login,
-            'type' => 'photo'
+            'type' => 'photo',
+            'folder_index' => 0
           },
           {
             'id' => token.id,
             'login' => token.login,
-            'type' => 'other'
+            'type' => 'other',
+            'folder_index' => 0
           }
         ]
       end
@@ -161,7 +190,7 @@ RSpec.describe Api::V1::Admin::Yandex::TokensController, type: :request do
       end
 
       it do
-        expect { get api_v1_admin_yandex_token_url(id: token.id, resource: :wrong) }.
+        expect { get api_v1_admin_yandex_token_url(id: token.id, resource: :wrong, folder_index: 0) }.
           to raise_error(Yandex::BackupInfoService::WrongResourceError)
       end
     end
@@ -172,7 +201,7 @@ RSpec.describe Api::V1::Admin::Yandex::TokensController, type: :request do
       end
 
       it do
-        expect { get api_v1_admin_yandex_token_url(id: token.id, resource: :photo) }.
+        expect { get api_v1_admin_yandex_token_url(id: token.id, resource: :photo, folder_index: 0) }.
           to change { enqueued_jobs('tokens', klass: Yandex::BackupInfoJob).size }.by(1)
 
         expect(response).to have_http_status(:accepted)
@@ -182,13 +211,13 @@ RSpec.describe Api::V1::Admin::Yandex::TokensController, type: :request do
 
     context 'when job already enqueued' do
       before do
-        RedisClassy.redis.set("backup_info:#{token.id}:photo", nil)
+        RedisClassy.redis.set("backup_info:#{token.id}:photo:0", nil)
 
         create :photo, yandex_token: token, storage_filename: 'test.jpg', size: 12
       end
 
       it do
-        expect { get api_v1_admin_yandex_token_url(id: token.id, resource: :photo) }.
+        expect { get api_v1_admin_yandex_token_url(id: token.id, resource: :photo, folder_index: 0) }.
           not_to(change { enqueued_jobs('tokens').size })
 
         expect(response).to have_http_status(:accepted)
@@ -198,13 +227,13 @@ RSpec.describe Api::V1::Admin::Yandex::TokensController, type: :request do
 
     context 'when job finished for photo' do
       before do
-        RedisClassy.redis.set("backup_info:#{token.id}:photo", 'value')
+        RedisClassy.redis.set("backup_info:#{token.id}:photo:0", 'value')
 
         create :photo, yandex_token: token, storage_filename: 'test.jpg', size: 12
       end
 
       it do
-        expect { get api_v1_admin_yandex_token_url(id: token.id, resource: :photo) }.
+        expect { get api_v1_admin_yandex_token_url(id: token.id, resource: :photo, folder_index: 0) }.
           not_to(change { enqueued_jobs('tokens').size })
 
         expect(response).to have_http_status(:ok)
@@ -212,18 +241,19 @@ RSpec.describe Api::V1::Admin::Yandex::TokensController, type: :request do
         expect(json['info']).to eq('value')
         expect(json['size']).to eq(12)
         expect(json['count']).to eq(1)
+        expect(json['folder_index']).to eq(0)
       end
     end
 
     context 'when job finished for other' do
       before do
-        RedisClassy.redis.set("backup_info:#{token.id}:other", 'value')
+        RedisClassy.redis.set("backup_info:#{token.id}:other:1", 'value')
 
-        create :track, yandex_token: token, storage_filename: 'test.gpx', size: 12
+        create :track, yandex_token: token, storage_filename: 'test.gpx', size: 12, folder_index: 1
       end
 
       it do
-        expect { get api_v1_admin_yandex_token_url(id: token.id, resource: :other) }.
+        expect { get api_v1_admin_yandex_token_url(id: token.id, resource: :other, folder_index: 1) }.
           not_to(change { enqueued_jobs('tokens').size })
 
         expect(response).to have_http_status(:ok)
@@ -231,26 +261,34 @@ RSpec.describe Api::V1::Admin::Yandex::TokensController, type: :request do
         expect(json['info']).to eq('value')
         expect(json['size']).to eq(12)
         expect(json['count']).to eq(1)
+        expect(json['folder_index']).to eq(1)
       end
     end
 
     context 'when wrong token' do
       it do
-        expect { get api_v1_admin_yandex_token_url(id: token.id * 2, resource: :photo) }.
+        expect { get api_v1_admin_yandex_token_url(id: token.id * 2, resource: :photo, folder_index: 0) }.
           to raise_error(ActiveRecord::RecordNotFound)
+      end
+    end
+
+    context 'when without folder_index' do
+      it do
+        expect { get api_v1_admin_yandex_token_url(id: token.id, resource: :photo) }.
+          to raise_error(ActionController::ParameterMissing, /folder_index/)
       end
     end
 
     context 'when without resource param' do
       it do
-        expect { get api_v1_admin_yandex_token_url(id: token.id) }.
+        expect { get api_v1_admin_yandex_token_url(id: token.id, folder_index: 0) }.
           to raise_error(ActionController::ParameterMissing)
       end
     end
 
     context 'when token without resources' do
       it do
-        expect { get api_v1_admin_yandex_token_url(id: token.id, resource: :photo) }.
+        expect { get api_v1_admin_yandex_token_url(id: token.id, resource: :photo, folder_index: 0) }.
           to raise_error(ActiveRecord::RecordNotFound)
       end
     end
@@ -261,7 +299,7 @@ RSpec.describe Api::V1::Admin::Yandex::TokensController, type: :request do
       end
 
       let(:request_proc) do
-        ->(headers) { get api_v1_admin_yandex_token_url(id: token.id, resource: :photo), headers: }
+        ->(headers) { get api_v1_admin_yandex_token_url(id: token.id, resource: :photo, folder_index: 0), headers: }
       end
 
       it_behaves_like 'admin restricted route', api: true
