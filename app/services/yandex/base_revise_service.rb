@@ -4,7 +4,7 @@ module Yandex
   class BaseReviseService
     include ::Interactor
 
-    delegate :token, :errors, to: :context
+    delegate :token, :folder_index, :errors, to: :context
 
     def call
       context.errors ||= {}

@@ -14,12 +14,13 @@ module Yandex
     def revise_photos
       Photo.images.uploaded.select(
         :yandex_token_id,
+        :folder_index,
         "regexp_replace(storage_filename, '[a-z0-9]+\.[A-z]+$', '') dir"
       ).distinct.each_row(
         symbolize_keys: true,
         block_size: 10
       ) do |row|
-        ReviseDirJob.perform_async(row[:dir], row[:yandex_token_id])
+        ReviseDirJob.perform_async(row[:dir], row[:yandex_token_id], row[:folder_index])
       end
     end
 
@@ -28,16 +29,18 @@ module Yandex
         symbolize_keys: true,
         block_size: 10
       ) do |row|
-        ReviseOtherDirJob.
-          perform_async(row[:yandex_token_id])
+        ReviseOtherDirJob.perform_async(
+          row[:yandex_token_id],
+          row[:folder_index]
+        )
       end
     end
 
     def other_resources_nodes
-      Yandex::Token.distinct.select(:yandex_token_id).from(
+      Yandex::Token.distinct.select(:yandex_token_id, :folder_index).from(
         Arel::Nodes::Union.new(
-          Track.uploaded.select(:yandex_token_id).arel,
-          Photo.videos.select(:yandex_token_id).arel
+          Track.uploaded.select(:yandex_token_id, :folder_index).arel,
+          Photo.videos.select(:yandex_token_id, :folder_index).arel
         ).as('nodes')
       )
     end

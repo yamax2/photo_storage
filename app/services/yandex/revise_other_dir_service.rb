@@ -21,15 +21,19 @@ module Yandex
     end
 
     def base_storage_dir
-      token.other_dir
+      if folder_index.nonzero?
+        "#{token.other_dir}#{folder_index}"
+      else
+        token.other_dir
+      end
     end
 
     def relation_to_revise
-      token.tracks.uploaded
+      token.tracks.uploaded.where(folder_index:)
     end
 
     def videos_to_revise
-      token.photos.videos.uploaded
+      token.photos.videos.uploaded.where(folder_index:)
     end
 
     def check_preview(model, filename, md5:, size:)

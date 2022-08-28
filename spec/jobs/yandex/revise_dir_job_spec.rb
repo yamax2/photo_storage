@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 RSpec.describe Yandex::ReviseDirJob do
-  subject(:run_job!) { described_class.new.perform('000/013/', token.id) }
+  subject(:run_job!) { described_class.new.perform('000/013/', token.id, 0) }
 
   let!(:token) { create :'yandex/token', dir: '/test' }
 

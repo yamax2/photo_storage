@@ -9,7 +9,11 @@ module Yandex
     private
 
     def base_storage_dir
-      token.dir
+      if folder_index.nonzero?
+        "#{token.dir}#{folder_index}"
+      else
+        token.dir
+      end
     end
 
     def match_info(model, dav_info)
@@ -22,7 +26,7 @@ module Yandex
       Photo.
         uploaded.
         images.
-        where(yandex_token: token).
+        where(yandex_token: token, folder_index:).
         where(Photo.arel_table[:storage_filename].matches_regexp("^#{dir}[a-z0-9]+\.[A-z]+$"))
     end
 

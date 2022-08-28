@@ -22,6 +22,28 @@ RSpec.describe Yandex::ReviseOtherDirService do
                    yandex_token: token
   end
 
+  let!(:another_track) do
+    create :track, storage_filename: '701ba1d236be9567ffc391f48c1d6830e2b5619fbb2.gpx',
+                   size: 453_651,
+                   md5: 'e831e882e09f099ad02f3cf8f7862454',
+                   yandex_token: token,
+                   folder_index: 1
+  end
+
+  let!(:another_video) do
+    create :photo, :video, storage_filename: 'video49c1b012f21f77490971fc170b036dbbbf9c457c.mp4',
+                           preview_filename: 'video49c1b012f21f77490971fc170b036dbbbf9c457c.mp4.jpg',
+                           video_preview_filename: 'video49c1b012f21f77490971fc170b036dbbbf9c457c.preview.mp4',
+                           size: 54_336_364,
+                           preview_size: 250_977,
+                           video_preview_size: 1_261_274,
+                           md5: '1f21fcc757293c2df4cdb6485f9885ea',
+                           preview_md5: 'c9743282c5742cb8d0c3910ada8d1f17',
+                           video_preview_md5: '0fb60e3c9d186166b2bb6a2748239ac0',
+                           yandex_token: token,
+                           folder_index: 1
+  end
+
   before do
     create :track, local_filename: 'test'
 
@@ -38,7 +60,7 @@ RSpec.describe Yandex::ReviseOtherDirService do
 
   context 'when dir does not exists' do
     subject(:service_context) do
-      VCR.use_cassette('yandex_revise_others_wrong_dir') { described_class.call!(token:) }
+      VCR.use_cassette('yandex_revise_others_wrong_dir') { described_class.call!(token:, folder_index: 0) }
     end
 
     let(:token) { create :'yandex/token', other_dir: '/other1', access_token: API_ACCESS_TOKEN }
@@ -53,7 +75,7 @@ RSpec.describe Yandex::ReviseOtherDirService do
 
   context 'when dir exists' do
     subject(:service_context) do
-      VCR.use_cassette('yandex_revise_other_dir') { described_class.call!(token:) }
+      VCR.use_cassette('yandex_revise_other_dir') { described_class.call!(token:, folder_index: 0) }
     end
 
     context 'when track does not exist in database' do
@@ -214,6 +236,33 @@ RSpec.describe Yandex::ReviseOtherDirService do
       it do
         expect(service_context).to be_a_success
         expect(service_context.errors).to be_empty
+      end
+    end
+  end
+
+  context 'when folder_index is greater than zero' do
+    subject(:service_context) do
+      VCR.use_cassette('yandex_revise_other_dir_folder_index') { described_class.call!(token:, folder_index: 1) }
+    end
+
+    context 'when without errors' do
+      it do
+        expect(another_video).not_to be_nil
+
+        expect(service_context).to be_a_success
+        expect(service_context.errors).to be_empty
+      end
+    end
+
+    context 'when track does not exist' do
+      let!(:another_track) { nil }
+
+      it do
+        expect(service_context).to be_a_success
+        expect(another_track).to be_nil
+
+        expect(service_context.errors.keys).to eq([nil])
+        expect(service_context.errors[nil]).to eq(['701ba1d236be9567ffc391f48c1d6830e2b5619fbb2.gpx'])
       end
     end
   end

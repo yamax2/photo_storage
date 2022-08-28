@@ -2,7 +2,7 @@
 
 RSpec.describe ReviseMailer do
   describe '#failed' do
-    subject(:mail) { described_class.failed('000/013/', 10, info).deliver_now }
+    subject(:mail) { described_class.failed('000/013/', 10, 1, info).deliver_now }
 
     let(:info) { {} }
     let(:admin_emails) { %w[max@tretyakov-ma.ru scott@evil.pro] }
@@ -27,7 +27,8 @@ RSpec.describe ReviseMailer do
 
       it do
         expect(mail.to).to match_array(%w[max@tretyakov-ma.ru scott@evil.pro])
-        expect(mail.subject).to eq I18n.t('views.revise_mailer.failed.subject', token_id: 10, dir: '000/013/')
+        expect(mail.subject).
+          to eq I18n.t('views.revise_mailer.failed.subject', token_id: 10, dir: '000/013/', folder_index: 1)
         expect(mail.body.encoded).to include('table', 'photo:1', 'photo:2')
       end
     end

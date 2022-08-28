@@ -1,0 +1,61 @@
+---
+http_interactions:
+- request:
+    method: propfind
+    uri: https://webdav.yandex.ru/other_dev1
+    body:
+      encoding: UTF-8
+      string: <?xml version="1.0" encoding="utf-8"?><propfind xmlns="DAV:"></propfind>
+    headers:
+      Authorization:
+      - OAuth <TOKEN>
+      Depth:
+      - '1'
+      Content-Type:
+      - application/x-www-form-urlencoded
+      Content-Length:
+      - '72'
+      Connection:
+      - close
+      Host:
+      - webdav.yandex.ru
+      User-Agent:
+      - http.rb/5.1.0
+  response:
+    status:
+      code: 207
+      message: Multi-Status
+    headers:
+      Connection:
+      - close
+      Date:
+      - Sun, 28 Aug 2022 12:03:06 GMT
+      Yandex-Cloud-Request-Id:
+      - dav-4c2bf848cd0f7e10171bd14ea613e40e-peye4yeanckx73qr
+      Yandex-Uid:
+      - '1259373998'
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Content-Type-Options:
+      - nosniff
+      Content-Type:
+      - application/xml; charset=UTF-8
+      Server:
+      - Jetty(9.4.11.v20180605)
+    body:
+      encoding: UTF-8
+      string: <?xml version='1.0' encoding='UTF-8'?><d:multistatus xmlns:d="DAV:"><d:response><d:href>/other_dev1/</d:href><d:propstat><d:status>HTTP/1.1
+        200 OK</d:status><d:prop><d:creationdate>2022-08-27T18:25:46Z</d:creationdate><d:displayname>other_dev1</d:displayname><d:getlastmodified>Sat,
+        27 Aug 2022 18:25:46 GMT</d:getlastmodified><d:resourcetype><d:collection/></d:resourcetype></d:prop></d:propstat></d:response><d:response><d:href>/other_dev1/701ba1d236be9567ffc391f48c1d6830e2b5619fbb2.gpx</d:href><d:propstat><d:status>HTTP/1.1
+        200 OK</d:status><d:prop><file_url>https://downloader.disk.yandex.ru/disk/e57803b776d26a6ea90886a12a94b767ca72b4c319e3b35b1efa999802f84795/630b91ba/bQYF5KJYwlrybN-ap6-2WUwmXQWquffY9VCfGya0__Ht-ZUmxDgUJTOskaA3gX5z_N7PGPaL-XhZZcRzNXdXQQ%3D%3D?uid=1259373998&amp;filename=701ba1d236be9567ffc391f48c1d6830e2b5619fbb2.gpx&amp;disposition=attachment&amp;hash=&amp;limit=0&amp;content_type=text%2Fxml&amp;owner_uid=1259373998&amp;fsize=453651&amp;hid=2bfb10f346b57193ca8d3c446e9226f9&amp;media_type=data&amp;tknv=v2&amp;etag=e831e882e09f099ad02f3cf8f7862454</file_url><d:getetag>e831e882e09f099ad02f3cf8f7862454</d:getetag><d:creationdate>2022-08-27T18:30:21Z</d:creationdate><mulca_file_url>320.yadisk:1440290995.E5314636:3524676665207727330454869281687</mulca_file_url><d:displayname>701ba1d236be9567ffc391f48c1d6830e2b5619fbb2.gpx</d:displayname><d:getlastmodified>Sat,
+        27 Aug 2022 18:30:21 GMT</d:getlastmodified><d:getcontenttype>text/xml</d:getcontenttype><d:getcontentlength>453651</d:getcontentlength><mulca_digest_url>320.yadisk:1440290995.E5387433:3524676665133345007560812217239</mulca_digest_url><d:resourcetype/></d:prop></d:propstat></d:response><d:response><d:href>/other_dev1/video49c1b012f21f77490971fc170b036dbbbf9c457c.mp4</d:href><d:propstat><d:status>HTTP/1.1
+        200 OK</d:status><d:prop><file_url>https://downloader.disk.yandex.ru/disk/ad2f85459234fbaf8c9aefbb7d19892450cd514e66506ddad156250965e64d10/630b91ba/z09fMFiWn2Q0ke7F7_7a1-iRdiWxTMdWPopQ-5kuQoEMScrEMZf3fnFfoXLSpNq2PRWIHnLuk-ftMigRdGjq_w%3D%3D?uid=1259373998&amp;filename=video49c1b012f21f77490971fc170b036dbbbf9c457c.mp4&amp;disposition=attachment&amp;hash=&amp;limit=0&amp;content_type=video%2Fmp4&amp;owner_uid=1259373998&amp;fsize=54336364&amp;hid=4302a8276309a400a25a3af74fb30cf3&amp;media_type=video&amp;tknv=v2&amp;etag=1f21fcc757293c2df4cdb6485f9885ea</file_url><d:getetag>1f21fcc757293c2df4cdb6485f9885ea</d:getetag><d:creationdate>2022-08-27T18:25:14Z</d:creationdate><mulca_file_url>320.yadisk:1259373998.E7192699:4010379654159624202558817082811</mulca_file_url><d:displayname>video49c1b012f21f77490971fc170b036dbbbf9c457c.mp4</d:displayname><d:getlastmodified>Sat,
+        27 Aug 2022 20:22:38 GMT</d:getlastmodified><d:getcontenttype>video/mp4</d:getcontenttype><d:getcontentlength>54336364</d:getcontentlength><mulca_digest_url>320.yadisk:1259373998.E6141272:401037965490580317260148708794</mulca_digest_url><d:resourcetype/></d:prop></d:propstat></d:response><d:response><d:href>/other_dev1/video49c1b012f21f77490971fc170b036dbbbf9c457c.mp4.jpg</d:href><d:propstat><d:status>HTTP/1.1
+        200 OK</d:status><d:prop><file_url>https://downloader.disk.yandex.ru/disk/fcb14fa8da92b25a80a70a966c696d2d909ee242ecb3a2e88d0718d8ee195223/630b91ba/z09fMFiWn2Q0ke7F7_7a16k06wZ1C68atULtOQnE8R7FWToeMszNRlJxSf0aVMCaTf76b4-v9wh_0EFlYN7dZQ%3D%3D?uid=1259373998&amp;filename=video49c1b012f21f77490971fc170b036dbbbf9c457c.mp4.jpg&amp;disposition=attachment&amp;hash=&amp;limit=0&amp;content_type=image%2Fjpeg&amp;owner_uid=1259373998&amp;fsize=250977&amp;hid=ac67a85626106338967cc2d27b7bc9df&amp;media_type=image&amp;tknv=v2&amp;etag=c9743282c5742cb8d0c3910ada8d1f17</file_url><d:getetag>c9743282c5742cb8d0c3910ada8d1f17</d:getetag><d:creationdate>2022-08-27T18:25:48Z</d:creationdate><mulca_file_url>320.yadisk:1259373998.E6472684:271869470164549673822695639038</mulca_file_url><d:displayname>video49c1b012f21f77490971fc170b036dbbbf9c457c.mp4.jpg</d:displayname><d:getlastmodified>Sat,
+        27 Aug 2022 18:25:48 GMT</d:getlastmodified><d:getcontenttype>image/jpeg</d:getcontenttype><d:getcontentlength>250977</d:getcontentlength><mulca_digest_url>320.yadisk:1259373998.E6117756:2718694701159030417140828598270</mulca_digest_url><d:resourcetype/></d:prop></d:propstat></d:response><d:response><d:href>/other_dev1/video49c1b012f21f77490971fc170b036dbbbf9c457c.preview.mp4</d:href><d:propstat><d:status>HTTP/1.1
+        200 OK</d:status><d:prop><file_url>https://downloader.disk.yandex.ru/disk/9e4a9b57cb76907e233334952df5462484d6ce5dc2181dd0023dfd307ed9a0bb/630b91ba/z09fMFiWn2Q0ke7F7_7a12zd1FShccHuPtT25VmWx3r6r_JKpQ0XqvZNZumJFPuaguEeBw-oM1ueqEA1jEQBQQ%3D%3D?uid=1259373998&amp;filename=video49c1b012f21f77490971fc170b036dbbbf9c457c.preview.mp4&amp;disposition=attachment&amp;hash=&amp;limit=0&amp;content_type=video%2Fmp4&amp;owner_uid=1259373998&amp;fsize=1261274&amp;hid=35e934072d046ae7badeb4e12897afdc&amp;media_type=video&amp;tknv=v2&amp;etag=0fb60e3c9d186166b2bb6a2748239ac0</file_url><d:getetag>0fb60e3c9d186166b2bb6a2748239ac0</d:getetag><d:creationdate>2022-08-27T18:25:59Z</d:creationdate><mulca_file_url>320.yadisk:1259373998.E7448031:203318831174398418939823529954</mulca_file_url><d:displayname>video49c1b012f21f77490971fc170b036dbbbf9c457c.preview.mp4</d:displayname><d:getlastmodified>Sat,
+        27 Aug 2022 18:25:59 GMT</d:getlastmodified><d:getcontenttype>video/mp4</d:getcontenttype><d:getcontentlength>1261274</d:getcontentlength><mulca_digest_url>320.yadisk:1259373998.E6103822:20331883155426482442142914530</mulca_digest_url><d:resourcetype/></d:prop></d:propstat></d:response></d:multistatus>
+  recorded_at: Sun, 28 Aug 2022 12:03:06 GMT
+recorded_with: VCR 6.1.0

@@ -256,7 +256,7 @@ ru:
       previous: Предыдущая
     revise_mailer:
       failed:
-        subject: 'Обнаружены несоотвествия в каталоге %{dir}, id токена: %{token_id}'
+        subject: 'Обнаружены несоотвествия в каталоге %{dir}, id токена: %{token_id} (%{folder_index})'
     switches:
       on_text: Вкл
       off_text: Выкл
