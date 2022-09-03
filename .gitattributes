@@ -1,0 +1,9 @@
+spec             export-ignore
+scripts          export-ignore
+docker           export-ignore
+proxy_service    export-ignore
+.github          export-ignore
+dip.yml          export-ignore
+.rubocop.yml     export-ignore
+.rspec           export-ignore
+.simplecov       export-ignore
