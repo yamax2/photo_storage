@@ -56,6 +56,7 @@ jobs:
         run: bundle exec rspec
         env:
           DATABASE_URL: "postgresql://postgres@localhost:${{ job.services.postgres.ports['5432'] }}/photos"
+          LOG_LEVEL: error
 
       - name: Install Go
         uses: actions/setup-go@v3

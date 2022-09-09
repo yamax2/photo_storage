@@ -38,7 +38,5 @@ COPY --from=builder /usr/local/bundle/config /usr/local/bundle/config
 COPY --from=builder /photostorage/public/assets /photostorage/public/assets
 RUN mkdir -p /photostorage/log
 
-ENV RAILS_LOG_TO_STDOUT true
-
 EXPOSE 3000
 CMD bundle exec rails db:create && bundle exec rails db:migrate && bundle exec rails s -p 3000 -b 0.0.0.0

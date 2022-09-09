@@ -1,11 +1,9 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
-# Warning! Still not for a production!
-#
 # Arguments:
 #   * original video, required
-#   * rubric_id, required)
+#   * rubric_id, required
 #   * temporary uploaded, optional
 #
 # apt install mediainfo curl ffmpeg

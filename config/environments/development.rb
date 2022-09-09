@@ -55,4 +55,8 @@ Rails.application.configure do
 
   Slim::Engine.set_options pretty: true
   config.action_mailer.delivery_method = :letter_opener
+
+  config.log_level = ENV.fetch('LOG_LEVEL', 'debug').to_sym
+  config.rails_semantic_logger.add_file_appender = false
+  config.semantic_logger.add_appender(io: $stdout, formatter: Logging::Formatter.new)
 end

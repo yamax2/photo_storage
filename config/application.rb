@@ -38,5 +38,16 @@ module PhotoStorage
     config.action_dispatch.rescue_responses['Yandex::BackupInfoService::WrongResourceError'] = :bad_request
 
     config.redis = config_for(:redis)
+
+    require 'logging/subscriber'
+    require 'logging/formatter'
+
+    config.after_initialize do
+      RailsSemanticLogger.swap_subscriber(
+        RailsSemanticLogger::ActionController::LogSubscriber,
+        Logging::Subscriber,
+        :action_controller
+      )
+    end
   end
 end

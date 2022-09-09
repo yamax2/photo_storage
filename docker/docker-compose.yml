@@ -45,6 +45,7 @@ services:
       - SSH_AUTH_SOCK=/ssh/auth/sock
       - RAILS_ENV=$RAILS_ENV
       - LOG_LEVEL=$LOG_LEVEL
+      - RAILS_SERVE_STATIC_FILES=$RAILS_SERVE_STATIC_FILES
       - VIRTUAL_HOST=photostorage.$DOCKER_TLD
       - VIRTUAL_PATH=/
 
