@@ -39,11 +39,15 @@ interaction:
         service: web
         compose_method: up
 
+  cleanup:
+    service: app
+    command: rm -rf log/*.log
+
   rspec:
     service: app
     environment:
       RAILS_ENV: test
-      LOG_LEVEL: error
+      LOG_LEVEL: warn
     command: bundle exec rspec
 
   psql:
@@ -79,6 +83,7 @@ interaction:
 
 provision:
   - ./docker/prepare_env.sh
+  - dip cleanup
   - docker volume create --name bundler_data
   - dip compose up -d db
   - dip bundle install
