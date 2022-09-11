@@ -92,7 +92,7 @@
             th
               = t('.original_timestamp')
             td
-              = current.original_timestamp
+              = current.original_timestamp&.to_fs
           tr
             th
               = t('.tz')
@@ -117,7 +117,7 @@
           th
             = t('.created_at')
           td
-            = current.created_at
+            = current.created_at.to_fs
 
         tr
           th

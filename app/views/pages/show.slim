@@ -48,7 +48,10 @@
           th
             = t(attr, scope: 'pages.show.summary')
           td
-            = @summary.public_send(attr)
+            - if %i[started_at finished_at].include?(attr)
+              = @summary.public_send(attr)&.to_fs
+            - else
+              = @summary.public_send(attr)
 
 - if @rubric
   .page-map-content*{data: {url: summary_api_v1_rubric_path(@rubric, only_videos: params[:only_videos]),
