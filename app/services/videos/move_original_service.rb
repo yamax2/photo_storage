@@ -12,7 +12,7 @@ module Videos
     def call
       create_remote_dir
 
-      ::YandexClient::Disk[model.yandex_token.access_token].move(
+      dav_client.move(
         @temporary_filename,
         [dir_with_index, model.storage_filename].join('/'),
         overwrite: false

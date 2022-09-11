@@ -29,9 +29,9 @@ http_interactions:
       Connection:
       - close
       Date:
-      - Sun, 28 Aug 2022 10:10:23 GMT
+      - Sun, 11 Sep 2022 10:50:19 GMT
       Yandex-Cloud-Request-Id:
-      - dav-498cab8f42d4d5e3f3336c46fb7a3c3e-yz4qsvsqa7tlusdf
+      - dav-af54774805b2d71081ff3a9eb28ae817-p3lnlvih32mzkonm
       Yandex-Uid:
       - '1259373998'
       X-Frame-Options:
@@ -49,64 +49,61 @@ http_interactions:
       string: <?xml version='1.0' encoding='UTF-8'?><d:multistatus xmlns:d="DAV:"><d:response><d:href>/other_dev/</d:href><d:propstat><d:status>HTTP/1.1
         200 OK</d:status><d:prop><d:creationdate>2021-12-18T21:14:46Z</d:creationdate><d:displayname>other_dev</d:displayname><d:getlastmodified>Sat,
         18 Dec 2021 21:14:46 GMT</d:getlastmodified><d:resourcetype><d:collection/></d:resourcetype></d:prop></d:propstat></d:response><d:response><d:href>/other_dev/video4fbae93516ef627ee23a5269cb9277932e48e2c3.mp4</d:href><d:propstat><d:status>HTTP/1.1
-        200 OK</d:status><d:prop><file_url>https://downloader.disk.yandex.ru/disk/33bac8b46a74d2dffa7566b761d17930d1fc8089648a09f380cba708c3f6e87a/630b774f/z09fMFiWn2Q0ke7F7_7a104qFFyykOlzIw1thKIGhgclnohtgU3f9PvxOjp65ImQ_evcwuL1Av1qq6UAF7klrg%3D%3D?uid=1259373998&amp;filename=video4fbae93516ef627ee23a5269cb9277932e48e2c3.mp4&amp;disposition=attachment&amp;hash=&amp;limit=0&amp;content_type=video%2Fmp4&amp;owner_uid=1259373998&amp;fsize=60518940&amp;hid=1d3a9c278e702c9346d134e51f4e1905&amp;media_type=video&amp;tknv=v2&amp;etag=4c863a1f2f92740565a0bf0919598893</file_url><d:getetag>4c863a1f2f92740565a0bf0919598893</d:getetag><d:creationdate>2021-12-18T23:14:42Z</d:creationdate><mulca_file_url>320.yadisk:1259373998.E6045487:3574016957109298870555304389732</mulca_file_url><d:displayname>video4fbae93516ef627ee23a5269cb9277932e48e2c3.mp4</d:displayname><d:getlastmodified>Sat,
+        200 OK</d:status><d:prop><file_url>https://downloader.disk.yandex.ru/disk/3e0cc52fbe2d98e7cf0b8c88da97f4ec30b83bc8509d9435b129901118bb339d/631df5ab/z09fMFiWn2Q0ke7F7_7a104qFFyykOlzIw1thKIGhgclnohtgU3f9PvxOjp65ImQ_evcwuL1Av1qq6UAF7klrg%3D%3D?uid=1259373998&amp;filename=video4fbae93516ef627ee23a5269cb9277932e48e2c3.mp4&amp;disposition=attachment&amp;hash=&amp;limit=0&amp;content_type=video%2Fmp4&amp;owner_uid=1259373998&amp;fsize=60518940&amp;hid=1d3a9c278e702c9346d134e51f4e1905&amp;media_type=video&amp;tknv=v2&amp;etag=4c863a1f2f92740565a0bf0919598893</file_url><d:getetag>4c863a1f2f92740565a0bf0919598893</d:getetag><d:creationdate>2021-12-18T23:14:42Z</d:creationdate><mulca_file_url>320.yadisk:1259373998.E6045487:3574016957109298870555304389732</mulca_file_url><d:displayname>video4fbae93516ef627ee23a5269cb9277932e48e2c3.mp4</d:displayname><d:getlastmodified>Sat,
         18 Dec 2021 23:14:42 GMT</d:getlastmodified><d:getcontenttype>video/mp4</d:getcontenttype><d:getcontentlength>60518940</d:getcontentlength><mulca_digest_url>320.yadisk:1259373998.E5500406:3574016957164087605721625308285</mulca_digest_url><d:resourcetype/></d:prop></d:propstat></d:response><d:response><d:href>/other_dev/video4fbae93516ef627ee23a5269cb9277932e48e2c3.mp4.jpg</d:href><d:propstat><d:status>HTTP/1.1
-        200 OK</d:status><d:prop><file_url>https://downloader.disk.yandex.ru/disk/841d30de9764332f71201b21887b6706c83df42a6af719a3e47815aa3d865e2c/630b774f/z09fMFiWn2Q0ke7F7_7a1zS3oyuLv2df6hUIKMqAFusW64VCE-QKQdsoh_elTHsZDa-bpSyNx-T9rEQBJLJJFA%3D%3D?uid=1259373998&amp;filename=video4fbae93516ef627ee23a5269cb9277932e48e2c3.mp4.jpg&amp;disposition=attachment&amp;hash=&amp;limit=0&amp;content_type=image%2Fjpeg&amp;owner_uid=1259373998&amp;fsize=360580&amp;hid=555dbf053347ee3dd81af5b656c7e3ac&amp;media_type=image&amp;tknv=v2&amp;etag=ec22d5b206a64036b37a8d66c3e6a3c6</file_url><d:getetag>ec22d5b206a64036b37a8d66c3e6a3c6</d:getetag><d:creationdate>2021-12-18T23:14:43Z</d:creationdate><mulca_file_url>320.yadisk:1259373998.E4543410:409213952455512334041103799500</mulca_file_url><d:displayname>video4fbae93516ef627ee23a5269cb9277932e48e2c3.mp4.jpg</d:displayname><d:getlastmodified>Sat,
+        200 OK</d:status><d:prop><file_url>https://downloader.disk.yandex.ru/disk/68aebb060d765e2e2cbfdc5c3261241c1acf5a3823722115ee7d512bb15fc4f7/631df5ab/z09fMFiWn2Q0ke7F7_7a1zS3oyuLv2df6hUIKMqAFusW64VCE-QKQdsoh_elTHsZDa-bpSyNx-T9rEQBJLJJFA%3D%3D?uid=1259373998&amp;filename=video4fbae93516ef627ee23a5269cb9277932e48e2c3.mp4.jpg&amp;disposition=attachment&amp;hash=&amp;limit=0&amp;content_type=image%2Fjpeg&amp;owner_uid=1259373998&amp;fsize=360580&amp;hid=555dbf053347ee3dd81af5b656c7e3ac&amp;media_type=image&amp;tknv=v2&amp;etag=ec22d5b206a64036b37a8d66c3e6a3c6</file_url><d:getetag>ec22d5b206a64036b37a8d66c3e6a3c6</d:getetag><d:creationdate>2021-12-18T23:14:43Z</d:creationdate><mulca_file_url>320.yadisk:1259373998.E4543410:409213952455512334041103799500</mulca_file_url><d:displayname>video4fbae93516ef627ee23a5269cb9277932e48e2c3.mp4.jpg</d:displayname><d:getlastmodified>Sat,
         18 Dec 2021 23:14:43 GMT</d:getlastmodified><d:getcontenttype>image/jpeg</d:getcontenttype><d:getcontentlength>360580</d:getcontentlength><mulca_digest_url>320.yadisk:1259373998.E5087857:4092139524201800779855764726988</mulca_digest_url><d:resourcetype/></d:prop></d:propstat></d:response><d:response><d:href>/other_dev/video4fbae93516ef627ee23a5269cb9277932e48e2c3.mp4.preview.mp4</d:href><d:propstat><d:status>HTTP/1.1
-        200 OK</d:status><d:prop><file_url>https://downloader.disk.yandex.ru/disk/cfd2f0e09940d5184b4ea370d7560eff0727ef8a6b0e8caba2b8d4254227230b/630b774f/z09fMFiWn2Q0ke7F7_7a16b5hGgc3oBwTY3zXXiwfOJsX6rLudpCw1i9LQPltaxzD8uArXJss1gzCzFGw6PJ8Q%3D%3D?uid=1259373998&amp;filename=video4fbae93516ef627ee23a5269cb9277932e48e2c3.mp4.preview.mp4&amp;disposition=attachment&amp;hash=&amp;limit=0&amp;content_type=video%2Fmp4&amp;owner_uid=1259373998&amp;fsize=6958704&amp;hid=80fc4091d0c9a1b1670206c0b2a2630c&amp;media_type=video&amp;tknv=v2&amp;etag=c3ec1da49730da2d428ab2f986f3aac7</file_url><d:getetag>c3ec1da49730da2d428ab2f986f3aac7</d:getetag><d:creationdate>2021-12-18T23:15:37Z</d:creationdate><mulca_file_url>320.yadisk:1259373998.E6112147:584348493186786893814010246189</mulca_file_url><d:displayname>video4fbae93516ef627ee23a5269cb9277932e48e2c3.mp4.preview.mp4</d:displayname><d:getlastmodified>Sat,
+        200 OK</d:status><d:prop><file_url>https://downloader.disk.yandex.ru/disk/8e15b3746ea5ed231b0e6c246051ea7ef15d637ccfe05b7502788fc7fa3398ca/631df5ab/z09fMFiWn2Q0ke7F7_7a16b5hGgc3oBwTY3zXXiwfOJsX6rLudpCw1i9LQPltaxzD8uArXJss1gzCzFGw6PJ8Q%3D%3D?uid=1259373998&amp;filename=video4fbae93516ef627ee23a5269cb9277932e48e2c3.mp4.preview.mp4&amp;disposition=attachment&amp;hash=&amp;limit=0&amp;content_type=video%2Fmp4&amp;owner_uid=1259373998&amp;fsize=6958704&amp;hid=80fc4091d0c9a1b1670206c0b2a2630c&amp;media_type=video&amp;tknv=v2&amp;etag=c3ec1da49730da2d428ab2f986f3aac7</file_url><d:getetag>c3ec1da49730da2d428ab2f986f3aac7</d:getetag><d:creationdate>2021-12-18T23:15:37Z</d:creationdate><mulca_file_url>320.yadisk:1259373998.E6112147:584348493186786893814010246189</mulca_file_url><d:displayname>video4fbae93516ef627ee23a5269cb9277932e48e2c3.mp4.preview.mp4</d:displayname><d:getlastmodified>Sat,
         18 Dec 2021 23:15:37 GMT</d:getlastmodified><d:getcontenttype>video/mp4</d:getcontenttype><d:getcontentlength>6958704</d:getcontentlength><mulca_digest_url>320.yadisk:1259373998.E6032414:584348493190713551231297922093</mulca_digest_url><d:resourcetype/></d:prop></d:propstat></d:response><d:response><d:href>/other_dev/videoaf068b3047dab2008c73243f4f549753a84b7b54.mp4</d:href><d:propstat><d:status>HTTP/1.1
-        200 OK</d:status><d:prop><file_url>https://downloader.disk.yandex.ru/disk/d6986efa63ae2e0e2f51a6441f23e04624ec8b1bf944427d1b9c305f7e6be4c4/630b774f/z09fMFiWn2Q0ke7F7_7a17xPtO9swJLFt_wnrQq2l2mXMUCOpjztHeg_BpXCeO_mko3_MQ8TFT53TYI9Iux0yg%3D%3D?uid=1259373998&amp;filename=videoaf068b3047dab2008c73243f4f549753a84b7b54.mp4&amp;disposition=attachment&amp;hash=&amp;limit=0&amp;content_type=video%2Fmp4&amp;owner_uid=1259373998&amp;fsize=26193058&amp;hid=9dc0f69415986c8c5326e616abfaf61d&amp;media_type=video&amp;tknv=v2&amp;etag=5cafbbe58cc28f3b177de2d04cae117b</file_url><d:getetag>5cafbbe58cc28f3b177de2d04cae117b</d:getetag><d:creationdate>2021-12-20T08:22:21Z</d:creationdate><mulca_file_url>320.yadisk:1259373998.E6024403:73498011024826424749124121438</mulca_file_url><d:displayname>videoaf068b3047dab2008c73243f4f549753a84b7b54.mp4</d:displayname><d:getlastmodified>Mon,
+        200 OK</d:status><d:prop><file_url>https://downloader.disk.yandex.ru/disk/e9fbd7e88132ae766063342afe2d7669393eec141742fd709da91949bbe90cf7/631df5ab/z09fMFiWn2Q0ke7F7_7a17xPtO9swJLFt_wnrQq2l2mXMUCOpjztHeg_BpXCeO_mko3_MQ8TFT53TYI9Iux0yg%3D%3D?uid=1259373998&amp;filename=videoaf068b3047dab2008c73243f4f549753a84b7b54.mp4&amp;disposition=attachment&amp;hash=&amp;limit=0&amp;content_type=video%2Fmp4&amp;owner_uid=1259373998&amp;fsize=26193058&amp;hid=9dc0f69415986c8c5326e616abfaf61d&amp;media_type=video&amp;tknv=v2&amp;etag=5cafbbe58cc28f3b177de2d04cae117b</file_url><d:getetag>5cafbbe58cc28f3b177de2d04cae117b</d:getetag><d:creationdate>2021-12-20T08:22:21Z</d:creationdate><mulca_file_url>320.yadisk:1259373998.E6024403:73498011024826424749124121438</mulca_file_url><d:displayname>videoaf068b3047dab2008c73243f4f549753a84b7b54.mp4</d:displayname><d:getlastmodified>Mon,
         20 Dec 2021 08:22:21 GMT</d:getlastmodified><d:getcontenttype>video/mp4</d:getcontenttype><d:getcontentlength>26193058</d:getcontentlength><mulca_digest_url>320.yadisk:1259373998.E5599354:73498011031050251613280123743</mulca_digest_url><d:resourcetype/></d:prop></d:propstat></d:response><d:response><d:href>/other_dev/videoaf068b3047dab2008c73243f4f549753a84b7b54.mp4.jpg</d:href><d:propstat><d:status>HTTP/1.1
-        200 OK</d:status><d:prop><file_url>https://downloader.disk.yandex.ru/disk/0afd5dba52ba0aefee3f914e8af54973db43ff4fb0d1e0778d7c0fdbda7d4eb4/630b774f/z09fMFiWn2Q0ke7F7_7a1zPSZ4VEVEq0acmudtz6yRv6nYOA96DencjKMsJj2fwnwviI-cTE2md8VuhWUzcQPg%3D%3D?uid=1259373998&amp;filename=videoaf068b3047dab2008c73243f4f549753a84b7b54.mp4.jpg&amp;disposition=attachment&amp;hash=&amp;limit=0&amp;content_type=image%2Fjpeg&amp;owner_uid=1259373998&amp;fsize=114245&amp;hid=72f48e0e1e9b0de5070f941965f91a63&amp;media_type=image&amp;tknv=v2&amp;etag=4645f8b1e908c9605e65f8476fcbb343</file_url><d:getetag>4645f8b1e908c9605e65f8476fcbb343</d:getetag><d:creationdate>2021-12-20T08:22:23Z</d:creationdate><mulca_file_url>320.yadisk:1259373998.E5701020:2221299026197733186430518686699</mulca_file_url><d:displayname>videoaf068b3047dab2008c73243f4f549753a84b7b54.mp4.jpg</d:displayname><d:getlastmodified>Mon,
+        200 OK</d:status><d:prop><file_url>https://downloader.disk.yandex.ru/disk/7359b6b6678ef8f20cb33481561fb9400dc08df7c2171f997ccc52fb1ba1615e/631df5ab/z09fMFiWn2Q0ke7F7_7a1zPSZ4VEVEq0acmudtz6yRv6nYOA96DencjKMsJj2fwnwviI-cTE2md8VuhWUzcQPg%3D%3D?uid=1259373998&amp;filename=videoaf068b3047dab2008c73243f4f549753a84b7b54.mp4.jpg&amp;disposition=attachment&amp;hash=&amp;limit=0&amp;content_type=image%2Fjpeg&amp;owner_uid=1259373998&amp;fsize=114245&amp;hid=72f48e0e1e9b0de5070f941965f91a63&amp;media_type=image&amp;tknv=v2&amp;etag=4645f8b1e908c9605e65f8476fcbb343</file_url><d:getetag>4645f8b1e908c9605e65f8476fcbb343</d:getetag><d:creationdate>2021-12-20T08:22:23Z</d:creationdate><mulca_file_url>320.yadisk:1259373998.E5701020:2221299026197733186430518686699</mulca_file_url><d:displayname>videoaf068b3047dab2008c73243f4f549753a84b7b54.mp4.jpg</d:displayname><d:getlastmodified>Mon,
         20 Dec 2021 08:22:23 GMT</d:getlastmodified><d:getcontenttype>image/jpeg</d:getcontenttype><d:getcontentlength>114245</d:getcontentlength><mulca_digest_url>320.yadisk:1259373998.E6139921:2221299026170775465255280546795</mulca_digest_url><d:resourcetype/></d:prop></d:propstat></d:response><d:response><d:href>/other_dev/videoaf068b3047dab2008c73243f4f549753a84b7b54.preview.mp4</d:href><d:propstat><d:status>HTTP/1.1
-        200 OK</d:status><d:prop><file_url>https://downloader.disk.yandex.ru/disk/41658ab97adf5a008d6d2e9e42e635452f5a7b31313c9ce16d5eb2d7c580afcb/630b774f/z09fMFiWn2Q0ke7F7_7a175tku1XjmoJEUQeVa0ZJSlfII5EUVSPOCwv-yIE2UfnZRWzkG2irS-WmDigtL5VqQ%3D%3D?uid=1259373998&amp;filename=videoaf068b3047dab2008c73243f4f549753a84b7b54.preview.mp4&amp;disposition=attachment&amp;hash=&amp;limit=0&amp;content_type=video%2Fmp4&amp;owner_uid=1259373998&amp;fsize=4411825&amp;hid=4bd0ac5a15a6d99df159952c4ced3a56&amp;media_type=video&amp;tknv=v2&amp;etag=5186e1999a0ae6582d5bba63e66d8121</file_url><d:getetag>5186e1999a0ae6582d5bba63e66d8121</d:getetag><d:creationdate>2021-12-20T08:22:58Z</d:creationdate><mulca_file_url>320.yadisk:1259373998.E6001827:86588525819359195231028207510</mulca_file_url><d:displayname>videoaf068b3047dab2008c73243f4f549753a84b7b54.preview.mp4</d:displayname><d:getlastmodified>Mon,
+        200 OK</d:status><d:prop><file_url>https://downloader.disk.yandex.ru/disk/bc97a01285c80824bf3dc63c4e46a56a5565b9b79acddedc02ef2b66d57fc3ce/631df5ab/z09fMFiWn2Q0ke7F7_7a175tku1XjmoJEUQeVa0ZJSlfII5EUVSPOCwv-yIE2UfnZRWzkG2irS-WmDigtL5VqQ%3D%3D?uid=1259373998&amp;filename=videoaf068b3047dab2008c73243f4f549753a84b7b54.preview.mp4&amp;disposition=attachment&amp;hash=&amp;limit=0&amp;content_type=video%2Fmp4&amp;owner_uid=1259373998&amp;fsize=4411825&amp;hid=4bd0ac5a15a6d99df159952c4ced3a56&amp;media_type=video&amp;tknv=v2&amp;etag=5186e1999a0ae6582d5bba63e66d8121</file_url><d:getetag>5186e1999a0ae6582d5bba63e66d8121</d:getetag><d:creationdate>2021-12-20T08:22:58Z</d:creationdate><mulca_file_url>320.yadisk:1259373998.E6001827:86588525819359195231028207510</mulca_file_url><d:displayname>videoaf068b3047dab2008c73243f4f549753a84b7b54.preview.mp4</d:displayname><d:getlastmodified>Mon,
         20 Dec 2021 08:22:58 GMT</d:getlastmodified><d:getcontenttype>video/mp4</d:getcontenttype><d:getcontentlength>4411825</d:getcontentlength><mulca_digest_url>320.yadisk:1259373998.E4512751:865885258154169935010408113046</mulca_digest_url><d:resourcetype/></d:prop></d:propstat></d:response></d:multistatus>
-  recorded_at: Sun, 28 Aug 2022 10:10:23 GMT
+  recorded_at: Sun, 11 Sep 2022 10:50:19 GMT
 - request:
-    method: post
-    uri: https://cloud-api.yandex.net/v1/disk/resources/move?from=/12.mp4&overwrite=false&path=/other_dev/video4fbae93516ef627ee23a5269cb9277932e48e2c3.mp4
+    method: move
+    uri: https://webdav.yandex.ru/12.mp4
     body:
       encoding: UTF-8
       string: ''
     headers:
       Authorization:
       - OAuth <TOKEN>
+      Destination:
+      - "/other_dev/video4fbae93516ef627ee23a5269cb9277932e48e2c3.mp4"
+      Overwrite:
+      - F
       Connection:
       - close
       Host:
-      - cloud-api.yandex.net
+      - webdav.yandex.ru
       User-Agent:
       - http.rb/5.1.0
   response:
     status:
-      code: 409
-      message: Conflict
+      code: 412
+      message: Precondition Failed
     headers:
-      Server:
-      - nginx
-      Date:
-      - Sun, 28 Aug 2022 10:10:24 GMT
-      Content-Type:
-      - application/json
-      Content-Length:
-      - '267'
       Connection:
       - close
-      Access-Control-Allow-Credentials:
-      - 'true'
+      Date:
+      - Sun, 11 Sep 2022 10:50:19 GMT
       Yandex-Cloud-Request-Id:
-      - rest-d4ecbd919e33702f37fc114efd007fdd-api43f
-      Cache-Control:
-      - no-cache
-      Access-Control-Allow-Origin:
-      - "*"
-      Access-Control-Allow-Headers:
-      - Accept-Language, Accept, X-Uid, X-HTTP-Method, X-Requested-With, Content-Type,
-        Authorization
+      - dav-7580e80e7c609bdf9ff4146479e75870-ixbrxdoozgm7ougl
+      Yandex-Uid:
+      - '1259373998'
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Content-Type-Options:
+      - nosniff
+      Server:
+      - Jetty(9.4.11.v20180605)
     body:
-      encoding: UTF-8
-      string: '{"message":"Ресурс \"/other_dev/video4fbae93516ef627ee23a5269cb9277932e48e2c3.mp4\"
-        уже существует.","description":"Resource \"/other_dev/video4fbae93516ef627ee23a5269cb9277932e48e2c3.mp4\"
-        already exists.","error":"DiskResourceAlreadyExistsError"}'
-  recorded_at: Sun, 28 Aug 2022 10:10:24 GMT
+      encoding: ASCII-8BIT
+      base64_string: ''
+  recorded_at: Sun, 11 Sep 2022 10:50:20 GMT
 recorded_with: VCR 6.1.0

@@ -29,9 +29,9 @@ http_interactions:
       Connection:
       - close
       Date:
-      - Sun, 28 Aug 2022 10:04:14 GMT
+      - Sun, 11 Sep 2022 10:47:08 GMT
       Yandex-Cloud-Request-Id:
-      - dav-03ca8aa086512ed375755730fd5c1412-y4ptz64yp5f254bm
+      - dav-ba33eb9eaf3e308369c7f25de008d71d-6r7h7ej6flkrm3ek
       Yandex-Uid:
       - '1259373998'
       X-Frame-Options:
@@ -45,7 +45,7 @@ http_interactions:
     body:
       encoding: ASCII-8BIT
       base64_string: ''
-  recorded_at: Sun, 28 Aug 2022 10:04:14 GMT
+  recorded_at: Sun, 11 Sep 2022 10:47:08 GMT
 - request:
     method: mkcol
     uri: https://webdav.yandex.ru/other_dev5
@@ -69,9 +69,9 @@ http_interactions:
       Connection:
       - close
       Date:
-      - Sun, 28 Aug 2022 10:04:14 GMT
+      - Sun, 11 Sep 2022 10:47:09 GMT
       Yandex-Cloud-Request-Id:
-      - dav-7f074bdf84077e0b7c78920daf8530d8-26hmhwt43wepvdwz
+      - dav-bbf3ebcbc79945e14d3c28a5806e44b4-nixiseacyjttupue
       Yandex-Uid:
       - '1259373998'
       X-Frame-Options:
@@ -85,20 +85,24 @@ http_interactions:
     body:
       encoding: ASCII-8BIT
       base64_string: ''
-  recorded_at: Sun, 28 Aug 2022 10:04:14 GMT
+  recorded_at: Sun, 11 Sep 2022 10:47:09 GMT
 - request:
-    method: post
-    uri: https://cloud-api.yandex.net/v1/disk/resources/move?from=/12.mp4&overwrite=false&path=/other_dev5/test1.mp4
+    method: move
+    uri: https://webdav.yandex.ru/12.mp4
     body:
       encoding: UTF-8
       string: ''
     headers:
       Authorization:
       - OAuth <TOKEN>
+      Destination:
+      - "/other_dev5/test1.mp4"
+      Overwrite:
+      - F
       Connection:
       - close
       Host:
-      - cloud-api.yandex.net
+      - webdav.yandex.ru
       User-Agent:
       - http.rb/5.1.0
   response:
@@ -106,33 +110,26 @@ http_interactions:
       code: 201
       message: Created
     headers:
-      Server:
-      - nginx
-      Date:
-      - Sun, 28 Aug 2022 10:04:15 GMT
-      Content-Type:
-      - application/json; charset=utf-8
-      Content-Length:
-      - '128'
       Connection:
       - close
-      Access-Control-Allow-Methods:
-      - POST, OPTIONS
-      Access-Control-Allow-Credentials:
-      - 'true'
+      Date:
+      - Sun, 11 Sep 2022 10:47:09 GMT
       Yandex-Cloud-Request-Id:
-      - rest-ba3873558077f2a4a0f0349d3f1a96d8-api30e
-      Cache-Control:
-      - no-cache
-      Access-Control-Allow-Origin:
-      - "*"
-      Access-Control-Allow-Headers:
-      - Accept-Language, Accept, X-Uid, X-HTTP-Method, X-Requested-With, Content-Type,
-        Authorization
+      - dav-6d6eda99ad968f505acc4843213ad49f-ndb2u3gohtcbai52
+      Yandex-Uid:
+      - '1259373998'
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Content-Type-Options:
+      - nosniff
+      Server:
+      - Jetty(9.4.11.v20180605)
     body:
-      encoding: UTF-8
-      string: '{"href":"https://cloud-api.yandex.net/v1/disk/resources?path=disk%3A%2Fother_dev5%2Ftest1.mp4","method":"GET","templated":false}'
-  recorded_at: Sun, 28 Aug 2022 10:04:15 GMT
+      encoding: ASCII-8BIT
+      base64_string: ''
+  recorded_at: Sun, 11 Sep 2022 10:47:10 GMT
 - request:
     method: propfind
     uri: https://webdav.yandex.ru/other_dev5
@@ -162,9 +159,9 @@ http_interactions:
       Connection:
       - close
       Date:
-      - Sun, 28 Aug 2022 10:04:15 GMT
+      - Sun, 11 Sep 2022 10:47:11 GMT
       Yandex-Cloud-Request-Id:
-      - dav-86fc464da1badd2f76712f230da22bbb-v3w553tvczuwcuci
+      - dav-ab61a85350831a6fae549ebf7597952e-ggtwjz5ylbzsuvug
       Yandex-Uid:
       - '1259373998'
       X-Frame-Options:
@@ -180,9 +177,9 @@ http_interactions:
     body:
       encoding: UTF-8
       string: <?xml version='1.0' encoding='UTF-8'?><d:multistatus xmlns:d="DAV:"><d:response><d:href>/other_dev5/</d:href><d:propstat><d:status>HTTP/1.1
-        200 OK</d:status><d:prop><d:creationdate>2022-08-28T10:04:14Z</d:creationdate><d:displayname>other_dev5</d:displayname><d:getlastmodified>Sun,
-        28 Aug 2022 10:04:14 GMT</d:getlastmodified><d:resourcetype><d:collection/></d:resourcetype></d:prop></d:propstat></d:response><d:response><d:href>/other_dev5/test1.mp4</d:href><d:propstat><d:status>HTTP/1.1
-        200 OK</d:status><d:prop><file_url>https://downloader.disk.yandex.ru/disk/6e2fb6a70b26b4d3b7526226e8ff600c51ae6ba14df493ed4a8be26e15a0d312/630b75e0/z09fMFiWn2Q0ke7F7_7a1-iRdiWxTMdWPopQ-5kuQoEMScrEMZf3fnFfoXLSpNq2PRWIHnLuk-ftMigRdGjq_w%3D%3D?uid=1259373998&amp;filename=test1.mp4&amp;disposition=attachment&amp;hash=&amp;limit=0&amp;content_type=video%2Fmp4&amp;owner_uid=1259373998&amp;fsize=54336364&amp;hid=4302a8276309a400a25a3af74fb30cf3&amp;media_type=video&amp;tknv=v2&amp;etag=1f21fcc757293c2df4cdb6485f9885ea</file_url><d:getetag>1f21fcc757293c2df4cdb6485f9885ea</d:getetag><d:creationdate>2022-08-28T09:58:54Z</d:creationdate><mulca_file_url>320.yadisk:1259373998.E7192699:4010379654159624202558817082811</mulca_file_url><d:displayname>test1.mp4</d:displayname><d:getlastmodified>Sun,
-        28 Aug 2022 10:04:15 GMT</d:getlastmodified><d:getcontenttype>video/mp4</d:getcontenttype><d:getcontentlength>54336364</d:getcontentlength><mulca_digest_url>320.yadisk:1259373998.E6141272:401037965490580317260148708794</mulca_digest_url><d:resourcetype/></d:prop></d:propstat></d:response></d:multistatus>
-  recorded_at: Sun, 28 Aug 2022 10:04:16 GMT
+        200 OK</d:status><d:prop><d:creationdate>2022-09-11T10:47:09Z</d:creationdate><d:displayname>other_dev5</d:displayname><d:getlastmodified>Sun,
+        11 Sep 2022 10:47:09 GMT</d:getlastmodified><d:resourcetype><d:collection/></d:resourcetype></d:prop></d:propstat></d:response><d:response><d:href>/other_dev5/test1.mp4</d:href><d:propstat><d:status>HTTP/1.1
+        200 OK</d:status><d:prop><file_url>https://downloader.disk.yandex.ru/disk/0bfaa9505020d3a1ee566ad21234db53377e454873daca02db7c14ade3afdd7d/631df4ef/z09fMFiWn2Q0ke7F7_7a1_wMbJVCjFCT5tA0M8GW8h0_KclFgRUSVAL3l4emrUpiCAKUFeDZccAT6BGTno-SQg%3D%3D?uid=1259373998&amp;filename=test1.mp4&amp;disposition=attachment&amp;hash=&amp;limit=0&amp;content_type=video%2Fmp4&amp;owner_uid=1259373998&amp;fsize=38886573&amp;hid=cabeaa96f24e9aef908d99377a66acfa&amp;media_type=video&amp;tknv=v2&amp;etag=b2a65edf12b4a667c6c47cc4c3367b4d</file_url><d:getetag>b2a65edf12b4a667c6c47cc4c3367b4d</d:getetag><d:creationdate>2022-09-11T10:46:06Z</d:creationdate><mulca_file_url>320.yadisk:1259373998.E7373595:4016535540187657782446663375173</mulca_file_url><d:displayname>test1.mp4</d:displayname><d:getlastmodified>Sun,
+        11 Sep 2022 10:47:10 GMT</d:getlastmodified><d:getcontenttype>video/mp4</d:getcontenttype><d:getcontentlength>38886573</d:getcontentlength><mulca_digest_url>320.yadisk:1259373998.E7495744:4016535540190526590231135406406</mulca_digest_url><d:resourcetype/></d:prop></d:propstat></d:response></d:multistatus>
+  recorded_at: Sun, 11 Sep 2022 10:47:11 GMT
 recorded_with: VCR 6.1.0
