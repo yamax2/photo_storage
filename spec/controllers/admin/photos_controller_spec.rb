@@ -89,13 +89,16 @@ RSpec.describe Admin::PhotosController, type: :request do
     context 'when successful update' do
       let(:token) { create :'yandex/token' }
       let!(:photo) { create :photo, storage_filename: 'test', yandex_token: token, name: 'my' }
+      let(:timestamp) { Time.zone.local(2022, 9, 15, 21, 0, 28) }
 
-      before { put admin_photo_url(id: photo.id, photo: {name: 'test', rotated: 1}) }
+      before do
+        put admin_photo_url(id: photo.id, photo: {name: 'test', rotated: 1, original_timestamp: timestamp.to_fs})
+      end
 
       it do
         expect(assigns(:photo)).to eq(photo)
         expect(assigns(:photo)).to be_valid
-        expect(assigns(:photo)).to have_attributes(name: 'test', rotated: 1)
+        expect(assigns(:photo)).to have_attributes(name: 'test', rotated: 1, original_timestamp: timestamp)
 
         expect(response).to redirect_to(edit_admin_photo_path(photo))
       end

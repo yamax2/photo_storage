@@ -42,7 +42,8 @@
               .input-group
                 = f.text_field :original_timestamp, class: 'form-control datetimepicker',
                                                     autocomplete: 'off',
-                                                    data: {toggle: 'datetimepicker', target: '#photo_original_timestamp'}
+                                                    data: {toggle: 'datetimepicker', target: '#photo_original_timestamp'},
+                                                    value: @photo.original_timestamp&.to_fs
                 .input-group-append
                   button.btn.btn-outline-secondary.btn-clear type="button"
                     = t('.clear')
