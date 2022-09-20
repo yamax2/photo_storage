@@ -19,7 +19,7 @@ gem 'bootstrap4-datetime-picker-rails'
 gem 'font-awesome-rails'
 gem 'jquery-rails'
 gem 'jquery-simplecolorpicker-rails'
-gem 'leaflet-rails'
+gem 'leaflet-rails', '< 1.8.0' # https://github.com/Leaflet/Leaflet.markercluster/issues/1065
 gem 'slim-rails', '>= 3.2'
 
 gem 'draper', '>= 3.1'
