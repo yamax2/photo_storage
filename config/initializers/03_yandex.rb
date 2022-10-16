@@ -6,6 +6,6 @@ YandexClient.configure do |config|
     config.api_secret = Rails.application.credentials.yandex&.[](:api_secret)
   end
 
-  config.logger = Logger.new(Rails.root.join('log', "yandex_#{Rails.env}.log"))
-  config.read_timeout = 2.minutes
+  config.logger = Logger.new(Rails.root.join('log', "yandex_#{Rails.env}.log")) unless Rails.env.test?
+  config.read_timeout = 5.minutes
 end
