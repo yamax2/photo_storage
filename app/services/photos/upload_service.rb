@@ -12,7 +12,7 @@ module Photos
       validate_upload
 
       context.storage_filename ||= StorageFilenameGenerator.call(photo)
-      context.folder_index = token_for_upload.photos_folder_index
+      context.folder_index = token_for_upload.photos_folder_index.to_i
 
       create_remote_dirs
       upload_file

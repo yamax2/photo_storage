@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_06_04_114714) do
+ActiveRecord::Schema[7.0].define(version: 2022_10_16_045347) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -98,8 +98,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_06_04_114714) do
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
     t.datetime "last_archived_at", precision: nil
-    t.integer "photos_folder_index", default: 0, null: false
-    t.integer "other_folder_index", default: 0, null: false
+    t.jsonb "folder_indexes", default: {"other_folder_index"=>0, "photos_folder_index"=>0}, null: false
     t.index ["user_id"], name: "index_yandex_tokens_on_user_id", unique: true
   end
 

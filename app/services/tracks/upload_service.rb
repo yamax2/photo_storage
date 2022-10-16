@@ -12,7 +12,7 @@ module Tracks
       validate_upload
 
       context.storage_filename ||= StorageFilenameGenerator.call(track, partition: false)
-      context.folder_index = token_for_upload.other_folder_index
+      context.folder_index = token_for_upload.other_folder_index.to_i
 
       create_remote_dir
       upload_file
