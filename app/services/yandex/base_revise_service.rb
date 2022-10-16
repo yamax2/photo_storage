@@ -23,10 +23,12 @@ module Yandex
     end
 
     def dav_response
-      @dav_response ||= ::YandexClient::Dav[token.access_token].
-        propfind(storage_dir, 1).
-        select(&:file?).
-        index_by { |info| info.name.sub(%r{^#{base_storage_dir}/}, '') }
+      @dav_response ||= Retry.for(:yandex) do
+        ::YandexClient::Dav[token.access_token].
+          propfind(storage_dir, 1).
+          select(&:file?).
+          index_by { |info| info.name.sub(%r{^#{base_storage_dir}/}, '') }
+      end
     end
 
     def match_info(model, dav_info)
