@@ -4,7 +4,14 @@ class MoveFolderIndexesToJson < ActiveRecord::Migration[7.0]
   def up
     add_column :yandex_tokens,
                :folder_indexes,
-               :jsonb, default: {photos_folder_index: 0, other_folder_index: 0}, null: false
+               :jsonb,
+               default: {
+                 photos_folder_index: 0,
+                 other_folder_index: 0,
+                 photos_folder_archive_from: 0,
+                 other_folder_archive_from: 0
+               },
+               null: false
 
     unless Rails.env.test?
       execute <<~SQL.squish
@@ -12,7 +19,9 @@ class MoveFolderIndexesToJson < ActiveRecord::Migration[7.0]
           SELECT id,
                 jsonb_build_object(
                   'photos_folder_index', photos_folder_index,
-                  'other_folder_index', other_folder_index
+                  'other_folder_index', other_folder_index,
+                  'photos_folder_archive_from', 0,
+                  'other_folder_archive_from', 0
                 ) obj
           FROM yandex_tokens
           GROUP BY id

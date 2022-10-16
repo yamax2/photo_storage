@@ -44,6 +44,8 @@ ru:
         last_upload_at: Последняя загрузка
         photos_folder_index: Индекс папки фото
         other_folder_index: Индекс папки прочего
+        photos_folder_archive_from: Начальный индекс архивирования папки фото
+        other_folder_archive_from:  Начальный индекс архивирования папки прочего
     errors:
       models:
         photo:

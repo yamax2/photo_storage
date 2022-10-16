@@ -46,8 +46,12 @@ module Admin
       def token_params
         params.
           require(:yandex_token).
-          permit(:dir, :other_dir, :active, :photos_folder_index, :other_folder_index).tap do |values|
-            %i[photos_folder_index other_folder_index].
+          permit(
+            :dir, :other_dir, :active,
+            :photos_folder_index, :other_folder_index,
+            :photos_folder_archive_from, :other_folder_archive_from
+          ).tap do |values|
+            %i[photos_folder_index other_folder_index photos_folder_archive_from other_folder_archive_from].
               each { |attr| values[attr] = values[attr].to_i if values[attr] }
           end
       end

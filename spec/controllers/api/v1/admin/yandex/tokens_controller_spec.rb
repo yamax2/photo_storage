@@ -2,9 +2,7 @@
 
 RSpec.describe Api::V1::Admin::Yandex::TokensController, type: :request do
   let(:json) { JSON.parse(response.body) }
-  let!(:token) do
-    create :'yandex/token', dir: '/test', other_dir: '/other', access_token: API_ACCESS_TOKEN, active: true
-  end
+  let!(:token) { create :'yandex/token', dir: '/test', other_dir: '/other', active: true }
 
   describe '#index' do
     context 'when without active tokens' do
@@ -128,6 +126,40 @@ RSpec.describe Api::V1::Admin::Yandex::TokensController, type: :request do
             'folder_index' => 0
           }
         ]
+      end
+
+      it do
+        expect(response).to have_http_status(:ok)
+        expect(json).to match_array(response_tokens)
+      end
+    end
+
+    context 'when start indexes assigned' do
+      let!(:token) do
+        create :'yandex/token', dir: '/test',
+                                other_dir: '/other',
+                                active: true,
+                                other_folder_archive_from: 1,
+                                photos_folder_archive_from: 2
+      end
+
+      let(:response_tokens) do
+        [
+          {
+            'id' => token.id,
+            'login' => token.login,
+            'type' => 'other',
+            'folder_index' => 1
+          }
+        ]
+      end
+
+      before do
+        create :photo, yandex_token: token, storage_filename: 'test'
+        create :track, yandex_token: token, storage_filename: 'test'
+        create :track, yandex_token: token, storage_filename: 'test', folder_index: 1
+
+        get api_v1_admin_yandex_tokens_url
       end
 
       it do

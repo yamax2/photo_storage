@@ -139,7 +139,9 @@ RSpec.describe Admin::Yandex::TokensController, type: :request do
             other_dir: '/other_dir',
             active: true,
             photos_folder_index: 2,
-            other_folder_index: 1
+            other_folder_index: 1,
+            photos_folder_archive_from: 4,
+            other_folder_archive_from: 5
           }
         )
       end
@@ -151,7 +153,9 @@ RSpec.describe Admin::Yandex::TokensController, type: :request do
           dir: '/my_dir',
           other_dir: '/other_dir',
           photos_folder_index: 2,
-          other_folder_index: 1
+          other_folder_index: 1,
+          photos_folder_archive_from: 4,
+          other_folder_archive_from: 5
         )
 
         expect(response).to redirect_to(admin_yandex_tokens_path)

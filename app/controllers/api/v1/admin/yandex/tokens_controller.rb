@@ -11,8 +11,8 @@ module Api
               resource = {token:}
 
               # photos are always last element
-              memo << resource.merge(type: :other) if token.other_count.present?
-              memo << resource.merge(type: :photo) if token.photo_count.present?
+              memo << resource.merge(type: :other) if archive_other?(token)
+              memo << resource.merge(type: :photo) if archive_photos?(token)
             end
           end
 
@@ -42,6 +42,14 @@ module Api
           end
 
           private
+
+          def archive_other?(token)
+            token.other_count.present? && token.folder_index >= token.other_folder_archive_from.to_i
+          end
+
+          def archive_photos?(token)
+            token.photo_count.present? && token.folder_index >= token.photos_folder_archive_from.to_i
+          end
 
           def resource_scope
             ::Yandex::ResourceFinder.call

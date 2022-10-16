@@ -98,7 +98,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_10_16_045347) do
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
     t.datetime "last_archived_at", precision: nil
-    t.jsonb "folder_indexes", default: {"other_folder_index"=>0, "photos_folder_index"=>0}, null: false
+    t.jsonb "folder_indexes", default: {"other_folder_index"=>0, "photos_folder_index"=>0, "other_folder_archive_from"=>0, "photos_folder_archive_from"=>0}, null: false
     t.index ["user_id"], name: "index_yandex_tokens_on_user_id", unique: true
   end
 
