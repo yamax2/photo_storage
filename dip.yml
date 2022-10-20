@@ -82,7 +82,7 @@ interaction:
     compose_run_options: [no-deps]
 
 provision:
-  - ./docker/prepare_env.sh
+  - dip build --pull app
   - dip cleanup
   - docker volume create --name bundler_data
   - dip compose up -d db

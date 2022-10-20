@@ -7,8 +7,6 @@ services:
       dockerfile: ./docker/Dockerfile
       args:
         DOCKER_RUBY_VERSION: $DOCKER_RUBY_VERSION
-      labels:
-        com.photo-storage.ruby.version: $DOCKER_RUBY_VERSION
     environment:
       - BUNDLE_PATH=/bundle/${DOCKER_RUBY_VERSION}
       - SSH_AUTH_SOCK=/ssh/auth/sock

@@ -89,6 +89,9 @@ Style/HashSyntax:
 RSpec/ChangeByZero:
   Enabled: false
 
+Style/RedundantStringEscape:
+  Enabled: false
+
 Rails/DeprecatedActiveModelErrorsMethods:
   Exclude:
     - spec/services/yandex/revise_other_dir_service_spec.rb
