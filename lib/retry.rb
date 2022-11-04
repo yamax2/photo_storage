@@ -47,5 +47,3 @@ class Retry
     end
   end
 end
-
-require_relative 'retry/yandex'

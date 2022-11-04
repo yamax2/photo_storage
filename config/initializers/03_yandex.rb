@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'retry'
+
 YandexClient.configure do |config|
   unless Rails.env.test?
     config.api_key = Rails.application.credentials.yandex&.[](:api_key)
@@ -9,3 +11,11 @@ YandexClient.configure do |config|
   config.logger = Logger.new(Rails.root.join('log', "yandex_#{Rails.env}.log")) unless Rails.env.test?
   config.read_timeout = 5.minutes
 end
+
+Retry.register(
+  :yandex,
+  [
+    HTTP::Error,
+    OpenSSL::SSL::SSLError
+  ]
+)
