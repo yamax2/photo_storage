@@ -55,4 +55,60 @@ namespace :migrations do
         end
       end
   end
+
+  desc 'Move photos to dirs with folder indexes'
+  task move_photos_to_folders: :environment do
+    # with tt as (select id, size, row_number() over (order by id) / 3800 rn from photos
+    # where yandex_token_id = 25 and folder_index = 0 and content_type NOT IN ('video/mp4', 'video/quicktime')),
+    # source as (select id from tt where rn = 1) , zz as (select id from source) update photos set folder_index = 1
+    # where id in (select id from zz) and yandex_token_id = 25 and folder_index = 0
+    token = Yandex::Token.find(25)
+    cli = ::YandexClient::Dav[token.access_token]
+
+    Photo.images.uploaded.where(folder_index: 1, yandex_token_id: 25).order(:id).each do |photo|
+      dest = [
+        "#{token.dir}#{photo.folder_index}",
+        photo.storage_filename
+      ].join('/')
+
+      source = [token.dir, photo.storage_filename].join('/')
+      begin
+        cli.propfind(source)
+      rescue YandexClient::NotFoundError
+        next
+      end
+
+      remote_path = dest.split('/')
+      remote_path.pop
+      remote_path.delete_if(&:empty?)
+
+      remote_path_exists =
+        begin
+          cli.propfind("/#{remote_path.join('/')}")
+
+          true
+        rescue ::YandexClient::NotFoundError
+          false
+        end
+
+      unless remote_path_exists
+        Rails.logger.info("Creating #{remote_path.inspect}...")
+
+        remote_path.each_with_object([]) do |dir, path|
+          path.push(dir)
+          path_to_create = "/#{path.join('/')}"
+
+          begin
+            cli.propfind(path_to_create)
+          rescue ::YandexClient::NotFoundError
+            cli.mkcol(path_to_create)
+          end
+        end
+      end
+
+      Rails.logger.info("Moving #{source} (#{photo.id}) to #{dest}")
+
+      cli.move(source, dest)
+    end
+  end
 end
