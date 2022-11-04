@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe Api::BaseController, type: :controller do
+RSpec.describe Api::BaseController do
   render_views
 
   controller do

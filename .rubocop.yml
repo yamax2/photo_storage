@@ -96,3 +96,6 @@ Rails/DeprecatedActiveModelErrorsMethods:
   Exclude:
     - spec/services/yandex/revise_other_dir_service_spec.rb
     - spec/services/yandex/revise_dir_service_spec.rb
+
+RSpec/FactoryBot/ConsistentParenthesesStyle:
+  Enabled: false

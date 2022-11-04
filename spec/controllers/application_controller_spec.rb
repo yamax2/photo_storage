@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe ApplicationController, type: :controller do
+RSpec.describe ApplicationController do
   render_views
 
   controller do

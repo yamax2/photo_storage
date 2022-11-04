@@ -5,18 +5,12 @@ module Admin
     before_action :find_rubric
     before_action :find_track, only: %i[edit update destroy]
 
-    def destroy
-      @track.destroy
-
-      redirect_to admin_rubric_tracks_path(@rubric), notice: t('.success', name: @track.name)
-    end
-
-    def edit
-    end
-
     def index
       @search = Track.where(rubric: @rubric).ransack(params[:q])
       @tracks = @search.result.page(params[:page]).decorate
+    end
+
+    def edit
     end
 
     def update
@@ -25,6 +19,12 @@ module Admin
       else
         render 'edit'
       end
+    end
+
+    def destroy
+      @track.destroy
+
+      redirect_to admin_rubric_tracks_path(@rubric), notice: t('.success', name: @track.name)
     end
 
     private

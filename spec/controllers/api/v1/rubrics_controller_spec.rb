@@ -282,7 +282,7 @@ RSpec.describe Api::V1::RubricsController, type: :request do
         it do
           expect(response).to have_http_status(:ok)
 
-          expect(json.map { |x| x['id'] }).to eq([rubric1.id])
+          expect(json.pluck('id')).to eq([rubric1.id])
         end
       end
     end

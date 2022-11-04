@@ -4,6 +4,16 @@ module Api
   module V1
     module Admin
       class VideosController < AdminController
+        def show
+          @video = Photo.videos.find(params[:id])
+
+          if (info = RedisClassy.get(info_redis_key)).present?
+            render plain: info
+          else
+            render status: :gone, json: {}
+          end
+        end
+
         def create
           @video = Photo.new(normalized_video_params)
 
@@ -15,16 +25,6 @@ module Api
             render status: :created
           else
             render status: :unprocessable_entity
-          end
-        end
-
-        def show
-          @video = Photo.videos.find(params[:id])
-
-          if (info = RedisClassy.get(info_redis_key)).present?
-            render plain: info
-          else
-            render status: :gone, json: {}
           end
         end
 

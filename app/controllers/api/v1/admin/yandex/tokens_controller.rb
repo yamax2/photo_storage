@@ -10,10 +10,11 @@ module Api
             @resources = resource_scope.active.each_with_object([]) do |token, memo|
               resource = {token:}
 
-              # photos are always last element
-              memo << resource.merge(type: :other) if archive_other?(token)
               memo << resource.merge(type: :photo) if archive_photos?(token)
+              memo << resource.merge(type: :other) if archive_other?(token)
             end
+
+            assign_last_marks
           end
 
           def show
@@ -44,11 +45,13 @@ module Api
           private
 
           def archive_other?(token)
-            token.other_count.present? && token.folder_index >= token.other_folder_archive_from.to_i
+            token.other_count.present? && \
+              token.folder_index >= token.other_folder_archive_from.to_i
           end
 
           def archive_photos?(token)
-            token.photo_count.present? && token.folder_index >= token.photos_folder_archive_from.to_i
+            token.photo_count.present? && \
+              token.folder_index >= token.photos_folder_archive_from.to_i
           end
 
           def resource_scope
@@ -60,6 +63,14 @@ module Api
               id: params[:id],
               resources: {folder_index: params.require(:folder_index)}
             ).first!
+          end
+
+          def assign_last_marks
+            @resources.each_with_index do |resource, index|
+              next_item = @resources[index + 1]
+
+              resource[:is_last] = resource[:token].id != next_item&.[](:token)&.id
+            end
           end
         end
       end

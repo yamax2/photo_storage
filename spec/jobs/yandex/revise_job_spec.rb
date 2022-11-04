@@ -29,7 +29,7 @@ RSpec.describe Yandex::ReviseJob do
         to change { enqueued_jobs(klass: Yandex::ReviseDirJob).size }.by(4).
         and change { enqueued_jobs(klass: Yandex::ReviseOtherDirJob).size }.by(4)
 
-      expect(enqueued_jobs(klass: Yandex::ReviseDirJob).map { |x| x['args'] }).to match_array(
+      expect(enqueued_jobs(klass: Yandex::ReviseDirJob).pluck('args')).to match_array(
         [
           ['000/013/', token1.id, 0],
           ['000/014/', token1.id, 0],
@@ -38,7 +38,7 @@ RSpec.describe Yandex::ReviseJob do
         ]
       )
 
-      expect(enqueued_jobs(klass: Yandex::ReviseOtherDirJob).map { |x| x['args'] }).to match_array(
+      expect(enqueued_jobs(klass: Yandex::ReviseOtherDirJob).pluck('args')).to match_array(
         [
           [token1.id, 0],
           [token2.id, 0],
@@ -62,7 +62,7 @@ RSpec.describe Yandex::ReviseJob do
         to change { enqueued_jobs(klass: Yandex::ReviseDirJob).size }.by(0).
         and change { enqueued_jobs(klass: Yandex::ReviseOtherDirJob).size }.by(2)
 
-      expect(enqueued_jobs(klass: Yandex::ReviseOtherDirJob).map { |x| x['args'] }).to match_array(
+      expect(enqueued_jobs(klass: Yandex::ReviseOtherDirJob).pluck('args')).to match_array(
         [
           [token.id, 0],
           [token.id, 2]
@@ -90,7 +90,7 @@ RSpec.describe Yandex::ReviseJob do
         to change { enqueued_jobs(klass: Yandex::ReviseDirJob).size }.by(0).
         and change { enqueued_jobs(klass: Yandex::ReviseOtherDirJob).size }.by(2)
 
-      expect(enqueued_jobs(klass: Yandex::ReviseOtherDirJob).map { |x| x['args'] }).to match_array(
+      expect(enqueued_jobs(klass: Yandex::ReviseOtherDirJob).pluck('args')).to match_array(
         [
           [token1.id, 0],
           [token1.id, 2]

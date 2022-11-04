@@ -46,13 +46,15 @@ RSpec.describe Api::V1::Admin::Yandex::TokensController, type: :request do
               'id' => token.id,
               'login' => token.login,
               'type' => 'photo',
-              'folder_index' => 1
+              'folder_index' => 0,
+              'is_last' => false
             },
             {
               'id' => token.id,
               'login' => token.login,
               'type' => 'photo',
-              'folder_index' => 0
+              'folder_index' => 1,
+              'is_last' => true
             }
           ]
         )
@@ -77,19 +79,22 @@ RSpec.describe Api::V1::Admin::Yandex::TokensController, type: :request do
               'id' => token.id,
               'login' => token.login,
               'type' => 'photo',
-              'folder_index' => 1
-            },
-            {
-              'id' => token.id,
-              'login' => token.login,
-              'type' => 'photo',
-              'folder_index' => 0
+              'folder_index' => 0,
+              'is_last' => false
             },
             {
               'id' => token.id,
               'login' => token.login,
               'type' => 'other',
-              'folder_index' => 0
+              'folder_index' => 0,
+              'is_last' => false
+            },
+            {
+              'id' => token.id,
+              'login' => token.login,
+              'type' => 'photo',
+              'folder_index' => 1,
+              'is_last' => true
             }
           ]
         )
@@ -111,19 +116,22 @@ RSpec.describe Api::V1::Admin::Yandex::TokensController, type: :request do
             'id' => token.id,
             'login' => token.login,
             'type' => 'other',
-            'folder_index' => 1
-          },
-          {
-            'id' => token.id,
-            'login' => token.login,
-            'type' => 'other',
-            'folder_index' => 0
+            'folder_index' => 0,
+            'is_last' => false
           },
           {
             'id' => token.id,
             'login' => token.login,
             'type' => 'photo',
-            'folder_index' => 0
+            'folder_index' => 0,
+            'is_last' => false
+          },
+          {
+            'id' => token.id,
+            'login' => token.login,
+            'type' => 'other',
+            'folder_index' => 1,
+            'is_last' => true
           }
         ]
       end
@@ -149,7 +157,8 @@ RSpec.describe Api::V1::Admin::Yandex::TokensController, type: :request do
             'id' => token.id,
             'login' => token.login,
             'type' => 'other',
-            'folder_index' => 1
+            'folder_index' => 1,
+            'is_last' => true
           }
         ]
       end
@@ -176,19 +185,22 @@ RSpec.describe Api::V1::Admin::Yandex::TokensController, type: :request do
             'id' => token.id,
             'login' => token.login,
             'type' => 'photo',
-            'folder_index' => 0
-          },
-          {
-            'id' => another_token.id,
-            'login' => another_token.login,
-            'type' => 'photo',
-            'folder_index' => 0
+            'folder_index' => 0,
+            'is_last' => false
           },
           {
             'id' => token.id,
             'login' => token.login,
             'type' => 'other',
-            'folder_index' => 0
+            'folder_index' => 0,
+            'is_last' => true
+          },
+          {
+            'id' => another_token.id,
+            'login' => another_token.login,
+            'type' => 'photo',
+            'folder_index' => 0,
+            'is_last' => true
           }
         ]
       end

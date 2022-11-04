@@ -9,7 +9,7 @@ module Yandex
       Token.
         joins(info_query(table)).
         group(:id, table[:id], table[:folder_index]).
-        order(:id, folder_index: :desc).
+        order(:id, :folder_index).
         select(
           Token.arel_table[Arel.star],
           table[:folder_index],

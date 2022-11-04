@@ -5,15 +5,6 @@ module Admin
     class TokensController < AdminController
       before_action :find_token, only: %i[edit update destroy refresh]
 
-      def destroy
-        @token.destroy
-
-        redirect_to admin_yandex_tokens_path, notice: t('.success', login: @token.login)
-      end
-
-      def edit
-      end
-
       def index
         @new_token_url =
           'https://oauth.yandex.ru/authorize?response_type=' \
@@ -23,10 +14,7 @@ module Admin
         @tokens = @search.result.page(params[:page])
       end
 
-      def refresh
-        ::Yandex::RefreshTokenJob.perform_async(@token.id)
-
-        redirect_to admin_yandex_tokens_path, notice: t('.success', login: @token.login)
+      def edit
       end
 
       def update
@@ -35,6 +23,18 @@ module Admin
         else
           render 'edit'
         end
+      end
+
+      def refresh
+        ::Yandex::RefreshTokenJob.perform_async(@token.id)
+
+        redirect_to admin_yandex_tokens_path, notice: t('.success', login: @token.login)
+      end
+
+      def destroy
+        @token.destroy
+
+        redirect_to admin_yandex_tokens_path, notice: t('.success', login: @token.login)
       end
 
       private

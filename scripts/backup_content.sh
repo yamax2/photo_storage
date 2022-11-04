@@ -60,12 +60,13 @@ zip_info()
 tg_notify '📂 backup started'
 
 api_request '/api/v1/admin/yandex/tokens' | \
-  jq  -r '.[] | [.id,.login,.type,.folder_index] | @csv' | while read -r line; do
+  jq  -r '.[] | [.id,.login,.type,.folder_index,.is_last] | @csv' | while read -r line; do
   id=$(echo "$line" | cut -d',' -f1)
 
   login=$(echo "$line" | cut -d',' -f2 | sed -e 's/^"//' -e 's/"$//')
   resource=$(echo "$line" | cut -d',' -f3 | sed -e 's/^"//' -e 's/"$//')
   folder_index=$(echo "$line" | cut -d',' -f4 | sed -e 's/^"//' -e 's/"$//')
+  is_last=$(echo "$line" | cut -d',' -f5)
 
   key=$(echo -n $SECRET | sha256sum | awk '{ print $1 }')
   iv=$(echo -n $login | md5sum | awk '{ print $1 }')
@@ -98,7 +99,7 @@ api_request '/api/v1/admin/yandex/tokens' | \
       continue
     fi
 
-    if [ "$resource" = "photo" ] && [ "$folder_index" = 0 ]; then
+    if [ "$is_last" = "true" ]; then
       api_request "/api/v1/admin/yandex/tokens/$id/touch"
     fi
 

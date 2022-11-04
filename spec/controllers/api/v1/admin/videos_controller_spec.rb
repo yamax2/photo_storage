@@ -41,7 +41,7 @@ RSpec.describe Api::V1::Admin::VideosController, type: :request do
 
     context 'when correct params' do
       let(:video) { Photo.videos.first! }
-      let(:upload_job_args) { enqueued_jobs(klass: Videos::UploadInfoJob).map { |j| j['args'] } }
+      let(:upload_job_args) { enqueued_jobs(klass: Videos::UploadInfoJob).pluck('args') }
 
       it do
         expect { request }.
@@ -74,8 +74,8 @@ RSpec.describe Api::V1::Admin::VideosController, type: :request do
       end
 
       let(:video) { Photo.videos.first! }
-      let(:move_job_args) { enqueued_jobs(klass: Videos::MoveOriginalJob).map { |j| j['args'] } }
-      let(:upload_job_args) { enqueued_jobs(klass: Videos::UploadInfoJob).map { |j| j['args'] } }
+      let(:move_job_args) { enqueued_jobs(klass: Videos::MoveOriginalJob).pluck('args') }
+      let(:upload_job_args) { enqueued_jobs(klass: Videos::UploadInfoJob).pluck('args') }
 
       it do
         expect { request }.

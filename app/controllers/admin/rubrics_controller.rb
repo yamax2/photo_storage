@@ -5,6 +5,18 @@ module Admin
     before_action :find_rubric, only: %i[edit update destroy warm_up]
     helper_method :parent_id, :parent_rubric
 
+    def index
+      @search = Rubric.where(rubric: parent_rubric).ransack(params[:q])
+      @rubrics = @search.result.page(params[:page])
+    end
+
+    def new
+      @rubric = Rubric.new(rubric: parent_rubric)
+    end
+
+    def edit
+    end
+
     def create
       @rubric = Rubric.new(rubric_params)
 
@@ -15,30 +27,18 @@ module Admin
       end
     end
 
-    def destroy
-      @rubric.destroy
-
-      redirect_to admin_rubrics_path(id: @rubric.rubric_id), notice: t('.success', name: @rubric.name)
-    end
-
-    def edit
-    end
-
-    def index
-      @search = Rubric.where(rubric: parent_rubric).ransack(params[:q])
-      @rubrics = @search.result.page(params[:page])
-    end
-
-    def new
-      @rubric = Rubric.new(rubric: parent_rubric)
-    end
-
     def update
       if @rubric.update(rubric_params)
         redirect_to admin_rubrics_path(id: @rubric.rubric_id)
       else
         render 'edit'
       end
+    end
+
+    def destroy
+      @rubric.destroy
+
+      redirect_to admin_rubrics_path(id: @rubric.rubric_id), notice: t('.success', name: @rubric.name)
     end
 
     def warm_up

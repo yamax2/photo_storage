@@ -2,13 +2,13 @@
 
 module Admin
   class CartController < AdminController
-    def destroy
-    end
-
     def index
     end
 
     def update
+    end
+
+    def destroy
     end
   end
 end

@@ -33,7 +33,7 @@ gem 'redis-classy', '>= 2.4'
 gem 'redis-mutex', '>= 4'
 gem 'strip_attributes', '>= 1.8'
 
-gem 'sidekiq', '>= 6'
+gem 'sidekiq', '>= 6', '< 7'
 gem 'sidekiq-cron', '>= 1.1'
 gem 'sidekiq-failures', '>= 1'
 gem 'sidekiq-throttled', '>= 0.13'

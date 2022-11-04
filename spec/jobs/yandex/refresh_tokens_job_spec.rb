@@ -8,7 +8,7 @@ RSpec.describe Yandex::RefreshTokensJob do
     before { described_class.new.perform }
 
     it do
-      expect(enqueued_jobs('tokens', klass: Yandex::RefreshTokenJob).map { |j| j['args'] }.flatten).
+      expect(enqueued_jobs('tokens', klass: Yandex::RefreshTokenJob).pluck('args').flatten).
         to match_array([token1.id, token2.id])
     end
   end

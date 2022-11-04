@@ -159,7 +159,7 @@ RSpec.describe Photo do
 
   describe 'remote file removing' do
     let(:node) { create :'yandex/token', other_dir: '/other', dir: '/dir' }
-    let(:job_args) { enqueued_jobs(klass: Yandex::RemoveFileJob).map { |j| j['args'] } }
+    let(:job_args) { enqueued_jobs(klass: Yandex::RemoveFileJob).pluck('args') }
 
     context 'when model is not uploaded' do
       let(:photo) { create :photo, local_filename: 'zozo.jpg', yandex_token: node }

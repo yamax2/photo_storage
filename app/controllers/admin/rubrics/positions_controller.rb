@@ -7,15 +7,6 @@ module Admin
 
       FIRST_PHOTO = 'first_photo'
 
-      def create
-        ::Rubrics::ApplyOrderService.call!(
-          id: @rubric&.id,
-          data: params.require(:data).split(',').map(&:to_i)
-        )
-
-        redirect_to admin_rubrics_positions_path(id: @rubric&.id)
-      end
-
       def index
         @rubrics = Rubric.where(rubric_id: @rubric&.id)
 
@@ -27,6 +18,15 @@ module Admin
           end
 
         redirect_to admin_rubrics_path(@rubric) unless @rubrics.count > 1
+      end
+
+      def create
+        ::Rubrics::ApplyOrderService.call!(
+          id: @rubric&.id,
+          data: params.require(:data).split(',').map(&:to_i)
+        )
+
+        redirect_to admin_rubrics_positions_path(id: @rubric&.id)
       end
 
       private

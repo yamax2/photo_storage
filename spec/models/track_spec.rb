@@ -111,7 +111,7 @@ RSpec.describe Track do
 
     context 'when uploaded' do
       let(:track) { create :track, storage_filename: 'zozo.gpx', yandex_token: node }
-      let(:job_args) { enqueued_jobs(klass: Yandex::RemoveFileJob).map { |j| j['args'] } }
+      let(:job_args) { enqueued_jobs(klass: Yandex::RemoveFileJob).pluck('args') }
 
       it do
         expect { track.destroy }.to change { enqueued_jobs(klass: Yandex::RemoveFileJob).size }.by(1)

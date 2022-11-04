@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe Admin::AdminController, type: :controller do
+RSpec.describe Admin::AdminController do
   render_views
 
   controller do
