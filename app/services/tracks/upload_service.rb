@@ -26,9 +26,11 @@ module Tracks
     end
 
     def create_remote_dir
-      client.propfind(dir_with_index)
-    rescue ::YandexClient::NotFoundError
-      client.mkcol(dir_with_index)
+      Retry.for(:yandex) do
+        client.propfind(dir_with_index)
+      rescue ::YandexClient::NotFoundError
+        client.mkcol(dir_with_index)
+      end
     end
 
     def local_file
@@ -42,13 +44,14 @@ module Tracks
     end
 
     def upload_file
-      client.put(
-        local_file,
-        "#{dir_with_index}/#{storage_filename}",
-        size: track.size,
-        etag: track.md5,
-        sha256: track.sha256
-      )
+      Retry.for(:yandex) do
+        client.put \
+          local_file,
+          "#{dir_with_index}/#{storage_filename}",
+          size: track.size,
+          etag: track.md5,
+          sha256: track.sha256
+      end
     end
 
     def validate_upload

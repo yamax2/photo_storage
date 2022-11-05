@@ -7,7 +7,9 @@ module Yandex
     def perform(node_id, full_storage_filename)
       node = Yandex::Token.find(node_id)
 
-      ::YandexClient::Dav[node.access_token].delete(full_storage_filename)
+      Retry.for(:yandex) do
+        ::YandexClient::Dav[node.access_token].delete(full_storage_filename)
+      end
     rescue ::YandexClient::NotFoundError
       false
     end

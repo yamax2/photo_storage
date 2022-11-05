@@ -11,7 +11,7 @@ module Videos
     end
 
     def call
-      create_remote_dir
+      Retry.for(:yandex) { create_remote_dir }
 
       content = {}
 
@@ -50,8 +50,10 @@ module Videos
     end
 
     def upload_url_for(filename)
-      ::YandexClient::Disk[model.yandex_token.access_token].
-        upload_url([dir_with_index, filename].join('/'), overwrite: true)
+      Retry.for(:yandex) do
+        ::YandexClient::Disk[model.yandex_token.access_token].
+          upload_url([dir_with_index, filename].join('/'), overwrite: true)
+      end
     end
 
     def dir_with_index

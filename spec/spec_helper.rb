@@ -39,6 +39,8 @@ RSpec.configure do |config|
     RedisClassy.redis.script(:flush)
     RedisClassy.redis.flushdb
   end
+
+  config.before { Retry.default_intervals = [0, 0] }
 end
 
 Shoulda::Matchers.configure do |config|

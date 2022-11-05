@@ -20,7 +20,7 @@ module Yandex
     private
 
     def token_response
-      @token_response ||= YandexClient.auth.refresh_token(token.refresh_token)
+      @token_response ||= Retry.for(:yandex) { YandexClient.auth.refresh_token(token.refresh_token) }
     end
 
     def valid_till

@@ -28,7 +28,7 @@ module Yandex
     private
 
     def download_url
-      YandexClient::Disk[token.access_token].download_url(path)
+      Retry.for(:yandex) { YandexClient::Disk[token.access_token].download_url(path) }
     end
 
     def path

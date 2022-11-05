@@ -4,10 +4,10 @@ module Yandex
   class RefreshQuotaService
     include ::Interactor
 
-    delegate :token, to: :context
+    delegate :token, to: :context, private: true
 
     def call
-      response = YandexClient::Disk[token.access_token].info
+      response = Retry.for(:yandex) { YandexClient::Disk[token.access_token].info }
 
       token.update!(
         used_space: response.fetch(:used_space),

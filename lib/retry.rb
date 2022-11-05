@@ -2,10 +2,13 @@
 
 class Retry
   @retry_types = {}
+  @default_intervals = [0, 0, 1, 2, 5, 10]
 
   Error = Class.new(StandardError)
 
   class << self
+    attr_accessor :default_intervals
+
     def register(name, exceptions)
       raise "#{name} already registered" if @retry_types.key?(name)
       raise "#{name} no exception class provided" if (exceptions_to_register = Array.wrap(exceptions)).blank?
@@ -21,7 +24,7 @@ class Retry
       @retry_types.delete(name).present?
     end
 
-    def for(name, intervals: [0, 0, 1, 2, 5, 10], &block)
+    def for(name, intervals: @default_intervals, &block)
       raise Error, "#{name} is not registered retry type" if (exceptions = @retry_types[name]).blank?
 
       new(exceptions, intervals).call(&block)

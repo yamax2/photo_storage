@@ -10,13 +10,14 @@ module Videos
     end
 
     def call
-      create_remote_dir
+      Retry.for(:yandex) { create_remote_dir }
 
-      dav_client.move(
-        @temporary_filename,
-        [dir_with_index, model.storage_filename].join('/'),
-        overwrite: false
-      )
+      Retry.for(:yandex) do
+        dav_client.move \
+          @temporary_filename,
+          [dir_with_index, model.storage_filename].join('/'),
+          overwrite: false
+      end
     end
 
     private

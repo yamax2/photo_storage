@@ -26,9 +26,11 @@ module Photos
     end
 
     def create_remote_dir(path)
-      client.propfind(path)
-    rescue ::YandexClient::NotFoundError
-      client.mkcol(path)
+      Retry.for(:yandex) do
+        client.propfind(path)
+      rescue ::YandexClient::NotFoundError
+        client.mkcol(path)
+      end
     end
 
     def create_remote_dirs
@@ -62,11 +64,13 @@ module Photos
     end
 
     def remote_path_exists?
-      client.propfind("/#{remote_path.join('/')}")
+      Retry.for(:yandex) do
+        client.propfind("/#{remote_path.join('/')}")
 
-      true
-    rescue ::YandexClient::NotFoundError
-      false
+        true
+      rescue ::YandexClient::NotFoundError
+        false
+      end
     end
 
     def token_for_upload
@@ -76,13 +80,14 @@ module Photos
     end
 
     def upload_file
-      client.put(
-        local_file,
-        [dir_with_index, storage_filename].join('/'),
-        size: photo.size,
-        etag: photo.md5,
-        sha256: photo.sha256
-      )
+      Retry.for(:yandex) do
+        client.put \
+          local_file,
+          [dir_with_index, storage_filename].join('/'),
+          size: photo.size,
+          etag: photo.md5,
+          sha256: photo.sha256
+      end
     end
 
     def validate_upload
