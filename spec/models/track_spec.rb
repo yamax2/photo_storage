@@ -120,6 +120,17 @@ RSpec.describe Track do
       end
     end
 
+    context 'when upload with a folder_index' do
+      let(:track) { create :track, storage_filename: 'zozo.gpx', yandex_token: node, folder_index: 6 }
+      let(:job_args) { enqueued_jobs(klass: Yandex::RemoveFileJob).pluck('args') }
+
+      it do
+        expect { track.destroy }.to change { enqueued_jobs(klass: Yandex::RemoveFileJob).size }.by(1)
+
+        expect(job_args).to eq([[node.id, '/other6/zozo.gpx']])
+      end
+    end
+
     context 'when track is not uploaded' do
       let(:track) { create :track, local_filename: 'zozo.gpx' }
 

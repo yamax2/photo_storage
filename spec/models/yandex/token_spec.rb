@@ -112,6 +112,15 @@ RSpec.describe Yandex::Token do
 
         it { expect(token).to be_valid }
       end
+
+      context 'when ends with /' do
+        before { token[dir_attr] = '/zozo/' }
+
+        it do
+          expect(token).not_to be_valid
+          expect(token.errors).to include(dir_attr)
+        end
+      end
     end
 
     it_behaves_like 'dir validation', :dir

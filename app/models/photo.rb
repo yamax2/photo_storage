@@ -108,8 +108,11 @@ class Photo < ApplicationRecord
   def enqueue_remove_job(dir, filename)
     return if filename.blank?
 
+    dir_with_index = dir
+    dir_with_index = "#{dir}#{folder_index}" if folder_index.nonzero?
+
     ::Yandex::RemoveFileJob.perform_async \
       yandex_token_id,
-      [dir, filename].join('/')
+      [dir_with_index, filename].join('/')
   end
 end

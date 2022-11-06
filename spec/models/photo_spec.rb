@@ -180,6 +180,16 @@ RSpec.describe Photo do
       end
     end
 
+    context 'when image with a folder_index' do
+      let(:photo) { create :photo, storage_filename: '052/001/zozo.jpg', yandex_token: node, folder_index: 5 }
+
+      it do
+        expect { photo.destroy }.to change { enqueued_jobs(klass: Yandex::RemoveFileJob).size }.by(1)
+
+        expect(job_args).to eq([[node.id, '/dir5/052/001/zozo.jpg']])
+      end
+    end
+
     context 'when video' do
       let(:video) do
         create :photo,
@@ -196,6 +206,27 @@ RSpec.describe Photo do
 
         expect(job_args).to match_array(
           [[node.id, '/other/test.mp4'], [node.id, '/other/test.jpg'], [node.id, '/other/test.preview.mp4']]
+        )
+      end
+    end
+
+    context 'when video a folder_index' do
+      let(:video) do
+        create :photo,
+               :video,
+               storage_filename: 'test.mp4',
+               preview_filename: 'test.jpg',
+               video_preview_filename: 'test.preview.mp4',
+               yandex_token: node,
+               folder_index: 5
+      end
+
+      it do
+        expect { video.destroy }.
+          to change { enqueued_jobs(klass: Yandex::RemoveFileJob).size }.by(3)
+
+        expect(job_args).to match_array(
+          [[node.id, '/other5/test.mp4'], [node.id, '/other5/test.jpg'], [node.id, '/other5/test.preview.mp4']]
         )
       end
     end

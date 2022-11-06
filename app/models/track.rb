@@ -46,9 +46,12 @@ class Track < ApplicationRecord
 
     return if storage_filename.blank?
 
+    dir_with_index = yandex_token.other_dir
+    dir_with_index = "#{dir_with_index}#{folder_index}" if folder_index.nonzero?
+
     ::Yandex::RemoveFileJob.perform_async(
       yandex_token_id,
-      [yandex_token.other_dir, storage_filename].join('/')
+      [dir_with_index, storage_filename].join('/')
     )
   end
 end
