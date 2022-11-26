@@ -39,10 +39,17 @@ Rails.application.configure do
   }
 
   # allowed timezones
-  config.photo_timezones = [
-    Rails.application.config.time_zone,
-    *ENV.fetch('PHOTOSTORAGE_ADDITIONAL_TIMEZONES', 'Europe/Moscow,Europe/Samara').split(',').map(&:strip)
-  ].uniq
+  config.photo_timezones =
+    if (timezones = ENV.fetch('PHOTOSTORAGE_ADDITIONAL_TIMEZONES', nil)).present?
+      [
+        Rails.application.config.time_zone,
+        *timezones.split(',').map(&:strip)
+      ].uniq
+    else
+      YAML.load_file(
+        Rails.application.config.root.join('config', 'time_zones.yml')
+      )
+    end
 
   config.admin_emails = ENV.fetch('PHOTOSTORAGE_ADMIN_EMAILS', 'admin@photostorage.localhost').split(',').map(&:strip)
   config.default_map_center = [56.799631, 60.596571]
