@@ -6,6 +6,8 @@ RSpec.describe Photos::LoadInfoService do
   before do
     Timecop.freeze Time.zone.local(2019, 6, 16, 13, 8, 32)
 
+    allow(Rails.application.config).to receive(:time_zone).and_return('Europe/Istanbul')
+
     if filename.present?
       FileUtils.mkdir_p(Rails.root.join('tmp/files'))
       FileUtils.cp("spec/fixtures/#{filename}", photo.tmp_local_filename)
@@ -34,7 +36,8 @@ RSpec.describe Photos::LoadInfoService do
         expect(photo).to have_attributes(
           original_timestamp: Time.zone.local(2019, 6, 15, 21, 43, 32),
           width: 7_296,
-          height: 5_472
+          height: 5_472,
+          tz: 'Europe/Istanbul'
         )
       end
     end
@@ -50,7 +53,8 @@ RSpec.describe Photos::LoadInfoService do
         expect(photo).to have_attributes(
           original_timestamp: Time.zone.local(2019, 5, 2, 18, 40, 53),
           width: 4_160,
-          height: 3_120
+          height: 3_120,
+          tz: 'Europe/Istanbul'
         )
       end
     end
@@ -67,7 +71,8 @@ RSpec.describe Photos::LoadInfoService do
         expect(photo).to have_attributes(
           original_timestamp: Time.zone.local(2019, 5, 28, 18, 22, 10),
           width: 4_160,
-          height: 3_120
+          height: 3_120,
+          tz: 'Europe/Istanbul'
         )
       end
     end
@@ -82,7 +87,8 @@ RSpec.describe Photos::LoadInfoService do
           height: 750,
           original_timestamp: nil,
           lat_long: nil,
-          exif: nil
+          exif: nil,
+          tz: 'Europe/Istanbul'
         )
       end
     end
@@ -95,7 +101,7 @@ RSpec.describe Photos::LoadInfoService do
 
         expect(photo.exif).to include('model' => 'FestXL', 'make' => 'HighScreen')
         expect(photo.lat_long).not_to be_present
-        expect(photo).to have_attributes(width: 4_160, height: 3_120)
+        expect(photo).to have_attributes(width: 4_160, height: 3_120, tz: 'Europe/Istanbul')
       end
     end
 
@@ -111,7 +117,8 @@ RSpec.describe Photos::LoadInfoService do
         expect(photo).to have_attributes(
           width: 2_592,
           height: 1_552,
-          original_timestamp: Time.zone.local(2013, 9, 28, 11, 37, 34)
+          original_timestamp: Time.zone.local(2013, 9, 28, 11, 37, 34),
+          tz: 'Europe/Istanbul'
         )
       end
     end
@@ -127,7 +134,8 @@ RSpec.describe Photos::LoadInfoService do
         expect(photo).to have_attributes(
           width: 2_048,
           height: 1_536,
-          original_timestamp: Time.zone.local(2011, 6, 12, 15, 47, 38)
+          original_timestamp: Time.zone.local(2011, 6, 12, 15, 47, 38),
+          tz: 'Europe/Istanbul'
         )
       end
     end
@@ -143,7 +151,8 @@ RSpec.describe Photos::LoadInfoService do
         expect(photo).to have_attributes(
           width: 1_536,
           height: 2_048,
-          original_timestamp: Time.zone.local(2011, 3, 13, 13, 34, 36)
+          original_timestamp: Time.zone.local(2011, 3, 13, 13, 34, 36),
+          tz: 'Europe/Istanbul'
         )
       end
     end
@@ -158,7 +167,8 @@ RSpec.describe Photos::LoadInfoService do
         expect(photo).to have_attributes(
           width: 3_513,
           height: 1_118,
-          original_timestamp: nil
+          original_timestamp: nil,
+          tz: 'Europe/Istanbul'
         )
       end
     end
@@ -175,7 +185,8 @@ RSpec.describe Photos::LoadInfoService do
         height: 400,
         original_timestamp: nil,
         lat_long: nil,
-        exif: nil
+        exif: nil,
+        tz: 'Europe/Istanbul'
       )
     end
   end

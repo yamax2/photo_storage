@@ -12,6 +12,16 @@ module Photos
     def call
       return unless photo.local_file?
 
+      photo.tz = Rails.application.config.time_zone
+
+      load_photo_attrs
+
+      photo.save!
+    end
+
+    private
+
+    def load_photo_attrs
       if exif?
         photo.exif = {model: exif_data.model, make: exif_data.make}
 
@@ -20,11 +30,7 @@ module Photos
       else
         load_file_attrs
       end
-
-      photo.save!
     end
-
-    private
 
     def exif?
       photo.jpeg? && \

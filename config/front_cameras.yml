@@ -12,6 +12,12 @@ default: &default
       effects:
         - scaleX(-1)
 
+    - make: Xiaomi
+      model: 2207117BPG
+      dimension: 4208
+      effects:
+        - scaleX(-1)
+
 development:
   <<: *default
 
