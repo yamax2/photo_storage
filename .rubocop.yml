@@ -99,3 +99,7 @@ Rails/DeprecatedActiveModelErrorsMethods:
 
 RSpec/FactoryBot/ConsistentParenthesesStyle:
   Enabled: false
+
+RSpec/PendingWithoutReason:
+  Exclude:
+    - spec/support/model_with_upload_workflow.rb

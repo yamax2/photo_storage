@@ -311,7 +311,7 @@ RSpec.describe Photo do
 
       it do
         expect(photo.rubric).to eq(new_rubric)
-        expect(::Cart::PhotoService).
+        expect(Cart::PhotoService).
           to have_received(:call!).with(photo:, remove: true).once
       end
     end
@@ -321,7 +321,7 @@ RSpec.describe Photo do
 
       it do
         expect(photo).not_to be_persisted
-        expect(::Cart::PhotoService).
+        expect(Cart::PhotoService).
           to have_received(:call!).with(photo:, remove: true).once
       end
     end
@@ -370,7 +370,7 @@ RSpec.describe Photo do
       let(:photo) { build :photo, local_filename: 'test', rubric: old_rubric }
 
       it do
-        expect(::Photos::ChangeMainPhoto).not_to receive(:call!)
+        expect(Photos::ChangeMainPhoto).not_to receive(:call!)
 
         expect { change! }.to change(photo, :rubric).from(old_rubric).to(new_rubric)
       end

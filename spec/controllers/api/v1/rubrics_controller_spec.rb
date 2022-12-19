@@ -107,7 +107,7 @@ RSpec.describe Api::V1::RubricsController, type: :request do
       end
 
       before do
-        photo = create :photo, rubric: rubric, yandex_token: token, storage_filename: 'test3', width: 500, height: 600
+        photo = create(:photo, rubric:, yandex_token: token, storage_filename: 'test3', width: 500, height: 600)
 
         rubric.update!(main_photo_id: photo.id)
 

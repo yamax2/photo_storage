@@ -65,7 +65,7 @@ RSpec.describe Admin::Yandex::TokensController, type: :request do
 
   describe '#refresh' do
     before do
-      allow(::Yandex::RefreshTokenJob).to receive(:perform_async)
+      allow(Yandex::RefreshTokenJob).to receive(:perform_async)
     end
 
     context 'when token exists' do
@@ -75,7 +75,7 @@ RSpec.describe Admin::Yandex::TokensController, type: :request do
 
       it do
         expect(assigns(:token)).to eq(token)
-        expect(::Yandex::RefreshTokenJob).to have_received(:perform_async).with(token.id)
+        expect(Yandex::RefreshTokenJob).to have_received(:perform_async).with(token.id)
         expect(response).to redirect_to(admin_yandex_tokens_path)
         expect(flash[:notice]).to eq I18n.t('admin.yandex.tokens.refresh.success', login: token.login)
       end

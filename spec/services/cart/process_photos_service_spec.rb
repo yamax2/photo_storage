@@ -13,7 +13,7 @@ RSpec.describe Cart::ProcessPhotosService do
 
   context 'when call for empty cart' do
     before do
-      create :photo, local_filename: 'test', rubric: rubric
+      create(:photo, local_filename: 'test', rubric:)
       create :photo, local_filename: 'test', rubric:
     end
 

@@ -41,8 +41,8 @@ RSpec.describe Api::V1::Admin::Cart::RubricsController, type: :request do
         photo4
         photo5
 
-        ::Cart::PhotoService.call!(photo: photo1)
-        ::Cart::PhotoService.call!(photo: photo2)
+        Cart::PhotoService.call!(photo: photo1)
+        Cart::PhotoService.call!(photo: photo2)
       end
 
       context 'and first level' do

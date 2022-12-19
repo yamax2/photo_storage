@@ -36,7 +36,7 @@ RSpec.describe Rubrics::WarmUpJob do
     end
 
     before do
-      create :photo, rubric: rubric, storage_filename: 'test.jpg', yandex_token: token, width: 1_000, height: 500
+      create(:photo, rubric:, storage_filename: 'test.jpg', yandex_token: token, width: 1_000, height: 500)
       create :photo, rubric:, storage_filename: 'test.jpg', yandex_token: token, width: 1_000, height: 500
     end
 

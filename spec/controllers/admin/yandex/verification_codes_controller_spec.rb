@@ -3,14 +3,14 @@
 RSpec.describe Admin::Yandex::VerificationCodesController, type: :request do
   describe '#show' do
     before do
-      allow(::Yandex::CreateOrUpdateTokenJob).to receive(:perform_async)
+      allow(Yandex::CreateOrUpdateTokenJob).to receive(:perform_async)
     end
 
     context 'when code presents' do
       before { get admin_yandex_verification_code_url(code: '999') }
 
       it do
-        expect(::Yandex::CreateOrUpdateTokenJob).to have_received(:perform_async)
+        expect(Yandex::CreateOrUpdateTokenJob).to have_received(:perform_async)
         expect(response).to redirect_to(admin_yandex_tokens_path)
         expect(flash[:notice]).to eq I18n.t('admin.yandex.token_performed')
       end

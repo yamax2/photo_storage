@@ -93,7 +93,7 @@ class VideoMetadata
       original_timestamp: parse_timestamp(general[:Tagged_Date] || general[:Encoded_Date]),
       width: dimensions.first,
       height: dimensions.last,
-      content_type: CONTENT_TYPES_BY_EXT.fetch(general.fetch(:FileExtension)),
+      content_type: CONTENT_TYPES_BY_EXT.fetch(general.fetch(:FileExtension).downcase),
       lat_long: lat_long ? lat_long.gsub(/[^0-9.]/, ' ').to_s.strip.split.map(&:to_f) : nil,
       md5: md5(filename),
       sha256: sha256(filename),

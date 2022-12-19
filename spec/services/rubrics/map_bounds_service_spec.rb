@@ -7,7 +7,7 @@ RSpec.describe Rubrics::MapBoundsService do
 
   context 'when rubric without uploaded tracks and photos' do
     before do
-      create :photo, rubric: rubric, local_filename: 'test.jpg', lat_long: [1, 2]
+      create(:photo, rubric:, local_filename: 'test.jpg', lat_long: [1, 2])
       create :track, rubric:, local_filename: 'test.gpx'
     end
 
@@ -23,11 +23,11 @@ RSpec.describe Rubrics::MapBoundsService do
     let(:token) { create :'yandex/token' }
 
     before do
-      create :photo, rubric: rubric, storage_filename: 'test.jpg', lat_long: [1, 2], yandex_token: token
-      create :photo, rubric: rubric, storage_filename: 'test.jpg', lat_long: [0, 1], yandex_token: token
-      create :photo, :video, rubric: rubric, storage_filename: '1.mp4', lat_long: [5, 1], yandex_token: token
+      create(:photo, rubric:, storage_filename: 'test.jpg', lat_long: [1, 2], yandex_token: token)
+      create(:photo, rubric:, storage_filename: 'test.jpg', lat_long: [0, 1], yandex_token: token)
+      create(:photo, :video, rubric:, storage_filename: '1.mp4', lat_long: [5, 1], yandex_token: token)
 
-      create :track, rubric: rubric, storage_filename: 'test.gpx', yandex_token: token
+      create(:track, rubric:, storage_filename: 'test.gpx', yandex_token: token)
       create :track, rubric:, storage_filename: 'test.gpx', yandex_token: token
     end
 

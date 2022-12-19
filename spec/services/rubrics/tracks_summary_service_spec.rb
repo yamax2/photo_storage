@@ -22,7 +22,7 @@ RSpec.describe Rubrics::TracksSummaryService do
 
     context 'when without started_at' do
       before do
-        create :track, duration: 2.hours, distance: 100, local_filename: '1.gpx', rubric: rubric
+        create(:track, duration: 2.hours, distance: 100, local_filename: '1.gpx', rubric:)
         create :track,
                duration: 3.hours,
                distance: 200,
@@ -45,13 +45,13 @@ RSpec.describe Rubrics::TracksSummaryService do
 
     context 'when correct tracks' do
       before do
-        create :track,
+        create(:track,
                duration: 2.hours,
                distance: 100,
                local_filename: '1.gpx',
-               rubric: rubric,
+               rubric:,
                started_at: sample_time,
-               finished_at: sample_time + 10.hours
+               finished_at: sample_time + 10.hours)
 
         create :track,
                duration: 3.hours,

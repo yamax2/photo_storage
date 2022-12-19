@@ -310,7 +310,7 @@ RSpec.describe Admin::RubricsController, type: :request do
     let!(:rubric) { create :rubric }
 
     before do
-      allow(::Rubrics::WarmUpJob).to receive(:perform_async)
+      allow(Rubrics::WarmUpJob).to receive(:perform_async)
     end
 
     context 'when without photo size' do
@@ -318,7 +318,7 @@ RSpec.describe Admin::RubricsController, type: :request do
         expect { get warm_up_admin_rubric_url(id: rubric.id) }.
           to raise_error(ActionController::ParameterMissing)
 
-        expect(::Rubrics::WarmUpJob).not_to have_received(:perform_async)
+        expect(Rubrics::WarmUpJob).not_to have_received(:perform_async)
       end
     end
 
@@ -328,7 +328,7 @@ RSpec.describe Admin::RubricsController, type: :request do
       it do
         expect(response).to redirect_to(admin_rubrics_path)
 
-        expect(::Rubrics::WarmUpJob).to have_received(:perform_async)
+        expect(Rubrics::WarmUpJob).to have_received(:perform_async)
       end
     end
 

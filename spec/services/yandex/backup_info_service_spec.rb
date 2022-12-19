@@ -54,10 +54,10 @@ RSpec.describe Yandex::BackupInfoService do
   context 'when photos and folder_index is greater than zero' do
     subject(:encoded_string) do
       VCR.use_cassette('yandex_download_url_photos2') do
-        client = ::YandexClient::Dav[token.access_token]
+        client = YandexClient::Dav[token.access_token]
         begin
           client.propfind('/test11')
-        rescue ::YandexClient::NotFoundError
+        rescue YandexClient::NotFoundError
           client.mkcol('/test11')
         end
 
@@ -93,10 +93,10 @@ RSpec.describe Yandex::BackupInfoService do
   context 'when other and folder_index is greater than zero' do
     subject(:encoded_string) do
       VCR.use_cassette('yandex_download_url_other2') do
-        client = ::YandexClient::Dav[token.access_token]
+        client = YandexClient::Dav[token.access_token]
         begin
           client.propfind('/other12')
-        rescue ::YandexClient::NotFoundError
+        rescue YandexClient::NotFoundError
           client.mkcol('/other12')
         end
 

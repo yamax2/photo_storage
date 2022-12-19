@@ -263,7 +263,7 @@ RSpec.describe Rubrics::Listing do
     end
 
     before do
-      create :photo, rubric_id: rubric_id, storage_filename: '1.jpg', yandex_token: token
+      create(:photo, rubric_id:, storage_filename: '1.jpg', yandex_token: token)
       create :photo, :video, rubric_id:, storage_filename: '2.mp4', yandex_token: token
     end
 

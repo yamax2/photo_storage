@@ -28,7 +28,7 @@ namespace :migrations do
       each do |video|
         Rails.logger.info("Processing video: #{video.id}, node id: #{video.yandex_token_id}")
 
-        cli[video.yandex_token_id] ||= ::YandexClient::Dav[video.yandex_token.access_token]
+        cli[video.yandex_token_id] ||= YandexClient::Dav[video.yandex_token.access_token]
 
         dest_dir =
           if video.folder_index.nonzero?
@@ -63,7 +63,7 @@ namespace :migrations do
     # source as (select id from tt where rn = 1) , zz as (select id from source) update photos set folder_index = 1
     # where id in (select id from zz) and yandex_token_id = 25 and folder_index = 0
     token = Yandex::Token.find(25)
-    cli = ::YandexClient::Dav[token.access_token]
+    cli = YandexClient::Dav[token.access_token]
 
     Photo.images.uploaded.where(folder_index: 1, yandex_token_id: 25).order(:id).each do |photo|
       dest = [
@@ -87,7 +87,7 @@ namespace :migrations do
           cli.propfind("/#{remote_path.join('/')}")
 
           true
-        rescue ::YandexClient::NotFoundError
+        rescue YandexClient::NotFoundError
           false
         end
 
@@ -100,7 +100,7 @@ namespace :migrations do
 
           begin
             cli.propfind(path_to_create)
-          rescue ::YandexClient::NotFoundError
+          rescue YandexClient::NotFoundError
             cli.mkcol(path_to_create)
           end
         end

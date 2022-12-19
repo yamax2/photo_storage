@@ -8,14 +8,14 @@ RSpec.describe Admin::Rubrics::PositionsController, type: :request do
       subject(:request) { post admin_rubrics_positions_url(positions: {id: rubric.id}) }
 
       it do
-        expect(::Rubrics::ApplyOrderService).not_to receive(:call!)
+        expect(Rubrics::ApplyOrderService).not_to receive(:call!)
         expect { request }.to raise_error(ActionController::ParameterMissing).with_message(/data/)
       end
     end
 
     context 'when correct params' do
       it do
-        expect(::Rubrics::ApplyOrderService).to receive(:call!).with(data: [1, 2, 5], id: rubric.id)
+        expect(Rubrics::ApplyOrderService).to receive(:call!).with(data: [1, 2, 5], id: rubric.id)
 
         post admin_rubrics_positions_url(id: rubric.id, data: '1,2,5')
 
@@ -27,7 +27,7 @@ RSpec.describe Admin::Rubrics::PositionsController, type: :request do
       subject(:request) { post admin_rubrics_positions_url(id: rubric.id * 2, data: '1,2,5') }
 
       it do
-        expect(::Rubrics::ApplyOrderService).not_to receive(:call!)
+        expect(Rubrics::ApplyOrderService).not_to receive(:call!)
 
         expect { request }.to raise_error(ActiveRecord::RecordNotFound)
       end
@@ -35,7 +35,7 @@ RSpec.describe Admin::Rubrics::PositionsController, type: :request do
 
     context 'when empty string as parent value' do
       it do
-        expect(::Rubrics::ApplyOrderService).to receive(:call!).with(data: [1, 2, 5], id: nil)
+        expect(Rubrics::ApplyOrderService).to receive(:call!).with(data: [1, 2, 5], id: nil)
 
         post admin_rubrics_positions_url(id: '', data: '1,2,5')
 
@@ -45,7 +45,7 @@ RSpec.describe Admin::Rubrics::PositionsController, type: :request do
 
     context 'when root' do
       it do
-        expect(::Rubrics::ApplyOrderService).to receive(:call!).with(data: [1, 2, 5], id: nil)
+        expect(Rubrics::ApplyOrderService).to receive(:call!).with(data: [1, 2, 5], id: nil)
 
         post admin_rubrics_positions_url(data: '1,2,5')
 

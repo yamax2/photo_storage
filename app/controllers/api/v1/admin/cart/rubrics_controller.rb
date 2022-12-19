@@ -20,7 +20,8 @@ module Api
 
           # FIXME: wft?
           def children?(rubric)
-            rubric.rubrics_count.positive? && (rubric.rubrics.with_objects.pluck(:id) & selected_rubric_ids.keys).any?
+            rubric.rubrics_count.positive? && \
+              rubric.rubrics.with_objects.pluck(:id).intersect?(selected_rubric_ids.keys)
           end
 
           def selected_rubric_ids

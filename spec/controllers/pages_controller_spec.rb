@@ -20,7 +20,7 @@ RSpec.describe PagesController, type: :request do
       context 'and with published photos' do
         before do
           create :rubric
-          create :rubric, rubric: rubric
+          create(:rubric, rubric:)
 
           create(:photo, rubric:, yandex_token: token, storage_filename: 'test')
 
@@ -39,7 +39,7 @@ RSpec.describe PagesController, type: :request do
     context 'when rubric' do
       context 'and without photos and rubrics' do
         before do
-          create :photo, local_filename: 'test', rubric: rubric
+          create(:photo, local_filename: 'test', rubric:)
 
           get page_url(id: rubric.id)
         end
@@ -54,7 +54,7 @@ RSpec.describe PagesController, type: :request do
 
       context 'and with published photos' do
         before do
-          create :photo, storage_filename: 'test', rubric: rubric, yandex_token: token
+          create(:photo, storage_filename: 'test', rubric:, yandex_token: token)
 
           get page_url(id: rubric.id)
         end
@@ -69,7 +69,7 @@ RSpec.describe PagesController, type: :request do
 
       context 'and with sub rubric without published photo' do
         before do
-          create :rubric, rubric: rubric
+          create(:rubric, rubric:)
 
           get page_url(id: rubric.id)
         end
@@ -101,7 +101,7 @@ RSpec.describe PagesController, type: :request do
 
       context 'and with published photos but with zero photo counter' do
         before do
-          create :photo, storage_filename: 'test', rubric: rubric, yandex_token: token
+          create(:photo, storage_filename: 'test', rubric:, yandex_token: token)
 
           Rubric.where(id: rubric.id).update_all(photos_count: 0)
 
@@ -137,8 +137,8 @@ RSpec.describe PagesController, type: :request do
 
       context 'when with tracks and photos' do
         before do
-          create :photo, storage_filename: 'test', rubric: rubric, yandex_token: token
-          create :track, local_filename: '1.gpx', rubric: rubric
+          create(:photo, storage_filename: 'test', rubric:, yandex_token: token)
+          create(:track, local_filename: '1.gpx', rubric:)
 
           get page_url(id: rubric.id)
         end

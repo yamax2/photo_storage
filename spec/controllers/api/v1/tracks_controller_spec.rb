@@ -70,7 +70,7 @@ RSpec.describe Api::V1::TracksController, type: :request do
       end
 
       before do
-        create :track, local_filename: 'test', rubric: rubric # track1
+        create(:track, local_filename: 'test', rubric:) # track1
         create :track, storage_filename: 'test3.gpx', yandex_token: token # track4
 
         get api_v1_rubric_tracks_url(rubric_id: rubric.id)
