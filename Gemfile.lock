@@ -154,7 +154,7 @@ GEM
     fugit (1.8.0)
       et-orbi (~> 1, >= 1.2.7)
       raabro (~> 1.4)
-    globalid (1.0.0)
+    globalid (1.0.1)
       activesupport (>= 5.0)
     gretel (4.4.0)
       actionview (>= 5.1, < 7.1)
@@ -217,7 +217,7 @@ GEM
     marcel (1.0.2)
     method_source (1.0.0)
     mini_mime (1.1.2)
-    minitest (5.16.3)
+    minitest (5.17.0)
     moment-timezone-rails (1.0.0)
       momentjs-rails (>= 2.10.5, <= 3.0.0)
     momentjs-rails (2.29.4.1)
@@ -436,6 +436,7 @@ GEM
     zeitwerk (2.6.6)
 
 PLATFORMS
+  x86_64-linux
   x86_64-linux-musl
 
 DEPENDENCIES
