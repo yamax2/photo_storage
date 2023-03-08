@@ -72,31 +72,25 @@ RSpec.describe Api::V1::Admin::Yandex::TokensController, type: :request do
       it do
         expect(response).to have_http_status(:ok)
 
-        expect(response.parsed_body).to match_array(
-          [
-            {
-              'id' => token.id,
-              'login' => token.login,
-              'type' => 'photo',
-              'folder_index' => 0,
-              'is_last' => false
-            },
-            {
-              'id' => token.id,
-              'login' => token.login,
-              'type' => 'other',
-              'folder_index' => 0,
-              'is_last' => false
-            },
-            {
-              'id' => token.id,
-              'login' => token.login,
-              'type' => 'photo',
-              'folder_index' => 1,
-              'is_last' => true
-            }
-          ]
-        )
+        expect(response.parsed_body).to contain_exactly({
+                                                          'id' => token.id,
+                                                          'login' => token.login,
+                                                          'type' => 'photo',
+                                                          'folder_index' => 0,
+                                                          'is_last' => false
+                                                        }, {
+                                                          'id' => token.id,
+                                                          'login' => token.login,
+                                                          'type' => 'other',
+                                                          'folder_index' => 0,
+                                                          'is_last' => false
+                                                        }, {
+                                                          'id' => token.id,
+                                                          'login' => token.login,
+                                                          'type' => 'photo',
+                                                          'folder_index' => 1,
+                                                          'is_last' => true
+                                                        })
       end
     end
 

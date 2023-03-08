@@ -25,7 +25,7 @@ RSpec.describe Cart::PhotoService do
       before { redis.sadd(cart_key, photo.id) }
 
       it do
-        expect(redis.smembers(cart_key).map(&:to_i)).to match_array([photo.id])
+        expect(redis.smembers(cart_key).map(&:to_i)).to contain_exactly(photo.id)
 
         expect { service_context }.not_to(change { redis.smembers(cart_key) })
       end

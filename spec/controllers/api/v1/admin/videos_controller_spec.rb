@@ -64,7 +64,7 @@ RSpec.describe Api::V1::Admin::VideosController, type: :request do
           )
         )
 
-        expect(upload_job_args).to match_array([[video.id, "video_upload:#{video.id}", false]])
+        expect(upload_job_args).to contain_exactly([video.id, "video_upload:#{video.id}", false])
       end
     end
 
@@ -86,8 +86,8 @@ RSpec.describe Api::V1::Admin::VideosController, type: :request do
         expect(response).to have_http_status(:created)
         expect(json[:id]).to eq(video.id)
 
-        expect(move_job_args).to match_array([[video.id, 'test.mp4']])
-        expect(upload_job_args).to match_array([[video.id, "video_upload:#{video.id}", true]])
+        expect(move_job_args).to contain_exactly([video.id, 'test.mp4'])
+        expect(upload_job_args).to contain_exactly([video.id, "video_upload:#{video.id}", true])
       end
     end
 

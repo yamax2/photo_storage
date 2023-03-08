@@ -113,7 +113,7 @@ RSpec.describe Yandex::ReviseOtherDirService do
         expect(service_context).to be_a_success
 
         expect(service_context.errors.keys).to eq(["track:#{track.id}"])
-        expect(service_context.errors["track:#{track.id}"]).to match_array(['size mismatch', 'etag mismatch'])
+        expect(service_context.errors["track:#{track.id}"]).to contain_exactly('size mismatch', 'etag mismatch')
       end
     end
 
@@ -124,12 +124,10 @@ RSpec.describe Yandex::ReviseOtherDirService do
         expect(service_context).to be_a_success
 
         expect(service_context.errors.keys).to eq(["photo:#{video1.id}"])
-        expect(service_context.errors["photo:#{video1.id}"]).to match_array(
-          [
-            'not found on the remote storage',
-            'test.mp4.jpg not found on the remote storage',
-            'test.preview.mp4 not found on the remote storage'
-          ]
+        expect(service_context.errors["photo:#{video1.id}"]).to contain_exactly(
+          'not found on the remote storage',
+          'test.mp4.jpg not found on the remote storage',
+          'test.preview.mp4 not found on the remote storage'
         )
       end
     end
@@ -170,15 +168,13 @@ RSpec.describe Yandex::ReviseOtherDirService do
         expect(service_context).to be_a_success
 
         expect(service_context.errors.keys).to eq(["photo:#{video.id}"])
-        expect(service_context.errors["photo:#{video.id}"]).to match_array(
-          [
-            'size mismatch',
-            'etag mismatch',
-            'VID_20211104_121243.mp4.jpg size mismatch',
-            'VID_20211104_121243.mp4.jpg etag mismatch',
-            'video4fbae93516ef627ee23a5269cb9277932e48e2c3.preview.mp4 size mismatch',
-            'video4fbae93516ef627ee23a5269cb9277932e48e2c3.preview.mp4 etag mismatch'
-          ]
+        expect(service_context.errors["photo:#{video.id}"]).to contain_exactly(
+          'size mismatch',
+          'etag mismatch',
+          'VID_20211104_121243.mp4.jpg size mismatch',
+          'VID_20211104_121243.mp4.jpg etag mismatch',
+          'video4fbae93516ef627ee23a5269cb9277932e48e2c3.preview.mp4 size mismatch',
+          'video4fbae93516ef627ee23a5269cb9277932e48e2c3.preview.mp4 etag mismatch'
         )
       end
     end
@@ -202,7 +198,7 @@ RSpec.describe Yandex::ReviseOtherDirService do
 
         expect(service_context.errors.keys).to eq(["photo:#{video.id}", nil])
         expect(service_context.errors["photo:#{video.id}"]).
-          to match_array(['VID_20211104_121243.mp4.jpeg not found on the remote storage'])
+          to contain_exactly('VID_20211104_121243.mp4.jpeg not found on the remote storage')
         expect(service_context.errors[nil]).to match_array(%w[VID_20211104_121243.mp4.jpg])
       end
     end
@@ -226,7 +222,7 @@ RSpec.describe Yandex::ReviseOtherDirService do
 
         expect(service_context.errors.keys).to eq(["photo:#{video.id}", nil])
         expect(service_context.errors["photo:#{video.id}"]).
-          to match_array(['1.preview.mp4 not found on the remote storage'])
+          to contain_exactly('1.preview.mp4 not found on the remote storage')
         expect(service_context.errors[nil]).
           to match_array(%w[video4fbae93516ef627ee23a5269cb9277932e48e2c3.preview.mp4])
       end

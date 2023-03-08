@@ -204,9 +204,8 @@ RSpec.describe Photo do
         expect { video.destroy }.
           to change { enqueued_jobs(klass: Yandex::RemoveFileJob).size }.by(3)
 
-        expect(job_args).to match_array(
-          [[node.id, '/other/test.mp4'], [node.id, '/other/test.jpg'], [node.id, '/other/test.preview.mp4']]
-        )
+        expect(job_args).to contain_exactly([node.id, '/other/test.mp4'], [node.id, '/other/test.jpg'],
+                                            [node.id, '/other/test.preview.mp4'])
       end
     end
 
@@ -225,9 +224,8 @@ RSpec.describe Photo do
         expect { video.destroy }.
           to change { enqueued_jobs(klass: Yandex::RemoveFileJob).size }.by(3)
 
-        expect(job_args).to match_array(
-          [[node.id, '/other5/test.mp4'], [node.id, '/other5/test.jpg'], [node.id, '/other5/test.preview.mp4']]
-        )
+        expect(job_args).to contain_exactly([node.id, '/other5/test.mp4'], [node.id, '/other5/test.jpg'],
+                                            [node.id, '/other5/test.preview.mp4'])
       end
     end
 
@@ -252,9 +250,7 @@ RSpec.describe Photo do
         expect { video.destroy }.
           to change { enqueued_jobs(klass: Yandex::RemoveFileJob).size }.by(1)
 
-        expect(job_args).to match_array(
-          [[node.id, '/other/test.mp4']]
-        )
+        expect(job_args).to contain_exactly([node.id, '/other/test.mp4'])
       end
     end
 

@@ -105,7 +105,7 @@ RSpec.describe Admin::Rubrics::PositionsController, type: :request do
         it do
           expect(response).to redirect_to(admin_rubrics_path)
           expect(assigns(:rubric)).to be_nil
-          expect(assigns(:rubrics)).to match_array([rubric])
+          expect(assigns(:rubrics)).to contain_exactly(rubric)
         end
       end
 
@@ -145,7 +145,7 @@ RSpec.describe Admin::Rubrics::PositionsController, type: :request do
         it do
           expect(response).to redirect_to(admin_rubrics_path(rubric.id))
           expect(assigns(:rubric)).to eq(rubric)
-          expect(assigns(:rubrics)).to match_array([rubric1])
+          expect(assigns(:rubrics)).to contain_exactly(rubric1)
         end
       end
 

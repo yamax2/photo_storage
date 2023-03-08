@@ -23,7 +23,7 @@ RSpec.describe Yandex::TokenSummaryFinder do
 
   context 'when without uploaded models' do
     it do
-      expect(scope.to_a).to match_array([token1, token2])
+      expect(scope.to_a).to contain_exactly(token1, token2)
 
       expect(last_upload_at.values.compact).to be_empty
     end
@@ -36,7 +36,7 @@ RSpec.describe Yandex::TokenSummaryFinder do
     end
 
     it do
-      expect(scope.to_a).to match_array([token1, token2])
+      expect(scope.to_a).to contain_exactly(token1, token2)
 
       expect(last_upload_at[token1.id]).to eq(current_time)
       expect(last_upload_at[token1.id].time_zone.name).to eq(default_tz)
@@ -51,7 +51,7 @@ RSpec.describe Yandex::TokenSummaryFinder do
     end
 
     it do
-      expect(scope.to_a).to match_array([token1, token2])
+      expect(scope.to_a).to contain_exactly(token1, token2)
 
       expect(last_upload_at[token1.id]).to eq(1.day.from_now)
       expect(last_upload_at[token1.id].time_zone.name).to eq(default_tz)
@@ -69,7 +69,7 @@ RSpec.describe Yandex::TokenSummaryFinder do
     end
 
     it do
-      expect(scope.to_a).to match_array([token1, token2])
+      expect(scope.to_a).to contain_exactly(token1, token2)
 
       expect(last_upload_at[token1.id]).to eq(1.day.from_now)
       expect(last_upload_at[token1.id].time_zone.name).to eq(default_tz)

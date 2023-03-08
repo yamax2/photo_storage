@@ -23,21 +23,21 @@ RSpec.describe Rubrics::FilterFinder do
   context 'when search for root rubrics' do
     let(:name_part) { 'root' }
 
-    it { expect(result).to match_array([rubric1, rubric2]) }
+    it { expect(result).to contain_exactly(rubric1, rubric2) }
   end
 
   context 'when search for sub_rubric' do
     let(:name_part) { 'sub_rubric' }
 
-    it { expect(result).to match_array([rubric1, sub_rubric]) }
+    it { expect(result).to contain_exactly(rubric1, sub_rubric) }
   end
 
   context 'when search for deep sub_rubric' do
     let(:name_part) { 'deep' }
 
-    it { expect(result).to match_array([rubric1, sub_rubric, deep_sub_rubric]) }
+    it { expect(result).to contain_exactly(rubric1, sub_rubric, deep_sub_rubric) }
 
-    it { expect(result.where(rubric_id: rubric1.id)).to match_array([sub_rubric]) }
+    it { expect(result.where(rubric_id: rubric1.id)).to contain_exactly(sub_rubric) }
   end
 
   context 'when dangerous param value' do
@@ -52,6 +52,6 @@ RSpec.describe Rubrics::FilterFinder do
     let!(:deep_sub_rubric) { create :rubric, rubric: sub_rubric, name: 'my deep sub_rubric' }
     let(:name_part) { 'sub_rubric' }
 
-    it { expect(result).to match_array([rubric1, sub_rubric, deep_sub_rubric]) }
+    it { expect(result).to contain_exactly(rubric1, sub_rubric, deep_sub_rubric) }
   end
 end

@@ -123,7 +123,7 @@ RSpec.describe Rubrics::Listing do
 
     it do
       expect(actual_models.keys).to match_array(%w[Rubric])
-      expect(actual_models['Rubric']).to match_array([rubric7_sub.id])
+      expect(actual_models['Rubric']).to contain_exactly(rubric7_sub.id)
 
       expect(listing.first).to have_attributes(
         id: rubric7_sub.id,
@@ -143,7 +143,7 @@ RSpec.describe Rubrics::Listing do
 
     it do
       expect(actual_models.keys).to match_array(%w[Photo])
-      expect(actual_models['Photo']).to match_array([photo_for_rubric2.id])
+      expect(actual_models['Photo']).to contain_exactly(photo_for_rubric2.id)
 
       expect(listing.first).to have_attributes(
         id: photo_for_rubric2.id,
@@ -233,7 +233,7 @@ RSpec.describe Rubrics::Listing do
     it do
       expect(actual_models.keys).to match_array(%w[Photo])
 
-      expect(actual_models['Photo']).to match_array([another_photo.id])
+      expect(actual_models['Photo']).to contain_exactly(another_photo.id)
     end
   end
 
@@ -250,7 +250,7 @@ RSpec.describe Rubrics::Listing do
     it do
       expect(actual_models.keys).to match_array(%w[Photo Rubric])
 
-      expect(actual_models['Photo']).to match_array([video.id])
+      expect(actual_models['Photo']).to contain_exactly(video.id)
     end
   end
 
@@ -270,7 +270,7 @@ RSpec.describe Rubrics::Listing do
     it do
       expect(actual_models.keys).to match_array(%w[Photo])
 
-      expect(actual_models['Photo']).to match_array([video.id])
+      expect(actual_models['Photo']).to contain_exactly(video.id)
     end
   end
 

@@ -23,7 +23,7 @@ RSpec.describe Api::V1::Admin::Photos::CartController, type: :request do
 
         it do
           expect(photo.rubric).not_to be_nil
-          expect(redis.smembers(key)).to match_array([photo.id.to_s])
+          expect(redis.smembers(key)).to contain_exactly(photo.id.to_s)
           expect { request }.not_to(change { redis.smembers(key) })
         end
       end

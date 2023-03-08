@@ -15,8 +15,8 @@ RSpec.describe Yandex::ResourceFinder do
     let!(:track) { create :track, yandex_token: token, local_filename: 'test' }
 
     it do
-      expect(token.photos).to match_array([photo])
-      expect(token.tracks).to match_array([track])
+      expect(token.photos).to contain_exactly(photo)
+      expect(token.tracks).to contain_exactly(track)
 
       expect(result).to be_empty
     end
@@ -27,10 +27,10 @@ RSpec.describe Yandex::ResourceFinder do
     let!(:track) { create :track, yandex_token: token, local_filename: 'test', size: 12 }
 
     it do
-      expect(token.photos).to match_array([photo])
-      expect(token.tracks).to match_array([track])
+      expect(token.photos).to contain_exactly(photo)
+      expect(token.tracks).to contain_exactly(track)
 
-      expect(result).to match_array([token])
+      expect(result).to contain_exactly(token)
 
       expect(result.first).to have_attributes(
         photo_count: 1.0,
@@ -46,10 +46,10 @@ RSpec.describe Yandex::ResourceFinder do
     let!(:track) { create :track, yandex_token: token, storage_filename: 'test', size: 12 }
 
     it do
-      expect(token.photos).to match_array([photo])
-      expect(token.tracks).to match_array([track])
+      expect(token.photos).to contain_exactly(photo)
+      expect(token.tracks).to contain_exactly(track)
 
-      expect(result).to match_array([token])
+      expect(result).to contain_exactly(token)
 
       expect(result.first).to have_attributes(
         photo_count: nil,
@@ -74,10 +74,10 @@ RSpec.describe Yandex::ResourceFinder do
     end
 
     it do
-      expect(token.photos).to match_array([photo, video])
-      expect(token.tracks).to match_array([track])
+      expect(token.photos).to contain_exactly(photo, video)
+      expect(token.tracks).to contain_exactly(track)
 
-      expect(result).to match_array([token])
+      expect(result).to contain_exactly(token)
 
       expect(result.first).to have_attributes(
         photo_count: 1,

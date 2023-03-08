@@ -9,7 +9,7 @@ RSpec.describe Yandex::RefreshTokensJob do
 
     it do
       expect(enqueued_jobs('tokens', klass: Yandex::RefreshTokenJob).pluck('args').flatten).
-        to match_array([token1.id, token2.id])
+        to contain_exactly(token1.id, token2.id)
     end
   end
 

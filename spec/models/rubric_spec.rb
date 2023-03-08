@@ -50,9 +50,9 @@ RSpec.describe Rubric do
     describe '#with_objects' do
       let!(:rubric5) { create :rubric, photos_count: 1, rubric: rubric3, ord: 2 }
 
-      it { expect(described_class.with_objects).to match_array([rubric1, rubric2, rubric3, rubric4, rubric5]) }
-      it { expect(rubric1.rubrics.with_objects).to match_array([rubric3]) }
-      it { expect(rubric2.rubrics.with_objects).to match_array([rubric4]) }
+      it { expect(described_class.with_objects).to contain_exactly(rubric1, rubric2, rubric3, rubric4, rubric5) }
+      it { expect(rubric1.rubrics.with_objects).to contain_exactly(rubric3) }
+      it { expect(rubric2.rubrics.with_objects).to contain_exactly(rubric4) }
     end
 
     describe '#default_order' do

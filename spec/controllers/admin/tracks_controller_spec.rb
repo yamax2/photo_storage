@@ -135,7 +135,7 @@ RSpec.describe Admin::TracksController, type: :request do
         it do
           expect(response).to render_template(:index)
           expect(response).to have_http_status(:ok)
-          expect(assigns(:tracks)).to match_array([my_track])
+          expect(assigns(:tracks)).to contain_exactly(my_track)
         end
       end
     end

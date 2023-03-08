@@ -16,7 +16,7 @@ RSpec.describe Retry do
       before { described_class.register(:test, [StandardError, OpenSSL::SSL::SSLError]) }
 
       it do
-        expect(registered[:test]).to match_array([StandardError, OpenSSL::SSL::SSLError])
+        expect(registered[:test]).to contain_exactly(StandardError, OpenSSL::SSL::SSLError)
       end
     end
 

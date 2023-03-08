@@ -7,7 +7,7 @@ RSpec.describe Rubrics::ParentsFinder do
     let(:rubric) { create :rubric }
     let(:rubric_id) { rubric.id }
 
-    it { expect(result).to match_array([rubric]) }
+    it { expect(result).to contain_exactly(rubric) }
   end
 
   context 'when rubric with a parent' do

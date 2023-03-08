@@ -146,7 +146,7 @@ RSpec.describe Admin::RubricsController, type: :request do
         it do
           expect(response).to render_template(:index)
           expect(response).to have_http_status(:ok)
-          expect(assigns(:rubrics)).to match_array([my_rubric])
+          expect(assigns(:rubrics)).to contain_exactly(my_rubric)
         end
       end
     end

@@ -65,7 +65,7 @@ RSpec.describe Cart::ProcessPhotosService do
           to change { photo1.reload.name }.from('11').to('say ni').
           and change { photo2.reload.name }.from('22').to('say ni')
 
-        expect(redis.smembers(key)).to match_array([photo1.id.to_s, photo2.id.to_s])
+        expect(redis.smembers(key)).to contain_exactly(photo1.id.to_s, photo2.id.to_s)
       end
     end
   end

@@ -12,13 +12,11 @@ RSpec.describe Api::V1::Admin::RubricsController, type: :request do
       it do
         expect(response).to have_http_status(:ok)
         expect(response).to render_template(:index)
-        expect(assigns(:rubrics)).to match_array([rubric1, rubric2])
+        expect(assigns(:rubrics)).to contain_exactly(rubric1, rubric2)
 
-        expect(response.parsed_body).to match_array(
-          [
-            hash_including('text', 'id' => rubric2.id, 'children' => false),
-            hash_including('text', 'id' => rubric1.id, 'children' => true)
-          ]
+        expect(response.parsed_body).to contain_exactly(
+          hash_including('text', 'id' => rubric2.id,
+                                 'children' => false), hash_including('text', 'id' => rubric1.id, 'children' => true)
         )
       end
     end
@@ -29,7 +27,7 @@ RSpec.describe Api::V1::Admin::RubricsController, type: :request do
       it do
         expect(response).to have_http_status(:ok)
         expect(response).to render_template(:index)
-        expect(assigns(:rubrics)).to match_array([rubric3])
+        expect(assigns(:rubrics)).to contain_exactly(rubric3)
       end
     end
 
@@ -39,7 +37,7 @@ RSpec.describe Api::V1::Admin::RubricsController, type: :request do
       it do
         expect(response).to have_http_status(:ok)
         expect(response).to render_template(:index)
-        expect(assigns(:rubrics)).to match_array([rubric1])
+        expect(assigns(:rubrics)).to contain_exactly(rubric1)
       end
     end
 
@@ -49,7 +47,7 @@ RSpec.describe Api::V1::Admin::RubricsController, type: :request do
       it do
         expect(response).to have_http_status(:ok)
         expect(response).to render_template(:index)
-        expect(assigns(:rubrics)).to match_array([rubric3])
+        expect(assigns(:rubrics)).to contain_exactly(rubric3)
       end
     end
 

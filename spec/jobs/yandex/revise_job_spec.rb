@@ -29,22 +29,18 @@ RSpec.describe Yandex::ReviseJob do
         to change { enqueued_jobs(klass: Yandex::ReviseDirJob).size }.by(4).
         and change { enqueued_jobs(klass: Yandex::ReviseOtherDirJob).size }.by(4)
 
-      expect(enqueued_jobs(klass: Yandex::ReviseDirJob).pluck('args')).to match_array(
-        [
-          ['000/013/', token1.id, 0],
-          ['000/014/', token1.id, 0],
-          ['000/013/', token2.id, 0],
-          ['000/013/', token2.id, 1]
-        ]
+      expect(enqueued_jobs(klass: Yandex::ReviseDirJob).pluck('args')).to contain_exactly(
+        ['000/013/', token1.id, 0],
+        ['000/014/', token1.id, 0],
+        ['000/013/', token2.id, 0],
+        ['000/013/', token2.id, 1]
       )
 
-      expect(enqueued_jobs(klass: Yandex::ReviseOtherDirJob).pluck('args')).to match_array(
-        [
-          [token1.id, 0],
-          [token2.id, 0],
-          [token3.id, 0],
-          [token3.id, 1]
-        ]
+      expect(enqueued_jobs(klass: Yandex::ReviseOtherDirJob).pluck('args')).to contain_exactly(
+        [token1.id, 0],
+        [token2.id, 0],
+        [token3.id, 0],
+        [token3.id, 1]
       )
     end
   end
@@ -62,12 +58,8 @@ RSpec.describe Yandex::ReviseJob do
         to change { enqueued_jobs(klass: Yandex::ReviseDirJob).size }.by(0).
         and change { enqueued_jobs(klass: Yandex::ReviseOtherDirJob).size }.by(2)
 
-      expect(enqueued_jobs(klass: Yandex::ReviseOtherDirJob).pluck('args')).to match_array(
-        [
-          [token.id, 0],
-          [token.id, 2]
-        ]
-      )
+      expect(enqueued_jobs(klass: Yandex::ReviseOtherDirJob).pluck('args')).to contain_exactly([token.id, 0],
+                                                                                               [token.id, 2])
     end
   end
 
@@ -90,12 +82,8 @@ RSpec.describe Yandex::ReviseJob do
         to change { enqueued_jobs(klass: Yandex::ReviseDirJob).size }.by(0).
         and change { enqueued_jobs(klass: Yandex::ReviseOtherDirJob).size }.by(2)
 
-      expect(enqueued_jobs(klass: Yandex::ReviseOtherDirJob).pluck('args')).to match_array(
-        [
-          [token1.id, 0],
-          [token1.id, 2]
-        ]
-      )
+      expect(enqueued_jobs(klass: Yandex::ReviseOtherDirJob).pluck('args')).to contain_exactly([token1.id, 0],
+                                                                                               [token1.id, 2])
     end
   end
 end
