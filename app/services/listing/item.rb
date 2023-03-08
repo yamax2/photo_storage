@@ -69,6 +69,10 @@ module Listing
       Photo::VIDEO_CONTENT_TYPES.include?(content_type)
     end
 
+    def custom_text
+      rubric? || Rails.application.config.custom_text_matchers.none? { |r| name.match?(r) }
+    end
+
     delegate :css_transform, :turned?, to: :image_props
 
     private

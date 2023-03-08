@@ -54,7 +54,8 @@ RSpec.describe Api::V1::RubricsController, type: :request do
               'css_transform' => nil,
               'turned' => false,
               'video' => false
-            }
+            },
+            'custom_text' => true
           },
           {
             'id' => rubric.id,
@@ -69,7 +70,8 @@ RSpec.describe Api::V1::RubricsController, type: :request do
               'css_transform' => nil,
               'turned' => false,
               'video' => false
-            }
+            },
+            'custom_text' => true
           },
           {
             'id' => photo1.id,
@@ -84,7 +86,8 @@ RSpec.describe Api::V1::RubricsController, type: :request do
               'css_transform' => 'rotate(90deg)',
               'turned' => true,
               'video' => false
-            }
+            },
+            'custom_text' => true
           },
           {
             'id' => photo2.id,
@@ -99,7 +102,8 @@ RSpec.describe Api::V1::RubricsController, type: :request do
               'css_transform' => nil,
               'turned' => false,
               'video' => true
-            }
+            },
+            'custom_text' => true
           }
         ]
       end
@@ -252,7 +256,8 @@ RSpec.describe Api::V1::RubricsController, type: :request do
                   'css_transform' => nil,
                   'turned' => false,
                   'video' => false
-                }
+                },
+                'custom_text' => true
               },
               {
                 'id' => rubric1.id,
@@ -267,7 +272,8 @@ RSpec.describe Api::V1::RubricsController, type: :request do
                   'css_transform' => nil,
                   'turned' => false,
                   'video' => false
-                }
+                },
+                'custom_text' => true
               }
             ]
           )

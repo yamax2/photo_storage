@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 json.array!(@listing) do |obj|
-  json.(obj, :id, :name, :model_type, :lat_long, :image_size)
+  json.(obj, :id, :name, :model_type, :lat_long, :image_size, :custom_text)
   json.preview obj.proxy_url
 
   if obj.rubric?

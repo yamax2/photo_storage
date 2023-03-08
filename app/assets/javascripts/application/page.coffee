@@ -55,7 +55,10 @@ loadPhotos = ($photos) ->
         target = ""
         target = "target=\"_blank\"" if onlyVideos
 
-        html += "<a title=\"#{photo.name}\" class=\"photo\" style=\"#{style}\" href=\"#{photo.url}\" " +
+        custom_text = ""
+        custom_text = "custom-text" if photo.custom_text
+
+        html += "<a title=\"#{photo.name}\" class=\"photo #{custom_text}\" style=\"#{style}\" href=\"#{photo.url}\" " +
                 "#{target} id=\"llink_#{photo.id}\">" +
                 "<img id=\"lphoto_#{photo.id}\" src=\"#{photo.preview}\" style=\"#{imgStyle}\"" +
                 " onload=\"$(this).parent().addClass('loaded')\">" +

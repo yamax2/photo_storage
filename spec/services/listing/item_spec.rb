@@ -240,4 +240,39 @@ RSpec.describe Listing::Item do
       end
     end
   end
+
+  describe '#custom_text' do
+    subject(:custom_text) { item.custom_text }
+
+    let(:photo) { create :photo, yandex_token: token, rubric:, name:, local_filename: 'test' }
+    let(:attrs) { default_photo_attrs }
+
+    [
+      'DSCN0133',
+      'IMG_20230304_134115',
+      '20230306_175416',
+      'VID_20230304_170933',
+      '20180223 225320',
+      'P_20180224_143452',
+      'f742787088'
+    ].each do |photo_name|
+      context "when name is #{photo_name}" do
+        let(:name) { photo_name }
+
+        it { is_expected.to be(false) }
+      end
+    end
+
+    %w[
+      text
+      Кряк
+      12312321
+    ].each do |photo_name|
+      context "when name is #{photo_name}" do
+        let(:name) { photo_name }
+
+        it { is_expected.to be(true) }
+      end
+    end
+  end
 end
