@@ -8,6 +8,12 @@ loadPhotos = ($photos) ->
   offset = parseInt($loader.attr('data-offset') || 0)
   limit = $loader.attr('data-limit') || 10
 
+  offsets = $loader.data('offsets')
+  return if offset in offsets
+
+  offsets.push(offset)
+  $loader.data('offsets', offsets)
+
   url = new URL(window.location)
   descOrder = url.searchParams.get('desc_order')
   onlyVideos = url.searchParams.get('only_videos') == 'true'
