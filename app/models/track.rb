@@ -24,6 +24,14 @@ class Track < ApplicationRecord
     ).map!(&:downcase)
   end
 
+  def self.ransackable_attributes(_auth_object = nil)
+    %w[
+      color created_at distance duration finished_at
+      id name original_filename rubric_id size started_at
+      storage_filename updated_at yandex_token_id
+    ]
+  end
+
   # km/h
   def avg_speed
     if duration.zero?

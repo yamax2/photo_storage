@@ -36,6 +36,14 @@ module Yandex
     ransacker(:free_space) { Arel.sql('total_space - used_space') }
     ransacker(:last_upload_at) { Arel.sql('last_upload_at') }
 
+    def self.ransackable_attributes(_auth_object = nil)
+      %w[
+        access_token active created_at dir free_space
+        id last_archived_at last_upload_at login other_dir
+        total_space updated_at used_space user_id valid_till
+      ]
+    end
+
     private
 
     def dir_names

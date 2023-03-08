@@ -45,6 +45,15 @@ class Rubric < ApplicationRecord
     SQL
   end)
 
+  def self.ransackable_attributes(_auth_object = nil)
+    %w[
+      created_at desc_order description
+      hide_common_stat id main_photo_id
+      name ord photos_count rubric_id
+      rubrics_count tracks_count updated_at
+    ]
+  end
+
   def rubrics_tree
     current_rubric = self
     rubrics = []

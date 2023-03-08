@@ -28,12 +28,12 @@ gem 'interactor', '>= 3.1'
 gem 'kaminari', '>= 1.1'
 gem 'postgresql_cursor', '>= 0.6.2'
 gem 'rails_semantic_logger'
-gem 'ransack', '>= 2.1', '< 4'
-gem 'redis-classy', '>= 2.4'
-gem 'redis-mutex', '>= 4'
+gem 'ransack', '>= 2.1'
+gem 'redis-classy', '>= 2.4' # FIXME: remove it
+gem 'redis-mutex', '>= 4'    # FIXME: remove it
 gem 'strip_attributes', '>= 1.8'
 
-gem 'sidekiq', '>= 6', '< 7.0.0.beta'
+gem 'sidekiq', '>= 6', '< 7.0.0.beta' # FIXME: sidekiq-throttled is incompatible with 7.0
 gem 'sidekiq-cron', '>= 1.1'
 gem 'sidekiq-failures', '>= 1'
 gem 'sidekiq-throttled', '>= 0.13'
