@@ -20,7 +20,7 @@ services:
     volumes:
       - ..:/app
       - ../../gems:/localgems
-      # - ssh-data:/ssh:ro
+      - ssh-data:/ssh:ro
       - bundler-data:/bundle
     networks:
       - default
@@ -105,9 +105,9 @@ volumes:
     name: bundler_data
     external: true
 
-  # ssh-data:
-  #    external:
-  #      name: ssh_data
+  ssh-data:
+    name: ssh_data
+    external: true
 
   pg-data:
     driver: local

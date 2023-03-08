@@ -84,8 +84,9 @@ interaction:
 provision:
   - dip build --pull app
   - docker network inspect frontend > /dev/null 2>&1 || docker network create frontend
-  - dip cleanup
   - docker volume create --name bundler_data
+  - docker volume create --name ssh_data
+  - dip cleanup
   - dip compose up -d db
   - dip bundle install
   - dip rails db:migrate
