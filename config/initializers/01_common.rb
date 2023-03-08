@@ -7,7 +7,14 @@ Rails.application.routes.default_url_options[:host] = ENV.fetch('HOST', 'photost
 Rails.application.routes.default_url_options[:protocol] = ENV.fetch('PROTOCOL', 'http')
 
 Rails.application.configure do
-  config.custom_text_matchers = [/^IMG_/, /^VID_/, /^DSCN\d+$/, /^P_\d+/, /^\d{8}(_|\s)\d{6}$/, /^f\d{9}$/].freeze
+  config.custom_text_matchers = [
+    /^IMG_/,
+    /^VID_/,
+    /^DSCN\d+/,
+    /^P(_|\s)\d{8}(_|\s)\d{6}/,
+    /^\d{8}(_|\s)\d{6}/,
+    /^f\d{9}/
+  ].freeze
 
   # widths
   config.photo_sizes = {

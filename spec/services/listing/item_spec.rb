@@ -253,7 +253,10 @@ RSpec.describe Listing::Item do
       '20230306_175416',
       'VID_20230304_170933',
       '20180223 225320',
+      '20180223 225320 (0)',
       'P_20180224_143452',
+      'P 20171115 195657',
+      'P 20171115 195657 LL',
       'f742787088'
     ].each do |photo_name|
       context "when name is #{photo_name}" do
