@@ -69,7 +69,6 @@ RSpec.describe Api::V1::Admin::UploadsController do
 
       context 'when successful upload' do
         let(:rubric) { create :rubric }
-        let(:json) { JSON.parse(response.body) }
 
         after do
           klass.all.each { |photo| FileUtils.rm_f(photo.tmp_local_filename) }
@@ -80,7 +79,7 @@ RSpec.describe Api::V1::Admin::UploadsController do
 
           it do
             expect(response).to have_http_status(:ok)
-            expect(json).to include('id')
+            expect(response.parsed_body).to include('id')
           end
         end
 
@@ -89,9 +88,9 @@ RSpec.describe Api::V1::Admin::UploadsController do
 
           it do
             expect(response).to have_http_status(:ok)
-            expect(json.keys).to match_array(%w[id])
+            expect(response.parsed_body.keys).to match_array(%w[id])
 
-            expect(json['id']).to eq(assigns(:model).id)
+            expect(response.parsed_body['id']).to eq(assigns(:model).id)
             expect(assigns(:model).external_info).to eq('test')
           end
         end
@@ -99,7 +98,6 @@ RSpec.describe Api::V1::Admin::UploadsController do
 
       context 'when error on save' do
         let(:rubric) { create :rubric }
-        let(:json) { JSON.parse(response.body) }
         let(:local_file) { Rails.root.join('tmp/files', assigns[:model].local_filename) }
 
         before do
@@ -112,7 +110,7 @@ RSpec.describe Api::V1::Admin::UploadsController do
         it do
           expect(response).to have_http_status(:unprocessable_entity)
           expect(File.exist?(local_file)).to be(false)
-          expect(json).to be_empty
+          expect(response.parsed_body).to be_empty
         end
       end
     end

@@ -78,16 +78,12 @@ class Photo < ApplicationRecord
     @rubric_changed = nil
   end
 
-  # if this method fails after commit, we should check the revise result
+  # if this method fails after commit, we have to check the revise result
   def remove_file
     super
 
     if video?
-      with_redis_transaction do
-        [storage_filename, preview_filename, video_preview_filename].each do |filename|
-          enqueue_remove_job(yandex_token.other_dir, filename)
-        end
-      end
+      enqueue_remove_job(yandex_token.other_dir, [storage_filename, preview_filename, video_preview_filename])
     elsif storage_filename.present?
       enqueue_remove_job(yandex_token.dir, storage_filename)
     end
@@ -101,18 +97,19 @@ class Photo < ApplicationRecord
     errors.add(:effects, :invalid) unless valid
   end
 
-  def with_redis_transaction(&)
-    Sidekiq.redis { |redis| redis.multi(&) }
-  end
+  def enqueue_remove_job(dir, filenames)
+    args = Array.wrap(filenames).filter_map do |filename|
+      next if filename.blank?
 
-  def enqueue_remove_job(dir, filename)
-    return if filename.blank?
+      dir_with_index = dir
+      dir_with_index = "#{dir}#{folder_index}" if folder_index.nonzero?
 
-    dir_with_index = dir
-    dir_with_index = "#{dir}#{folder_index}" if folder_index.nonzero?
+      [
+        yandex_token_id,
+        [dir_with_index, filename].join('/')
+      ]
+    end
 
-    ::Yandex::RemoveFileJob.perform_async \
-      yandex_token_id,
-      [dir_with_index, filename].join('/')
+    ::Yandex::RemoveFileJob.perform_bulk(args)
   end
 end

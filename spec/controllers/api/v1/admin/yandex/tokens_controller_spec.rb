@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 RSpec.describe Api::V1::Admin::Yandex::TokensController, type: :request do
-  let(:json) { JSON.parse(response.body) }
   let!(:token) { create :'yandex/token', dir: '/test', other_dir: '/other', active: true }
 
   describe '#index' do
@@ -16,7 +15,7 @@ RSpec.describe Api::V1::Admin::Yandex::TokensController, type: :request do
 
       it do
         expect(response).to have_http_status(:ok)
-        expect(json).to be_empty
+        expect(response.parsed_body).to be_empty
       end
     end
 
@@ -25,7 +24,7 @@ RSpec.describe Api::V1::Admin::Yandex::TokensController, type: :request do
 
       it do
         expect(response).to have_http_status(:ok)
-        expect(json).to be_empty
+        expect(response.parsed_body).to be_empty
       end
     end
 
@@ -40,7 +39,7 @@ RSpec.describe Api::V1::Admin::Yandex::TokensController, type: :request do
       it do
         expect(response).to have_http_status(:ok)
 
-        expect(json).to eq(
+        expect(response.parsed_body).to eq(
           [
             {
               'id' => token.id,
@@ -73,7 +72,7 @@ RSpec.describe Api::V1::Admin::Yandex::TokensController, type: :request do
       it do
         expect(response).to have_http_status(:ok)
 
-        expect(json).to match_array(
+        expect(response.parsed_body).to match_array(
           [
             {
               'id' => token.id,
@@ -138,7 +137,7 @@ RSpec.describe Api::V1::Admin::Yandex::TokensController, type: :request do
 
       it do
         expect(response).to have_http_status(:ok)
-        expect(json).to match_array(response_tokens)
+        expect(response.parsed_body).to match_array(response_tokens)
       end
     end
 
@@ -173,7 +172,7 @@ RSpec.describe Api::V1::Admin::Yandex::TokensController, type: :request do
 
       it do
         expect(response).to have_http_status(:ok)
-        expect(json).to match_array(response_tokens)
+        expect(response.parsed_body).to match_array(response_tokens)
       end
     end
 
@@ -216,7 +215,7 @@ RSpec.describe Api::V1::Admin::Yandex::TokensController, type: :request do
 
       it do
         expect(response).to have_http_status(:ok)
-        expect(json).to match_array(response_tokens)
+        expect(response.parsed_body).to match_array(response_tokens)
       end
     end
 
@@ -282,10 +281,10 @@ RSpec.describe Api::V1::Admin::Yandex::TokensController, type: :request do
 
         expect(response).to have_http_status(:ok)
 
-        expect(json['info']).to eq('value')
-        expect(json['size']).to eq(12)
-        expect(json['count']).to eq(1)
-        expect(json['folder_index']).to eq(0)
+        expect(response.parsed_body['info']).to eq('value')
+        expect(response.parsed_body['size']).to eq(12)
+        expect(response.parsed_body['count']).to eq(1)
+        expect(response.parsed_body['folder_index']).to eq(0)
       end
     end
 
@@ -302,10 +301,10 @@ RSpec.describe Api::V1::Admin::Yandex::TokensController, type: :request do
 
         expect(response).to have_http_status(:ok)
 
-        expect(json['info']).to eq('value')
-        expect(json['size']).to eq(12)
-        expect(json['count']).to eq(1)
-        expect(json['folder_index']).to eq(1)
+        expect(response.parsed_body['info']).to eq('value')
+        expect(response.parsed_body['size']).to eq(12)
+        expect(response.parsed_body['count']).to eq(1)
+        expect(response.parsed_body['folder_index']).to eq(1)
       end
     end
 
@@ -363,7 +362,7 @@ RSpec.describe Api::V1::Admin::Yandex::TokensController, type: :request do
         expect { request }.to change { token.reload.last_archived_at }.from(nil).to(current_time)
 
         expect(response).to have_http_status(:accepted)
-        expect(json).to include('id' => token.id, 'last_archived_at' => String)
+        expect(response.parsed_body).to include('id' => token.id, 'last_archived_at' => String)
       end
     end
 

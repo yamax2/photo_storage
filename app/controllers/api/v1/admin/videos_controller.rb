@@ -50,22 +50,17 @@ module Api
         end
 
         def enqueue_jobs
-          with_redis_transaction do
-            ::Photos::EnqueueLoadDescriptionService.call!(photo: @video)
+          # FIXME: non-atomic after migration to gem redis >= 5.0
+          ::Photos::EnqueueLoadDescriptionService.call!(photo: @video)
 
-            temporary_filename = params[:temporary_uploaded_filename]
+          temporary_filename = params[:temporary_uploaded_filename]
 
-            if temporary_filename.present?
-              ::Videos::MoveOriginalJob.perform_async \
-                @video.id, temporary_filename
-            end
-
-            ::Videos::UploadInfoJob.perform_async(@video.id, info_redis_key, temporary_filename.present?)
+          if temporary_filename.present?
+            ::Videos::MoveOriginalJob.perform_async \
+              @video.id, temporary_filename
           end
-        end
 
-        def with_redis_transaction(&)
-          Sidekiq.redis { |redis| redis.multi(&) }
+          ::Videos::UploadInfoJob.perform_async(@video.id, info_redis_key, temporary_filename.present?)
         end
 
         def info_redis_key

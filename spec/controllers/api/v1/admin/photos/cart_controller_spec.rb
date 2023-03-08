@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 RSpec.describe Api::V1::Admin::Photos::CartController, type: :request do
-  let(:json) { JSON.parse(response.body) }
   let(:redis) { RedisClassy.redis }
   let(:key) { "cart:photos:#{photo.rubric_id}" }
 

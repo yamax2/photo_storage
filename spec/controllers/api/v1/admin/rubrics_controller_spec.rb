@@ -6,8 +6,6 @@ RSpec.describe Api::V1::Admin::RubricsController, type: :request do
     let!(:rubric1) { create :rubric, name: 'rubric 1' }
     let!(:rubric3) { create :rubric, rubric: rubric1, name: 'sub rubric' }
 
-    let(:json) { JSON.parse(response.body) }
-
     context 'when without id param' do
       before { get api_v1_admin_rubrics_url }
 
@@ -16,7 +14,7 @@ RSpec.describe Api::V1::Admin::RubricsController, type: :request do
         expect(response).to render_template(:index)
         expect(assigns(:rubrics)).to match_array([rubric1, rubric2])
 
-        expect(json).to match_array(
+        expect(response.parsed_body).to match_array(
           [
             hash_including('text', 'id' => rubric2.id, 'children' => false),
             hash_including('text', 'id' => rubric1.id, 'children' => true)
@@ -63,8 +61,6 @@ RSpec.describe Api::V1::Admin::RubricsController, type: :request do
   end
 
   describe '#update' do
-    let(:json) { JSON.parse(response.body) }
-
     context 'when wrong id value' do
       it do
         expect { put api_v1_admin_rubric_url(id: 1) }.to raise_error(ActiveRecord::RecordNotFound)
@@ -98,7 +94,7 @@ RSpec.describe Api::V1::Admin::RubricsController, type: :request do
           to change { rubric.reload.main_photo }.from(nil).to(photo)
 
         expect(response).to have_http_status(:ok)
-        expect(json['id']).to eq(rubric.id)
+        expect(response.parsed_body['id']).to eq(rubric.id)
       end
     end
 

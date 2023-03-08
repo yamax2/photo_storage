@@ -1,15 +1,13 @@
 # frozen_string_literal: true
 
 RSpec.describe Api::V1::RubricsController, type: :request do
-  let(:json) { JSON.parse(response.body) }
-
   describe '#show' do
     context 'when wrong rubric' do
       before { get api_v1_rubric_url(id: 1, offset: 1, limit: 5) }
 
       it do
         expect(response).to have_http_status(:ok)
-        expect(json).to be_empty
+        expect(response.parsed_body).to be_empty
       end
     end
 
@@ -122,7 +120,7 @@ RSpec.describe Api::V1::RubricsController, type: :request do
         it do
           expect(response).to have_http_status(:ok)
 
-          expect(json).to eq(correct_response)
+          expect(response.parsed_body).to eq(correct_response)
         end
       end
 
@@ -132,7 +130,7 @@ RSpec.describe Api::V1::RubricsController, type: :request do
         it do
           expect(response).to have_http_status(:ok)
 
-          expect(json).to eq(correct_response[1..2])
+          expect(response.parsed_body).to eq(correct_response[1..2])
         end
       end
 
@@ -142,7 +140,7 @@ RSpec.describe Api::V1::RubricsController, type: :request do
         it do
           expect(response).to have_http_status(:ok)
 
-          expect(json.map { |x| [x['id'], x['model_type']] }).to eq(
+          expect(response.parsed_body.map { |x| [x['id'], x['model_type']] }).to eq(
             [
               [another_rubric.id, 'Rubric'],
               [rubric.id, 'Rubric'],
@@ -159,7 +157,7 @@ RSpec.describe Api::V1::RubricsController, type: :request do
         it do
           expect(response).to have_http_status(:ok)
 
-          expect(json.map { |x| [x['id'], x['model_type']] }).to eq(
+          expect(response.parsed_body.map { |x| [x['id'], x['model_type']] }).to eq(
             [
               [rubric.id, 'Rubric'],
               [photo2.id, 'Photo']
@@ -174,7 +172,7 @@ RSpec.describe Api::V1::RubricsController, type: :request do
         it do
           expect(response).to have_http_status(:ok)
 
-          expect(json).to eq([correct_response.last])
+          expect(response.parsed_body).to eq([correct_response.last])
         end
       end
 
@@ -184,7 +182,7 @@ RSpec.describe Api::V1::RubricsController, type: :request do
         it do
           expect(response).to have_http_status(:ok)
 
-          expect(json.map { |x| [x['id'], x['model_type']] }).to eq(
+          expect(response.parsed_body.map { |x| [x['id'], x['model_type']] }).to eq(
             [
               [another_rubric.id, 'Rubric'],
               [rubric.id, 'Rubric'],
@@ -199,7 +197,7 @@ RSpec.describe Api::V1::RubricsController, type: :request do
 
         it do
           expect(response).to have_http_status(:ok)
-          expect(json).to be_empty
+          expect(response.parsed_body).to be_empty
         end
       end
     end
@@ -211,7 +209,7 @@ RSpec.describe Api::V1::RubricsController, type: :request do
 
       it do
         expect(response).to have_http_status(:ok)
-        expect(json).to be_empty
+        expect(response.parsed_body).to be_empty
       end
     end
 
@@ -239,7 +237,7 @@ RSpec.describe Api::V1::RubricsController, type: :request do
         it do
           expect(response).to have_http_status(:ok)
 
-          expect(json).to eq(
+          expect(response.parsed_body).to eq(
             [
               {
                 'id' => rubric2.id,
@@ -282,7 +280,7 @@ RSpec.describe Api::V1::RubricsController, type: :request do
         it do
           expect(response).to have_http_status(:ok)
 
-          expect(json.pluck('id')).to eq([rubric1.id])
+          expect(response.parsed_body.pluck('id')).to eq([rubric1.id])
         end
       end
     end
@@ -300,20 +298,20 @@ RSpec.describe Api::V1::RubricsController, type: :request do
       context 'when photos and videos' do
         before { get summary_api_v1_rubric_url(id: rubric.id) }
 
-        it { expect(json['bounds']).not_to be_empty }
+        it { expect(response.parsed_body['bounds']).not_to be_empty }
       end
 
       context 'when only videos' do
         before { get summary_api_v1_rubric_url(id: rubric.id, only_videos: true) }
 
-        it { expect(json['bounds']).to be_blank }
+        it { expect(response.parsed_body['bounds']).to be_blank }
       end
     end
 
     context 'when without bounds' do
       before { get summary_api_v1_rubric_url(id: 1) }
 
-      it { expect(json['bounds']).to be_nil }
+      it { expect(response.parsed_body['bounds']).to be_nil }
     end
   end
 end

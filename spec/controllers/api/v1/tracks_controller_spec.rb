@@ -2,8 +2,6 @@
 
 RSpec.describe Api::V1::TracksController, type: :request do
   describe '#index' do
-    let(:json) { JSON.parse(response.body) }
-
     context 'when wrong rubric' do
       it do
         expect { get api_v1_rubric_tracks_url(rubric_id: 1) }.to raise_error(ActiveRecord::RecordNotFound)
@@ -19,7 +17,7 @@ RSpec.describe Api::V1::TracksController, type: :request do
         expect(response).to have_http_status(:ok)
         expect(assigns(:rubric)).to eq(rubric)
 
-        expect(json).to be_empty
+        expect(response.parsed_body).to be_empty
       end
     end
 
@@ -81,7 +79,7 @@ RSpec.describe Api::V1::TracksController, type: :request do
         expect(assigns(:rubric)).to eq(rubric)
         expect(assigns(:tracks)).to eq([track3, track2])
 
-        expect(json).to eq(actual_response)
+        expect(response.parsed_body).to eq(actual_response)
       end
     end
   end

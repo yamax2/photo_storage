@@ -2,9 +2,9 @@ version: '3.7'
 
 environment:
   DOCKER_TLD: localhost
-  POSTGRES_IMAGE_TAG: 15.0
+  POSTGRES_IMAGE_TAG: 15.2
   REDIS_IMAGE_TAG: 7
-  DOCKER_RUBY_VERSION: 3.1
+  DOCKER_RUBY_VERSION: 3.2
   DOCKER_GO_VERSION: 1.19
   RAILS_ENV: development
   LOG_LEVEL: debug
@@ -83,6 +83,7 @@ interaction:
 
 provision:
   - dip build --pull app
+  - docker network inspect frontend > /dev/null 2>&1 || docker network create frontend
   - dip cleanup
   - docker volume create --name bundler_data
   - dip compose up -d db

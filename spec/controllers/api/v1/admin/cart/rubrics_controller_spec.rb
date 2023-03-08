@@ -7,8 +7,6 @@ RSpec.describe Api::V1::Admin::Cart::RubricsController, type: :request do
   let!(:sub_rubric2) { create :rubric, rubric: sub_rubric1 }
   let(:token) { create :'yandex/token' }
 
-  let(:json) { JSON.parse(response.body) }
-
   describe '#index' do
     context 'when empty cart' do
       before { get api_v1_admin_cart_rubrics_url }
@@ -16,7 +14,7 @@ RSpec.describe Api::V1::Admin::Cart::RubricsController, type: :request do
       it do
         expect(response).to have_http_status(:ok)
         expect(response).to render_template(:index)
-        expect(json).to be_empty
+        expect(response.parsed_body).to be_empty
       end
     end
 
@@ -52,7 +50,7 @@ RSpec.describe Api::V1::Admin::Cart::RubricsController, type: :request do
           expect(response).to have_http_status(:ok)
           expect(response).to render_template(:index)
 
-          expect(json).to match_array(
+          expect(response.parsed_body).to match_array(
             [hash_including('id' => rubric1.id, 'text' => 'first [1]', 'children' => true)]
           )
         end
@@ -65,7 +63,7 @@ RSpec.describe Api::V1::Admin::Cart::RubricsController, type: :request do
           expect(response).to have_http_status(:ok)
           expect(response).to render_template(:index)
 
-          expect(json).to match_array(
+          expect(response.parsed_body).to match_array(
             [hash_including('id' => sub_rubric1.id, 'text' => 'sub 1 [1]', 'children' => false)]
           )
         end

@@ -27,7 +27,7 @@ module Nominatim
     end
 
     def call
-      response = make_request
+      response = Retry.for(:yandex) { make_request }
 
       raise Error.new(error_text: response.body, code: response.code.to_i) unless response.status.success?
 

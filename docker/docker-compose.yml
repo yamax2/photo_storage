@@ -16,11 +16,11 @@ services:
     depends_on:
       - db
       - redis
-    dns: $DIP_DNS
+    # dns: $DIP_DNS
     volumes:
       - ..:/app
       - ../../gems:/localgems
-      - ssh-data:/ssh:ro
+      # - ssh-data:/ssh:ro
       - bundler-data:/bundle
     networks:
       - default
@@ -102,12 +102,12 @@ services:
 
 volumes:
   bundler-data:
-    external:
-      name: bundler_data
+    name: bundler_data
+    external: true
 
-  ssh-data:
-    external:
-      name: ssh_data
+  # ssh-data:
+  #    external:
+  #      name: ssh_data
 
   pg-data:
     driver: local
@@ -117,5 +117,5 @@ volumes:
 
 networks:
   frontend:
-    external:
-      name: frontend
+    name: frontend
+    external: true

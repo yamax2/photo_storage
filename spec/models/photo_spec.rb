@@ -210,7 +210,7 @@ RSpec.describe Photo do
       end
     end
 
-    context 'when video a folder_index' do
+    context 'when video with a folder_index' do
       let(:video) do
         create :photo,
                :video,
@@ -269,11 +269,7 @@ RSpec.describe Photo do
       end
 
       before do
-        allow(Yandex::RemoveFileJob).to receive(:perform_async).and_call_original
-        allow(Yandex::RemoveFileJob).to receive(:perform_async).with(
-          node.id,
-          '/other/test.preview.mp4'
-        ).and_raise('boom!')
+        allow(Yandex::RemoveFileJob).to receive(:perform_bulk).and_raise('boom!')
       end
 
       it do

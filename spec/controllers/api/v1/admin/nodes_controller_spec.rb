@@ -21,7 +21,6 @@ RSpec.describe Api::V1::Admin::NodesController, type: :request do
     end
 
     context 'correct request' do
-      let(:json) { JSON.parse(response.body) }
       let(:decoded_secret) do
         decryptor = OpenSSL::Cipher.new('aes-256-cbc').decrypt.tap do |cipher|
           cipher.key = Digest::SHA256.digest(Rails.application.credentials.backup_secret)
@@ -29,7 +28,7 @@ RSpec.describe Api::V1::Admin::NodesController, type: :request do
         end
 
         decryptor.update(
-          Base64.decode64(json.fetch('secret'))
+          Base64.decode64(response.parsed_body.fetch('secret'))
         ) + decryptor.final
       end
 
@@ -39,7 +38,8 @@ RSpec.describe Api::V1::Admin::NodesController, type: :request do
         expect(response).to have_http_status(:ok)
         expect(response).to render_template(:show)
 
-        expect(json).to include('id' => node.id, 'type' => 'yandex', 'name' => node.login, 'secret' => String)
+        expect(response.parsed_body).
+          to include('id' => node.id, 'type' => 'yandex', 'name' => node.login, 'secret' => String)
         expect(decoded_secret).to eq(node.access_token)
       end
     end
