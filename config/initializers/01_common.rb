@@ -8,12 +8,14 @@ Rails.application.routes.default_url_options[:protocol] = ENV.fetch('PROTOCOL', 
 
 Rails.application.configure do
   config.custom_text_matchers = [
-    /^IMG_/,
-    /^VID_/,
+    /^IMG(_|\s)\d+/,
+    /^VID(_|\s)\d+/,
     /^DSCN\d+/,
     /^P(_|\s)\d{8}(_|\s)\d{6}/,
     /^\d{8}(_|\s)\d{6}/,
-    /^f\d{9}/
+    /^f\d{9}/,
+    /^IMAG\d+/,
+    /^SDC\d+/
   ].freeze
 
   # widths
