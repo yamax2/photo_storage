@@ -5,7 +5,7 @@ RSpec.describe Api::V1::Admin::UploadsController do
 
   describe '#create' do
     context 'when without content param' do
-      subject(:upload!) { post :create, params: {rubric_id: 1}, xhr: true }
+      subject(:upload!) { post :create, params: {rubric_id: 1, tz: 'Asia/Yekaterinburg'}, xhr: true }
 
       it do
         expect { upload! }.to raise_error(ActionController::ParameterMissing).with_message(/content/)
@@ -16,7 +16,7 @@ RSpec.describe Api::V1::Admin::UploadsController do
       let(:rubric) { create :rubric }
       let(:content) { fixture_file_upload('spec/fixtures/test.txt', 'text/plain') }
 
-      before { post :create, params: {rubric_id: rubric.id, content:}, xhr: true }
+      before { post :create, params: {rubric_id: rubric.id, tz: 'Asia/Yekaterinburg', content:}, xhr: true }
 
       it do
         expect(response).to have_http_status(:unprocessable_entity)
@@ -28,7 +28,7 @@ RSpec.describe Api::V1::Admin::UploadsController do
       let(:rubric) { create :rubric }
       let(:content) { fixture_file_upload('spec/fixtures/test.txt', 'video/mp4') }
 
-      before { post :create, params: {rubric_id: rubric.id, content:}, xhr: true }
+      before { post :create, params: {rubric_id: rubric.id, tz: 'Asia/Yekaterinburg', content:}, xhr: true }
 
       it do
         expect(response).to have_http_status(:unprocessable_entity)
@@ -42,7 +42,7 @@ RSpec.describe Api::V1::Admin::UploadsController do
       let(:request_proc) do
         lambda do |headers|
           request.headers.merge!(headers)
-          post :create, params: {rubric_id: rubric.id, content:}, xhr: true
+          post :create, params: {rubric_id: rubric.id, tz: 'Asia/Yekaterinburg', content:}, xhr: true
         end
       end
 
@@ -54,13 +54,13 @@ RSpec.describe Api::V1::Admin::UploadsController do
 
       context 'when wrong rubric' do
         it do
-          expect { post :create, params: {rubric_id: 1, content:}, xhr: true }.
+          expect { post :create, params: {rubric_id: 1, tz: 'Asia/Yekaterinburg', content:}, xhr: true }.
             to raise_error(ActiveRecord::RecordNotFound)
         end
       end
 
       context 'when without rubric_id param' do
-        subject(:upload!) { post :create, params: {content:}, xhr: true }
+        subject(:upload!) { post :create, params: {tz: 'Asia/Yekaterinburg', content:}, xhr: true }
 
         it do
           expect { upload! }.to raise_error(ActionController::ParameterMissing).with_message(/rubric_id/)
@@ -75,7 +75,7 @@ RSpec.describe Api::V1::Admin::UploadsController do
         end
 
         context 'when without external info' do
-          before { post :create, params: {rubric_id: rubric.id, content:}, xhr: true }
+          before { post :create, params: {rubric_id: rubric.id, tz: 'Asia/Yekaterinburg', content:}, xhr: true }
 
           it do
             expect(response).to have_http_status(:ok)
@@ -84,7 +84,10 @@ RSpec.describe Api::V1::Admin::UploadsController do
         end
 
         context 'when with external info' do
-          before { post :create, params: {rubric_id: rubric.id, content:, external_info: 'test'}, xhr: true }
+          before do
+            post :create,
+                 params: {rubric_id: rubric.id, tz: 'Asia/Yekaterinburg', content:, external_info: 'test'}, xhr: true
+          end
 
           it do
             expect(response).to have_http_status(:ok)
@@ -102,7 +105,7 @@ RSpec.describe Api::V1::Admin::UploadsController do
 
         before do
           allow_any_instance_of(klass).to receive(:valid?).and_return(false) # rubocop:disable RSpec/AnyInstance
-          post :create, params: {rubric_id: rubric.id, content:}, xhr: true
+          post :create, params: {rubric_id: rubric.id, tz: 'Asia/Yekaterinburg', content:}, xhr: true
         end
 
         after { FileUtils.rm_f(local_file) }
@@ -117,5 +120,33 @@ RSpec.describe Api::V1::Admin::UploadsController do
 
     it_behaves_like 'content upload', 'spec/fixtures/test2.jpg', 'image/jpeg', Photo
     it_behaves_like 'content upload', 'spec/fixtures/test1.gpx', 'application/gpx+xml', Track
+
+    context 'when upload photo with tz' do
+      let(:content) { fixture_file_upload('spec/fixtures/test2.jpg', 'image/jpeg') }
+      let(:rubric) { create :rubric }
+
+      before { post :create, params: {rubric_id: rubric.id, tz:, content:}, xhr: true }
+
+      context 'when valid tz' do
+        let(:tz) { 'Asia/Tbilisi' }
+
+        it do
+          expect(response).to have_http_status(:ok)
+          expect(response.parsed_body.keys).to match_array(%w[id])
+
+          expect(response.parsed_body['id']).to eq(assigns(:model).id)
+          expect(assigns(:model).tz).to eq(tz)
+        end
+      end
+
+      context 'when invalid tz' do
+        let(:tz) { 'Africa/Freetown' }
+
+        it do
+          expect(response).to have_http_status(:unprocessable_entity)
+          expect(response.parsed_body['tz']).to match(/not included/)
+        end
+      end
+    end
   end
 end

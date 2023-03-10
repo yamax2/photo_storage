@@ -30,6 +30,17 @@
         #rubrics.rubrics-tree
 
   .col-sm-12
+    .card
+      .card-header
+        = t('.tz')
+      .card-body.rubric-container
+        .blocker
+        .form-group
+          = select_tag :tz,
+                       options_for_select(Rails.application.config.photo_timezones.map { |tz| [tz, tz] }),
+                       class: 'form-control'
+
+  .col-sm-12
     .card.h-100
       .card-header
         strong

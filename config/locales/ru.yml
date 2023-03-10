@@ -84,6 +84,7 @@ ru:
           warning: Отменено
         stop: Стоп
         uploaded_with_errors: Некоторые файлы не удалось загрузить
+        tz: Часовой пояс
     partials:
       menu:
         content: Контент

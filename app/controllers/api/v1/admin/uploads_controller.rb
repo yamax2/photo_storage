@@ -31,7 +31,9 @@ module Api
             name: File.basename(uploaded_io.original_filename, '.*'),
             rubric: Rubric.find(params.require(:rubric_id)),
             external_info: params[:external_info]
-          )
+          ).tap do |obj|
+            obj.tz = params[:tz] if params[:tz] && obj.respond_to?(:tz)
+          end
         end
 
         def enqueue_process

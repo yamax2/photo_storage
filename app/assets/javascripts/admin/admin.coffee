@@ -20,6 +20,7 @@ $(document)
 
   .on 'turbolinks:load', ->
     $('.rubrics-sorting').sortable()
+    $('#tz').val Intl.DateTimeFormat().resolvedOptions().timeZone
 
     $('#rubrics')
       .on 'select_node.jstree', (e, node) ->
@@ -35,7 +36,7 @@ $(document)
     $('#drag-and-drop-zone').dmUploader
       url: '/api/v1/admin/uploads'
       extraData: ->
-        {rubric_id: $(this).data('rubric_id')}
+        {rubric_id: $(this).data('rubric_id'), tz: $('#tz').val()}
       headers:
         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
       fieldName: 'content'
@@ -47,6 +48,7 @@ $(document)
       onNewFile: (id, file) ->
         $('body').data('process', true)
         $('.rubric-container .blocker').show()
+        $('#tz').prop('disabled', true)
         $('#stop-button').show()
         ui_multi_add_file(id, file)
       onBeforeUpload: (id) ->
@@ -72,4 +74,5 @@ $(document)
 
         $('.rubric-container .blocker').hide()
         $('body').removeData('process')
+        $('#tz').prop('disabled', false)
         $('#stop-button').hide()
