@@ -1,12 +1,10 @@
 # frozen_string_literal: true
 
 RSpec.describe Photos::LoadInfoService do
-  let(:photo) { build :photo, local_filename: filename }
+  let(:photo) { build :photo, local_filename: filename, tz: 'Europe/Istanbul' }
 
   before do
     Timecop.freeze Time.zone.local(2019, 6, 16, 13, 8, 32)
-
-    allow(Rails.application.config).to receive(:time_zone).and_return('Europe/Istanbul')
 
     if filename.present?
       FileUtils.mkdir_p(Rails.root.join('tmp/files'))
@@ -185,8 +183,7 @@ RSpec.describe Photos::LoadInfoService do
         height: 400,
         original_timestamp: nil,
         lat_long: nil,
-        exif: nil,
-        tz: 'Europe/Istanbul'
+        exif: nil
       )
     end
   end

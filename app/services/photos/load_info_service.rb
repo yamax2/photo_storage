@@ -12,7 +12,7 @@ module Photos
     def call
       return unless photo.local_file?
 
-      photo.tz = Rails.application.config.time_zone
+      photo.tz ||= Rails.application.config.time_zone
 
       load_photo_attrs
 
