@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 RSpec.describe Rubrics::MapBoundsService do
-  subject(:bounds) { described_class.call!(rubric_id: rubric.id).bounds }
+  subject(:bounds) { described_class.new(rubric.id).call }
 
   let(:rubric) { create :rubric }
 
@@ -27,6 +27,15 @@ RSpec.describe Rubrics::MapBoundsService do
       create(:photo, rubric:, storage_filename: 'test.jpg', lat_long: [0, 1], yandex_token: token)
       create(:photo, :video, rubric:, storage_filename: '1.mp4', lat_long: [5, 1], yandex_token: token)
 
+      create(
+        :photo,
+        rubric:,
+        storage_filename: 'test.jpg',
+        lat_long: [100, 5],
+        yandex_token: token,
+        hide_on_map: true
+      )
+
       create(:track, rubric:, storage_filename: 'test.gpx', yandex_token: token)
       create :track, rubric:, storage_filename: 'test.gpx', yandex_token: token
     end
@@ -36,7 +45,7 @@ RSpec.describe Rubrics::MapBoundsService do
     end
 
     context 'when only videos' do
-      subject(:bounds) { described_class.call!(rubric_id: rubric.id, only_videos: true).bounds }
+      subject(:bounds) { described_class.new(rubric.id, only_videos: true).call }
 
       it { is_expected.to eq(min_lat: 1.0, min_long: 1.0, max_lat: 5.0, max_long: 4.0) }
     end

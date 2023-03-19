@@ -175,6 +175,38 @@ RSpec.describe Admin::PhotosController, type: :request do
       end
     end
 
+    context 'when assign hide_on_map' do
+      let(:token) { create :'yandex/token' }
+      let!(:photo) { create :photo, storage_filename: 'test', yandex_token: token }
+
+      before { put admin_photo_url(id: photo.id, photo: {hide_on_map: '1'}) }
+
+      it do
+        expect(assigns(:photo)).to eq(photo)
+        expect(assigns(:photo)).to be_valid
+        expect(assigns(:photo).hide_on_map).to be(true)
+        expect(assigns(:photo).props).to include('hide_on_map' => true)
+
+        expect(response).to redirect_to(edit_admin_photo_path(photo))
+      end
+    end
+
+    context 'when clear hide_on_map attr' do
+      let(:token) { create :'yandex/token' }
+      let!(:photo) { create :photo, storage_filename: 'test', yandex_token: token, hide_on_map: true }
+
+      before { put admin_photo_url(id: photo.id, photo: {hide_on_map: '0'}) }
+
+      it do
+        expect(assigns(:photo)).to eq(photo)
+        expect(assigns(:photo)).to be_valid
+        expect(assigns(:photo).hide_on_map).to be_nil
+        expect(assigns(:photo).props).to be_empty
+
+        expect(response).to redirect_to(edit_admin_photo_path(photo))
+      end
+    end
+
     context 'when request with auth' do
       let(:token) { create :'yandex/token' }
       let(:photo) { create :photo, storage_filename: 'test', yandex_token: token }

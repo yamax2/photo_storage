@@ -11,6 +11,7 @@ ru:
         tz: Часовой пояс
         rotated: Поворот изображения/эффекты
         effects: Эффекты
+        hide_on_map: Скрыть маркер на карте
       rubric:
         created_at: Создано
         name: Название

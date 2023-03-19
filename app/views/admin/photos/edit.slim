@@ -90,6 +90,15 @@
 
           .row.form-group
             .col.col-md-3
+              = f.label :hide_on_map
+            .col-12.col-md-9
+              label.switch.switch-text.switch-primary
+                = f.check_box(:hide_on_map, {class: 'switch-input type'})
+                span.switch-label*{data: {on: t('views.switches.on_text'), off: t('views.switches.off_text')}}
+                span.switch-handle
+
+          .row.form-group
+            .col.col-md-3
             .col.col-md-9
               #map*{data: {point: @photo.lat_long&.to_a || Rails.application.config.default_map_center}}
 

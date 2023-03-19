@@ -63,7 +63,8 @@ RSpec.describe Rubrics::PhotosFinder do
                    storage_filename: 'test',
                    yandex_token: token,
                    original_timestamp: nil,
-                   lat_long: [1, 2]
+                   lat_long: [1, 2],
+                   hide_on_map: nil
   end
 
   context 'when root rubric' do
@@ -98,6 +99,15 @@ RSpec.describe Rubrics::PhotosFinder do
 
   context 'when only_with_geo_tags option' do
     subject(:photos) { described_class.call(root_rubric1.id, only_with_geo_tags: true) }
+
+    before do
+      create :photo, rubric: root_rubric1,
+                     storage_filename: 'test',
+                     yandex_token: token,
+                     original_timestamp: nil,
+                     lat_long: [5, 6],
+                     hide_on_map: true
+    end
 
     it do
       expect(photos).to eq([photo7])

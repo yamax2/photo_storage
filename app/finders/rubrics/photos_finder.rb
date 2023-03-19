@@ -40,7 +40,10 @@ module Rubrics
 
     def base_scope
       Photo.where(rubric_id: @rubric_id).uploaded.tap do |scope|
-        scope.where!(Photo.arel_table[:lat_long].not_eq(nil)) if @only_with_geo_tags
+        if @only_with_geo_tags
+          scope.where!(Photo.arel_table[:lat_long].not_eq(nil))
+          scope.where!("props->>'hide_on_map' IS NULL")
+        end
       end
     end
   end

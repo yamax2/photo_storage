@@ -13,10 +13,10 @@ module Api
       end
 
       def summary
-        @bounds = Rubrics::MapBoundsService.call!(
-          rubric_id: params.require(:id),
+        @bounds = Rubrics::MapBoundsService.new(
+          params.require(:id),
           only_videos: to_bool(params[:only_videos])
-        ).bounds
+        ).call
       end
 
       private

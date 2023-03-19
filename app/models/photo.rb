@@ -23,7 +23,7 @@ class Photo < ApplicationRecord
                             optional: true
 
   store_accessor :props,
-                 :rotated, :effects, :external_info, :duration,
+                 :rotated, :effects, :external_info, :hide_on_map, :duration,
                  :preview_filename, :preview_size, :preview_md5, :preview_sha256,
                  :video_preview_filename, :video_preview_size, :video_preview_md5, :video_preview_sha256
 
@@ -49,7 +49,12 @@ class Photo < ApplicationRecord
 
   strip_attributes only: %i[name description content_type]
 
-  before_save { @rubric_changed = rubric_id_changed? if persisted? }
+  before_save do
+    props.compact!
+
+    @rubric_changed = rubric_id_changed? if persisted?
+  end
+
   after_update :change_rubric
   after_commit :remove_from_cart
 

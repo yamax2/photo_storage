@@ -28,13 +28,15 @@ module Admin
 
     def photo_params
       params.require(:photo).permit(
-        :name, :rubric_id, :tz, :original_timestamp, :description, :rotated, effects: [], lat_long: []
+        :name, :rubric_id, :tz, :original_timestamp, :description, :rotated, :hide_on_map, effects: [], lat_long: []
       ).tap do |par|
         normalize_lat_long_param(par)
 
         unless (value = par[:rotated]).nil?
           par[:rotated] = value.to_i.nonzero?
         end
+
+        par[:hide_on_map] = par[:hide_on_map].to_i == 1 ? true : nil
 
         normalize_effects_param(par)
       end
