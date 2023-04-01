@@ -24,7 +24,7 @@
 .irb-save-history
 coverage
 *.csv
-*.sql
+/*.sql
 scripts/*.zip
 scripts/*.log
 
