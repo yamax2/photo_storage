@@ -3,6 +3,8 @@
 class ReportQuery
   include Enumerable
 
+  Error = Class.new(StandardError)
+
   @report_sql = {}
 
   class << self
@@ -17,7 +19,7 @@ class ReportQuery
 
   def initialize(report_type)
     if self.class.allowed_reports.exclude?(report_type)
-      raise "Unknown report type #{report_type}, allowed are: #{self.class.allowed_reports.inspect}"
+      raise Error, "Unknown report type #{report_type}, allowed are: #{self.class.allowed_reports.inspect}"
     end
 
     @report_type = report_type
