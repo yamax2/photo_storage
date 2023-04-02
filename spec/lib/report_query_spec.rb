@@ -33,7 +33,7 @@ RSpec.describe ReportQuery do
           [
             {'camera' => 'SOME 1', 'count' => 10},
             {'camera' => 'OTHER 2', 'count' => 5},
-            {'camera' => '<none>', 'count' => 2}
+            {'camera' => 'Прочее', 'count' => 2}
           ]
         )
       end
