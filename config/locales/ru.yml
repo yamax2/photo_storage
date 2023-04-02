@@ -88,13 +88,19 @@ ru:
         tz: Часовой пояс
     partials:
       menu:
+        cameras: Камеры
         content: Контент
         dashboard: Панель управления
+        reports: Отчеты
         rubrics: Рубрики
         rubric_positions: Сортировка рубрик
         settings: Управление
         tracks: Треки
         yandex_tokens: Токены Yandex
+    reports:
+      cameras:
+        index:
+          title: Список камер в галерее
     photos:
       destroy:
         success: 'Фото %{name} удалено'

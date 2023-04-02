@@ -33,6 +33,14 @@ aside#left-panel.left-panel
             = t('.rubric_positions')
 
         h3.menu-title
+          = t('.reports')
+
+        li*{class: controller_path == 'admin/reports/cameras' ? 'active' : ''}
+          = link_to admin_reports_cameras_path do
+              i.menu-icon.fa.fa-camera-retro
+              = t('.cameras')
+
+        h3.menu-title
           = t('.settings')
 
         li*{class: controller_path == 'admin/yandex/tokens' ? 'active' : ''}

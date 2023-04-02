@@ -36,3 +36,7 @@ crumb :track do |track|
   link track.name, '#'
   parent :tracks, track.rubric
 end
+
+crumb :cameras do
+  link t('admin.reports.cameras.index.title'), '#'
+end

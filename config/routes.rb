@@ -47,6 +47,10 @@ Rails.application.routes.draw do
 
     resources :photos, only: %i[edit update destroy]
     resources :cart, only: %i[index update]
+
+    namespace :reports do
+      resources :cameras, only: :index
+    end
   end
 
   namespace :api, defaults: {format: :json} do
