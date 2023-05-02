@@ -52,7 +52,7 @@ module Yandex
     end
 
     def valid_dir?(directory)
-      directory.blank? || \
+      directory.blank? ||
         (directory.to_s.starts_with?('/') && !directory.to_s.ends_with?('/'))
     end
   end

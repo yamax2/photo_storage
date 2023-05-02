@@ -3,7 +3,6 @@
 require 'sidekiq/throttled'
 
 Sidekiq::Throttled.setup!
-Sidekiq::Extensions.enable_delay!
 
 # rubocop:disable Lint/ConstantDefinitionInBlock
 if (opts = Rails.application.config.try(:redis))

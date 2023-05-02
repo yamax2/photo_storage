@@ -103,3 +103,6 @@ RSpec/FactoryBot/ConsistentParenthesesStyle:
 RSpec/PendingWithoutReason:
   Exclude:
     - spec/support/model_with_upload_workflow.rb
+
+RSpec/IndexedLet:
+  Enabled: false

@@ -18,7 +18,7 @@ class CreateYandexTokens < ActiveRecord::Migration[5.2]
       t.string :other_dir, limit: 255
 
       # state
-      t.boolean :active, default: false
+      t.boolean :active, default: false, null: false
       t.bigint  :used_space, null: false, default: 0
       t.bigint  :total_space, null: false, default: 0
 

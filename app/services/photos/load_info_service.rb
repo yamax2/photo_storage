@@ -33,9 +33,9 @@ module Photos
     end
 
     def exif?
-      photo.jpeg? && \
-        photo.exif.nil? && \
-        exif_data.exif? && \
+      photo.jpeg? &&
+        photo.exif.nil? &&
+        exif_data.exif? &&
         (exif_data.model.present? || exif_data.make.present?)
     end
 
@@ -44,7 +44,7 @@ module Photos
     end
 
     def gps_attrs_present?
-      exif_data.gps.present? && \
+      exif_data.gps.present? &&
         !(exif_data.gps.latitude.zero? && exif_data.gps.longitude.zero?)
     end
 

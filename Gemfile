@@ -33,10 +33,10 @@ gem 'redis-classy', '>= 2.4' # FIXME: remove it
 gem 'redis-mutex', '>= 4'    # FIXME: remove it
 gem 'strip_attributes', '>= 1.8'
 
-gem 'sidekiq', '>= 6', '< 7.0.0.beta' # FIXME: sidekiq-throttled is incompatible with 7.0
+gem 'sidekiq', '>= 7'
 gem 'sidekiq-cron', '>= 1.1'
 gem 'sidekiq-failures', '>= 1'
-gem 'sidekiq-throttled', '>= 0.13'
+gem 'sidekiq-throttled', github: 'ixti/sidekiq-throttled'
 
 gem 'exifr'
 gem 'gpx', github: 'dougfales/gpx'

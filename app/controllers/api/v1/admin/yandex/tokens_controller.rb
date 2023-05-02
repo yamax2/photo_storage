@@ -45,12 +45,12 @@ module Api
           private
 
           def archive_other?(token)
-            token.other_count.present? && \
+            token.other_count.present? &&
               token.folder_index >= token.other_folder_archive_from.to_i
           end
 
           def archive_photos?(token)
-            token.photo_count.present? && \
+            token.photo_count.present? &&
               token.folder_index >= token.photos_folder_archive_from.to_i
           end
 
