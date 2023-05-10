@@ -8,7 +8,13 @@ module Yandex
       token = Yandex::Token.find(token_id)
       service = ReviseDirService.call!(dir:, token:, folder_index:)
 
-      ReviseMailer.delay.failed(dir, token_id, folder_index, service.errors) if service.errors.present?
+      return if service.errors.blank?
+
+      MailerJob.perform_async(
+        'ReviseMailer',
+        'failed',
+        [dir, token_id, folder_index, service.errors]
+      )
     end
   end
 end

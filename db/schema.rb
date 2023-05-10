@@ -92,7 +92,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_10_16_045347) do
     t.string "refresh_token", limit: 100, null: false
     t.string "dir", limit: 255
     t.string "other_dir", limit: 255
-    t.boolean "active", default: false
+    t.boolean "active", default: false, null: false
     t.bigint "used_space", default: 0, null: false
     t.bigint "total_space", default: 0, null: false
     t.datetime "created_at", precision: nil, null: false

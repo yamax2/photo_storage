@@ -10,7 +10,7 @@ RSpec.describe Yandex::ReviseOtherDirJob do
 
     it do
       expect { request }.
-        to change { enqueued_jobs(klass: Sidekiq::Extensions::DelayedMailer).size }.by(1)
+        to change { enqueued_jobs('mailers', klass: MailerJob).size }.by(1)
     end
   end
 
