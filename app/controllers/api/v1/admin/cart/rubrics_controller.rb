@@ -16,7 +16,7 @@ module Api
 
           private
 
-          delegate :redis, to: RedisClassy
+          delegate :redis, to: 'Rails.application', private: true
 
           # FIXME: wft?
           def children?(rubric)
@@ -27,8 +27,8 @@ module Api
           def selected_rubric_ids
             # FIXME: wft????
             @selected_rubric_ids ||= redis.
-              scan_each(match: 'cart:photos:*', count: 1_000).
-              each_with_object({}) { |key, memo| memo[key.gsub(/[^\d]+/, '').to_i] = redis.scard(key) }
+              scan('MATCH', 'cart:photos:*', count: 1_000).
+              each_with_object({}) { |key, memo| memo[key.gsub(/[^\d]+/, '').to_i] = redis.call('SCARD', key) }
           end
         end
       end

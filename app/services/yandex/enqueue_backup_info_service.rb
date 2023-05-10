@@ -4,7 +4,7 @@ module Yandex
   class EnqueueBackupInfoService
     include ::Interactor
 
-    INFO_KEY_TTL = 5.minutes
+    INFO_KEY_TTL = 5.minutes.to_i
     private_constant :INFO_KEY_TTL
 
     delegate :token, :resource, :folder_index, :info, to: :context
@@ -15,9 +15,9 @@ module Yandex
               "wrong resource passed: \"#{resource}\""
       end
 
-      if (value = redis.get(redis_key)).present?
+      if (value = redis.call('GET', redis_key)).present?
         context.info = value
-        redis.del(redis_key)
+        redis.call('DEL', redis_key)
       else
         try_to_enqueue_job
       end
@@ -25,14 +25,14 @@ module Yandex
 
     private
 
-    delegate :redis, to: RedisClassy, private: true
+    delegate :redis, to: 'Rails.application', private: true
 
     def redis_key
       @redis_key ||= "backup_info:#{token.id}:#{resource}:#{folder_index}"
     end
 
     def try_to_enqueue_job
-      return unless redis.set(redis_key, nil, nx: true, ex: INFO_KEY_TTL)
+      return unless redis.call('SET', redis_key, '', nx: true, ex: INFO_KEY_TTL)
 
       BackupInfoJob.perform_async(
         token.id,

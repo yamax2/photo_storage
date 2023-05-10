@@ -197,7 +197,7 @@ RSpec.describe Api::V1::Admin::VideosController, type: :request do
       let(:video) { create :photo, :video, yandex_token: node, storage_filename: 'test1.mp4' }
 
       before do
-        RedisClassy.set("video_upload:#{video.id}", 'Test info')
+        Rails.application.redis.call('SET', "video_upload:#{video.id}", 'Test info')
       end
 
       it do

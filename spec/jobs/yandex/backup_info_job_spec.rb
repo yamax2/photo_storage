@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 RSpec.describe Yandex::BackupInfoJob do
-  let(:redis) { RedisClassy.redis }
+  let(:redis) { Rails.application.redis }
   let(:token) { create :'yandex/token', dir: '/test', other_dir: '/other', access_token: API_ACCESS_TOKEN }
 
   before do
@@ -17,9 +17,9 @@ RSpec.describe Yandex::BackupInfoJob do
 
     it do
       expect { request }.
-        to change { redis.get('test') }.from(nil).to(String)
+        to change { redis.call('GET', 'test') }.from(nil).to(String)
 
-      expect(redis.ttl('test')).to eq(described_class::INFO_KEY_TTL)
+      expect(redis.call('TTL', 'test')).to eq(described_class::INFO_KEY_TTL)
     end
   end
 
@@ -32,9 +32,9 @@ RSpec.describe Yandex::BackupInfoJob do
 
     it do
       expect { request }.
-        to change { redis.get('test') }.from(nil).to(String)
+        to change { redis.call('GET', 'test') }.from(nil).to(String)
 
-      expect(redis.ttl('test')).to eq(described_class::INFO_KEY_TTL)
+      expect(redis.call('TTL', 'test')).to eq(described_class::INFO_KEY_TTL)
     end
   end
 

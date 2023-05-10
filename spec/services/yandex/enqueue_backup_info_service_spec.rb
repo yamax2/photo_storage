@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 RSpec.describe Yandex::EnqueueBackupInfoService do
-  let(:redis) { RedisClassy.redis }
+  let(:redis) { Rails.application.redis }
   let(:token) { create :'yandex/token', dir: '/test', other_dir: '/other', access_token: API_ACCESS_TOKEN }
 
   let(:resource) { :photo }
@@ -10,24 +10,24 @@ RSpec.describe Yandex::EnqueueBackupInfoService do
   let(:redis_key) { "backup_info:#{token.id}:photo:#{folder_index}" }
 
   context 'when info presents' do
-    before { redis.set(redis_key, 'test') }
+    before { redis.call('SET', redis_key, 'test') }
 
     it do
       expect(Yandex::BackupInfoJob).not_to receive(:perform_async)
 
-      expect { service_context }.to change { redis.type(redis_key) }.from('string').to('none')
+      expect { service_context }.to change { redis.call('TYPE', redis_key) }.from('string').to('none')
 
       expect(service_context.info).to eq('test')
     end
   end
 
   context 'when job enqueued' do
-    before { redis.set(redis_key, nil) }
+    before { redis.call('SET', redis_key, '') }
 
     it do
       expect(Yandex::BackupInfoJob).not_to receive(:perform_async)
 
-      expect { service_context }.not_to(change { redis.get(redis_key) })
+      expect { service_context }.not_to(change { redis.call('GET', redis_key) })
       expect(service_context.info).to be_nil
     end
   end
@@ -36,9 +36,9 @@ RSpec.describe Yandex::EnqueueBackupInfoService do
     it do
       expect(Yandex::BackupInfoJob).to receive(:perform_async).with(token.id, :photo, folder_index, redis_key)
 
-      expect { service_context }.to change { redis.type(redis_key) }.from('none').to('string')
+      expect { service_context }.to change { redis.call('TYPE', redis_key) }.from('none').to('string')
 
-      expect(redis.get(redis_key)).to be_empty
+      expect(redis.call('GET', redis_key)).to eq('')
       expect(service_context.info).to be_nil
     end
   end
@@ -52,7 +52,7 @@ RSpec.describe Yandex::EnqueueBackupInfoService do
       expect { service_context }.
         to raise_error(Yandex::BackupInfoService::WrongResourceError, 'wrong resource passed: "wrong"')
 
-      expect(redis.get(redis_key)).to be_nil
+      expect(redis.call('GET', redis_key)).to be_nil
     end
   end
 end

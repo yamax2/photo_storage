@@ -29,8 +29,7 @@ gem 'kaminari', '>= 1.1'
 gem 'postgresql_cursor', '>= 0.6.2'
 gem 'rails_semantic_logger'
 gem 'ransack', '>= 2.1'
-gem 'redis-classy', '>= 2.4' # FIXME: remove it
-gem 'redis-mutex', '>= 4'    # FIXME: remove it
+gem 'redlock'
 gem 'strip_attributes', '>= 1.8'
 
 gem 'sidekiq', '>= 7'

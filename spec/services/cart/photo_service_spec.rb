@@ -2,7 +2,7 @@
 
 RSpec.describe Cart::PhotoService do
   let(:service_context) { described_class.call!(photo:, remove:) }
-  let(:redis) { RedisClassy.redis }
+  let(:redis) { Rails.application.redis }
   let(:rubric) { create :rubric }
   let(:cart_key) { "cart:photos:#{rubric.id}" }
 
@@ -13,7 +13,7 @@ RSpec.describe Cart::PhotoService do
     it do
       expect(photo.rubric_id).not_to be_nil
 
-      expect { service_context }.not_to(change { redis.smembers(cart_key) })
+      expect { service_context }.not_to(change { redis.call('SMEMBERS', cart_key) })
     end
   end
 
@@ -22,18 +22,18 @@ RSpec.describe Cart::PhotoService do
     let(:photo) { create :photo, local_filename: 'test', rubric: }
 
     context 'and photo already in cart' do
-      before { redis.sadd(cart_key, photo.id) }
+      before { redis.call('SADD', cart_key, photo.id) }
 
       it do
-        expect(redis.smembers(cart_key).map(&:to_i)).to contain_exactly(photo.id)
+        expect(redis.call('SMEMBERS', cart_key).map(&:to_i)).to contain_exactly(photo.id)
 
-        expect { service_context }.not_to(change { redis.smembers(cart_key) })
+        expect { service_context }.not_to(change { redis.call('SMEMBERS', cart_key) })
       end
     end
 
     context 'and photo not in cart' do
       it do
-        expect { service_context }.to change { redis.smembers(cart_key).map(&:to_i) }.from([]).to([photo.id])
+        expect { service_context }.to change { redis.call('SMEMBERS', cart_key).map(&:to_i) }.from([]).to([photo.id])
       end
     end
   end
@@ -44,15 +44,15 @@ RSpec.describe Cart::PhotoService do
 
     context 'and photo not in cart' do
       it do
-        expect { service_context }.not_to(change { redis.smembers(cart_key) })
+        expect { service_context }.not_to(change { redis.call('SMEMBERS', cart_key) })
       end
     end
 
     context 'and photo in cart' do
-      before { redis.sadd(cart_key, photo.id) }
+      before { redis.call('SADD', cart_key, photo.id) }
 
       it do
-        expect { service_context }.to change { redis.smembers(cart_key).map(&:to_i) }.from([photo.id]).to([])
+        expect { service_context }.to change { redis.call('SMEMBERS', cart_key).map(&:to_i) }.from([photo.id]).to([])
       end
     end
   end

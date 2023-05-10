@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 RSpec.describe Yandex::TokenForUploadService do
-  let(:redis) { RedisClassy.redis }
+  let(:redis) { Rails.application.redis }
 
   let(:service_context) { described_class.call!(resource_size: 100.megabytes) }
   let(:token_id) { service_context.token_id }
@@ -62,7 +62,7 @@ RSpec.describe Yandex::TokenForUploadService do
     before do
       create :'yandex/token', total_space: 150.megabytes, used_space: 130.megabytes, active: true
 
-      redis.hset('yandex_tokens_usage', token2.id, 100.megabytes)
+      redis.call('HSET', 'yandex_tokens_usage', token2.id, 100.megabytes)
     end
 
     it { expect(token_id).to be_nil }
@@ -74,7 +74,7 @@ RSpec.describe Yandex::TokenForUploadService do
     before do
       create :'yandex/token', total_space: 150.megabytes, used_space: 130.megabytes, active: true
 
-      redis.hset('yandex_tokens_usage', 0, 100.megabytes)
+      redis.call('HSET', 'yandex_tokens_usage', 0, 100.megabytes)
     end
 
     it { expect(token_id).to eq(token2.id) }

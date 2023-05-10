@@ -4,7 +4,7 @@ module Videos
   class UploadInfoJob
     include Sidekiq::Worker
 
-    INFO_KEY_TTL = 1.minute
+    INFO_KEY_TTL = 1.minute.to_i
     private_constant :INFO_KEY_TTL
 
     def perform(video_id, redis_key, skip_original)
@@ -12,7 +12,8 @@ module Videos
 
       info = UploadInfoService.new(video, skip_original:).call
 
-      RedisClassy.redis.set(
+      Rails.application.redis.call(
+        'SET',
         redis_key,
         info,
         ex: INFO_KEY_TTL

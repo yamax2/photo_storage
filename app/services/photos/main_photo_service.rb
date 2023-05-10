@@ -4,7 +4,7 @@ module Photos
   class MainPhotoService
     include ::Interactor
 
-    delegate :photo, to: :context
+    delegate :photo, to: :context, private: true
 
     def call
       return if rubric.main_photo_id.present?
@@ -14,7 +14,7 @@ module Photos
 
     private
 
-    delegate :rubric, to: :photo
+    delegate :rubric, to: :photo, private: true
 
     def apply_main_photo_for(current_rubric)
       with_lock(current_rubric.id) do
@@ -28,7 +28,7 @@ module Photos
     end
 
     def with_lock(id, &)
-      RedisMutex.with_lock("rubric_update:#{id}", block: 30.seconds, expire: 3.minutes, &)
+      Rails.application.redlock.lock!("rubric_update:#{id}", 30.seconds.in_milliseconds, &)
     end
   end
 end

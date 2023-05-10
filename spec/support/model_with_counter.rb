@@ -4,7 +4,7 @@ RSpec.shared_context 'model with counter' do |factory|
   describe '#inc_counter' do
     subject(:action!) { model.inc_counter }
 
-    let(:redis) { RedisClassy.redis }
+    let(:redis) { Rails.application.redis }
 
     context 'when persisted' do
       let(:token) { create :'yandex/token' }
@@ -13,7 +13,7 @@ RSpec.shared_context 'model with counter' do |factory|
       context 'and first view' do
         it do
           expect { action! }.
-            to change { redis.get("counters:#{model.class.to_s.underscore}:#{model.id}") }.from(nil).to('1')
+            to change { redis.call('GET', "counters:#{model.class.to_s.underscore}:#{model.id}") }.from(nil).to('1')
 
           expect(action!).to eq(1)
         end
@@ -24,7 +24,7 @@ RSpec.shared_context 'model with counter' do |factory|
 
         it do
           expect { action! }.
-            to change { redis.get("counters:#{model.class.to_s.underscore}:#{model.id}") }.from('1').to('2')
+            to change { redis.call('GET', "counters:#{model.class.to_s.underscore}:#{model.id}") }.from('1').to('2')
 
           expect(action!).to eq(2)
         end
@@ -34,13 +34,13 @@ RSpec.shared_context 'model with counter' do |factory|
         let(:key) { "counters:#{factory}:#{model.id}" }
 
         before do
-          redis.set(key, 0)
-          redis.expire(key, 30.minutes)
+          redis.call('SET', key, 0)
+          redis.call('EXPIRE', key, 30.minutes.to_i)
         end
 
         it do
-          expect(redis.ttl(key)).to be_positive
-          expect { action! }.to change { redis.ttl(key) }.to(-1)
+          expect(redis.call('TTL', key)).to be_positive
+          expect { action! }.to change { redis.call('TTL', key) }.to(-1)
 
           expect(action!).to eq(1)
         end
@@ -51,7 +51,7 @@ RSpec.shared_context 'model with counter' do |factory|
       let(:model) { build factory }
 
       it do
-        expect { action! }.not_to(change { RedisClassy.redis.keys('counters:*') })
+        expect { action! }.not_to(change { redis.call('KEYS', 'counters:*') })
 
         expect(action!).to be_nil
       end

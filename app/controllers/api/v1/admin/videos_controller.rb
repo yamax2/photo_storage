@@ -7,7 +7,7 @@ module Api
         def show
           @video = Photo.videos.find(params[:id])
 
-          if (info = RedisClassy.get(info_redis_key)).present?
+          if (info = Rails.application.redis.call('GET', info_redis_key)).present?
             render plain: info
           else
             render status: :gone, json: {}

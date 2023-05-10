@@ -8,9 +8,9 @@ module Countable
 
     key = "counters:#{self.class.to_s.underscore}:#{id}"
 
-    RedisClassy.redis.multi do |redis|
-      redis.persist(key)
-      redis.incr(key)
+    Rails.application.redis.multi do |redis|
+      redis.call('PERSIST', key)
+      redis.call('INCR', key)
     end.last.to_i
   end
 end

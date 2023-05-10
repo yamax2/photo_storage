@@ -8,7 +8,7 @@ module Yandex
     def perform(token_id)
       token = Token.find(token_id)
 
-      RedisMutex.with_lock("yandex_token:#{token_id}:refresh", block: 30.seconds, expire: 10.minutes) do
+      Rails.application.redlock.lock!("yandex_token:#{token_id}:refresh", 30.seconds.in_milliseconds) do
         RefreshToken.call!(token:)
       end
     end

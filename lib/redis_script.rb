@@ -6,16 +6,19 @@ class RedisScript
   end
 
   def exec(keys: [], argv: [])
-    redis.evalsha(script_sha1, keys: Array.wrap(keys), argv: Array.wrap(argv))
-  rescue Redis::CommandError => e
-    raise unless e.message.start_with?('NOSCRIPT')
+    wrapped_keys = Array.wrap(keys)
+    begin
+      redis.call('EVALSHA', script_sha1, wrapped_keys.size, *wrapped_keys, *Array.wrap(argv))
+    rescue RedisClient::CommandError => e
+      raise unless e.message.start_with?('NOSCRIPT')
 
-    redis.eval(@script, keys: Array.wrap(keys), argv: Array.wrap(argv))
+      redis.call('EVAL', @script, wrapped_keys.size, *wrapped_keys, *Array.wrap(argv))
+    end
   end
 
   private
 
-  delegate :redis, to: RedisClassy, private: true
+  delegate :redis, to: 'Rails.application', private: true
 
   def script_sha1
     Digest::SHA1.hexdigest(@script)

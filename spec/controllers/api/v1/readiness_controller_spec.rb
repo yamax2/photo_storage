@@ -12,7 +12,8 @@ RSpec.describe Api::V1::ReadinessController, type: :request do
 
   context 'when redis is unreachable' do
     before do
-      allow(RedisClassy.redis).to receive(:ping).and_raise('boom!')
+      allow(Rails.application.redis).to receive(:call).and_call_original
+      allow(Rails.application.redis).to receive(:call).with('PING').and_raise('boom!')
     end
 
     it do

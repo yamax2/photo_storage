@@ -36,8 +36,8 @@ RSpec.configure do |config|
   config.filter_rails_from_backtrace!
 
   config.after do
-    RedisClassy.redis.script(:flush)
-    RedisClassy.redis.flushdb
+    Rails.application.redis.call('SCRIPT', :flush)
+    Rails.application.redis.call('FLUSHDB')
   end
 
   config.before { Retry.default_intervals = [0, 0] }

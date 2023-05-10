@@ -13,12 +13,12 @@ module Cart
       key = "cart:photos:#{photo.rubric_id}"
 
       if remove
-        redis.srem(key, photo.id)
+        redis.call('SREM', key, photo.id)
       else
-        redis.sadd(key, photo.id)
+        redis.call('SADD', key, photo.id)
       end
     end
 
-    delegate :redis, to: RedisClassy
+    delegate :redis, to: 'Rails.application', private: true
   end
 end

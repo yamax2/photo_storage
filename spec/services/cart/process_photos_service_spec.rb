@@ -2,7 +2,7 @@
 
 RSpec.describe Cart::ProcessPhotosService do
   let(:rubric) { create :rubric }
-  let(:redis) { RedisClassy.redis }
+  let(:redis) { Rails.application.redis }
   let(:key) { "cart:photos:#{rubric.id}" }
 
   context 'when call without a block' do
@@ -29,10 +29,10 @@ RSpec.describe Cart::ProcessPhotosService do
     let!(:photo2) { create :photo, local_filename: 'test', rubric:, name: '22' }
 
     before do
-      redis.sadd(key, photo1.id)
-      redis.sadd(key, photo2.id)
-      redis.sadd(key, photo1.id * 2)
-      redis.sadd(key, photo2.id * 2)
+      redis.call('SADD', key, photo1.id)
+      redis.call('SADD', key, photo2.id)
+      redis.call('SADD', key, photo1.id * 2)
+      redis.call('SADD', key, photo2.id * 2)
     end
 
     context 'when try to remove from cart' do
@@ -48,7 +48,7 @@ RSpec.describe Cart::ProcessPhotosService do
           to change { photo1.reload.name }.from('11').to('say ni').
           and change { photo2.reload.name }.from('22').to('say ni')
 
-        expect(redis.smembers(key)).to be_empty
+        expect(redis.call('SMEMBERS', key)).to be_empty
       end
     end
 
@@ -65,7 +65,7 @@ RSpec.describe Cart::ProcessPhotosService do
           to change { photo1.reload.name }.from('11').to('say ni').
           and change { photo2.reload.name }.from('22').to('say ni')
 
-        expect(redis.smembers(key)).to contain_exactly(photo1.id.to_s, photo2.id.to_s)
+        expect(redis.call('SMEMBERS', key)).to contain_exactly(photo1.id.to_s, photo2.id.to_s)
       end
     end
   end

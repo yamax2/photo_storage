@@ -4,7 +4,7 @@ module Api
   module V1
     class ReadinessController < BaseController
       def index
-        RedisClassy.redis.ping
+        Rails.application.redis.call('PING')
         ActiveRecord::Base.connection.execute('select 1')
 
         render plain: 'OK'

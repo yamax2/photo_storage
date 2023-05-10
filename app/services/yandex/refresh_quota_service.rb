@@ -14,7 +14,7 @@ module Yandex
         total_space: response.fetch(:total_space)
       )
 
-      RedisClassy.redis.hdel(TokenForUploadService::CACHE_REDIS_KEY, token.id)
+      Rails.application.redis.call('HDEL', TokenForUploadService::CACHE_REDIS_KEY, token.id)
     end
   end
 end

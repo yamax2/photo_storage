@@ -13,7 +13,7 @@ class PhotosController < ApplicationController
   private
 
   def in_cart?(photo)
-    RedisClassy.redis.sismember("cart:photos:#{photo.rubric_id}", photo.id)
+    Rails.application.redis.call('SISMEMBER', "cart:photos:#{photo.rubric_id}", photo.id)
   end
 
   def preview_id

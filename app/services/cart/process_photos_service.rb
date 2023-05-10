@@ -10,7 +10,7 @@ module Cart
       raise 'no block given' unless block_given?
 
       each_photo do |photo|
-        redis.srem(key, photo.id) if yield(photo)
+        redis.call('SREM', key, photo.id) if yield(photo)
         ids.delete(photo.id.to_s)
       end
 
@@ -23,10 +23,10 @@ module Cart
 
     private
 
-    delegate :redis, to: RedisClassy
+    delegate :redis, to: 'Rails.application', private: true
 
     def clear_incorrect
-      redis.srem(key, ids.to_a) if ids.any?
+      redis.call('SREM', key, ids.to_a) if ids.any?
     end
 
     def each_photo(&)
@@ -36,7 +36,7 @@ module Cart
     end
 
     def ids
-      @ids ||= redis.smembers(key).to_set
+      @ids ||= redis.call('SMEMBERS', key).to_set
     end
 
     def key

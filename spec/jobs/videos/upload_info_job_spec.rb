@@ -5,6 +5,7 @@ RSpec.describe Videos::UploadInfoJob do
 
   let(:node) { create :'yandex/token' }
   let(:key) { 'test_key' }
+  let(:redis) { Rails.application.redis }
 
   context 'when video exists' do
     let(:service) { double }
@@ -16,9 +17,9 @@ RSpec.describe Videos::UploadInfoJob do
     end
 
     it do
-      expect { run! }.to change { RedisClassy.get(key) }.from(nil).to('info')
+      expect { run! }.to change { redis.call('GET', key) }.from(nil).to('info')
 
-      expect(RedisClassy.ttl(key)).to be_positive
+      expect(redis.call('TTL', key)).to be_positive
     end
   end
 
@@ -28,7 +29,7 @@ RSpec.describe Videos::UploadInfoJob do
     it do
       expect { run! }.not_to raise_error
 
-      expect(RedisClassy.exists?(key)).to be(false)
+      expect(redis.call('KEYS', key)).to be_empty
     end
   end
 
@@ -38,7 +39,7 @@ RSpec.describe Videos::UploadInfoJob do
     it do
       expect { run! }.not_to raise_error
 
-      expect(RedisClassy.exists?(key)).to be(false)
+      expect(redis.call('KEYS', key)).to be_empty
     end
   end
 
@@ -56,7 +57,7 @@ RSpec.describe Videos::UploadInfoJob do
     it do
       expect { run! }.not_to raise_error
 
-      expect(RedisClassy.get(key)).to eq('info')
+      expect(redis.call('GET', key)).to eq('info')
     end
   end
 end

@@ -2,6 +2,7 @@
 
 RSpec.describe Api::V1::Admin::Yandex::TokensController, type: :request do
   let!(:token) { create :'yandex/token', dir: '/test', other_dir: '/other', active: true }
+  let(:redis) { Rails.application.redis }
 
   describe '#index' do
     context 'when without active tokens' do
@@ -248,7 +249,7 @@ RSpec.describe Api::V1::Admin::Yandex::TokensController, type: :request do
 
     context 'when job already enqueued' do
       before do
-        RedisClassy.redis.set("backup_info:#{token.id}:photo:0", nil)
+        redis.call('SET', "backup_info:#{token.id}:photo:0", '')
 
         create :photo, yandex_token: token, storage_filename: 'test.jpg', size: 12
       end
@@ -264,7 +265,7 @@ RSpec.describe Api::V1::Admin::Yandex::TokensController, type: :request do
 
     context 'when job finished for photo' do
       before do
-        RedisClassy.redis.set("backup_info:#{token.id}:photo:0", 'value')
+        redis.call('SET', "backup_info:#{token.id}:photo:0", 'value')
 
         create :photo, yandex_token: token, storage_filename: 'test.jpg', size: 12
       end
@@ -284,7 +285,7 @@ RSpec.describe Api::V1::Admin::Yandex::TokensController, type: :request do
 
     context 'when job finished for other' do
       before do
-        RedisClassy.redis.set("backup_info:#{token.id}:other:1", 'value')
+        redis.call('SET', "backup_info:#{token.id}:other:1", 'value')
 
         create :track, yandex_token: token, storage_filename: 'test.gpx', size: 12, folder_index: 1
       end

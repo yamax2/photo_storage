@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 RSpec.describe Api::V1::Admin::Photos::CartController, type: :request do
-  let(:redis) { RedisClassy.redis }
+  let(:redis) { Rails.application.redis }
   let(:key) { "cart:photos:#{photo.rubric_id}" }
 
   describe '#create' do
@@ -19,19 +19,19 @@ RSpec.describe Api::V1::Admin::Photos::CartController, type: :request do
       let(:photo) { create :photo, local_filename: 'test' }
 
       context 'and photo already in cart' do
-        before { redis.sadd(key, photo.id) }
+        before { redis.call('SADD', key, photo.id) }
 
         it do
           expect(photo.rubric).not_to be_nil
-          expect(redis.smembers(key)).to contain_exactly(photo.id.to_s)
-          expect { request }.not_to(change { redis.smembers(key) })
+          expect(redis.call('SMEMBERS', key)).to contain_exactly(photo.id.to_s)
+          expect { request }.not_to(change { redis.call('SMEMBERS', key) })
         end
       end
 
       context 'and photo not in cart' do
         it do
           expect(photo.rubric).not_to be_nil
-          expect { request }.to change { redis.smembers(key) }.from([]).to([photo.id.to_s])
+          expect { request }.to change { redis.call('SMEMBERS', key) }.from([]).to([photo.id.to_s])
         end
       end
     end
@@ -59,19 +59,19 @@ RSpec.describe Api::V1::Admin::Photos::CartController, type: :request do
       let(:photo) { create :photo, local_filename: 'test' }
 
       context 'and photo in cart' do
-        before { redis.sadd(key, photo.id) }
+        before { redis.call('SADD', key, photo.id) }
 
         it do
           expect(photo.rubric).not_to be_nil
-          expect { request }.to change { redis.smembers(key) }.from([photo.id.to_s]).to([])
+          expect { request }.to change { redis.call('SMEMBERS', key) }.from([photo.id.to_s]).to([])
         end
       end
 
       context 'and photo not in cart' do
         it do
           expect(photo.rubric).not_to be_nil
-          expect(redis.smembers(key)).to be_empty
-          expect { request }.not_to(change { redis.smembers(key) })
+          expect(redis.call('SMEMBERS', key)).to be_empty
+          expect { request }.not_to(change { redis.call('SMEMBERS', key) })
         end
       end
     end

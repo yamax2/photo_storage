@@ -2,32 +2,41 @@
 
 RSpec.describe RedisScript do
   let(:script) { 'return redis.call("GETSET", KEYS[1], ARGV[1])' }
-  let(:redis) { RedisClassy.redis }
+  let(:redis) { Rails.application.redis }
   let(:service) { described_class.new(script) }
 
   context 'when first time exec' do
-    it do
-      expect(redis).to receive(:eval).and_call_original
+    before do
+      allow(redis).to receive(:call).and_call_original
+    end
 
-      expect { service.exec(keys: :test, argv: 5) }.
-        to change { redis.get('test') }.from(nil).to('5')
+    it do
+      expect { service.exec(keys: 'test', argv: 5) }.
+        to change { redis.call('GET', 'test') }.from(nil).to('5')
+
+      expect(redis).to have_received(:call).with('EVAL', any_args)
     end
   end
 
   context 'when second time exec' do
-    before { service.exec(keys: :test, argv: 10) }
+    before do
+      service.exec(keys: :test, argv: 10)
+
+      allow(redis).to receive(:call).and_call_original
+    end
 
     it do
-      expect(redis).not_to receive(:eval)
+      expect { service.exec(keys: 'test', argv: 5) }.
+        to change { redis.call('GET', 'test') }.from('10').to('5')
 
-      expect { service.exec(keys: :test, argv: 5) }.
-        to change { redis.get('test') }.from('10').to('5')
+      expect(redis).not_to have_received(:call).with('EVAL', any_args)
     end
   end
 
   context 'when error' do
     it do
-      expect { service.exec(keys: :test) }.to raise_error(Redis::CommandError)
+      expect { service.exec(keys: 'test') }.
+        to raise_error(RedisClient::CommandError)
     end
   end
 end

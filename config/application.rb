@@ -42,6 +42,7 @@ module PhotoStorage
 
     require 'logging/subscriber'
     require 'logging/formatter'
+    require 'redis_helper'
 
     config.after_initialize do
       RailsSemanticLogger.swap_subscriber(
@@ -50,5 +51,7 @@ module PhotoStorage
         :action_controller
       )
     end
+
+    include RedisHelper
   end
 end
