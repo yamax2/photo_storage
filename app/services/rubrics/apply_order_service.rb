@@ -7,7 +7,7 @@ module Rubrics
 
     delegate :data, :id, to: :context
 
-    def call
+    def call # rubocop:disable Metrics/MethodLength
       table_name = Rubric.quoted_table_name
 
       Rubric.connection.execute(<<~SQL.squish)

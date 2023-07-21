@@ -77,7 +77,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_10_16_045347) do
     t.text "external_info"
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
-    t.datetime "finished_at", precision: nil
+    t.datetime "finished_at"
     t.integer "folder_index", default: 0, null: false
     t.index ["md5", "sha256"], name: "uq_tracks", unique: true
     t.index ["rubric_id"], name: "index_tracks_on_rubric_id"

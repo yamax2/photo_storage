@@ -7,7 +7,7 @@ module Rubrics
       @rubric_id = rubric_id
     end
 
-    def call
+    def call # rubocop:disable Metrics/MethodLength
       table_name = Rubric.quoted_table_name
 
       Rubric.joins(<<~SQL.squish).order(:lv)

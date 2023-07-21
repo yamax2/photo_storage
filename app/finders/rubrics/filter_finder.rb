@@ -11,7 +11,7 @@ module Rubrics
       new(name_part:).call
     end
 
-    def call
+    def call # rubocop:disable Metrics/MethodLength
       return Rubric.all if @name_part.blank?
 
       table_name = Rubric.quoted_table_name

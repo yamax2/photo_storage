@@ -24,7 +24,7 @@ module Photos
       Rubrics::ParentsFinder.call(photo.rubric_id).pluck(:id)
     end
 
-    def first_photo_id(rubric)
+    def first_photo_id(rubric) # rubocop:disable Metrics/MethodLength
       Photo.connection.execute(<<~SQL.squish).first&.fetch('id')
         WITH RECURSIVE tt AS (
           SELECT id, rubric_id, 0 lv
