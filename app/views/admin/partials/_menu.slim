@@ -40,6 +40,11 @@ aside#left-panel.left-panel
               i.menu-icon.fa.fa-camera-retro
               = t('.cameras')
 
+        li*{class: controller_path == 'admin/reports/activities' ? 'active' : ''}
+          = link_to admin_reports_activities_path do
+              i.menu-icon.fa.fa-camera-retro
+              = t('.activities')
+
         h3.menu-title
           = t('.settings')
 

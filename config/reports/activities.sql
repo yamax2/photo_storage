@@ -1,5 +1,5 @@
 WITH RECURSIVE info AS (
-  SELECT '2012-01-01'::timestamp start
+  SELECT '2013-01-01'::timestamp start
 ), dates AS (
   SELECT info.start FROM info
   UNION ALL

@@ -1,0 +1,9 @@
+-# frozen_string_literal: true
+- content_for :title, t('.title')
+- breadcrumb :activities
+
+.row
+  .col-sm-12
+    .card
+      .card-body
+        canvas#report*{data: {report: 'activities'}, style: 'max-height: calc(100vh - 200px)'}

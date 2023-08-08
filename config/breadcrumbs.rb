@@ -40,3 +40,7 @@ end
 crumb :cameras do
   link t('admin.reports.cameras.index.title'), '#'
 end
+
+crumb :activities do
+  link t('admin.reports.activities.index.title'), '#'
+end

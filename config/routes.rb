@@ -50,6 +50,7 @@ Rails.application.routes.draw do
 
     namespace :reports do
       resources :cameras, only: :index
+      resources :activities, only: :index
     end
   end
 

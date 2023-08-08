@@ -5,18 +5,18 @@ $(document).on('turbolinks:load', function() {
     return
   };
 
-  const apiUrl = '/api/v1/admin/reports/cameras';
+  const apiUrl = '/api/v1/admin/reports/' + ctx.dataset.report;
 
-  async function fetchCameras(url) {
+  async function fetchData(url) {
     let req = await fetch(url);
     let json = await req.json();
 
     return json;
   }
 
-  async function prepareChart(cameras) {
+  async function prepareCameras(data) {
     new Chart(
-      document.getElementById('report'),
+      ctx,
       {
         type: 'pie',
         options: {
@@ -28,11 +28,11 @@ $(document).on('turbolinks:load', function() {
           }
         },
         data: {
-          labels: cameras.map(x => x.camera),
+          labels: data.map(x => x.camera),
           datasets: [
             {
               label: 'Кол-во фото',
-              data: cameras.map(row => row.count)
+              data: data.map(row => row.count)
             }
           ]
         }
@@ -40,7 +40,37 @@ $(document).on('turbolinks:load', function() {
     )
   };
 
-  fetchCameras(apiUrl).then(list => {
-    prepareChart(list);
+  async function prepareActivities(data) {
+    new Chart(
+      ctx,
+      {
+        type: 'bar',
+        options: {
+          responsive: true
+        },
+        data: {
+          labels: data.map(x => x.month),
+          datasets: [
+            {
+              label: 'Кол-во фото в месяце',
+              data: data.map(row => row.count)
+            }
+          ]
+        }
+      }
+    )
+  };
+
+  fetchData(apiUrl).then(data => {
+    switch(ctx.dataset.report) {
+      case 'cameras':
+        prepareCameras(data);
+        break;
+      case 'activities':
+        prepareActivities(data);
+        break;
+      default:
+        alert('wrong report!');
+    }
   });
 });

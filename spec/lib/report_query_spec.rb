@@ -4,7 +4,7 @@ RSpec.describe ReportQuery do
   describe '.allowed_reports' do
     subject(:report) { described_class.allowed_reports }
 
-    it { is_expected.to match_array(%i[cameras activity]) }
+    it { is_expected.to match_array(%i[cameras activities]) }
   end
 
   context 'when try to create with a wrong report type' do
@@ -13,8 +13,8 @@ RSpec.describe ReportQuery do
     end
   end
 
-  describe 'activity report' do
-    subject(:activity) { described_class.new(:activity).to_a }
+  describe 'activities report' do
+    subject(:activities) { described_class.new(:activities).to_a }
 
     context 'when without any data' do
       it { is_expected.to be_empty }
@@ -29,11 +29,11 @@ RSpec.describe ReportQuery do
       end
 
       it do
-        expect(activity.first).to eq('month' => '01.2015', 'count' => 10)
+        expect(activities.first).to eq('month' => '01.2015', 'count' => 10)
 
-        expect(activity[12]).to eq('month' => '01.2016', 'count' => 1)
-        expect(activity[13]).to eq('month' => '02.2016', 'count' => 1)
-        expect(activity[14]).to eq('month' => '03.2016', 'count' => 5)
+        expect(activities[12]).to eq('month' => '01.2016', 'count' => 1)
+        expect(activities[13]).to eq('month' => '02.2016', 'count' => 1)
+        expect(activities[14]).to eq('month' => '03.2016', 'count' => 5)
       end
     end
   end
