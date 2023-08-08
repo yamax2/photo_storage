@@ -4,12 +4,37 @@ RSpec.describe ReportQuery do
   describe '.allowed_reports' do
     subject(:report) { described_class.allowed_reports }
 
-    it { is_expected.to match_array(%i[cameras]) }
+    it { is_expected.to match_array(%i[cameras activity]) }
   end
 
   context 'when try to create with a wrong report type' do
     it do
       expect { described_class.new(:wrong) }.to raise_error(/Unknown report type/)
+    end
+  end
+
+  describe 'activity report' do
+    subject(:activity) { described_class.new(:activity).to_a }
+
+    context 'when without any data' do
+      it { is_expected.to be_empty }
+    end
+
+    context 'when some photos' do
+      before do
+        create_list :photo, 10, original_timestamp: Time.zone.local(2015, 1, 10, 13, 12, 37), local_filename: '1.jpg'
+        create :photo, original_timestamp: Time.zone.local(2016, 1, 1, 13, 12, 37), local_filename: '1.jpg'
+        create :photo, original_timestamp: Time.zone.local(2016, 2, 1, 13, 12, 37), local_filename: '1.jpg'
+        create_list :photo, 5, original_timestamp: Time.zone.local(2016, 3, 31, 13, 12, 37), local_filename: '1.jpg'
+      end
+
+      it do
+        expect(activity.first).to eq('month' => '01.2015', 'count' => 10)
+
+        expect(activity[12]).to eq('month' => '01.2016', 'count' => 1)
+        expect(activity[13]).to eq('month' => '02.2016', 'count' => 1)
+        expect(activity[14]).to eq('month' => '03.2016', 'count' => 5)
+      end
     end
   end
 

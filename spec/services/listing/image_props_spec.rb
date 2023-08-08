@@ -4,12 +4,13 @@ RSpec.describe Listing::ImageProps do
   subject(:props) { described_class.new(photo) }
 
   before do
-    allow(Rails.application.config).to receive(:photo_sizes).and_return(
-      thumb: ->(photo) { photo.width * 360 / photo.height },
-      preview: 900
+    allow(Rails.application.config).to receive_messages(
+      photo_sizes: {
+        thumb: ->(photo) { photo.width * 360 / photo.height },
+        preview: 900
+      },
+      max_thumb_width: 1_280
     )
-
-    allow(Rails.application.config).to receive(:max_thumb_width).and_return(1_280)
   end
 
   describe '#image_size' do
