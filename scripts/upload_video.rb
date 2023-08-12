@@ -77,9 +77,9 @@ class VideoMetadata
 
   private
 
-  def upload_request_body(general, video) # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity
+  def upload_request_body(general, video) # rubocop:disable Metrics/AbcSize
     name = File.basename(filename)
-    lat_long = general.dig(:extra, :xyz) || general.dig(:extra, :location)
+    lat_long = parse_lat_long(general)
 
     make = general.dig(:extra, :com_android_manufacturer)
     model = general.dig(:extra, :com_android_model)
@@ -94,7 +94,7 @@ class VideoMetadata
       width: dimensions.first,
       height: dimensions.last,
       content_type: CONTENT_TYPES_BY_EXT.fetch(general.fetch(:FileExtension).downcase),
-      lat_long: lat_long ? lat_long.gsub(/[^0-9.]/, ' ').to_s.strip.split.map(&:to_f) : nil,
+      lat_long: lat_long,
       md5: md5(filename),
       sha256: sha256(filename),
       size: general[:FileSize].to_i,
@@ -108,6 +108,17 @@ class VideoMetadata
       tz: @timezone,
       exif: make && model ? {make: model, model: model} : nil
     }
+  end
+
+  def parse_lat_long(general)
+    lat_long = general.dig(:extra, :xyz) || general.dig(:extra, :location)
+
+    return unless lat_long
+
+    lat_long = lat_long.gsub(/[^0-9.]/, ' ').to_s.strip.split.map(&:to_f)
+    return if lat_long.all?(&:zero?)
+
+    lat_long
   end
 
   def parse_media_info
