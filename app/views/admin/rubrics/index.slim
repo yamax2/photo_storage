@@ -35,7 +35,7 @@
           table.table
             thead
               tr
-                - %i[id name created_at rubrics_count ord desc_order hide_common_stat].each do |attr|
+                - %i[id name rubrics_count ord created_at desc_order hide_common_stat].each do |attr|
                   th
                     = sort_link @search, attr, Rubric.human_attribute_name(attr)
                 th
@@ -43,13 +43,14 @@
             tbody
               - @rubrics.each do |rubric|
                 tr
-                  - %i[id name created_at rubrics_count ord].each do |attr|
+                  - %i[id name rubrics_count ord].each do |attr|
                     td
                       - if %i[id name].include?(attr)
                         = link_to rubric[attr], admin_rubrics_path(id: rubric.id)
                       - else
                         = rubric[attr]
-
+                  td
+                    = rubric.created_at&.to_fs
                   - %i[desc_order hide_common_stat].each do |attr|
                     td
                       label.switch.switch-text.switch-primary

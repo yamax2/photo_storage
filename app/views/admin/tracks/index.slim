@@ -16,16 +16,19 @@
           table.table
             thead
               tr
-                - %i[id name created_at avg_speed distance duration started_at finished_at size color].each do |attr|
+                - %i[id name avg_speed distance duration created_at started_at finished_at size color].each do |attr|
                   th
                     = sort_link @search, attr, Track.human_attribute_name(attr)
                 th
             tbody
               - @tracks.each do |track|
                 tr
-                  - %i[id name created_at avg_speed distance duration started_at finished_at].each do |attr|
+                  - %i[id name avg_speed distance duration].each do |attr|
                     td
                       = track.public_send(attr)
+                  - %i[created_at started_at finished_at].each do |attr|
+                    td
+                      = track.public_send(attr)&.to_fs
                   td
                     = number_to_human_size(track.size)
                   td
