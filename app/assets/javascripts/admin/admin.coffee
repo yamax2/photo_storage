@@ -20,7 +20,10 @@ $(document)
 
   .on 'turbolinks:load', ->
     $('.rubrics-sorting').sortable()
-    $('#tz').val Intl.DateTimeFormat().resolvedOptions().timeZone
+
+    $tz = $('#tz')
+    $tz.val Intl.DateTimeFormat().resolvedOptions().timeZone
+    $('option:first-child', $tz).attr('selected', 'selected') unless $tz.val()
 
     $('#rubrics')
       .on 'select_node.jstree', (e, node) ->
