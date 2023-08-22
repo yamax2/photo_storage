@@ -7,7 +7,7 @@ RSpec.describe Yandex::Token do
 
     it { is_expected.to have_db_column(:access_token).of_type(:string).with_options(null: false, limit: 100) }
     it { is_expected.to have_db_column(:valid_till).of_type(:datetime).with_options(null: false) }
-    it { is_expected.to have_db_column(:refresh_token).of_type(:string).with_options(null: false, limit: 100) }
+    it { is_expected.to have_db_column(:refresh_token).of_type(:string).with_options(null: false, limit: 255) }
 
     it { is_expected.to have_db_column(:dir).of_type(:string).with_options(limit: 255) }
     it { is_expected.to have_db_column(:other_dir).of_type(:string).with_options(limit: 255) }
@@ -34,7 +34,7 @@ RSpec.describe Yandex::Token do
     it { is_expected.to validate_length_of(:access_token).is_at_most(100) }
 
     it { is_expected.to validate_presence_of(:refresh_token) }
-    it { is_expected.to validate_length_of(:refresh_token).is_at_most(100) }
+    it { is_expected.to validate_length_of(:refresh_token).is_at_most(255) }
 
     it { is_expected.to validate_presence_of(:valid_till) }
 

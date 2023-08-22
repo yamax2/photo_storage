@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_10_16_045347) do
+ActiveRecord::Schema[7.0].define(version: 2023_08_22_181748) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -89,7 +89,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_10_16_045347) do
     t.string "login", limit: 255, null: false
     t.string "access_token", limit: 100, null: false
     t.datetime "valid_till", precision: nil, null: false
-    t.string "refresh_token", limit: 100, null: false
+    t.string "refresh_token", limit: 255, null: false
     t.string "dir", limit: 255
     t.string "other_dir", limit: 255
     t.boolean "active", default: false, null: false

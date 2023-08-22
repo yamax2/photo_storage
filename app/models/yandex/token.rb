@@ -14,7 +14,8 @@ module Yandex
     validates :valid_till, :used_space, :total_space, presence: true
     validates :user_id, uniqueness: true, presence: true, length: {maximum: 20}
     validates :login, presence: true, length: {maximum: 255}
-    validates :access_token, :refresh_token, presence: true, length: {maximum: 100}
+    validates :access_token, presence: true, length: {maximum: 100}
+    validates :refresh_token, presence: true, length: {maximum: 255}
     validates :dir, :other_dir, length: {maximum: 255}
 
     validates :photos_folder_index,
