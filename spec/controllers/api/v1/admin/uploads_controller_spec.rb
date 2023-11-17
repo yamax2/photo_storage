@@ -71,7 +71,7 @@ RSpec.describe Api::V1::Admin::UploadsController do
         let(:rubric) { create :rubric }
 
         after do
-          klass.all.each { |photo| FileUtils.rm_f(photo.tmp_local_filename) }
+          klass.find_each { |photo| FileUtils.rm_f(photo.tmp_local_filename) }
         end
 
         context 'when without external info' do
