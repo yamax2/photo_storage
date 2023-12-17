@@ -2,8 +2,6 @@
 
 require 'sidekiq/throttled'
 
-Sidekiq::Throttled.setup!
-
 # rubocop:disable Lint/ConstantDefinitionInBlock
 if (opts = Rails.application.config.try(:redis))
   # https://github.com/reidmorrison/semantic_logger/discussions/221

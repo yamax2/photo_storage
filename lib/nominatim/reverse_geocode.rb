@@ -17,7 +17,7 @@ module Nominatim
         @code = code
         @error_text = error_text
 
-        super "nominatim request failed: #{@error_text}, code: #{@code}"
+        super("nominatim request failed: #{@error_text}, code: #{@code}")
       end
     end
 
