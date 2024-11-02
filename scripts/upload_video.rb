@@ -106,7 +106,7 @@ class VideoMetadata
       video_preview_size: video_preview_file.size,
       duration: video.fetch(:Duration).to_f,
       tz: @timezone,
-      exif: make && model ? {make: model, model: model} : nil
+      exif: make && model ? {make: make, model: model} : nil
     }
   end
 
@@ -152,7 +152,7 @@ class VideoMetadata
   def parse_timestamp(value)
     return if value.nil?
 
-    DateTime.strptime(value, '%z %Y-%m-%d %H:%M:%S').iso8601
+    DateTime.strptime(value, '%Y-%m-%d %H:%M:%S %z').iso8601
   end
 end
 
