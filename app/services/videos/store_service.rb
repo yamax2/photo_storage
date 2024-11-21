@@ -17,7 +17,7 @@ module Videos
         folder_index: model.yandex_token&.other_folder_index.to_i,
         storage_filename:,
         preview_filename: "#{storage_filename}.jpg",
-        video_preview_filename: "#{File.basename(storage_filename, '.*')}.preview#{File.extname(storage_filename)}"
+        video_preview_filename: "#{File.basename(storage_filename, '.*')}.preview.mp4"
       )
     end
 

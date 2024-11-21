@@ -62,7 +62,7 @@ class VideoMetadata
   end
 
   def video_preview_file
-    @video_preview_file ||= Tempfile.new(['preview', File.extname(@filename)]).tap do |file|
+    @video_preview_file ||= Tempfile.new('preview.mp4').tap do |file|
       make_video_preview(file.path)
     end
   end
@@ -77,17 +77,17 @@ class VideoMetadata
 
   private
 
-  def upload_request_body(general, video) # rubocop:disable Metrics/AbcSize
+  def upload_request_body(general, video) # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
     name = File.basename(filename)
     lat_long = parse_lat_long(general)
 
     make = general.dig(:extra, :com_android_manufacturer)
-    make ||= general.dig(:extra, :'com_apple_quicktime_make')
-    make ||= general.dig(:Performer)&.split(' ')&.first
+    make ||= general.dig(:extra, :com_apple_quicktime_make)
+    make ||= general[:Performer]&.split&.first
 
     model = general.dig(:extra, :com_android_model)
-    model ||= general.dig(:extra, :'com_apple_quicktime_model')
-    model ||= general.dig(:Performer)&.split(' ')&.last
+    model ||= general.dig(:extra, :com_apple_quicktime_model)
+    model ||= general[:Performer]&.split&.last
 
     dimensions = [video.fetch(:Width).to_i, video.fetch(:Height).to_i]
     dimensions.reverse! if [90, 270].include?(video[:Rotation].to_i)
@@ -116,9 +116,9 @@ class VideoMetadata
   end
 
   def parse_lat_long(general)
-    lat_long = general.dig(:extra, :xyz) || \
-      general.dig(:extra, :location) || \
-      general.dig(:extra, :'com_apple_quicktime_location_ISO6709')
+    lat_long = general.dig(:extra, :xyz) ||
+               general.dig(:extra, :location) ||
+               general.dig(:extra, :com_apple_quicktime_location_ISO6709)
 
     return unless lat_long
 
