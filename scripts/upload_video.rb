@@ -82,7 +82,12 @@ class VideoMetadata
     lat_long = parse_lat_long(general)
 
     make = general.dig(:extra, :com_android_manufacturer)
+    make ||= general.dig(:extra, :'com_apple_quicktime_make')
+    make ||= general.dig(:Performer)&.split(' ')&.first
+
     model = general.dig(:extra, :com_android_model)
+    model ||= general.dig(:extra, :'com_apple_quicktime_model')
+    model ||= general.dig(:Performer)&.split(' ')&.last
 
     dimensions = [video.fetch(:Width).to_i, video.fetch(:Height).to_i]
     dimensions.reverse! if [90, 270].include?(video[:Rotation].to_i)
@@ -111,11 +116,13 @@ class VideoMetadata
   end
 
   def parse_lat_long(general)
-    lat_long = general.dig(:extra, :xyz) || general.dig(:extra, :location)
+    lat_long = general.dig(:extra, :xyz) || \
+      general.dig(:extra, :location) || \
+      general.dig(:extra, :'com_apple_quicktime_location_ISO6709')
 
     return unless lat_long
 
-    lat_long = lat_long.gsub(/[^0-9.]/, ' ').to_s.strip.split.map(&:to_f)
+    lat_long = lat_long.gsub(/[^0-9.]/, ' ').to_s.strip.split.map(&:to_f).first(2)
     return if lat_long.all?(&:zero?)
 
     lat_long
