@@ -62,7 +62,7 @@ class VideoMetadata
   end
 
   def video_preview_file
-    @video_preview_file ||= Tempfile.new('preview.mp4').tap do |file|
+    @video_preview_file ||= Tempfile.new(%w[preview .mp4]).tap do |file|
       make_video_preview(file.path)
     end
   end
@@ -145,7 +145,7 @@ class VideoMetadata
   end
 
   def make_video_preview(path)
-    `ffmpeg -y -i #{filename} -vf scale="trunc(oh*a/2)*2:1080" -c:v libx264 -c:a copy -crf 25 #{path}`
+    `ffmpeg -y -i #{filename} -vf scale="trunc(oh*a/2)*2:1080" -c:v libx264 -crf 25 -c:a aac #{path}`
   end
 
   def md5(filepath)
