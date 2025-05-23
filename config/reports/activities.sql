@@ -1,5 +1,5 @@
 WITH RECURSIVE info AS (
-  SELECT '2013-01-01'::timestamp start
+  SELECT (now() - '10 years'::interval)::date::timestamp start
 ), dates AS (
   SELECT info.start FROM info
   UNION ALL
