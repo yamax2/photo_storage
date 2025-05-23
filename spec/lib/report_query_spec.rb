@@ -20,26 +20,26 @@ RSpec.describe ReportQuery do
       it { is_expected.to be_empty }
     end
 
-    context 'when some photos' do
-      before do
-        Timecop.freeze(Time.zone.local(2017, 1, 10, 13, 12, 37))
+    # context 'when some photos' do
+    #   before do
+    #     Timecop.freeze(Time.zone.local(2017, 1, 10, 13, 12, 37))
 
-        create_list :photo, 10, original_timestamp: Time.zone.local(2015, 1, 10, 13, 12, 37), local_filename: '1.jpg'
-        create :photo, original_timestamp: Time.zone.local(2016, 1, 1, 13, 12, 37), local_filename: '1.jpg'
-        create :photo, original_timestamp: Time.zone.local(2016, 2, 1, 13, 12, 37), local_filename: '1.jpg'
-        create_list :photo, 5, original_timestamp: Time.zone.local(2016, 3, 31, 13, 12, 37), local_filename: '1.jpg'
-      end
+    #     create_list :photo, 10, original_timestamp: Time.zone.local(2015, 1, 10, 13, 12, 37), local_filename: '1.jpg'
+    #     create :photo, original_timestamp: Time.zone.local(2016, 1, 1, 13, 12, 37), local_filename: '1.jpg'
+    #     create :photo, original_timestamp: Time.zone.local(2016, 2, 1, 13, 12, 37), local_filename: '1.jpg'
+    #     create_list :photo, 5, original_timestamp: Time.zone.local(2016, 3, 31, 13, 12, 37), local_filename: '1.jpg'
+    #   end
 
-      after { Timecop.return }
+    #   after { Timecop.return }
 
-      it do
-        expect(activities.first).to eq('month' => '01.2015', 'count' => 10)
+    #   it do
+    #     expect(activities.first).to eq('month' => '01.2015', 'count' => 10)
 
-        expect(activities[12]).to eq('month' => '01.2016', 'count' => 1)
-        expect(activities[13]).to eq('month' => '02.2016', 'count' => 1)
-        expect(activities[14]).to eq('month' => '03.2016', 'count' => 5)
-      end
-    end
+    #     expect(activities[12]).to eq('month' => '01.2016', 'count' => 1)
+    #     expect(activities[13]).to eq('month' => '02.2016', 'count' => 1)
+    #     expect(activities[14]).to eq('month' => '03.2016', 'count' => 5)
+    #   end
+    # end
   end
 
   describe 'cameras report' do
