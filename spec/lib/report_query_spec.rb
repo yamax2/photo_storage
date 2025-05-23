@@ -22,11 +22,15 @@ RSpec.describe ReportQuery do
 
     context 'when some photos' do
       before do
+        Timecop.freeze(Time.zone.local(2017, 1, 10, 13, 12, 37))
+
         create_list :photo, 10, original_timestamp: Time.zone.local(2015, 1, 10, 13, 12, 37), local_filename: '1.jpg'
         create :photo, original_timestamp: Time.zone.local(2016, 1, 1, 13, 12, 37), local_filename: '1.jpg'
         create :photo, original_timestamp: Time.zone.local(2016, 2, 1, 13, 12, 37), local_filename: '1.jpg'
         create_list :photo, 5, original_timestamp: Time.zone.local(2016, 3, 31, 13, 12, 37), local_filename: '1.jpg'
       end
+
+      after { Timecop.return }
 
       it do
         expect(activities.first).to eq('month' => '01.2015', 'count' => 10)

@@ -8,7 +8,6 @@ environment:
   DOCKER_GO_VERSION: 1.19
   RAILS_ENV: development
   LOG_LEVEL: debug
-  RAILS_SERVE_STATIC_FILES:
 
 compose:
   files:
@@ -37,7 +36,6 @@ interaction:
     subcommands:
       s:
         service: web
-        compose_method: up
 
   cleanup:
     service: app
