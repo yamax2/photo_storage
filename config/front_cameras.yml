@@ -18,6 +18,12 @@ default: &default
       effects:
         - scaleX(-1)
 
+    - make: Xiaomi
+      model: Xiaomi 15
+      dimension: 6528
+      effects:
+        - scaleX(-1)
+
 development:
   <<: *default
 
