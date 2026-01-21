@@ -50,7 +50,7 @@ class VideoMetadata
 
   attr_reader :filename
 
-  def initialize(filename, timezone: File.read('/etc/timezone').strip)
+  def initialize(filename, timezone: 'Asia/Yekaterinburg')
     @timezone = timezone
     @filename = filename
   end
@@ -118,7 +118,8 @@ class VideoMetadata
   def parse_lat_long(general)
     lat_long = general.dig(:extra, :xyz) ||
                general.dig(:extra, :location) ||
-               general.dig(:extra, :com_apple_quicktime_location_ISO6709)
+               general.dig(:extra, :com_apple_quicktime_location_ISO6709) ||
+               general[:Recorded_Location]
 
     return unless lat_long
 
