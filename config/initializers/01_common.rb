@@ -15,7 +15,8 @@ Rails.application.configure do
     /^\d{8}(_|\s)\d{6}/,
     /^f\d{9}/,
     /^IMAG\d+/,
-    /^SDC\d+/
+    /^SDC\d+/,
+    /^DSCF\d+/
   ].freeze
 
   # widths
